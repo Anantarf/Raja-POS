@@ -52,13 +52,15 @@ class InventoryResource extends Resource
                 Tables\Columns\TextColumn::make('product.minimum_stock')
                     ->label('Stok Min.')
                     ->sortable(),
-                Tables\Columns\BadgeColumn::make('stock_status')
+                Tables\Columns\TextColumn::make('stock_status')
                     ->label('Status Stok')
-                    ->colors([
-                        'success' => 'AVAILABLE',
-                        'warning' => 'LOW_STOCK',
-                        'danger' => 'OUT_OF_STOCK',
-                    ])
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'AVAILABLE' => 'success',
+                        'LOW_STOCK' => 'warning',
+                        'OUT_OF_STOCK' => 'danger',
+                        default => 'gray',
+                    })
                     ->formatStateUsing(fn (string $state): string => match ($state) {
                         'AVAILABLE' => 'TERSEDIA',
                         'LOW_STOCK' => 'MENIPIS',

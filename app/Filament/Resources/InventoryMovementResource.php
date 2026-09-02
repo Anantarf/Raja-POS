@@ -35,16 +35,18 @@ class InventoryMovementResource extends Resource
                     ->label('Nama Produk')
                     ->searchable()
                     ->wrap(),
-                Tables\Columns\BadgeColumn::make('movement_type')
+                Tables\Columns\TextColumn::make('movement_type')
                     ->label('Tipe Pergerakan')
-                    ->colors([
-                        'primary' => 'SALE',
-                        'success' => 'ADJUSTMENT_IN',
-                        'danger' => 'ADJUSTMENT_OUT',
-                        'warning' => 'DAMAGE',
-                        'info' => 'STOCK_OPNAME',
-                        'secondary' => 'TRASH_RESTORE',
-                    ])
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'SALE' => 'primary',
+                        'ADJUSTMENT_IN' => 'success',
+                        'ADJUSTMENT_OUT' => 'danger',
+                        'DAMAGE' => 'warning',
+                        'STOCK_OPNAME' => 'info',
+                        'TRASH_RESTORE' => 'secondary',
+                        default => 'gray',
+                    })
                     ->formatStateUsing(fn (string $state): string => match ($state) {
                         'SALE' => 'Penjualan (SALE)',
                         'ADJUSTMENT_IN' => 'Stok Masuk',

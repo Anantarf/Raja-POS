@@ -215,7 +215,7 @@ class Checkout extends Component
 
             $this->completedSaleId = $sale->id;
             $this->completedInvoiceNumber = $sale->invoice_number;
-            $this->completedChangeAmount = $sale->change_amount;
+            $this->completedChangeAmount = (float) $sale->change_amount;
             $this->showSuccessModal = true;
 
             $this->clearCart();

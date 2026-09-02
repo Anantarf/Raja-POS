@@ -55,11 +55,13 @@ class LocationResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('address')
                     ->limit(50),
-                Tables\Columns\BadgeColumn::make('status')
-                    ->colors([
-                        'success' => 'ACTIVE',
-                        'secondary' => 'INACTIVE',
-                    ]),
+                Tables\Columns\TextColumn::make('status')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'ACTIVE' => 'success',
+                        'INACTIVE' => 'secondary',
+                        default => 'gray',
+                    }),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

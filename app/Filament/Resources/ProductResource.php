@@ -139,13 +139,15 @@ class ProductResource extends Resource
                     ->searchable()
                     ->sortable()
                     ->wrap(),
-                Tables\Columns\BadgeColumn::make('product_type')
+                Tables\Columns\TextColumn::make('product_type')
                     ->label('Tipe')
-                    ->colors([
-                        'primary' => 'PHYSICAL',
-                        'success' => 'DIGITAL',
-                        'warning' => 'SERVICE',
-                    ])
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'PHYSICAL' => 'primary',
+                        'DIGITAL' => 'success',
+                        'SERVICE' => 'warning',
+                        default => 'gray',
+                    })
                     ->formatStateUsing(fn (string $state): string => match ($state) {
                         'PHYSICAL' => 'Fisik',
                         'DIGITAL' => 'Digital',
@@ -164,24 +166,28 @@ class ProductResource extends Resource
                     ->label('Harga Jual')
                     ->money('IDR')
                     ->sortable(),
-                Tables\Columns\BadgeColumn::make('price_status')
+                Tables\Columns\TextColumn::make('price_status')
                     ->label('Status Harga')
-                    ->colors([
-                        'success' => 'COMPLETE',
-                        'danger' => 'INCOMPLETE',
-                    ])
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'COMPLETE' => 'success',
+                        'INCOMPLETE' => 'danger',
+                        default => 'gray',
+                    })
                     ->formatStateUsing(fn (string $state): string => match ($state) {
                         'COMPLETE' => 'Lengkap',
                         'INCOMPLETE' => 'Harga 0 (Incomplete)',
                         default => $state,
                     }),
-                Tables\Columns\BadgeColumn::make('status')
+                Tables\Columns\TextColumn::make('status')
                     ->label('Status')
-                    ->colors([
-                        'success' => 'ACTIVE',
-                        'secondary' => 'INACTIVE',
-                        'danger' => 'DISCONTINUED',
-                    ])
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'ACTIVE' => 'success',
+                        'INACTIVE' => 'secondary',
+                        'DISCONTINUED' => 'danger',
+                        default => 'gray',
+                    })
                     ->formatStateUsing(fn (string $state): string => match ($state) {
                         'ACTIVE' => 'Aktif',
                         'INACTIVE' => 'Inaktif',

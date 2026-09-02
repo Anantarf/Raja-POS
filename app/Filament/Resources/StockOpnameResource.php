@@ -120,13 +120,15 @@ class StockOpnameResource extends Resource
                 Tables\Columns\TextColumn::make('items_count')
                     ->counts('items')
                     ->label('Jumlah Item'),
-                Tables\Columns\BadgeColumn::make('status')
+                Tables\Columns\TextColumn::make('status')
                     ->label('Status')
-                    ->colors([
-                        'warning' => 'DRAFT',
-                        'success' => 'COMPLETED',
-                        'danger' => 'CANCELLED',
-                    ]),
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'DRAFT' => 'warning',
+                        'COMPLETED' => 'success',
+                        'CANCELLED' => 'danger',
+                        default => 'gray',
+                    }),
                 Tables\Columns\TextColumn::make('creator.name')
                     ->label('Dibuat Oleh'),
                 Tables\Columns\TextColumn::make('approver.name')

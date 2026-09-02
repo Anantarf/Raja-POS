@@ -65,22 +65,26 @@ class BalanceAccountResource extends Resource
                 Tables\Columns\TextColumn::make('code')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\BadgeColumn::make('account_type')
-                    ->colors([
-                        'primary' => 'CASH',
-                        'success' => 'QRIS',
-                        'info' => 'BANK',
-                        'warning' => 'E_WALLET',
-                        'secondary' => 'PROVIDER',
-                    ]),
+                Tables\Columns\TextColumn::make('account_type')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'CASH' => 'primary',
+                        'QRIS' => 'success',
+                        'BANK' => 'info',
+                        'E_WALLET' => 'warning',
+                        'PROVIDER' => 'secondary',
+                        default => 'gray',
+                    }),
                 Tables\Columns\TextColumn::make('current_balance')
                     ->money('IDR')
                     ->sortable(),
-                Tables\Columns\BadgeColumn::make('status')
-                    ->colors([
-                        'success' => 'ACTIVE',
-                        'secondary' => 'INACTIVE',
-                    ]),
+                Tables\Columns\TextColumn::make('status')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'ACTIVE' => 'success',
+                        'INACTIVE' => 'secondary',
+                        default => 'gray',
+                    }),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('account_type')

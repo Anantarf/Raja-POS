@@ -57,11 +57,13 @@ class CategoryResource extends Resource
                     ->counts('products')
                     ->label('Jumlah Produk')
                     ->sortable(),
-                Tables\Columns\BadgeColumn::make('status')
-                    ->colors([
-                        'success' => 'ACTIVE',
-                        'secondary' => 'INACTIVE',
-                    ])
+                Tables\Columns\TextColumn::make('status')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'ACTIVE' => 'success',
+                        'INACTIVE' => 'secondary',
+                        default => 'gray',
+                    })
                     ->formatStateUsing(fn (string $state): string => match ($state) {
                         'ACTIVE' => 'Aktif',
                         'INACTIVE' => 'Inaktif',

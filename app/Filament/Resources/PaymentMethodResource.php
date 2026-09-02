@@ -59,18 +59,22 @@ class PaymentMethodResource extends Resource
                 Tables\Columns\TextColumn::make('code')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\BadgeColumn::make('type')
-                    ->colors([
-                        'primary' => 'CASH',
-                        'success' => 'QRIS',
-                        'info' => 'TRANSFER',
-                        'warning' => 'E_WALLET',
-                    ]),
-                Tables\Columns\BadgeColumn::make('status')
-                    ->colors([
-                        'success' => 'ACTIVE',
-                        'secondary' => 'INACTIVE',
-                    ]),
+                Tables\Columns\TextColumn::make('type')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'CASH' => 'primary',
+                        'QRIS' => 'success',
+                        'TRANSFER' => 'info',
+                        'E_WALLET' => 'warning',
+                        default => 'gray',
+                    }),
+                Tables\Columns\TextColumn::make('status')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'ACTIVE' => 'success',
+                        'INACTIVE' => 'secondary',
+                        default => 'gray',
+                    }),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
