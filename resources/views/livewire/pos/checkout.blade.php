@@ -30,10 +30,10 @@
         </div>
     </header>
 
-    <!-- Main Operational Split View (Optimized Widescreen Desktop Ratio 58% : 42%) -->
+    <!-- Main Operational Split View (58% Katalog : 42% Keranjang) -->
     <div class="flex-1 flex overflow-hidden px-6 pb-5 gap-5">
 
-        <!-- LEFT COLUMN: Product Catalog (58% Widescreen Ratio) -->
+        <!-- LEFT COLUMN: Product Catalog (58%) -->
         <div class="w-full lg:w-[58%] xl:w-[60%] flex flex-col flex-shrink-0">
 
             <!-- Streamlined Toolbar -->
@@ -107,7 +107,7 @@
                 </div>
             </div>
 
-            <!-- Product Cards Grid (Dynamic Responsive Widescreen Grid) -->
+            <!-- Product Cards Grid (Prominent Top Product Image Cards) -->
             <div class="flex-1 overflow-y-auto pr-1 grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3.5">
                 @forelse($products as $product)
                     @php
@@ -119,30 +119,40 @@
 
                     <div
                         wire:click="addToCart({{ $product->id }})"
-                        class="bg-white border border-[#E3EEE8] hover:border-[#3F7A5D]/60 hover:bg-[#F3F6F4]/50 rounded-3xl p-3.5 flex flex-col justify-between cursor-pointer transition-all duration-200 relative group {{ $isIncomplete ? 'opacity-65 bg-rose-50/20' : '' }}"
+                        class="bg-white border border-[#E3EEE8] hover:border-[#3F7A5D]/60 hover:bg-[#F3F6F4]/50 rounded-3xl p-3 flex flex-col justify-between cursor-pointer transition-all duration-200 relative group {{ $isIncomplete ? 'opacity-65 bg-rose-50/20' : '' }}"
                     >
                         <div>
-                            <!-- Top Metadata Row -->
-                            <div class="flex items-center justify-between mb-2.5">
-                                <span class="text-[11px] font-mono text-[#3F7A5D] bg-[#E3EEE8] px-2.5 py-0.5 rounded-md font-bold">
+                            <!-- Top Metadata Badges -->
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-[11px] font-mono text-[#3F7A5D] bg-[#E3EEE8] px-2 py-0.5 rounded-md font-bold">
                                     SKU: {{ $product->code }}
                                 </span>
-                                <span class="text-[10px] uppercase font-extrabold px-2.5 py-0.5 rounded-full {{ $product->product_type === 'PHYSICAL' ? 'bg-[#E3EEE8] text-[#3F7A5D]' : ($product->product_type === 'DIGITAL' ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-[#C2AC7C]/20 text-[#8F794B] border border-[#C2AC7C]/40') }}">
+                                <span class="text-[10px] uppercase font-extrabold px-2 py-0.5 rounded-full {{ $product->product_type === 'PHYSICAL' ? 'bg-[#E3EEE8] text-[#3F7A5D]' : ($product->product_type === 'DIGITAL' ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-[#C2AC7C]/20 text-[#8F794B] border border-[#C2AC7C]/40') }}">
                                     {{ $product->product_type }}
                                 </span>
                             </div>
 
-                            <!-- Product Thumbnail & Title -->
-                            <div class="flex items-start gap-3 mb-2.5">
-                                <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="w-11 h-11 object-cover rounded-2xl bg-slate-100 border border-slate-200/70 shrink-0">
-                                <div class="text-xs font-bold text-[#232E28] line-clamp-2 leading-snug tracking-tight group-hover:text-[#3F7A5D] transition-colors">
-                                    {{ $product->name }}
-                                </div>
+                            <!-- Prominent Large Product Image Banner (Fix: Space Gambar Lebih Banyak) -->
+                            <div class="w-full h-28 rounded-2xl bg-[#F3F6F4] border border-slate-200/70 overflow-hidden mb-2.5 relative flex items-center justify-center group-hover:border-[#3F7A5D]/40 transition-colors">
+                                @if($product->image_url && !str_contains($product->image_url, 'via.placeholder.com'))
+                                    <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                @else
+                                    <div class="flex flex-col items-center justify-center text-slate-400 space-y-1 p-2 text-center">
+                                        <div class="w-10 h-10 rounded-full bg-[#E3EEE8] text-[#3F7A5D] font-extrabold flex items-center justify-center text-sm font-mono">
+                                            {{ strtoupper(substr($product->name, 0, 2)) }}
+                                        </div>
+                                    </div>
+                                @endif
+                            </div>
+
+                            <!-- Product Name -->
+                            <div class="text-xs font-bold text-[#232E28] line-clamp-2 leading-snug tracking-tight group-hover:text-[#3F7A5D] transition-colors mb-2">
+                                {{ $product->name }}
                             </div>
                         </div>
 
-                        <!-- Price & Stock Indicator -->
-                        <div class="mt-2.5 pt-2.5 border-t border-slate-100">
+                        <!-- Price & Stock Indicator Footer -->
+                        <div class="pt-2 border-t border-slate-100">
                             @if($isIncomplete)
                                 <div class="text-[10px] font-bold text-rose-600 bg-rose-50 border border-rose-200 px-2 py-0.5 rounded text-center">
                                     HARGA INCOMPLETE
@@ -156,7 +166,7 @@
                             @if($product->product_type === 'PHYSICAL')
                                 <div class="flex items-center justify-between mt-1 text-xs">
                                     <span class="text-[#718379] font-medium">Stok: {{ $stockQty }}</span>
-                                    <span class="px-2.5 py-0.5 rounded-full font-bold text-[10px] {{ $stockStatus === 'OUT_OF_STOCK' ? 'bg-rose-50 text-rose-700' : ($stockStatus === 'LOW_STOCK' ? 'bg-amber-50 text-amber-700' : 'bg-emerald-50 text-emerald-700') }}">
+                                    <span class="px-2 py-0.5 rounded-full font-bold text-[10px] {{ $stockStatus === 'OUT_OF_STOCK' ? 'bg-rose-50 text-rose-700' : ($stockStatus === 'LOW_STOCK' ? 'bg-amber-50 text-amber-700' : 'bg-emerald-50 text-emerald-700') }}">
                                         {{ $stockStatus === 'OUT_OF_STOCK' ? 'HABIS' : ($stockStatus === 'LOW_STOCK' ? 'MENIPIS' : 'TERSEDIA') }}
                                     </span>
                                 </div>
@@ -177,14 +187,14 @@
             </div>
         </div>
 
-        <!-- RIGHT COLUMN: SPACIOUS & PROPORTIONAL CART SIDEBAR (42% Widescreen Ratio) -->
+        <!-- RIGHT COLUMN: SPACIOUS & PROPORTIONAL CART SIDEBAR (42%) -->
         <div class="w-full lg:w-[42%] xl:w-[40%] bg-white rounded-3xl border border-[#E3EEE8] flex flex-col flex-shrink-0 overflow-hidden h-full">
 
             <!-- 1. Spacious Cart Header -->
             <div class="px-6 py-4 bg-white border-b border-[#E3EEE8] flex items-center justify-between shrink-0">
                 <div class="font-extrabold text-sm text-[#232E28] uppercase tracking-wider flex items-center gap-2.5">
                     <svg class="w-5 h-5 text-[#3F7A5D]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 00-4z"></path>
                     </svg>
                     <span>Keranjang</span>
                     <span class="bg-[#E3EEE8] text-[#3F7A5D] px-3 py-0.5 rounded-full text-xs font-bold font-mono">
@@ -243,7 +253,7 @@
                 @endforelse
             </div>
 
-            <!-- 3. PROPORTIONAL PAYMENT FOOTER (Fixed at Bottom) -->
+            <!-- 3. PROPORTIONAL PAYMENT FOOTER -->
             <div class="p-5 border-t border-[#E3EEE8] bg-[#F3F6F4]/50 space-y-3.5 shrink-0">
 
                 <!-- Grand Total Billing Line -->
