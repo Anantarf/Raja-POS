@@ -153,6 +153,20 @@ class Checkout extends Component
         }
     }
 
+    public function setPaymentAmount(float $amount)
+    {
+        if (isset($this->payments[0])) {
+            $this->payments[0]['amount'] = $amount;
+        }
+    }
+
+    public function addNominalToPayment(float $nominal)
+    {
+        if (isset($this->payments[0])) {
+            $this->payments[0]['amount'] = (float) ($this->payments[0]['amount'] ?? 0) + $nominal;
+        }
+    }
+
     public function updateDefaultPaymentAmount()
     {
         if (count($this->payments) === 1) {

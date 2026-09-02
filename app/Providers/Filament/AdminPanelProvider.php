@@ -27,14 +27,17 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login(\App\Filament\Pages\Auth\Login::class)
-            ->brandName('Raja POS')
+            ->brandName('Raja Aksesoris POS')
+            ->font('Plus Jakarta Sans')
             ->colors([
                 'primary' => Color::Blue,
-                'secondary' => Color::Slate,
+                'gray' => Color::Slate,
                 'warning' => Color::Amber,
-                'danger' => Color::Red,
+                'danger' => Color::Rose,
                 'success' => Color::Emerald,
+                'info' => Color::Sky,
             ])
+            ->sidebarCollapsibleOnDesktop()
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
@@ -43,7 +46,6 @@ class AdminPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
