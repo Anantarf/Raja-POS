@@ -44,6 +44,10 @@ class AdminPanelProvider extends PanelProvider
                 Pages\Dashboard::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
+            ->renderHook(
+                'panels::user-menu.before',
+                fn (): string => '<a href="/pos" class="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold text-xs flex items-center gap-1.5 shadow-sm transition"><span>Layar Kasir POS</span> &rarr;</a>'
+            )
             ->widgets([
                 Widgets\AccountWidget::class,
             ])

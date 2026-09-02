@@ -17,7 +17,7 @@ class SalesResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-shopping-cart';
 
-    protected static ?string $navigationGroup = 'Transaksi';
+    protected static ?string $navigationGroup = 'Operasional POS';
 
     protected static ?int $navigationSort = 1;
 
