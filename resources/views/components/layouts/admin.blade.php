@@ -22,6 +22,7 @@
                             'primary-hover': '#32634B',
                             'primary-light': '#E3EEE8', // EMCO 120 Light Sage
                             sand: '#C2AC7C',          // EMCO 79 Warm Sand Ochre
+                            gold: '#D9A21B',          // Warm Golden Yellow Accent
                             mint: '#A9D1A0',          // EMCO 46 Fresh Mint
                             dark: '#232E28',          // Deep Forest Dark
                             body: '#F3F6F4',          // Soft Tinted Cream/Sage BG
@@ -62,7 +63,7 @@
 </head>
 <body class="h-full bg-[#F3F6F4] flex overflow-hidden text-[#232E28]">
 
-    <!-- Sidebar Navigation (Flat Crisp Borders, Zero Heavy Shadows) -->
+    <!-- Sidebar Navigation -->
     <aside class="w-72 bg-white border-r border-[#E3EEE8] flex flex-col flex-shrink-0 z-30">
         <!-- Sidebar Brand Header -->
         <div class="h-20 px-6 flex items-center gap-3.5 border-b border-[#E3EEE8]">
@@ -72,7 +73,7 @@
             <div>
                 <div class="font-extrabold text-lg text-[#232E28] tracking-tight flex items-center gap-2">
                     <span>RAJA POS</span>
-                    <span class="text-xs bg-[#C2AC7C]/20 text-[#8F794B] px-2 py-0.5 rounded-md font-extrabold border border-[#C2AC7C]/40">EMCO</span>
+                    <span class="text-xs bg-[#D9A21B]/15 text-[#9E7511] px-2 py-0.5 rounded-md font-extrabold border border-[#D9A21B]/40">EMCO GOLD</span>
                 </div>
                 <div class="text-xs text-[#718379] font-bold mt-0.5">Ritel Management System</div>
             </div>
@@ -186,7 +187,7 @@
     <!-- Main Right Content Area -->
     <div class="flex-1 flex flex-col overflow-hidden">
 
-        <!-- Topbar Header (Flat Clean Border) -->
+        <!-- Topbar Header -->
         <header class="p-5 flex-shrink-0">
             <div class="bg-white rounded-2xl border border-[#E3EEE8] px-6 py-4 flex items-center justify-between">
                 <div class="flex items-center gap-3">
