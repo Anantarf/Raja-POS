@@ -40,7 +40,7 @@
                     @forelse($sales as $sale)
                         <tr class="hover:bg-[#F3F6F4]/60 transition">
                             <td class="py-3.5 px-4">
-                                <div class="font-bold text-[#3F7A5D] font-mono text-xs bg-[#E3EEE8] px-2 py-0.5 rounded inline-block">{{ $sale->invoice_number }}</div>
+                                <div class="font-bold text-indigo-600 font-mono text-xs bg-indigo-50 border border-indigo-200/70 px-2 py-0.5 rounded-md inline-block">{{ $sale->invoice_number }}</div>
                                 <div class="text-[10px] text-[#86968E] mt-1 font-semibold">{{ $sale->created_at->format('d M Y, H:i') }}</div>
                             </td>
                             <td class="py-3.5 px-4 text-[#232E28]">
@@ -66,14 +66,14 @@
                             </td>
                             <td class="py-3.5 px-4 text-center">
                                 <div class="flex items-center justify-center gap-1.5">
-                                    <button wire:click="openDetailModal({{ $sale->id }})" class="px-3 py-1.5 bg-[#F3F6F4] hover:bg-slate-200 text-[#232E28] rounded-lg text-xs font-semibold transition">
+                                    <button wire:click="openDetailModal({{ $sale->id }})" class="px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 border border-indigo-200/80 rounded-xl text-xs font-extrabold transition active:scale-95">
                                         Detail Nota
                                     </button>
-                                    <a href="/receipt/thermal/{{ $sale->id }}" target="_blank" class="px-3 py-1.5 bg-[#E3EEE8] hover:bg-emerald-100 text-[#3F7A5D] rounded-lg text-xs font-semibold transition">
+                                    <a href="/receipt/thermal/{{ $sale->id }}" target="_blank" class="px-3 py-1.5 bg-[#E3EEE8] hover:bg-emerald-100 text-[#3F7A5D] border border-[#3F7A5D]/20 rounded-xl text-xs font-extrabold transition active:scale-95">
                                         Struk
                                     </a>
                                     @if(auth()->user()->can('sales.trash'))
-                                        <button wire:click="moveToTrash({{ $sale->id }})" wire:confirm="Pindahkan transaksi ini ke Sampah Transaksi? Stok dan saldo akan dikembalikan." class="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-lg text-xs font-semibold transition">
+                                        <button wire:click="moveToTrash({{ $sale->id }})" wire:confirm="Pindahkan transaksi ini ke Sampah Transaksi? Stok dan saldo akan dikembalikan." class="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200/80 rounded-xl text-xs font-extrabold transition active:scale-95">
                                             Ke Sampah
                                         </button>
                                     @endif
