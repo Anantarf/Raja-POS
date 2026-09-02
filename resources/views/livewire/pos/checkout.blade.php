@@ -1,10 +1,10 @@
 <div class="h-screen flex flex-col overflow-hidden bg-[#F3F6F4] font-sans text-[#232E28]">
     <!-- Topbar Navigation Header -->
     <header class="px-6 pt-4 pb-3 flex-shrink-0">
-        <div class="bg-white rounded-2xl shadow-emco px-6 py-4 flex items-center justify-between border border-[#E3EEE8]">
+        <div class="bg-white rounded-2xl px-6 py-4 flex items-center justify-between border border-[#E3EEE8]">
             <div class="flex items-center gap-4">
                 <div class="flex items-center gap-3">
-                    <span class="bg-[#3F7A5D] text-white font-extrabold px-3.5 py-1.5 rounded-xl text-sm tracking-wider uppercase shadow-emco-primary">RAJA POS</span>
+                    <span class="bg-[#3F7A5D] text-white font-extrabold px-3.5 py-1.5 rounded-xl text-sm tracking-wider uppercase">RAJA POS</span>
                     <span class="text-sm font-extrabold text-[#232E28] hidden sm:inline border-l border-[#E3EEE8] pl-4">
                         {{ $location?->name ?? 'Raja Aksesoris Bango' }}
                     </span>
@@ -20,7 +20,7 @@
                     <span class="text-[#718379] font-normal text-xs">({{ auth()->user()->role?->name ?? 'Kasir' }})</span>
                 </div>
 
-                <a href="/admin" class="bg-[#3F7A5D] hover:bg-[#32634B] text-white px-5 py-2.5 rounded-xl font-bold text-sm transition flex items-center gap-2 shadow-emco-primary active:scale-95">
+                <a href="/admin" class="bg-[#3F7A5D] hover:bg-[#32634B] text-white px-5 py-2.5 rounded-xl font-bold text-sm transition flex items-center gap-2 active:scale-95">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                     </svg>
@@ -37,7 +37,7 @@
         <div class="w-full lg:w-[65%] flex flex-col flex-shrink-0">
 
             <!-- Search Bar & Filters Header -->
-            <div class="p-5 bg-white rounded-3xl border border-[#E3EEE8] shadow-emco space-y-4 mb-4">
+            <div class="p-5 bg-white rounded-3xl border border-[#E3EEE8] space-y-4 mb-4">
                 <!-- Search Input -->
                 <div class="relative">
                     <input
@@ -60,7 +60,7 @@
                 <!-- Category Tabs & Product Type Pills -->
                 <div class="flex items-center justify-between gap-3 text-sm pt-0.5">
                     <!-- Category Tabs -->
-                    <div class="flex items-center gap-2 overflow-x-auto py-1.5 px-0.5 shrink min-w-0">
+                    <div class="flex items-center gap-2 overflow-x-auto py-1 px-0.5 shrink min-w-0">
                         <button
                             wire:click="$set('selectedCategory', null)"
                             class="px-5 py-2.5 rounded-2xl text-xs font-bold transition-all shrink-0 border {{ $selectedCategory === null ? 'bg-[#3F7A5D] text-white border-[#3F7A5D]' : 'bg-[#F3F6F4] text-[#232E28] border-slate-200 hover:bg-slate-200' }}"
@@ -107,7 +107,7 @@
                 </div>
             </div>
 
-            <!-- Product Cards Grid -->
+            <!-- Product Cards Grid (Clean Flat Border Highlight) -->
             <div class="flex-1 overflow-y-auto pr-1 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                 @forelse($products as $product)
                     @php
@@ -119,7 +119,7 @@
 
                     <div
                         wire:click="addToCart({{ $product->id }})"
-                        class="bg-white border border-[#E3EEE8] rounded-3xl p-4 flex flex-col justify-between cursor-pointer shadow-emco hover:shadow-emco-hover transition-all duration-200 relative group {{ $isIncomplete ? 'opacity-65 bg-rose-50/20' : '' }}"
+                        class="bg-white border border-[#E3EEE8] hover:border-[#3F7A5D]/60 hover:bg-[#F3F6F4]/50 rounded-3xl p-4 flex flex-col justify-between cursor-pointer transition-all duration-200 relative group {{ $isIncomplete ? 'opacity-65 bg-rose-50/20' : '' }}"
                     >
                         <div>
                             <!-- Top Metadata Row -->
@@ -171,13 +171,13 @@
             </div>
 
             <!-- Pagination -->
-            <div class="p-4 border-t border-[#E3EEE8] bg-white rounded-3xl shadow-emco mt-3">
+            <div class="p-4 border-t border-[#E3EEE8] bg-white rounded-3xl mt-3">
                 {{ $products->links() }}
             </div>
         </div>
 
         <!-- RIGHT COLUMN: Cart & Multi-Payment Checkout (35%) -->
-        <div class="w-full lg:w-[35%] bg-white rounded-3xl border border-[#E3EEE8] flex flex-col flex-shrink-0 shadow-emco">
+        <div class="w-full lg:w-[35%] bg-white rounded-3xl border border-[#E3EEE8] flex flex-col flex-shrink-0">
 
             <!-- Cart Header -->
             <div class="p-5 bg-[#F3F6F4] rounded-t-3xl border-b border-[#E3EEE8] flex items-center justify-between">
@@ -209,12 +209,12 @@
                         <div class="flex items-center gap-2 bg-[#F3F6F4] p-1.5 rounded-2xl border border-slate-200">
                             <button
                                 wire:click="updateQuantity({{ $id }}, {{ $item['quantity'] - 1 }})"
-                                class="w-7 h-7 bg-white hover:bg-slate-200 font-bold text-base rounded-xl flex items-center justify-center text-slate-700 transition shadow-sm active:scale-95"
+                                class="w-7 h-7 bg-white hover:bg-slate-200 font-bold text-base rounded-xl flex items-center justify-center text-slate-700 transition active:scale-95"
                             >-</button>
                             <span class="w-7 text-center font-bold text-base font-mono text-[#232E28]">{{ $item['quantity'] }}</span>
                             <button
                                 wire:click="updateQuantity({{ $id }}, {{ $item['quantity'] + 1 }})"
-                                class="w-7 h-7 bg-white hover:bg-slate-200 font-bold text-base rounded-xl flex items-center justify-center text-slate-700 transition shadow-sm active:scale-95"
+                                class="w-7 h-7 bg-white hover:bg-slate-200 font-bold text-base rounded-xl flex items-center justify-center text-slate-700 transition active:scale-95"
                             >+</button>
                         </div>
 
@@ -239,7 +239,7 @@
             <!-- Cart Summary & Multi-Payment Panel -->
             <div class="p-5 border-t border-[#E3EEE8] bg-[#F3F6F4] rounded-b-3xl space-y-4">
                 <!-- Summary Card -->
-                <div class="bg-white p-5 rounded-2xl border border-[#E3EEE8] space-y-2.5 text-xs shadow-emco">
+                <div class="bg-white p-5 rounded-2xl border border-[#E3EEE8] space-y-2.5 text-xs">
                     <div class="flex justify-between text-[#52645B] text-xs">
                         <span class="font-medium">Subtotal</span>
                         <span class="font-semibold font-mono text-[#232E28] text-sm">Rp {{ number_format($this->subtotal, 0, ',', '.') }}</span>
@@ -254,11 +254,11 @@
                 @if(count($cart) > 0)
                     <div class="flex items-center gap-2 overflow-x-auto text-xs font-bold">
                         <span class="text-[#718379] shrink-0 font-medium text-xs">Bayar:</span>
-                        <button wire:click="setExactPayment" class="px-4 py-2 bg-[#E3EEE8] text-[#3F7A5D] border border-[#3F7A5D]/30 rounded-2xl shrink-0 hover:bg-[#3F7A5D]/10 font-bold shadow-sm">Uang Pas</button>
-                        <button wire:click="setPaymentAmount(10000)" class="px-3.5 py-2 bg-white border border-slate-200 rounded-2xl shrink-0 hover:bg-slate-100 shadow-sm text-[#232E28]">10rb</button>
-                        <button wire:click="setPaymentAmount(20000)" class="px-3.5 py-2 bg-white border border-slate-200 rounded-2xl shrink-0 hover:bg-slate-100 shadow-sm text-[#232E28]">20rb</button>
-                        <button wire:click="setPaymentAmount(50000)" class="px-3.5 py-2 bg-white border border-slate-200 rounded-2xl shrink-0 hover:bg-slate-100 shadow-sm text-[#232E28]">50rb</button>
-                        <button wire:click="setPaymentAmount(100000)" class="px-3.5 py-2 bg-white border border-slate-200 rounded-2xl shrink-0 hover:bg-slate-100 shadow-sm text-[#232E28]">100rb</button>
+                        <button wire:click="setExactPayment" class="px-4 py-2 bg-[#E3EEE8] text-[#3F7A5D] border border-[#3F7A5D]/30 rounded-2xl shrink-0 hover:bg-[#3F7A5D]/10 font-bold">Uang Pas</button>
+                        <button wire:click="setPaymentAmount(10000)" class="px-3.5 py-2 bg-white border border-slate-200 rounded-2xl shrink-0 hover:bg-slate-100 text-[#232E28]">10rb</button>
+                        <button wire:click="setPaymentAmount(20000)" class="px-3.5 py-2 bg-white border border-slate-200 rounded-2xl shrink-0 hover:bg-slate-100 text-[#232E28]">20rb</button>
+                        <button wire:click="setPaymentAmount(50000)" class="px-3.5 py-2 bg-white border border-slate-200 rounded-2xl shrink-0 hover:bg-slate-100 text-[#232E28]">50rb</button>
+                        <button wire:click="setPaymentAmount(100000)" class="px-3.5 py-2 bg-white border border-slate-200 rounded-2xl shrink-0 hover:bg-slate-100 text-[#232E28]">100rb</button>
                     </div>
                 @endif
 
@@ -275,7 +275,7 @@
                         @php
                             $selectedPm = $paymentMethods->firstWhere('id', $pay['payment_method_id']);
                         @endphp
-                        <div class="bg-white p-3.5 rounded-2xl border border-[#E3EEE8] space-y-2 text-xs shadow-emco">
+                        <div class="bg-white p-3.5 rounded-2xl border border-[#E3EEE8] space-y-2 text-xs">
                             <div class="flex items-center gap-2.5">
                                 <select wire:model.live="payments.{{ $index }}.payment_method_id" class="w-1/2 p-2.5 border border-slate-300 rounded-xl bg-white text-xs font-semibold focus:outline-none focus:border-[#3F7A5D]">
                                     @foreach($paymentMethods as $pm)
@@ -312,7 +312,7 @@
                 </div>
 
                 <!-- Total Paid & Calculated Change Box -->
-                <div class="bg-white p-4 rounded-2xl border border-[#E3EEE8] space-y-2 text-xs shadow-emco">
+                <div class="bg-white p-4 rounded-2xl border border-[#E3EEE8] space-y-2 text-xs">
                     <div class="flex justify-between text-[#52645B] text-xs">
                         <span class="font-medium">Jumlah Bayar</span>
                         <span class="font-bold font-mono text-[#232E28] text-base">Rp {{ number_format($this->total_paid, 0, ',', '.') }}</span>
@@ -335,7 +335,7 @@
                 <button
                     wire:click="processCheckout"
                     @if(count($cart) === 0 || $this->total_paid < $this->grand_total) disabled @endif
-                    class="w-full py-4.5 rounded-2xl font-extrabold text-base text-white uppercase tracking-wider transition-all shadow-emco-primary {{ count($cart) > 0 && $this->total_paid >= $this->grand_total ? 'bg-[#3F7A5D] hover:bg-[#32634B] cursor-pointer' : 'bg-slate-300 text-slate-500 cursor-not-allowed shadow-none' }}"
+                    class="w-full py-4.5 rounded-2xl font-extrabold text-base text-white uppercase tracking-wider transition-all {{ count($cart) > 0 && $this->total_paid >= $this->grand_total ? 'bg-[#3F7A5D] hover:bg-[#32634B] cursor-pointer' : 'bg-slate-300 text-slate-500 cursor-not-allowed' }}"
                 >
                     SELESAIKAN TRANSAKSI & CETAK STRUK
                 </button>
@@ -368,7 +368,7 @@
                     <a
                         href="/receipt/thermal/{{ $completedSaleId }}"
                         target="_blank"
-                        class="w-full py-3.5 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-bold rounded-2xl text-xs transition shadow-emco-primary uppercase tracking-wider text-center"
+                        class="w-full py-3.5 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-bold rounded-2xl text-xs transition uppercase tracking-wider text-center"
                     >
                         CETAK STRUK THERMAL
                     </a>

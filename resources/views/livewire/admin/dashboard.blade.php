@@ -1,6 +1,6 @@
 <div class="space-y-7">
-    <!-- EMCO Welcome Banner Card with Clean POS Terminal Vector Element -->
-    <div class="bg-gradient-to-r from-[#3F7A5D]/15 via-[#3F7A5D]/5 to-white border border-[#3F7A5D]/20 rounded-3xl p-7 shadow-emco relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-5">
+    <!-- EMCO Welcome Banner Card (Flat Crisp Border) -->
+    <div class="bg-gradient-to-r from-[#3F7A5D]/15 via-[#3F7A5D]/5 to-white border border-[#3F7A5D]/20 rounded-3xl p-7 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-5">
         <div class="space-y-2.5">
             <h1 class="text-2xl font-extrabold text-[#232E28] tracking-tight">
                 Selamat Datang, {{ auth()->user()->name }}!
@@ -9,15 +9,15 @@
                 <span class="font-bold text-[#232E28]">Dashboard Overview:</span> Anda memiliki akses penuh sebagai <span class="font-bold text-[#3F7A5D] text-base">{{ auth()->user()->role?->name ?? 'Kasir' }}</span> pada sistem kasir & manajemen ritel Raja Aksesoris POS.
             </p>
             <div class="pt-2">
-                <a href="/pos" class="px-5 py-3 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-bold rounded-2xl text-sm shadow-emco-primary inline-flex items-center gap-2 transition active:scale-95">
+                <a href="/pos" class="px-5 py-3 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-bold rounded-2xl text-sm inline-flex items-center gap-2 transition active:scale-95">
                     <span>Buka Layar Kasir POS</span> &rarr;
                 </a>
             </div>
         </div>
 
-        <!-- Clean Vector SVG POS Terminal & Cash Register Element -->
+        <!-- Clean Vector SVG POS Terminal Element -->
         <div class="hidden md:block shrink-0 pr-4">
-            <div class="w-28 h-28 rounded-3xl bg-[#3F7A5D]/10 border border-[#3F7A5D]/25 flex items-center justify-center p-4 shadow-emco">
+            <div class="w-28 h-28 rounded-3xl bg-[#3F7A5D]/10 border border-[#3F7A5D]/25 flex items-center justify-center p-4">
                 <svg class="w-16 h-16 text-[#3F7A5D]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8">
                     <!-- Monitor Screen -->
                     <rect x="3" y="3" width="14" height="10" rx="2" stroke-linecap="round" stroke-linejoin="round" class="fill-[#E3EEE8]"></rect>
@@ -34,10 +34,10 @@
         </div>
     </div>
 
-    <!-- EMCO Executive Stat Cards Grid -->
+    <!-- EMCO Executive Stat Cards Grid (Flat Crisp Borders) -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <!-- 1. Total Omset -->
-        <div class="bg-white rounded-3xl p-6 shadow-emco border border-[#E3EEE8] hover:shadow-emco-hover transition-all duration-200">
+        <div class="bg-white rounded-3xl p-6 border border-[#E3EEE8] hover:border-[#3F7A5D]/50 transition-all duration-200">
             <div class="flex items-center justify-between mb-4">
                 <span class="text-xs text-[#718379] font-extrabold uppercase tracking-wider">Total Omset</span>
                 <span class="px-3 py-1 rounded-full text-xs font-bold text-[#3F7A5D] bg-[#E3EEE8] border border-[#3F7A5D]/20">
@@ -51,7 +51,7 @@
         </div>
 
         <!-- 2. Gross Profit -->
-        <div class="bg-white rounded-3xl p-6 shadow-emco border border-[#E3EEE8] hover:shadow-emco-hover transition-all duration-200">
+        <div class="bg-white rounded-3xl p-6 border border-[#E3EEE8] hover:border-[#C2AC7C]/50 transition-all duration-200">
             <div class="flex items-center justify-between mb-4">
                 <span class="text-xs text-[#718379] font-extrabold uppercase tracking-wider">Laba Kotor</span>
                 <span class="px-3 py-1 rounded-full text-xs font-bold text-[#8F794B] bg-[#C2AC7C]/20 border border-[#C2AC7C]/40">
@@ -71,7 +71,7 @@
         </div>
 
         <!-- 3. Total Kas & Bank -->
-        <div class="bg-white rounded-3xl p-6 shadow-emco border border-[#E3EEE8] hover:shadow-emco-hover transition-all duration-200">
+        <div class="bg-white rounded-3xl p-6 border border-[#E3EEE8] hover:border-[#3F7A5D]/50 transition-all duration-200">
             <div class="flex items-center justify-between mb-4">
                 <span class="text-xs text-[#718379] font-extrabold uppercase tracking-wider">Total Kas & Bank</span>
                 <span class="px-3 py-1 rounded-full text-xs font-bold text-[#3F7A5D] bg-[#E3EEE8]">
@@ -85,7 +85,7 @@
         </div>
 
         <!-- 4. Jumlah Transaksi -->
-        <div class="bg-white rounded-3xl p-6 shadow-emco border border-[#E3EEE8] hover:shadow-emco-hover transition-all duration-200">
+        <div class="bg-white rounded-3xl p-6 border border-[#E3EEE8] hover:border-[#3F7A5D]/50 transition-all duration-200">
             <div class="flex items-center justify-between mb-4">
                 <span class="text-xs text-[#718379] font-extrabold uppercase tracking-wider">Jumlah Transaksi</span>
                 <span class="px-3 py-1 rounded-full text-xs font-bold text-[#3F7A5D] bg-[#E3EEE8]">
@@ -102,7 +102,7 @@
     <!-- EMCO Data Visualization Chart & Table Grid -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-7">
         <!-- 1. ApexCharts Bar Chart -->
-        <div class="lg:col-span-2 bg-white rounded-3xl p-7 shadow-emco border border-[#E3EEE8] space-y-5">
+        <div class="lg:col-span-2 bg-white rounded-3xl p-7 border border-[#E3EEE8] space-y-5">
             <div class="flex items-center justify-between">
                 <div>
                     <h2 class="text-lg font-extrabold text-[#232E28] tracking-tight">Grafik Omset Penjualan Harian</h2>
@@ -118,7 +118,7 @@
         </div>
 
         <!-- 2. Breakdown Tabel Harian -->
-        <div class="bg-white rounded-3xl p-7 shadow-emco border border-[#E3EEE8] space-y-5 flex flex-col justify-between">
+        <div class="bg-white rounded-3xl p-7 border border-[#E3EEE8] space-y-5 flex flex-col justify-between">
             <div>
                 <div class="flex items-center justify-between mb-4">
                     <h2 class="text-lg font-extrabold text-[#232E28] tracking-tight">Rincian Omset</h2>
