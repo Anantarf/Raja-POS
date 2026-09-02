@@ -317,8 +317,14 @@
                                 <div class="relative flex-1">
                                     <span class="absolute left-3 top-2.5 text-xs font-bold text-[#718379]">Rp</span>
                                     <input
-                                        type="number"
-                                        wire:model.live="payments.{{ $index }}.amount"
+                                        type="text"
+                                        x-data
+                                        x-on:input="
+                                            let val = $el.value.replace(/\D/g, '');
+                                            $el.value = val ? parseInt(val).toLocaleString('id-ID') : '';
+                                            $wire.set('payments.{{ $index }}.amount', val ? parseInt(val) : 0);
+                                        "
+                                        value="{{ $pay['amount'] ? number_format($pay['amount'], 0, ',', '.') : '' }}"
                                         placeholder="0"
                                         class="w-full pl-8 pr-3 py-2.5 border border-slate-200 rounded-xl font-mono font-extrabold text-right text-xs text-[#3F7A5D] focus:outline-none focus:border-[#3F7A5D]"
                                     />
