@@ -179,13 +179,13 @@
         <!-- RIGHT COLUMN: STREAMLINED CART SIDEBAR (Identical Card Scale with Admin) -->
         <div class="w-full lg:w-[35%] bg-white rounded-3xl border border-[#E3EEE8] flex flex-col flex-shrink-0 overflow-hidden h-full">
 
-            <!-- 1. Cart Header (Identical Header Scale with Admin) -->
+            <!-- 1. Cart Header -->
             <div class="px-6 py-4 bg-white border-b border-[#E3EEE8] flex items-center justify-between shrink-0">
                 <div class="font-extrabold text-sm text-[#232E28] uppercase tracking-wider flex items-center gap-2.5">
                     <svg class="w-5 h-5 text-[#3F7A5D]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 00-4z"></path>
                     </svg>
-                    <span>Keranjang Belanja</span>
+                    <span>Keranjang</span>
                     <span class="bg-[#E3EEE8] text-[#3F7A5D] px-2.5 py-0.5 rounded-full text-xs font-bold font-mono">
                         {{ count($cart) }}
                     </span>
@@ -236,7 +236,7 @@
                         <svg class="w-9 h-9 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
                         </svg>
-                        <div class="font-bold text-[#232E28] text-sm">Keranjang Belanja Kosong</div>
+                        <div class="font-bold text-[#232E28] text-sm">Keranjang Kosong</div>
                         <div class="text-xs text-[#718379]">Pilih barang di katalog untuk menambahkan.</div>
                     </div>
                 @endforelse
