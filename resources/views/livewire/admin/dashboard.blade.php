@@ -1,9 +1,9 @@
 <div class="space-y-7">
-    <!-- EMCO Welcome Banner Card (Enlarged Height & Font) -->
+    <!-- EMCO Welcome Banner Card -->
     <div class="bg-gradient-to-r from-[#3F7A5D]/15 via-[#3F7A5D]/5 to-white border border-[#3F7A5D]/20 rounded-3xl p-7 shadow-emco relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-5">
         <div class="space-y-2.5">
             <h1 class="text-2xl font-extrabold text-[#232E28] tracking-tight">
-                Selamat Datang, {{ auth()->user()->name }}! 🌿
+                Selamat Datang, {{ auth()->user()->name }}!
             </h1>
             <p class="text-sm text-[#52645B] max-w-2xl leading-relaxed">
                 <span class="font-bold text-[#232E28]">Dashboard Overview:</span> Anda memiliki akses penuh sebagai <span class="font-bold text-[#3F7A5D] text-base">{{ auth()->user()->role?->name ?? 'Kasir' }}</span> pada sistem kasir & manajemen ritel Raja Aksesoris POS.
@@ -16,42 +16,36 @@
         </div>
 
         <div class="hidden md:block shrink-0 pr-4">
-            <div class="w-28 h-28 rounded-full bg-[#3F7A5D]/10 border-2 border-[#3F7A5D]/30 flex items-center justify-center text-5xl shadow-inner">
-                🏬
+            <div class="w-24 h-24 rounded-2xl bg-[#3F7A5D]/10 border-2 border-[#3F7A5D]/30 flex items-center justify-center shadow-inner text-[#3F7A5D] font-extrabold text-xl">
+                POS
             </div>
         </div>
     </div>
 
-    <!-- EMCO Executive Stat Cards Grid (Scaled UP Figures text-3xl) -->
+    <!-- EMCO Executive Stat Cards Grid -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <!-- 1. Total Omset -->
         <div class="bg-white rounded-3xl p-6 shadow-emco border border-[#E3EEE8] hover:shadow-emco-hover transition-all duration-200">
             <div class="flex items-center justify-between mb-4">
-                <div class="w-12 h-12 rounded-2xl bg-[#E3EEE8] text-[#3F7A5D] flex items-center justify-center font-extrabold text-xl">
-                    📊
-                </div>
+                <span class="text-xs text-[#718379] font-extrabold uppercase tracking-wider">Total Omset</span>
                 <span class="px-3 py-1 rounded-full text-xs font-bold text-[#3F7A5D] bg-[#E3EEE8] border border-[#3F7A5D]/20">
                     ↑ +100%
                 </span>
             </div>
-            <div class="text-xs text-[#718379] font-extrabold uppercase tracking-wider">Total Omset Penjualan</div>
             <div class="text-3xl font-extrabold text-[#232E28] font-mono tracking-tight mt-1.5">
                 Rp {{ number_format($metrics['omset'], 0, ',', '.') }}
             </div>
             <div class="text-xs text-[#718379] mt-2 font-medium">Transaksi Completed</div>
         </div>
 
-        <!-- 2. Gross Profit (RBAC Protection) -->
+        <!-- 2. Gross Profit -->
         <div class="bg-white rounded-3xl p-6 shadow-emco border border-[#E3EEE8] hover:shadow-emco-hover transition-all duration-200">
             <div class="flex items-center justify-between mb-4">
-                <div class="w-12 h-12 rounded-2xl bg-[#C2AC7C]/20 text-[#8F794B] flex items-center justify-center font-extrabold text-xl">
-                    💰
-                </div>
+                <span class="text-xs text-[#718379] font-extrabold uppercase tracking-wider">Laba Kotor</span>
                 <span class="px-3 py-1 rounded-full text-xs font-bold text-[#8F794B] bg-[#C2AC7C]/20 border border-[#C2AC7C]/40">
-                    Laba Kotor
+                    Gross Profit
                 </span>
             </div>
-            <div class="text-xs text-[#718379] font-extrabold uppercase tracking-wider">Gross Profit (Profit)</div>
             @if(auth()->user()->can('report.profit.view'))
                 <div class="text-3xl font-extrabold text-[#8F794B] font-mono tracking-tight mt-1.5">
                     Rp {{ number_format($metrics['gross_profit'], 0, ',', '.') }}
@@ -67,14 +61,11 @@
         <!-- 3. Total Kas & Bank -->
         <div class="bg-white rounded-3xl p-6 shadow-emco border border-[#E3EEE8] hover:shadow-emco-hover transition-all duration-200">
             <div class="flex items-center justify-between mb-4">
-                <div class="w-12 h-12 rounded-2xl bg-[#E3EEE8] text-[#3F7A5D] flex items-center justify-center font-extrabold text-xl">
-                    🏦
-                </div>
+                <span class="text-xs text-[#718379] font-extrabold uppercase tracking-wider">Total Kas & Bank</span>
                 <span class="px-3 py-1 rounded-full text-xs font-bold text-[#3F7A5D] bg-[#E3EEE8]">
                     Aktif
                 </span>
             </div>
-            <div class="text-xs text-[#718379] font-extrabold uppercase tracking-wider">Total Kas & Bank</div>
             <div class="text-3xl font-extrabold text-[#232E28] font-mono tracking-tight mt-1.5">
                 Rp {{ number_format($metrics['total_balance'], 0, ',', '.') }}
             </div>
@@ -84,14 +75,11 @@
         <!-- 4. Jumlah Transaksi -->
         <div class="bg-white rounded-3xl p-6 shadow-emco border border-[#E3EEE8] hover:shadow-emco-hover transition-all duration-200">
             <div class="flex items-center justify-between mb-4">
-                <div class="w-12 h-12 rounded-2xl bg-[#E3EEE8] text-[#3F7A5D] flex items-center justify-center font-extrabold text-xl">
-                    🧾
-                </div>
+                <span class="text-xs text-[#718379] font-extrabold uppercase tracking-wider">Jumlah Transaksi</span>
                 <span class="px-3 py-1 rounded-full text-xs font-bold text-[#3F7A5D] bg-[#E3EEE8]">
                     Sukses
                 </span>
             </div>
-            <div class="text-xs text-[#718379] font-extrabold uppercase tracking-wider">Jumlah Transaksi</div>
             <div class="text-3xl font-extrabold text-[#232E28] font-mono tracking-tight mt-1.5">
                 {{ number_format($metrics['sales_count'], 0, ',', '.') }} <span class="text-sm text-[#718379] font-normal">Nota</span>
             </div>
@@ -99,9 +87,9 @@
         </div>
     </div>
 
-    <!-- EMCO Data Visualization Chart & Table Grid (Enlarged Chart Height 300px) -->
+    <!-- EMCO Data Visualization Chart & Table Grid -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-7">
-        <!-- 1. ApexCharts Bar Chart (2 Columns) -->
+        <!-- 1. ApexCharts Bar Chart -->
         <div class="lg:col-span-2 bg-white rounded-3xl p-7 shadow-emco border border-[#E3EEE8] space-y-5">
             <div class="flex items-center justify-between">
                 <div>
@@ -117,7 +105,7 @@
             <div id="emco-sales-chart" class="w-full h-72"></div>
         </div>
 
-        <!-- 2. Breakdown Tabel Harian (1 Column) -->
+        <!-- 2. Breakdown Tabel Harian -->
         <div class="bg-white rounded-3xl p-7 shadow-emco border border-[#E3EEE8] space-y-5 flex flex-col justify-between">
             <div>
                 <div class="flex items-center justify-between mb-4">
@@ -156,7 +144,7 @@
     </div>
 </div>
 
-<!-- Include ApexCharts for EMCO Sage Bar Chart -->
+<!-- Include ApexCharts -->
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {

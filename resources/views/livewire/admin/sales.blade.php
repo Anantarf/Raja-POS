@@ -70,11 +70,11 @@
                                         Detail Nota
                                     </button>
                                     <a href="/receipt/thermal/{{ $sale->id }}" target="_blank" class="px-3 py-1.5 bg-[#E3EEE8] hover:bg-emerald-100 text-[#3F7A5D] rounded-lg text-xs font-semibold transition">
-                                        Struk 🖨️
+                                        Struk
                                     </a>
                                     @if(auth()->user()->can('sales.trash'))
                                         <button wire:click="moveToTrash({{ $sale->id }})" wire:confirm="Pindahkan transaksi ini ke Sampah Transaksi? Stok dan saldo akan dikembalikan." class="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-lg text-xs font-semibold transition">
-                                            Ke Sampah 🗑️
+                                            Ke Sampah
                                         </button>
                                     @endif
                                 </div>

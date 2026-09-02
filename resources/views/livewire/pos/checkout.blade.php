@@ -1,5 +1,5 @@
 <div class="h-screen flex flex-col overflow-hidden bg-[#F3F6F4] font-sans text-[#232E28]">
-    <!-- Topbar Navigation Header (Scaled Height & Font) -->
+    <!-- Topbar Navigation Header -->
     <header class="px-6 pt-4 pb-3 flex-shrink-0">
         <div class="bg-white rounded-2xl shadow-emco px-6 py-4 flex items-center justify-between border border-[#E3EEE8]">
             <div class="flex items-center gap-4">
@@ -36,7 +36,7 @@
         <!-- LEFT COLUMN: Product Catalog (65%) -->
         <div class="w-full lg:w-[65%] flex flex-col flex-shrink-0">
 
-            <!-- Search Bar & Filters Header (Enlarged Search & Pills) -->
+            <!-- Search Bar & Filters Header -->
             <div class="p-5 bg-white rounded-3xl border border-[#E3EEE8] shadow-emco space-y-4 mb-4">
                 <!-- Search Input -->
                 <div class="relative">
@@ -57,7 +57,7 @@
                     @endif
                 </div>
 
-                <!-- Category Tabs & Product Type Pills -->
+                <!-- Category Tabs & Product Type Pills (No Emojis) -->
                 <div class="flex items-center justify-between gap-3 overflow-x-auto text-sm pt-0.5">
                     <!-- Category Tabs -->
                     <div class="flex items-center gap-2 overflow-x-auto pb-0.5">
@@ -107,7 +107,7 @@
                 </div>
             </div>
 
-            <!-- Product Cards Grid (Enlarged Cards & Text) -->
+            <!-- Product Cards Grid -->
             <div class="flex-1 overflow-y-auto pr-1 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                 @forelse($products as $product)
                     @php
@@ -128,7 +128,7 @@
                                     SKU: {{ $product->code }}
                                 </span>
                                 <span class="text-[10px] uppercase font-extrabold px-2.5 py-0.5 rounded-full {{ $product->product_type === 'PHYSICAL' ? 'bg-[#E3EEE8] text-[#3F7A5D]' : ($product->product_type === 'DIGITAL' ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-[#C2AC7C]/20 text-[#8F794B] border border-[#C2AC7C]/40') }}">
-                                    {{ $product->product_type === 'PHYSICAL' ? '📦 FISIK' : ($product->product_type === 'DIGITAL' ? '⚡ DIGITAL/PULSA' : '🛠️ SERVICE') }}
+                                    {{ $product->product_type }}
                                 </span>
                             </div>
 
@@ -141,7 +141,7 @@
                             </div>
                         </div>
 
-                        <!-- Price & Stock Indicator (Enlarged Price text-base) -->
+                        <!-- Price & Stock Indicator -->
                         <div class="mt-3 pt-3 border-t border-slate-100">
                             @if($isIncomplete)
                                 <div class="text-xs font-bold text-rose-600 bg-rose-50 border border-rose-200 px-2 py-1 rounded-md text-center">
@@ -176,13 +176,15 @@
             </div>
         </div>
 
-        <!-- RIGHT COLUMN: Cart & Multi-Payment Checkout (35%) (Enlarged Summary Box & CTA) -->
+        <!-- RIGHT COLUMN: Cart & Multi-Payment Checkout (35%) -->
         <div class="w-full lg:w-[35%] bg-white rounded-3xl border border-[#E3EEE8] flex flex-col flex-shrink-0 shadow-emco">
 
             <!-- Cart Header -->
             <div class="p-5 bg-[#F3F6F4] rounded-t-3xl border-b border-[#E3EEE8] flex items-center justify-between">
                 <div class="font-extrabold text-sm text-[#232E28] uppercase tracking-wider flex items-center gap-2.5">
-                    <span class="p-2 bg-[#E3EEE8] text-[#3F7A5D] rounded-xl text-base font-bold">🛒</span>
+                    <svg class="w-5 h-5 text-[#3F7A5D]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"></path>
+                    </svg>
                     KERANJANG BELANJA ({{ count($cart) }})
                 </div>
                 @if(count($cart) > 0)
@@ -192,7 +194,7 @@
                 @endif
             </div>
 
-            <!-- Cart Items List (Enlarged Row & Quantity Controls) -->
+            <!-- Cart Items List -->
             <div class="flex-1 overflow-y-auto p-5 divide-y divide-slate-100">
                 @forelse($cart as $id => $item)
                     <div class="py-3.5 flex items-center justify-between gap-3">
@@ -234,7 +236,7 @@
                 @endforelse
             </div>
 
-            <!-- Cart Summary & Multi-Payment Panel (Large Grand Total text-3xl) -->
+            <!-- Cart Summary & Multi-Payment Panel -->
             <div class="p-5 border-t border-[#E3EEE8] bg-[#F3F6F4] rounded-b-3xl space-y-4">
                 <!-- Summary Card -->
                 <div class="bg-white p-5 rounded-2xl border border-[#E3EEE8] space-y-2.5 text-xs shadow-emco">
@@ -309,7 +311,7 @@
                     @endforeach
                 </div>
 
-                <!-- Total Paid & Calculated Change Box (Enlarged Change text-2xl) -->
+                <!-- Total Paid & Calculated Change Box -->
                 <div class="bg-white p-4 rounded-2xl border border-[#E3EEE8] space-y-2 text-xs shadow-emco">
                     <div class="flex justify-between text-[#52645B] text-xs">
                         <span class="font-medium">Jumlah Bayar</span>
@@ -324,12 +326,12 @@
 
                     @if($cashBalance < 0)
                         <div class="text-xs bg-amber-50 text-amber-800 p-2.5 rounded-xl border border-amber-200 mt-2 font-medium">
-                            ⚠️ Warning: Saldo Uang Fisik Kasir Minus. Operasional dapat diganti dari rekening.
+                            Warning: Saldo Uang Fisik Kasir Minus. Operasional dapat diganti dari rekening.
                         </div>
                     @endif
                 </div>
 
-                <!-- Primary Action Checkout Button (Enlarged Height py-4.5 & text-base font-extrabold) -->
+                <!-- Primary Action Checkout Button -->
                 <button
                     wire:click="processCheckout"
                     @if(count($cart) === 0 || $this->total_paid < $this->grand_total) disabled @endif
@@ -366,9 +368,9 @@
                     <a
                         href="/receipt/thermal/{{ $completedSaleId }}"
                         target="_blank"
-                        class="w-full py-3.5 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-bold rounded-2xl text-xs transition shadow-emco-primary uppercase tracking-wider"
+                        class="w-full py-3.5 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-bold rounded-2xl text-xs transition shadow-emco-primary uppercase tracking-wider text-center"
                     >
-                        🖨️ CETAK STRUK THERMAL
+                        CETAK STRUK THERMAL
                     </a>
                     <button
                         wire:click="closeSuccessModal"

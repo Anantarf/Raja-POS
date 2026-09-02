@@ -1,5 +1,5 @@
 <div class="space-y-6">
-    <!-- Header Controls (Enlarged Title text-2xl & Buttons) -->
+    <!-- Header Controls -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
             <h1 class="text-2xl font-extrabold text-[#232E28] tracking-tight">Master Katalog Produk</h1>
@@ -7,10 +7,10 @@
         </div>
         <div class="flex items-center gap-3">
             <a href="/admin/products/template-csv" class="px-5 py-3 bg-white hover:bg-slate-50 text-[#232E28] font-bold border border-[#E3EEE8] rounded-2xl text-xs shadow-emco transition flex items-center gap-2 active:scale-95">
-                <span>📄 Unduh Template CSV</span>
+                <span>Unduh Template CSV</span>
             </a>
             <button wire:click="$set('showImportModal', true)" class="px-5 py-3 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-2xl text-xs shadow-sm transition flex items-center gap-2 active:scale-95">
-                <span>📥 Import CSV</span>
+                <span>Import CSV</span>
             </button>
             <button wire:click="openCreateModal" class="px-5 py-3 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-bold rounded-2xl text-xs shadow-emco-primary transition flex items-center gap-2 active:scale-95">
                 <span>+ Tambah Produk Baru</span>
@@ -18,7 +18,7 @@
         </div>
     </div>
 
-    <!-- Filter & Search Toolbar (Scaled UP) -->
+    <!-- Filter & Search Toolbar -->
     <div class="bg-white p-5 rounded-3xl border border-[#E3EEE8] shadow-emco flex flex-col md:flex-row items-center justify-between gap-4 text-xs">
         <div class="w-full md:w-1/3 relative">
             <input
@@ -49,7 +49,7 @@
         </div>
     </div>
 
-    <!-- Products Table (Scaled UP Rows & Headers) -->
+    <!-- Products Table -->
     <div class="bg-white border border-[#E3EEE8] rounded-3xl shadow-emco overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-sm text-left">
@@ -83,7 +83,7 @@
                             </td>
                             <td class="py-4 px-5">
                                 <span class="px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider {{ $product->product_type === 'PHYSICAL' ? 'bg-[#E3EEE8] text-[#3F7A5D]' : ($product->product_type === 'DIGITAL' ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-[#C2AC7C]/20 text-[#8F794B] border border-[#C2AC7C]/40') }}">
-                                    {{ $product->product_type === 'PHYSICAL' ? '📦 FISIK' : ($product->product_type === 'DIGITAL' ? '⚡ DIGITAL/PULSA' : '🛠️ SERVICE') }}
+                                    {{ $product->product_type }}
                                 </span>
                             </td>
                             <td class="py-4 px-5 text-[#232E28] font-semibold text-sm">
@@ -159,9 +159,9 @@
                         <div>
                             <label class="block text-[#232E28] font-bold mb-1">Tipe Produk</label>
                             <select wire:model="product_type" class="w-full p-3 border border-slate-300 rounded-2xl bg-white font-bold">
-                                <option value="PHYSICAL">📦 Fisik</option>
-                                <option value="DIGITAL">⚡ Digital</option>
-                                <option value="SERVICE">🛠️ Service</option>
+                                <option value="PHYSICAL">Fisik</option>
+                                <option value="DIGITAL">Digital</option>
+                                <option value="SERVICE">Service</option>
                             </select>
                         </div>
                         <div>
@@ -231,7 +231,7 @@
                     </div>
 
                     <div class="bg-[#E3EEE8] text-[#3F7A5D] p-4 rounded-2xl text-xs leading-relaxed font-medium">
-                        💡 Auto-create Kategori & Brand jika belum ada di database. HPP & Harga Jual 0 otomatis ditandai `INCOMPLETE`.
+                        Auto-create Kategori & Brand jika belum ada di database. HPP & Harga Jual 0 otomatis ditandai INCOMPLETE.
                     </div>
 
                     <div class="flex gap-3">
