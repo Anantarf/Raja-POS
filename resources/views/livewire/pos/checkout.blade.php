@@ -125,7 +125,7 @@
                                 <span class="text-[11px] font-mono text-[#3F7A5D] bg-[#E3EEE8] px-2 py-0.5 rounded font-bold">
                                     SKU: {{ $product->code }}
                                 </span>
-                                <span class="text-[9px] uppercase font-extrabold px-2 py-0.5 rounded-full {{ $product->product_type === 'PHYSICAL' ? 'bg-[#E3EEE8] text-[#3F7A5D]' : ($product->product_type === 'DIGITAL' ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-[#C2AC7C]/20 text-[#8F794B] border border-[#C2AC7C]/40') }}">
+                                <span class="text-[10px] uppercase font-extrabold px-2 py-0.5 rounded-full {{ $product->product_type === 'PHYSICAL' ? 'bg-[#E3EEE8] text-[#3F7A5D]' : ($product->product_type === 'DIGITAL' ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-[#C2AC7C]/20 text-[#8F794B] border border-[#C2AC7C]/40') }}">
                                     {{ $product->product_type }}
                                 </span>
                             </div>
