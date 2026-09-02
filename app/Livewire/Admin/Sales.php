@@ -46,20 +46,20 @@ class Sales extends Component
 
     public function render()
     {
-        $query = Sale::with(['user', 'location', 'payments.paymentMethod'])
+        $query = Sale::with(['cashier', 'user', 'payments.paymentMethod'])
             ->where('status', 'COMPLETED');
 
         if ($this->search) {
             $query->where(function ($q) {
                 $q->where('invoice_number', 'like', '%' . $this->search . '%')
-                  ->orWhereHas('user', function ($uq) {
+                  ->orWhereHas('cashier', function ($uq) {
                       $uq->where('name', 'like', '%' . $this->search . '%');
                   });
             });
         }
 
         $sales = $query->orderBy('created_at', 'desc')->paginate(12);
-        $selectedSale = $this->selectedSaleId ? Sale::with(['items', 'payments.paymentMethod', 'user', 'location'])->find($this->selectedSaleId) : null;
+        $selectedSale = $this->selectedSaleId ? Sale::with(['items', 'payments.paymentMethod', 'cashier', 'user'])->find($this->selectedSaleId) : null;
 
         return view('livewire.admin.sales', [
             'sales' => $sales,
