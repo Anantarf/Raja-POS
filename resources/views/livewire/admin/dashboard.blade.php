@@ -15,21 +15,10 @@
             </div>
         </div>
 
-        <!-- Clean Vector SVG POS Terminal Element -->
-        <div class="hidden md:block shrink-0 pr-4">
-            <div class="w-28 h-28 rounded-3xl bg-[#3F7A5D]/10 border border-[#3F7A5D]/25 flex items-center justify-center p-4">
-                <svg class="w-16 h-16 text-[#3F7A5D]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8">
-                    <!-- Monitor Screen -->
-                    <rect x="3" y="3" width="14" height="10" rx="2" stroke-linecap="round" stroke-linejoin="round" class="fill-[#E3EEE8]"></rect>
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M7 6h6M7 9h4"></path>
-                    <!-- Receipt Printer Roll -->
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 5h4v4h-4zM19 9v3"></path>
-                    <!-- Stand & Base -->
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 13v3"></path>
-                    <!-- Cash Drawer -->
-                    <rect x="2" y="16" width="20" height="5" rx="1.5" class="fill-[#3F7A5D]/10"></rect>
-                    <circle cx="12" cy="18.5" r="0.75" fill="currentColor"></circle>
-                </svg>
+        <!-- Stunning 3D Claymation Cash Register POS Terminal Element -->
+        <div class="hidden md:block shrink-0 pr-2">
+            <div class="w-32 h-32 rounded-3xl bg-white border border-[#E3EEE8] p-2 flex items-center justify-center shadow-md hover:scale-105 transition-transform duration-300">
+                <img src="/images/pos_cash_register_3d.jpg" alt="3D Cash Register POS" class="w-full h-full object-contain rounded-2xl">
             </div>
         </div>
     </div>
