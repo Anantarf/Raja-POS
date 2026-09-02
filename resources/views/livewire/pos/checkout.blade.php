@@ -107,7 +107,7 @@
                 </div>
             </div>
 
-            <!-- Product Cards Grid (Polished Image Banner & Crisp Tailored Vector Icons) -->
+            <!-- Product Cards Grid (Clean Non-AI Minimalist Human POS Cards) -->
             <div class="flex-1 overflow-y-auto pr-1 grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3.5">
                 @forelse($products as $product)
                     @php
@@ -115,83 +115,52 @@
                         $inv = $product->product_type === 'PHYSICAL' ? \App\Models\Inventory::where('product_id', $product->id)->where('location_id', $location?->id)->first() : null;
                         $stockQty = $inv?->quantity ?? 0;
                         $stockStatus = $inv?->stock_status ?? 'AVAILABLE';
+                        $typeBorderClass = $product->product_type === 'PHYSICAL' ? 'border-l-4 border-l-[#3F7A5D]' : ($product->product_type === 'DIGITAL' ? 'border-l-4 border-l-emerald-600' : 'border-l-4 border-l-[#C2AC7C]');
                     @endphp
 
                     <div
                         wire:click="addToCart({{ $product->id }})"
-                        class="bg-white border border-[#E3EEE8] hover:border-[#3F7A5D]/60 hover:bg-[#F3F6F4]/50 rounded-3xl p-3 flex flex-col justify-between cursor-pointer transition-all duration-200 relative group {{ $isIncomplete ? 'opacity-65 bg-rose-50/20' : '' }}"
+                        class="bg-white border border-[#E3EEE8] {{ $typeBorderClass }} hover:border-[#3F7A5D] rounded-2xl p-4 flex flex-col justify-between cursor-pointer transition-all duration-150 relative group hover:bg-[#F3F6F4]/50 {{ $isIncomplete ? 'opacity-60 bg-rose-50/20' : '' }}"
                     >
                         <div>
-                            <!-- Top Metadata Badges -->
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="text-[11px] font-mono text-[#3F7A5D] bg-[#E3EEE8] px-2 py-0.5 rounded-md font-bold">
-                                    SKU: {{ $product->code }}
-                                </span>
-                                <span class="text-[10px] uppercase font-extrabold px-2 py-0.5 rounded-full {{ $product->product_type === 'PHYSICAL' ? 'bg-[#E3EEE8] text-[#3F7A5D]' : ($product->product_type === 'DIGITAL' ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-[#C2AC7C]/20 text-[#8F794B] border border-[#C2AC7C]/40') }}">
-                                    {{ $product->product_type }}
-                                </span>
-                            </div>
-
-                            <!-- Large Product Image Banner / Clean Vector Icon Container -->
-                            <div class="w-full h-28 rounded-2xl bg-[#E3EEE8]/50 border border-[#E3EEE8] overflow-hidden mb-2.5 relative flex flex-col items-center justify-center group-hover:border-[#3F7A5D]/40 transition-colors">
+                            <!-- Top Title Row with Optional Compact Image Thumbnail -->
+                            <div class="flex items-start justify-between gap-2.5 mb-2">
+                                <div class="flex-1 min-w-0">
+                                    <div class="text-xs font-mono text-[#718379] font-bold uppercase tracking-wider mb-1">
+                                        {{ $product->code }}
+                                    </div>
+                                    <h4 class="text-xs font-bold text-[#232E28] leading-snug group-hover:text-[#3F7A5D] transition-colors line-clamp-2">
+                                        {{ $product->name }}
+                                    </h4>
+                                </div>
                                 @if($product->image_url && !str_contains($product->image_url, 'via.placeholder.com'))
-                                    <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                    <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="w-11 h-11 object-cover rounded-xl border border-slate-200 shrink-0 bg-slate-100">
+                                @endif
+                            </div>
+                        </div>
+
+                        <!-- Bottom Price & Stock Info -->
+                        <div class="mt-3 pt-2.5 border-t border-slate-100 flex items-end justify-between gap-2">
+                            <div>
+                                @if($isIncomplete)
+                                    <span class="text-[10px] font-bold text-rose-600 bg-rose-50 border border-rose-200 px-2 py-0.5 rounded">
+                                        HARGA INCOMPLETE
+                                    </span>
                                 @else
-                                    <div class="flex flex-col items-center justify-center space-y-1.5 p-2 text-center">
-                                        @if($product->product_type === 'PHYSICAL')
-                                            <!-- Physical Aksesoris Icon -->
-                                            <div class="w-10 h-10 rounded-xl bg-white text-[#3F7A5D] border border-[#E3EEE8] flex items-center justify-center shadow-sm">
-                                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
-                                                </svg>
-                                            </div>
-                                        @elseif($product->product_type === 'DIGITAL')
-                                            <!-- Digital / Pulsa Icon -->
-                                            <div class="w-10 h-10 rounded-xl bg-emerald-700 text-white flex items-center justify-center shadow-sm">
-                                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                                                </svg>
-                                            </div>
-                                        @else
-                                            <!-- Service / Transfer Icon -->
-                                            <div class="w-10 h-10 rounded-xl bg-[#C2AC7C] text-white flex items-center justify-center shadow-sm">
-                                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
-                                                </svg>
-                                            </div>
-                                        @endif
-                                        <span class="text-[10px] font-bold text-[#718379] tracking-tight uppercase">
-                                            {{ $product->product_type === 'PHYSICAL' ? 'AKSESORIS' : ($product->product_type === 'DIGITAL' ? 'PULSA/E-MONEY' : 'JASA/TRANSFER') }}
-                                        </span>
+                                    <div class="text-base font-extrabold text-[#3F7A5D] font-mono tracking-tight">
+                                        Rp {{ number_format($product->selling_price, 0, ',', '.') }}
                                     </div>
                                 @endif
                             </div>
 
-                            <!-- Product Name -->
-                            <div class="text-xs font-bold text-[#232E28] line-clamp-2 leading-snug tracking-tight group-hover:text-[#3F7A5D] transition-colors mb-2">
-                                {{ $product->name }}
-                            </div>
-                        </div>
-
-                        <!-- Price & Stock Indicator Footer -->
-                        <div class="pt-2 border-t border-slate-100">
-                            @if($isIncomplete)
-                                <div class="text-[10px] font-bold text-rose-600 bg-rose-50 border border-rose-200 px-2 py-0.5 rounded text-center">
-                                    HARGA INCOMPLETE
-                                </div>
-                            @else
-                                <div class="text-base font-extrabold text-[#3F7A5D] font-mono tracking-tight">
-                                    Rp {{ number_format($product->selling_price, 0, ',', '.') }}
-                                </div>
-                            @endif
-
                             @if($product->product_type === 'PHYSICAL')
-                                <div class="flex items-center justify-between mt-1 text-xs">
-                                    <span class="text-[#718379] font-medium">Stok: {{ $stockQty }}</span>
-                                    <span class="px-2 py-0.5 rounded-full font-bold text-[10px] {{ $stockStatus === 'OUT_OF_STOCK' ? 'bg-rose-50 text-rose-700' : ($stockStatus === 'LOW_STOCK' ? 'bg-amber-50 text-amber-700' : 'bg-emerald-50 text-emerald-700') }}">
-                                        {{ $stockStatus === 'OUT_OF_STOCK' ? 'HABIS' : ($stockStatus === 'LOW_STOCK' ? 'MENIPIS' : 'TERSEDIA') }}
-                                    </span>
-                                </div>
+                                <span class="px-2 py-0.5 rounded-full font-bold text-[10px] shrink-0 {{ $stockStatus === 'OUT_OF_STOCK' ? 'bg-rose-50 text-rose-700' : ($stockStatus === 'LOW_STOCK' ? 'bg-amber-50 text-amber-700' : 'bg-[#E3EEE8] text-[#3F7A5D]') }}">
+                                    Stok: {{ $stockQty }}
+                                </span>
+                            @else
+                                <span class="px-2 py-0.5 rounded-full font-bold text-[10px] shrink-0 bg-slate-100 text-[#718379]">
+                                    {{ $product->product_type }}
+                                </span>
                             @endif
                         </div>
                     </div>
