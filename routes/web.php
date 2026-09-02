@@ -5,6 +5,7 @@ use App\Models\Sale;
 use App\Services\ProductImportService;
 use Illuminate\Support\Facades\Route;
 
+Route::redirect('/login', '/admin/login')->name('login');
 Route::redirect('/', '/pos');
 
 Route::middleware(['auth'])->group(function () {
