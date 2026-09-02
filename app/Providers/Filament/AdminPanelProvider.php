@@ -28,7 +28,7 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login(\App\Filament\Pages\Auth\Login::class)
             ->brandName('Raja Aksesoris POS')
-            ->font('Plus Jakarta Sans')
+            ->font('Inter')
             ->colors([
                 'primary' => Color::Blue,
                 'gray' => Color::Slate,

@@ -6,14 +6,14 @@
     <title>{{ $title ?? 'Raja POS - Retail Management System' }}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        sans: ['Inter', 'sans-serif'],
                         mono: ['"JetBrains Mono"', 'monospace'],
                     },
                     colors: {
@@ -39,7 +39,6 @@
         }
     </script>
     <style>
-        /* Custom scrollbar styling */
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -55,7 +54,6 @@
             background: #94A3B8;
         }
 
-        /* Glassmorphism utility */
         .glass-panel {
             background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(12px);
@@ -74,7 +72,6 @@
 
     {{ $slot }}
 
-    <!-- Livewire Toast Component -->
     <div id="toast-container" class="fixed top-4 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
     @livewireScripts
