@@ -67,7 +67,7 @@ class AdminPanelProvider extends PanelProvider
             ->renderHook(
                 'panels::head.done',
                 fn (): string => '<style>
-                    /* Custom Filament Theme Matching Cashier UI Style Exactly */
+                    /* Fluid Custom Theme Overrides for Filament */
                     body, .fi-body {
                         background-color: #F8FAFC !important;
                         font-family: "Poppins", sans-serif !important;
@@ -112,25 +112,33 @@ class AdminPanelProvider extends PanelProvider
                         color: #FFFFFF !important;
                         font-weight: 600 !important;
                         border-radius: 0.75rem !important;
+                        box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2) !important;
                     }
-                    .fi-section, .fi-card, .fi-wi-stats-overview-stat {
+                    .fi-section, .fi-card, .fi-wi-stats-overview-stat, .fi-ta-container {
                         background-color: #FFFFFF !important;
                         border: 1px solid #E2E8F0 !important;
                         border-radius: 1rem !important;
+                        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04) !important;
+                    }
+                    .fi-ta-row:hover {
+                        background-color: #F8FAFC !important;
+                    }
+                    .fi-input, select, .fi-select-input {
+                        border-radius: 0.75rem !important;
                     }
                     .fi-btn-primary {
                         background-color: #2563EB !important;
                         border-color: #2563EB !important;
                         border-radius: 0.75rem !important;
+                        box-shadow: 0 2px 4px 0 rgba(37, 99, 235, 0.2) !important;
                     }
                     .fi-btn-primary:hover {
                         background-color: #1D4ED8 !important;
                         border-color: #1D4ED8 !important;
                     }
-                    .fi-badge-primary {
-                        background-color: #EFF6FF !important;
-                        color: #2563EB !important;
-                        border: 1px solid #BFDBFE !important;
+                    .fi-badge {
+                        border-radius: 9999px !important;
+                        font-weight: 600 !important;
                     }
                 </style>'
             )
