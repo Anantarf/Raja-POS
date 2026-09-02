@@ -178,11 +178,11 @@
                         <div class="px-3.5 pb-3 pt-2 border-t border-slate-100 flex items-end justify-between gap-2 mt-1">
                             <div>
                                 @if($isIncomplete)
-                                    <span class="text-[10px] font-bold text-rose-600 bg-rose-50 border border-rose-200 px-2 py-0.5 rounded">
+                                    <span class="text-[9px] uppercase tracking-tight font-extrabold text-rose-700 bg-rose-50 border border-rose-200/80 px-1.5 py-0.5 rounded">
                                         HARGA INCOMPLETE
                                     </span>
                                 @else
-                                    <div class="text-base font-extrabold text-[#3F7A5D] font-mono tracking-tight">
+                                    <div class="text-sm font-extrabold text-[#3F7A5D] font-mono tracking-tight">
                                         Rp {{ number_format($product->selling_price, 0, ',', '.') }}
                                     </div>
                                 @endif
@@ -194,7 +194,7 @@
                                 </span>
                             @else
                                 <span class="px-2 py-0.5 rounded-full font-bold text-[10px] shrink-0 bg-slate-100 text-[#718379]">
-                                    {{ $product->product_type }}
+                                    {{ $product->product_type === 'PHYSICAL' ? 'FISIK' : ($product->product_type === 'DIGITAL' ? 'DIGITAL' : 'SERVICE') }}
                                 </span>
                             @endif
                         </div>
