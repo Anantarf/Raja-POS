@@ -15,10 +15,10 @@
             </div>
         </div>
 
-        <!-- Stunning 3D Claymation Cash Register POS Terminal Element -->
+        <!-- Friendly 3D Claymation Mascot Waving Hello Element -->
         <div class="hidden md:block shrink-0 pr-2">
-            <div class="w-32 h-32 rounded-3xl bg-white border border-[#E3EEE8] p-2 flex items-center justify-center shadow-md hover:scale-105 transition-transform duration-300">
-                <img src="/images/pos_cash_register_3d.jpg" alt="3D Cash Register POS" class="w-full h-full object-contain rounded-2xl">
+            <div class="w-32 h-32 rounded-3xl bg-white border border-[#E3EEE8] p-1 flex items-center justify-center shadow-md hover:scale-105 transition-transform duration-300 overflow-hidden">
+                <img src="/images/dashboard_welcome_character_3d.jpg" alt="Say Hi Mascot" class="w-full h-full object-cover rounded-2xl">
             </div>
         </div>
     </div>

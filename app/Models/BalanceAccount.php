@@ -20,4 +20,9 @@ class BalanceAccount extends Model
     protected $casts = [
         'current_balance' => 'decimal:2',
     ];
+
+    public function getBalanceAttribute()
+    {
+        return $this->current_balance;
+    }
 }

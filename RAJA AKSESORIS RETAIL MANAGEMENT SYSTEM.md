@@ -1885,6 +1885,7 @@ id
 invoice_number
 
 customer_id nullable
+# no foreign key in MVP; customer master is not created yet
 cashier_id
 
 transaction_date
@@ -1966,6 +1967,7 @@ balance_account_id nullable
 
 amount
 change_amount default 0
+# informational only; sales.change_amount is the source of truth for total change
 
 reference_number nullable
 
@@ -2716,7 +2718,8 @@ Pencegahan:
 
 - `sum(payments.amount) >= sales.total_amount` wajib sebelum completed.
 - `sales.change_amount = sum(payments.amount) - sales.total_amount`.
-- `payments.change_amount` hanya dipakai untuk menandai payment/case yang menghasilkan kembalian jika diperlukan UI detail.
+- `sales.change_amount` adalah source of truth total kembalian.
+- `payments.change_amount` hanya informasi UI/detail dan tidak boleh dijumlahkan lagi ke laporan.
 - Kembalian selalu membuat balance transaction keluar dari CASH.
 - CASH minus boleh, tetapi wajib tampil sebagai warning operasional.
 
@@ -2734,7 +2737,8 @@ Pencegahan:
 - Semua perubahan saldo wajib membuat `balance_transactions`.
 - `current_balance` dihitung/diupdate dari service yang sama dengan history.
 - Payment method menentukan valid account type.
-- Sampah Transaksi dan restore wajib membuat reversing balance transaction.
+- Sampah Transaksi dan restore wajib membuat reversing balance transaction per payment dan per cash change.
+- Auto-delete 30 hari tidak boleh membalik stok/saldo lagi karena reversal sudah terjadi saat masuk Sampah Transaksi.
 
 ## Stock Consistency
 
@@ -2881,7 +2885,7 @@ Development dianggap sesuai MD jika skenario berikut lulus.
 - Owner/Admin bisa memindahkan transaksi ke Sampah Transaksi dengan alasan wajib.
 - Transaksi TRASHED tidak dihitung sebagai sales aktif.
 - Saat masuk Sampah Transaksi, stok fisik dikembalikan dan saldo dibalik sesuai transaksi.
-- Restore sebelum 30 hari mengurangi stok lagi dan mengembalikan saldo sesuai transaksi.
+- Restore sebelum 30 hari mengurangi stok lagi dan mengembalikan saldo sesuai transaksi. Restore wajib ditolak jika stok fisik saat ini tidak cukup.
 - Setelah 30 hari, transaksi masuk status DELETED dan tersembunyi dari UI operasional.
 - Data transaksi tidak hard delete dari database.
 

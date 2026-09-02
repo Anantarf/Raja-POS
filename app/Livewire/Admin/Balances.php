@@ -66,7 +66,7 @@ class Balances extends Component
 
     private function resetForm()
     {
-        $accounts = BalanceAccount::where('is_active', true)->get();
+        $accounts = BalanceAccount::where('status', 'ACTIVE')->get();
         $this->sourceAccountId = $accounts->first()?->id;
         $this->destinationAccountId = $accounts->skip(1)->first()?->id;
         $this->amount = 0;
@@ -76,8 +76,8 @@ class Balances extends Component
 
     public function render()
     {
-        $accounts = BalanceAccount::where('is_active', true)->get();
-        $query = BalanceTransaction::with(['sourceAccount', 'destinationAccount', 'user']);
+        $accounts = BalanceAccount::where('status', 'ACTIVE')->get();
+        $query = BalanceTransaction::with(['sourceAccount', 'destinationAccount', 'creator', 'user']);
 
         if ($this->search) {
             $query->where('transaction_number', 'like', '%' . $this->search . '%')
