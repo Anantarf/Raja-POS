@@ -57,20 +57,20 @@
                     @endif
                 </div>
 
-                <!-- Category Tabs & Product Type Pills (No Emojis) -->
-                <div class="flex items-center justify-between gap-3 overflow-x-auto text-sm pt-0.5">
+                <!-- Category Tabs & Product Type Pills -->
+                <div class="flex items-center justify-between gap-3 text-sm pt-0.5">
                     <!-- Category Tabs -->
-                    <div class="flex items-center gap-2 overflow-x-auto pb-0.5">
+                    <div class="flex items-center gap-2 overflow-x-auto py-1.5 px-0.5 shrink min-w-0">
                         <button
                             wire:click="$set('selectedCategory', null)"
-                            class="px-5 py-2.5 rounded-2xl text-xs font-bold transition-all shrink-0 border {{ $selectedCategory === null ? 'bg-[#3F7A5D] text-white border-[#3F7A5D] shadow-emco-primary' : 'bg-[#F3F6F4] text-[#232E28] border-slate-200 hover:bg-slate-200' }}"
+                            class="px-5 py-2.5 rounded-2xl text-xs font-bold transition-all shrink-0 border {{ $selectedCategory === null ? 'bg-[#3F7A5D] text-white border-[#3F7A5D]' : 'bg-[#F3F6F4] text-[#232E28] border-slate-200 hover:bg-slate-200' }}"
                         >
                             Semua Kategori
                         </button>
                         @foreach($categories as $cat)
                             <button
                                 wire:click="$set('selectedCategory', {{ $cat->id }})"
-                                class="px-5 py-2.5 rounded-2xl text-xs font-bold transition-all shrink-0 border {{ $selectedCategory === $cat->id ? 'bg-[#3F7A5D] text-white border-[#3F7A5D] shadow-emco-primary' : 'bg-[#F3F6F4] text-[#232E28] border-slate-200 hover:bg-slate-200' }}"
+                                class="px-5 py-2.5 rounded-2xl text-xs font-bold transition-all shrink-0 border {{ $selectedCategory === $cat->id ? 'bg-[#3F7A5D] text-white border-[#3F7A5D]' : 'bg-[#F3F6F4] text-[#232E28] border-slate-200 hover:bg-slate-200' }}"
                             >
                                 {{ $cat->name }}
                             </button>

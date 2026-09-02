@@ -41,10 +41,10 @@
             </select>
 
             <div class="flex items-center gap-1.5 bg-[#F3F6F4] p-1.5 rounded-2xl border border-slate-200">
-                <button wire:click="$set('selectedType', 'ALL')" class="px-4 py-2 rounded-xl font-bold text-xs {{ $selectedType === 'ALL' ? 'bg-[#3F7A5D] text-white shadow-emco-primary' : 'text-[#52645B]' }}">Semua</button>
-                <button wire:click="$set('selectedType', 'PHYSICAL')" class="px-4 py-2 rounded-xl font-bold text-xs {{ $selectedType === 'PHYSICAL' ? 'bg-[#3F7A5D] text-white shadow-emco-primary' : 'text-[#52645B]' }}">Fisik</button>
-                <button wire:click="$set('selectedType', 'DIGITAL')" class="px-4 py-2 rounded-xl font-bold text-xs {{ $selectedType === 'DIGITAL' ? 'bg-emerald-700 text-white shadow-sm' : 'text-[#52645B]' }}">Digital</button>
-                <button wire:click="$set('selectedType', 'SERVICE')" class="px-4 py-2 rounded-xl font-bold text-xs {{ $selectedType === 'SERVICE' ? 'bg-[#C2AC7C] text-white shadow-sm' : 'text-[#52645B]' }}">Service</button>
+                <button wire:click="$set('selectedType', 'ALL')" class="px-4 py-2 rounded-xl font-bold text-xs {{ $selectedType === 'ALL' ? 'bg-[#3F7A5D] text-white' : 'text-[#52645B]' }}">Semua</button>
+                <button wire:click="$set('selectedType', 'PHYSICAL')" class="px-4 py-2 rounded-xl font-bold text-xs {{ $selectedType === 'PHYSICAL' ? 'bg-[#3F7A5D] text-white' : 'text-[#52645B]' }}">Fisik</button>
+                <button wire:click="$set('selectedType', 'DIGITAL')" class="px-4 py-2 rounded-xl font-bold text-xs {{ $selectedType === 'DIGITAL' ? 'bg-emerald-700 text-white' : 'text-[#52645B]' }}">Digital</button>
+                <button wire:click="$set('selectedType', 'SERVICE')" class="px-4 py-2 rounded-xl font-bold text-xs {{ $selectedType === 'SERVICE' ? 'bg-[#C2AC7C] text-white' : 'text-[#52645B]' }}">Service</button>
             </div>
         </div>
     </div>
