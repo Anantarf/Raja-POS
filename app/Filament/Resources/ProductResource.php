@@ -66,6 +66,12 @@ class ProductResource extends Resource
                         Forms\Components\TextInput::make('product_subtype')
                             ->label('Subtipe Produk')
                             ->placeholder('Contoh: Pulsa, Paket Data, Tarik Tunai'),
+                        Forms\Components\Select::make('default_balance_account_id')
+                            ->label('Akun Saldo Modal Utama')
+                            ->relationship('defaultBalanceAccount', 'name')
+                            ->searchable()
+                            ->preload()
+                            ->helperText('Opsional. Digunakan untuk produk digital (MULTI) atau layanan tertentu'),
                     ])->columns(2),
 
                 Forms\Components\Section::make('Harga & Stok')
