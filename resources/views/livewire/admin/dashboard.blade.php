@@ -1,151 +1,151 @@
-<div class="space-y-6">
-    <!-- EMCO Welcome Banner Card -->
-    <div class="bg-gradient-to-r from-[#3F7A5D]/15 via-[#3F7A5D]/5 to-white border border-[#3F7A5D]/20 rounded-2xl p-6 shadow-emco relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-4">
-        <div class="space-y-2">
-            <h1 class="text-xl font-extrabold text-[#232E28] tracking-tight">
+<div class="space-y-7">
+    <!-- EMCO Welcome Banner Card (Enlarged Height & Font) -->
+    <div class="bg-gradient-to-r from-[#3F7A5D]/15 via-[#3F7A5D]/5 to-white border border-[#3F7A5D]/20 rounded-3xl p-7 shadow-emco relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-5">
+        <div class="space-y-2.5">
+            <h1 class="text-2xl font-extrabold text-[#232E28] tracking-tight">
                 Selamat Datang, {{ auth()->user()->name }}! 🌿
             </h1>
-            <p class="text-xs text-[#52645B] max-w-xl leading-relaxed">
-                <span class="font-bold text-[#232E28]">Dashboard Overview:</span> Anda memiliki akses penuh sebagai <span class="font-bold text-[#3F7A5D]">{{ auth()->user()->role?->name ?? 'Kasir' }}</span> pada sistem kasir & manajemen ritel Raja Aksesoris POS.
+            <p class="text-sm text-[#52645B] max-w-2xl leading-relaxed">
+                <span class="font-bold text-[#232E28]">Dashboard Overview:</span> Anda memiliki akses penuh sebagai <span class="font-bold text-[#3F7A5D] text-base">{{ auth()->user()->role?->name ?? 'Kasir' }}</span> pada sistem kasir & manajemen ritel Raja Aksesoris POS.
             </p>
-            <div class="pt-1">
-                <a href="/pos" class="px-4 py-2 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-bold rounded-xl text-xs shadow-emco-primary inline-flex items-center gap-1.5 transition active:scale-95">
+            <div class="pt-2">
+                <a href="/pos" class="px-5 py-3 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-bold rounded-2xl text-sm shadow-emco-primary inline-flex items-center gap-2 transition active:scale-95">
                     <span>Buka Layar Kasir POS</span> &rarr;
                 </a>
             </div>
         </div>
 
         <div class="hidden md:block shrink-0 pr-4">
-            <div class="w-24 h-24 rounded-full bg-[#3F7A5D]/10 border-2 border-[#3F7A5D]/30 flex items-center justify-center text-4xl shadow-inner">
+            <div class="w-28 h-28 rounded-full bg-[#3F7A5D]/10 border-2 border-[#3F7A5D]/30 flex items-center justify-center text-5xl shadow-inner">
                 🏬
             </div>
         </div>
     </div>
 
-    <!-- EMCO Executive Stat Cards Grid -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+    <!-- EMCO Executive Stat Cards Grid (Scaled UP Figures text-3xl) -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <!-- 1. Total Omset -->
-        <div class="bg-white rounded-2xl p-5 shadow-emco border border-[#E3EEE8] hover:shadow-emco-hover transition-all duration-200">
-            <div class="flex items-center justify-between mb-3">
-                <div class="w-11 h-11 rounded-2xl bg-[#E3EEE8] text-[#3F7A5D] flex items-center justify-center font-bold text-lg">
+        <div class="bg-white rounded-3xl p-6 shadow-emco border border-[#E3EEE8] hover:shadow-emco-hover transition-all duration-200">
+            <div class="flex items-center justify-between mb-4">
+                <div class="w-12 h-12 rounded-2xl bg-[#E3EEE8] text-[#3F7A5D] flex items-center justify-center font-extrabold text-xl">
                     📊
                 </div>
-                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold text-[#3F7A5D] bg-[#E3EEE8] border border-[#3F7A5D]/20">
+                <span class="px-3 py-1 rounded-full text-xs font-bold text-[#3F7A5D] bg-[#E3EEE8] border border-[#3F7A5D]/20">
                     ↑ +100%
                 </span>
             </div>
-            <div class="text-xs text-[#86968E] font-bold uppercase tracking-wider">Total Omset</div>
-            <div class="text-2xl font-extrabold text-[#232E28] font-mono tracking-tight mt-1">
+            <div class="text-xs text-[#718379] font-extrabold uppercase tracking-wider">Total Omset Penjualan</div>
+            <div class="text-3xl font-extrabold text-[#232E28] font-mono tracking-tight mt-1.5">
                 Rp {{ number_format($metrics['omset'], 0, ',', '.') }}
             </div>
-            <div class="text-[11px] text-[#86968E] mt-1 font-medium">Transaksi Completed</div>
+            <div class="text-xs text-[#718379] mt-2 font-medium">Transaksi Completed</div>
         </div>
 
-        <!-- 2. Gross Profit (RBAC Protection - EMCO 79 Sand Ochre) -->
-        <div class="bg-white rounded-2xl p-5 shadow-emco border border-[#E3EEE8] hover:shadow-emco-hover transition-all duration-200">
-            <div class="flex items-center justify-between mb-3">
-                <div class="w-11 h-11 rounded-2xl bg-[#C2AC7C]/20 text-[#8F794B] flex items-center justify-center font-bold text-lg">
+        <!-- 2. Gross Profit (RBAC Protection) -->
+        <div class="bg-white rounded-3xl p-6 shadow-emco border border-[#E3EEE8] hover:shadow-emco-hover transition-all duration-200">
+            <div class="flex items-center justify-between mb-4">
+                <div class="w-12 h-12 rounded-2xl bg-[#C2AC7C]/20 text-[#8F794B] flex items-center justify-center font-extrabold text-xl">
                     💰
                 </div>
-                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold text-[#8F794B] bg-[#C2AC7C]/20 border border-[#C2AC7C]/40">
+                <span class="px-3 py-1 rounded-full text-xs font-bold text-[#8F794B] bg-[#C2AC7C]/20 border border-[#C2AC7C]/40">
                     Laba Kotor
                 </span>
             </div>
-            <div class="text-xs text-[#86968E] font-bold uppercase tracking-wider">Gross Profit</div>
+            <div class="text-xs text-[#718379] font-extrabold uppercase tracking-wider">Gross Profit (Profit)</div>
             @if(auth()->user()->can('report.profit.view'))
-                <div class="text-2xl font-extrabold text-[#8F794B] font-mono tracking-tight mt-1">
+                <div class="text-3xl font-extrabold text-[#8F794B] font-mono tracking-tight mt-1.5">
                     Rp {{ number_format($metrics['gross_profit'], 0, ',', '.') }}
                 </div>
-                <div class="text-[11px] text-[#86968E] mt-1 font-medium">Omset dikurangi HPP</div>
+                <div class="text-xs text-[#718379] mt-2 font-medium">Omset dikurangi HPP</div>
             @else
-                <div class="text-xs font-bold text-slate-400 mt-2 italic bg-[#F3F6F4] px-3 py-1.5 rounded-xl border border-slate-200 text-center">
+                <div class="text-xs font-bold text-slate-400 mt-3 italic bg-[#F3F6F4] px-3.5 py-2 rounded-xl border border-slate-200 text-center">
                     [Akses Terbatas - Owner]
                 </div>
             @endif
         </div>
 
         <!-- 3. Total Kas & Bank -->
-        <div class="bg-white rounded-2xl p-5 shadow-emco border border-[#E3EEE8] hover:shadow-emco-hover transition-all duration-200">
-            <div class="flex items-center justify-between mb-3">
-                <div class="w-11 h-11 rounded-2xl bg-[#E3EEE8] text-[#3F7A5D] flex items-center justify-center font-bold text-lg">
+        <div class="bg-white rounded-3xl p-6 shadow-emco border border-[#E3EEE8] hover:shadow-emco-hover transition-all duration-200">
+            <div class="flex items-center justify-between mb-4">
+                <div class="w-12 h-12 rounded-2xl bg-[#E3EEE8] text-[#3F7A5D] flex items-center justify-center font-extrabold text-xl">
                     🏦
                 </div>
-                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold text-[#3F7A5D] bg-[#E3EEE8]">
+                <span class="px-3 py-1 rounded-full text-xs font-bold text-[#3F7A5D] bg-[#E3EEE8]">
                     Aktif
                 </span>
             </div>
-            <div class="text-xs text-[#86968E] font-bold uppercase tracking-wider">Total Kas & Bank</div>
-            <div class="text-2xl font-extrabold text-[#232E28] font-mono tracking-tight mt-1">
+            <div class="text-xs text-[#718379] font-extrabold uppercase tracking-wider">Total Kas & Bank</div>
+            <div class="text-3xl font-extrabold text-[#232E28] font-mono tracking-tight mt-1.5">
                 Rp {{ number_format($metrics['total_balance'], 0, ',', '.') }}
             </div>
-            <div class="text-[11px] text-[#86968E] mt-1 font-medium">Saldo riil seluruh akun</div>
+            <div class="text-xs text-[#718379] mt-2 font-medium">Saldo riil seluruh akun</div>
         </div>
 
         <!-- 4. Jumlah Transaksi -->
-        <div class="bg-white rounded-2xl p-5 shadow-emco border border-[#E3EEE8] hover:shadow-emco-hover transition-all duration-200">
-            <div class="flex items-center justify-between mb-3">
-                <div class="w-11 h-11 rounded-2xl bg-[#E3EEE8] text-[#3F7A5D] flex items-center justify-center font-bold text-lg">
+        <div class="bg-white rounded-3xl p-6 shadow-emco border border-[#E3EEE8] hover:shadow-emco-hover transition-all duration-200">
+            <div class="flex items-center justify-between mb-4">
+                <div class="w-12 h-12 rounded-2xl bg-[#E3EEE8] text-[#3F7A5D] flex items-center justify-center font-extrabold text-xl">
                     🧾
                 </div>
-                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold text-[#3F7A5D] bg-[#E3EEE8]">
+                <span class="px-3 py-1 rounded-full text-xs font-bold text-[#3F7A5D] bg-[#E3EEE8]">
                     Sukses
                 </span>
             </div>
-            <div class="text-xs text-[#86968E] font-bold uppercase tracking-wider">Jumlah Transaksi</div>
-            <div class="text-2xl font-extrabold text-[#232E28] font-mono tracking-tight mt-1">
-                {{ number_format($metrics['sales_count'], 0, ',', '.') }} <span class="text-xs text-[#86968E] font-normal">Nota</span>
+            <div class="text-xs text-[#718379] font-extrabold uppercase tracking-wider">Jumlah Transaksi</div>
+            <div class="text-3xl font-extrabold text-[#232E28] font-mono tracking-tight mt-1.5">
+                {{ number_format($metrics['sales_count'], 0, ',', '.') }} <span class="text-sm text-[#718379] font-normal">Nota</span>
             </div>
-            <div class="text-[11px] text-[#86968E] mt-1 font-medium">Nota berhasil diproses</div>
+            <div class="text-xs text-[#718379] mt-2 font-medium">Nota berhasil diproses</div>
         </div>
     </div>
 
-    <!-- EMCO Data Visualization Chart & Table Grid -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <!-- 1. ApexCharts Bar Chart (EMCO Jade Emerald Color) -->
-        <div class="lg:col-span-2 bg-white rounded-2xl p-6 shadow-emco border border-[#E3EEE8] space-y-4">
+    <!-- EMCO Data Visualization Chart & Table Grid (Enlarged Chart Height 300px) -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-7">
+        <!-- 1. ApexCharts Bar Chart (2 Columns) -->
+        <div class="lg:col-span-2 bg-white rounded-3xl p-7 shadow-emco border border-[#E3EEE8] space-y-5">
             <div class="flex items-center justify-between">
                 <div>
-                    <h2 class="text-base font-extrabold text-[#232E28] tracking-tight">Grafik Omset Penjualan (7 Hari)</h2>
-                    <p class="text-xs text-[#86968E] font-medium">Visualisasi tren omset ritel toko.</p>
+                    <h2 class="text-lg font-extrabold text-[#232E28] tracking-tight">Grafik Omset Penjualan Harian</h2>
+                    <p class="text-xs text-[#718379] font-medium mt-0.5">Visualisasi tren omset ritel toko 7 hari terakhir.</p>
                 </div>
-                <span class="px-3 py-1 rounded-xl text-xs font-bold bg-[#E3EEE8] text-[#3F7A5D]">
+                <span class="px-4 py-1.5 rounded-xl text-xs font-bold bg-[#E3EEE8] text-[#3F7A5D]">
                     7 Hari Terakhir
                 </span>
             </div>
 
             <!-- ApexCharts Container -->
-            <div id="emco-sales-chart" class="w-full h-64"></div>
+            <div id="emco-sales-chart" class="w-full h-72"></div>
         </div>
 
-        <!-- 2. Breakdown Tabel Harian -->
-        <div class="bg-white rounded-2xl p-6 shadow-emco border border-[#E3EEE8] space-y-4 flex flex-col justify-between">
+        <!-- 2. Breakdown Tabel Harian (1 Column) -->
+        <div class="bg-white rounded-3xl p-7 shadow-emco border border-[#E3EEE8] space-y-5 flex flex-col justify-between">
             <div>
-                <div class="flex items-center justify-between mb-3">
-                    <h2 class="text-base font-extrabold text-[#232E28] tracking-tight">Rincian Omset</h2>
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-lg font-extrabold text-[#232E28] tracking-tight">Rincian Omset</h2>
                     <a href="/admin/sales" class="text-xs font-bold text-[#3F7A5D] hover:underline">
                         Riwayat &rarr;
                     </a>
                 </div>
 
-                <div class="overflow-x-auto rounded-xl border border-[#E3EEE8]">
-                    <table class="w-full text-xs text-left">
-                        <thead class="bg-[#F3F6F4] text-[#86968E] uppercase text-[10px] font-extrabold tracking-wider border-b border-[#E3EEE8]">
+                <div class="overflow-x-auto rounded-2xl border border-[#E3EEE8]">
+                    <table class="w-full text-sm text-left">
+                        <thead class="bg-[#F3F6F4] text-[#718379] uppercase text-xs font-extrabold tracking-wider border-b border-[#E3EEE8]">
                             <tr>
-                                <th class="py-2.5 px-3">Tanggal</th>
-                                <th class="py-2.5 px-3 text-right">Omset (Rp)</th>
+                                <th class="py-3.5 px-4">Tanggal</th>
+                                <th class="py-3.5 px-4 text-right">Omset (Rp)</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100 font-medium">
                             @forelse($dailyTrends['labels'] as $index => $label)
                                 <tr class="hover:bg-[#F3F6F4]/60 transition">
-                                    <td class="py-2.5 px-3 font-bold text-[#232E28]">{{ $label }}</td>
-                                    <td class="py-2.5 px-3 text-right font-mono font-bold text-[#3F7A5D]">
+                                    <td class="py-3.5 px-4 font-bold text-[#232E28] text-sm">{{ $label }}</td>
+                                    <td class="py-3.5 px-4 text-right font-mono font-bold text-[#3F7A5D] text-base">
                                         Rp {{ number_format($dailyTrends['data'][$index] ?? 0, 0, ',', '.') }}
                                     </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="2" class="py-6 text-center text-slate-400 font-medium">Belum ada data.</td>
+                                    <td colspan="2" class="py-8 text-center text-slate-400 font-medium">Belum ada data.</td>
                                 </tr>
                             @endforelse
                         </tbody>
@@ -166,7 +166,7 @@
         const options = {
             chart: {
                 type: 'bar',
-                height: 250,
+                height: 290,
                 toolbar: { show: false },
                 fontFamily: 'Public Sans, Poppins, sans-serif'
             },
@@ -174,8 +174,8 @@
             plotOptions: {
                 bar: {
                     horizontal: false,
-                    columnWidth: '35%',
-                    borderRadius: 8,
+                    columnWidth: '38%',
+                    borderRadius: 10,
                     startingShape: 'rounded'
                 }
             },
@@ -191,18 +191,18 @@
                 axisTicks: { show: false },
                 labels: {
                     style: {
-                        colors: '#86968E',
-                        fontSize: '11px',
-                        fontWeight: 600
+                        colors: '#718379',
+                        fontSize: '12px',
+                        fontWeight: 700
                     }
                 }
             },
             yaxis: {
                 labels: {
                     style: {
-                        colors: '#86968E',
-                        fontSize: '11px',
-                        fontWeight: 600
+                        colors: '#718379',
+                        fontSize: '12px',
+                        fontWeight: 700
                     },
                     formatter: function (val) {
                         if (val >= 1000000) return 'Rp ' + (val / 1000000).toFixed(1) + 'M';
