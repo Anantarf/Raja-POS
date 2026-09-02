@@ -128,10 +128,10 @@
                                 <!-- Top Floating Overlay Badges -->
                                 <div class="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between z-10">
                                     <span class="text-[10px] font-mono text-[#3F7A5D] bg-white/90 backdrop-blur-md px-2 py-0.5 rounded-md font-bold shadow-sm border border-white/40">
-                                        SKU: {{ $product->code }}
+                                        {{ $product->code }}
                                     </span>
                                     <span class="text-[9px] uppercase font-extrabold px-2 py-0.5 rounded-full backdrop-blur-md shadow-sm border border-white/40 {{ $product->product_type === 'PHYSICAL' ? 'bg-[#3F7A5D]/90 text-white' : ($product->product_type === 'DIGITAL' ? 'bg-emerald-700/90 text-white' : 'bg-[#C2AC7C]/90 text-white') }}">
-                                        {{ $product->product_type }}
+                                        {{ $product->product_type === 'PHYSICAL' ? 'FISIK' : ($product->product_type === 'DIGITAL' ? 'DIGITAL' : 'SERVICE') }}
                                     </span>
                                 </div>
 
