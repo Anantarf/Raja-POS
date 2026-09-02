@@ -16,7 +16,7 @@ class LocationResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-map-pin';
 
-    protected static ?string $navigationGroup = 'Pengaturan Toko';
+    protected static ?string $navigationGroup = 'Pengaturan Sistem';
 
     protected static ?int $navigationSort = 1;
 

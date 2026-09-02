@@ -18,7 +18,7 @@ class BalanceTransactionResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-currency-dollar';
 
-    protected static ?string $navigationGroup = 'Keuangan & Akun Saldo';
+    protected static ?string $navigationGroup = 'Keuangan & Rekening';
 
     protected static ?int $navigationSort = 2;
 

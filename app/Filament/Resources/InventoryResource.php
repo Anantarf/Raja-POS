@@ -19,7 +19,7 @@ class InventoryResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-archive-box';
 
-    protected static ?string $navigationGroup = 'Inventory';
+    protected static ?string $navigationGroup = 'Stok & Inventaris';
 
     protected static ?int $navigationSort = 1;
 

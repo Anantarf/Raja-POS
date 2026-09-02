@@ -16,7 +16,7 @@ class PaymentMethodResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-credit-card';
 
-    protected static ?string $navigationGroup = 'Pengaturan Toko';
+    protected static ?string $navigationGroup = 'Pengaturan Sistem';
 
     protected static ?int $navigationSort = 2;
 
