@@ -29,6 +29,7 @@ class AdminPanelProvider extends PanelProvider
             ->login(\App\Filament\Pages\Auth\Login::class)
             ->brandName('Raja Aksesoris POS')
             ->font('Poppins')
+            ->darkMode(false)
             ->colors([
                 'primary' => Color::Blue,
                 'gray' => Color::Slate,
@@ -47,7 +48,10 @@ class AdminPanelProvider extends PanelProvider
             ->renderHook(
                 'panels::head.done',
                 fn (): string => '<style>
-                    /* Custom Filament Theme Matching Cashier UI Style */
+                    /* Custom Filament Light Theme Matching Cashier UI Style */
+                    body, .fi-body {
+                        background-color: #F8FAFC !important;
+                    }
                     .fi-topbar {
                         background-color: #0F172A !important;
                         border-bottom: 1px solid #1E293B !important;
@@ -59,6 +63,10 @@ class AdminPanelProvider extends PanelProvider
                     }
                     .fi-topbar-item, .fi-topbar-user-menu button {
                         color: #E2E8F0 !important;
+                    }
+                    .fi-sidebar {
+                        background-color: #FFFFFF !important;
+                        border-right: 1px solid #E2E8F0 !important;
                     }
                     .fi-sidebar-header {
                         background-color: #0F172A !important;
@@ -78,6 +86,11 @@ class AdminPanelProvider extends PanelProvider
                         background-color: #2563EB !important;
                         color: #FFFFFF !important;
                         font-weight: 600 !important;
+                    }
+                    .fi-section, .fi-card, .fi-wi-stats-overview-stat {
+                        background-color: #FFFFFF !important;
+                        border: 1px solid #E2E8F0 !important;
+                        border-radius: 1rem !important;
                     }
                     .fi-btn-primary {
                         background-color: #2563EB !important;
