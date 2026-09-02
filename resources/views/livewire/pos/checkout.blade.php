@@ -107,7 +107,7 @@
                 </div>
             </div>
 
-            <!-- Product Cards Grid (Fixed Height Cards & Locked Bottom Price Position) -->
+            <!-- Product Cards Grid (Spacious Height Cards & No Banner Clipping) -->
             <div class="flex-1 overflow-y-auto pr-1 grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3.5">
                 @forelse($products as $product)
                     @php
@@ -119,14 +119,14 @@
 
                     <div
                         wire:click="addToCart({{ $product->id }})"
-                        class="bg-white border border-[#E3EEE8] hover:border-[#3F7A5D] rounded-3xl overflow-hidden flex flex-col justify-between h-[215px] cursor-pointer transition-all duration-200 relative group hover:shadow-sm {{ $isIncomplete ? 'opacity-65 bg-rose-50/20' : '' }}"
+                        class="bg-white border border-[#E3EEE8] hover:border-[#3F7A5D] rounded-3xl overflow-hidden flex flex-col justify-between h-[235px] cursor-pointer transition-all duration-200 relative group hover:shadow-sm {{ $isIncomplete ? 'opacity-65 bg-rose-50/20' : '' }}"
                     >
                         <div>
-                            <!-- Seamless Top Gradient Image Banner Container -->
-                            <div class="w-full h-24 relative overflow-hidden bg-gradient-to-br from-[#E3EEE8] via-[#F3F6F4] to-[#E3EEE8]/60 flex items-center justify-center shrink-0">
+                            <!-- Seamless Top Gradient Image Banner Container (Fixed Height h-28 for Spacious Display) -->
+                            <div class="w-full h-28 relative overflow-hidden bg-gradient-to-br from-[#E3EEE8] via-[#F3F6F4] to-[#E3EEE8]/60 flex items-center justify-center shrink-0">
 
                                 <!-- Top Floating Overlay Badges -->
-                                <div class="absolute top-2 left-2 right-2 flex items-center justify-between z-10">
+                                <div class="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between z-10">
                                     <span class="text-[10px] font-mono text-[#3F7A5D] bg-white/90 backdrop-blur-md px-2 py-0.5 rounded-md font-bold shadow-sm border border-white/40">
                                         {{ $product->code }}
                                     </span>
@@ -139,22 +139,22 @@
                                     <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                                     <div class="absolute inset-x-0 bottom-0 h-6 bg-gradient-to-t from-white via-white/40 to-transparent"></div>
                                 @else
-                                    <div class="flex flex-col items-center justify-center space-y-1 p-2 text-center">
+                                    <div class="flex flex-col items-center justify-center space-y-1.5 p-2 text-center pt-5">
                                         @if($product->product_type === 'PHYSICAL')
-                                            <div class="w-9 h-9 rounded-2xl bg-white/80 text-[#3F7A5D] backdrop-blur-md border border-white/60 flex items-center justify-center shadow-sm">
-                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <div class="w-10 h-10 rounded-2xl bg-white/90 text-[#3F7A5D] backdrop-blur-md border border-white/60 flex items-center justify-center shadow-sm">
+                                                <svg class="w-5.5 h-5.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
                                                 </svg>
                                             </div>
                                         @elseif($product->product_type === 'DIGITAL')
-                                            <div class="w-9 h-9 rounded-2xl bg-emerald-700 text-white flex items-center justify-center shadow-sm">
-                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <div class="w-10 h-10 rounded-2xl bg-emerald-700 text-white flex items-center justify-center shadow-sm">
+                                                <svg class="w-5.5 h-5.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                                                 </svg>
                                             </div>
                                         @else
-                                            <div class="w-9 h-9 rounded-2xl bg-[#C2AC7C] text-white flex items-center justify-center shadow-sm">
-                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <div class="w-10 h-10 rounded-2xl bg-[#C2AC7C] text-white flex items-center justify-center shadow-sm">
+                                                <svg class="w-5.5 h-5.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
                                                 </svg>
                                             </div>
