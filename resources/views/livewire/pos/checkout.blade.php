@@ -291,17 +291,7 @@
                     </div>
                 </div>
 
-                <!-- High-Contrast Cash Shortcut Pills -->
-                @if(count($cart) > 0)
-                    <div class="flex items-center gap-1.5 overflow-x-auto text-xs font-extrabold py-0.5">
-                        <span class="text-[#718379] shrink-0 font-medium text-xs">Uang:</span>
-                        <button wire:click="setExactPayment" class="px-3.5 py-1.5 bg-[#3F7A5D] text-white rounded-xl shrink-0 hover:bg-[#32634B] font-extrabold transition">Uang Pas</button>
-                        <button wire:click="setPaymentAmount(10000)" class="px-3 py-1.5 bg-white border border-[#3F7A5D]/30 text-[#3F7A5D] hover:bg-[#E3EEE8] rounded-xl shrink-0 font-extrabold transition">10rb</button>
-                        <button wire:click="setPaymentAmount(20000)" class="px-3 py-1.5 bg-white border border-[#3F7A5D]/30 text-[#3F7A5D] hover:bg-[#E3EEE8] rounded-xl shrink-0 font-extrabold transition">20rb</button>
-                        <button wire:click="setPaymentAmount(50000)" class="px-3 py-1.5 bg-white border border-[#3F7A5D]/30 text-[#3F7A5D] hover:bg-[#E3EEE8] rounded-xl shrink-0 font-extrabold transition">50rb</button>
-                        <button wire:click="setPaymentAmount(100000)" class="px-3 py-1.5 bg-white border border-[#3F7A5D]/30 text-[#3F7A5D] hover:bg-[#E3EEE8] rounded-xl shrink-0 font-extrabold transition">100rb</button>
-                    </div>
-                @endif
+
 
                 <!-- Payment Method Split Inputs -->
                 <div class="space-y-2">
