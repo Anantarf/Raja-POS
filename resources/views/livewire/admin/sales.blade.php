@@ -56,7 +56,7 @@
                                     @endforeach
                                 </div>
                             </td>
-                            <td class="py-3.5 px-4 text-right font-mono font-bold text-[#3F7A5D] text-sm">
+                            <td class="py-3.5 px-4 text-right font-mono font-extrabold text-[#232E28] text-sm">
                                 Rp {{ number_format($sale->grand_total, 0, ',', '.') }}
                             </td>
                             <td class="py-3.5 px-4 text-center">

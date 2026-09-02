@@ -31,7 +31,7 @@
                         {{ $acc->account_type }}
                     </span>
                 </div>
-                <div class="text-2xl font-extrabold text-[#3F7A5D] font-mono tracking-tight mt-1 {{ $acc->balance < 0 ? 'text-rose-600' : '' }}">
+                <div class="text-2xl font-extrabold text-[#232E28] font-mono tracking-tight mt-1 {{ $acc->balance < 0 ? 'text-rose-600' : '' }}">
                     Rp {{ number_format($acc->balance, 0, ',', '.') }}
                 </div>
                 @if($acc->balance < 0 && $acc->account_type === 'CASH')
@@ -88,7 +88,7 @@
                                 &rarr;
                                 @if($trx->destinationAccount) <span class="font-extrabold text-emerald-600">{{ $trx->destinationAccount->name }}</span> @else - @endif
                             </td>
-                            <td class="py-3.5 px-4 text-right font-mono font-bold text-[#3F7A5D] text-sm">
+                            <td class="py-3.5 px-4 text-right font-mono font-extrabold text-[#232E28] text-sm">
                                 Rp {{ number_format($trx->amount, 0, ',', '.') }}
                             </td>
                             <td class="py-3.5 px-4">

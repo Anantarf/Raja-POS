@@ -180,7 +180,7 @@
                                         HARGA INCOMPLETE
                                     </span>
                                 @else
-                                    <div class="text-sm font-extrabold text-[#3F7A5D] font-mono tracking-tight">
+                                    <div class="text-sm font-extrabold text-[#232E28] font-mono tracking-tight">
                                         Rp {{ number_format($product->selling_price, 0, ',', '.') }}
                                     </div>
                                 @endif
@@ -258,7 +258,7 @@
 
                         <!-- Subtotal & Delete -->
                         <div class="text-right shrink-0">
-                            <div class="text-xs font-bold text-[#3F7A5D] font-mono">
+                            <div class="text-xs font-extrabold text-[#232E28] font-mono">
                                 Rp {{ number_format($item['price'] * $item['quantity'], 0, ',', '.') }}
                             </div>
                             <button wire:click="removeFromCart({{ $id }})" class="text-[11px] text-rose-500 hover:underline font-bold">
@@ -286,7 +286,7 @@
                         <div class="text-xs font-extrabold uppercase text-[#718379] tracking-wider">Total Belanja</div>
                         <div class="text-xs text-slate-400 font-medium mt-0.5">Subtotal: Rp {{ number_format($this->subtotal, 0, ',', '.') }}</div>
                     </div>
-                    <div class="text-2xl font-extrabold text-[#3F7A5D] font-mono">
+                    <div class="text-2xl font-extrabold text-[#232E28] font-mono">
                         Rp {{ number_format($this->grand_total, 0, ',', '.') }}
                     </div>
                 </div>
@@ -326,7 +326,7 @@
                                         "
                                         value="{{ $pay['amount'] ? number_format($pay['amount'], 0, ',', '.') : '' }}"
                                         placeholder="0"
-                                        class="w-full pl-8 pr-3 py-2.5 border border-slate-200 rounded-xl font-mono font-extrabold text-right text-xs text-[#3F7A5D] focus:outline-none focus:border-[#3F7A5D]"
+                                        class="w-full pl-8 pr-3 py-2.5 border border-slate-200 rounded-xl font-mono font-extrabold text-right text-xs text-[#232E28] focus:outline-none focus:border-[#3F7A5D]"
                                     />
                                 </div>
 

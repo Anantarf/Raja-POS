@@ -94,7 +94,7 @@
                                     Rp {{ number_format($product->cost_price ?? 0, 0, ',', '.') }}
                                 </td>
                             @endif
-                            <td class="py-4 px-5 text-right font-mono font-extrabold text-[#3F7A5D] text-sm">
+                            <td class="py-4 px-5 text-right font-mono font-extrabold text-[#232E28] text-sm">
                                 Rp {{ number_format($product->selling_price ?? 0, 0, ',', '.') }}
                             </td>
                             <td class="py-4 px-5 text-center">
