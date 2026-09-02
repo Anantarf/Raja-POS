@@ -75,7 +75,7 @@
                                     <div>
                                         <div class="font-bold text-[#232E28] text-sm leading-snug tracking-tight">{{ $product->name }}</div>
                                         <div class="text-xs font-mono text-[#718379] mt-0.5">
-                                            <span class="bg-[#E3EEE8] text-[#3F7A5D] px-2 py-0.5 rounded-md font-bold">SKU: {{ $product->code }}</span>
+                                            <span class="bg-indigo-50 text-indigo-600 border border-indigo-200/70 px-2 py-0.5 rounded-md font-bold text-[11px]">SKU: {{ $product->code }}</span>
                                             @if($product->effective_barcode) &bull; Barcode: {{ $product->effective_barcode }} @endif
                                         </div>
                                     </div>
@@ -91,11 +91,11 @@
                             </td>
                             @if(auth()->user()->can('cost_price.view'))
                                 <td class="py-4 px-5 text-right font-mono font-bold text-[#232E28] text-sm">
-                                    Rp {{ number_format($product->cost_price, 0, ',', '.') }}
+                                    Rp {{ number_format($product->cost_price ?? 0, 0, ',', '.') }}
                                 </td>
                             @endif
-                            <td class="py-4 px-5 text-right font-mono font-extrabold text-[#3F7A5D] text-base">
-                                Rp {{ number_format($product->selling_price, 0, ',', '.') }}
+                            <td class="py-4 px-5 text-right font-mono font-extrabold text-[#3F7A5D] text-sm">
+                                Rp {{ number_format($product->selling_price ?? 0, 0, ',', '.') }}
                             </td>
                             <td class="py-4 px-5 text-center">
                                 <span class="px-3 py-1 rounded-full text-xs font-bold tracking-wider {{ $product->price_status === 'COMPLETE' ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-50 text-rose-700' }}">
@@ -104,10 +104,10 @@
                             </td>
                             <td class="py-4 px-5 text-center">
                                 <div class="flex items-center justify-center gap-2">
-                                    <button wire:click="openEditModal({{ $product->id }})" class="px-3.5 py-2 bg-[#F3F6F4] hover:bg-slate-200 text-[#232E28] rounded-xl text-xs font-bold transition">
+                                    <button wire:click="openEditModal({{ $product->id }})" class="px-3.5 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 rounded-xl text-xs font-extrabold transition border border-indigo-200/80 active:scale-95">
                                         Edit
                                     </button>
-                                    <button wire:click="deleteProduct({{ $product->id }})" wire:confirm="Yakin ingin menghapus produk ini?" class="px-3.5 py-2 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-xl text-xs font-bold transition">
+                                    <button wire:click="deleteProduct({{ $product->id }})" wire:confirm="Yakin ingin menghapus produk ini?" class="px-3.5 py-2 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-xl text-xs font-extrabold transition border border-rose-200/80 active:scale-95">
                                         Hapus
                                     </button>
                                 </div>

@@ -47,26 +47,30 @@
                 <tbody class="divide-y divide-slate-100 font-medium">
                     @forelse($inventories as $inv)
                         <tr class="hover:bg-[#F5F5F9]/60 transition">
-                            <td class="py-3.5 px-4">
-                                <div class="font-bold text-[#566A7F] leading-tight">{{ $inv->product?->name }}</div>
-                                <div class="text-[10px] text-[#A1ACB8] font-mono mt-0.5">
-                                    <span class="bg-[#E7E7FF] text-[#696CFF] px-1.5 py-0.5 rounded font-bold">SKU: {{ $inv->product?->code }}</span> &bull; Kategori: {{ $inv->product?->category?->name ?? '-' }}
+                            <td class="py-4 px-5">
+                                <div class="font-bold text-[#232E28] leading-tight text-sm">{{ $inv->product?->name }}</div>
+                                <div class="text-xs text-[#718379] font-mono mt-1 flex items-center gap-2">
+                                    <span class="bg-indigo-50 text-indigo-600 border border-indigo-200/70 px-2 py-0.5 rounded-md font-bold text-[11px]">SKU: {{ $inv->product?->code }}</span>
+                                    <span>&bull; Kategori: {{ $inv->product?->category?->name ?? '-' }}</span>
                                 </div>
                             </td>
-                            <td class="py-3.5 px-4 font-semibold text-[#566A7F]">
+                            <td class="py-4 px-5 font-semibold text-[#232E28] text-sm">
                                 {{ $inv->location?->name }}
                             </td>
-                            <td class="py-3.5 px-4 text-center font-mono font-bold text-sm text-[#566A7F]">
+                            <td class="py-4 px-5 text-center font-mono font-extrabold text-base text-[#232E28]">
                                 {{ number_format($inv->quantity, 0, ',', '.') }}
                             </td>
-                            <td class="py-3.5 px-4 text-center">
-                                <span class="px-2.5 py-1 rounded-full text-[10px] font-bold {{ $inv->stock_status === 'OUT_OF_STOCK' ? 'bg-rose-50 text-rose-700' : ($inv->stock_status === 'LOW_STOCK' ? 'bg-amber-50 text-amber-700' : 'bg-emerald-50 text-emerald-700') }}">
+                            <td class="py-4 px-5 text-center">
+                                <span class="px-3 py-1 rounded-full text-xs font-bold {{ $inv->stock_status === 'OUT_OF_STOCK' ? 'bg-rose-50 text-rose-700 border border-rose-200' : ($inv->stock_status === 'LOW_STOCK' ? 'bg-amber-50 text-amber-700 border border-amber-200' : 'bg-emerald-50 text-emerald-700 border border-emerald-200') }}">
                                     {{ $inv->stock_status === 'OUT_OF_STOCK' ? 'HABIS' : ($inv->stock_status === 'LOW_STOCK' ? 'MENIPIS' : 'TERSEDIA') }}
                                 </span>
                             </td>
-                            <td class="py-3.5 px-4 text-center">
-                                <button wire:click="openAdjustmentModal({{ $inv->id }})" class="px-3 py-1.5 bg-[#E7E7FF] hover:bg-indigo-100 text-[#696CFF] rounded-lg text-xs font-semibold transition">
-                                    Adjust Stok ✏️
+                            <td class="py-4 px-5 text-center">
+                                <button wire:click="openAdjustmentModal({{ $inv->id }})" class="px-3.5 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 rounded-xl text-xs font-extrabold transition border border-indigo-200/80 inline-flex items-center gap-1.5 active:scale-95">
+                                    <span>Adjust Stok</span>
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                    </svg>
                                 </button>
                             </td>
                         </tr>
