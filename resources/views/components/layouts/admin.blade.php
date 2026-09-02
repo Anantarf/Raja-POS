@@ -71,9 +71,8 @@
                 R
             </div>
             <div>
-                <div class="font-extrabold text-lg text-[#232E28] tracking-tight flex items-center gap-2">
-                    <span>RAJA POS</span>
-                    <span class="text-xs bg-[#D9A21B]/15 text-[#9E7511] px-2 py-0.5 rounded-md font-extrabold border border-[#D9A21B]/40">EMCO GOLD</span>
+                <div class="font-extrabold text-lg text-[#232E28] tracking-tight">
+                    RAJA POS
                 </div>
                 <div class="text-xs text-[#718379] font-bold mt-0.5">Ritel Management System</div>
             </div>
