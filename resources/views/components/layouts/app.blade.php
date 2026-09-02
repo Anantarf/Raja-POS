@@ -6,69 +6,51 @@
     <title>{{ $title ?? 'Raja POS - Retail Management System' }}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        mono: ['"JetBrains Mono"', 'monospace'],
+                        sans: ['Poppins', 'sans-serif'],
+                        mono: ['Courier New', 'Courier', 'monospace'],
                     },
                     colors: {
                         navy: {
-                            800: '#1E293B',
                             900: '#0F172A',
-                            950: '#090D16',
                         },
                         brand: {
                             blue: '#2563EB',
-                            'blue-hover': '#1D4ED8',
-                            gold: '#F59E0B',
-                            'gold-bright': '#FBBF24',
+                            'blue-dark': '#1D4ED8',
                         }
-                    },
-                    boxShadow: {
-                        'glass': '0 8px 32px 0 rgba(15, 23, 42, 0.08)',
-                        'glow-blue': '0 0 20px -3px rgba(37, 99, 235, 0.35)',
-                        'glow-gold': '0 0 20px -3px rgba(245, 158, 11, 0.35)',
                     }
                 }
             }
         }
     </script>
     <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
         ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
+            width: 5px;
+            height: 5px;
         }
         ::-webkit-scrollbar-track {
             background: #F1F5F9;
         }
         ::-webkit-scrollbar-thumb {
             background: #CBD5E1;
-            border-radius: 9999px;
+            border-radius: 4px;
         }
         ::-webkit-scrollbar-thumb:hover {
             background: #94A3B8;
         }
-
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-        }
-
-        .glass-dark {
-            background: rgba(15, 23, 42, 0.92);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-        }
     </style>
     @livewireStyles
 </head>
-<body class="h-full bg-slate-100 flex flex-col text-slate-800 selection:bg-blue-500 selection:text-white overflow-hidden">
+<body class="h-full bg-slate-100 flex flex-col text-slate-800 selection:bg-blue-600 selection:text-white overflow-hidden">
 
     {{ $slot }}
 
@@ -84,11 +66,11 @@
             const isDanger = data.type === 'danger';
             const isWarning = data.type === 'warning';
 
-            const bgClass = isDanger ? 'bg-rose-600 text-white' : (isWarning ? 'bg-amber-500 text-white' : 'bg-slate-900 text-white');
+            const bgClass = isDanger ? 'bg-red-600 text-white' : (isWarning ? 'bg-amber-500 text-white' : 'bg-slate-900 text-white');
 
-            toast.className = `${bgClass} px-4 py-3 rounded-xl shadow-2xl text-xs font-semibold flex items-center gap-2 transform transition-all duration-300 translate-y-[-10px] opacity-0 pointer-events-auto border border-white/10`;
+            toast.className = `${bgClass} px-4 py-3 rounded-lg shadow-lg text-xs font-semibold flex items-center gap-2 transform transition-all duration-200 translate-y-[-10px] opacity-0 pointer-events-auto border border-slate-700/20`;
             toast.innerHTML = `
-                <span>${isDanger ? '🚫' : (isWarning ? '⚠️' : '✅')}</span>
+                <span>${isDanger ? '⚠️' : (isWarning ? '⚠️' : '✓')}</span>
                 <span>${data.message}</span>
             `;
 
@@ -100,8 +82,8 @@
 
             setTimeout(() => {
                 toast.classList.add('translate-y-[-10px]', 'opacity-0');
-                setTimeout(() => toast.remove(), 300);
-            }, 3500);
+                setTimeout(() => toast.remove(), 200);
+            }, 3000);
         });
     </script>
 </body>
