@@ -107,7 +107,7 @@
                 </div>
             </div>
 
-            <!-- Product Cards Grid (Prominent Top Product Image Cards) -->
+            <!-- Product Cards Grid (Polished Image Banner & Crisp Tailored Vector Icons) -->
             <div class="flex-1 overflow-y-auto pr-1 grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3.5">
                 @forelse($products as $product)
                     @php
@@ -132,15 +132,37 @@
                                 </span>
                             </div>
 
-                            <!-- Prominent Large Product Image Banner (Fix: Space Gambar Lebih Banyak) -->
-                            <div class="w-full h-28 rounded-2xl bg-[#F3F6F4] border border-slate-200/70 overflow-hidden mb-2.5 relative flex items-center justify-center group-hover:border-[#3F7A5D]/40 transition-colors">
+                            <!-- Large Product Image Banner / Clean Vector Icon Container -->
+                            <div class="w-full h-28 rounded-2xl bg-[#E3EEE8]/50 border border-[#E3EEE8] overflow-hidden mb-2.5 relative flex flex-col items-center justify-center group-hover:border-[#3F7A5D]/40 transition-colors">
                                 @if($product->image_url && !str_contains($product->image_url, 'via.placeholder.com'))
                                     <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                                 @else
-                                    <div class="flex flex-col items-center justify-center text-slate-400 space-y-1 p-2 text-center">
-                                        <div class="w-10 h-10 rounded-full bg-[#E3EEE8] text-[#3F7A5D] font-extrabold flex items-center justify-center text-sm font-mono">
-                                            {{ strtoupper(substr($product->name, 0, 2)) }}
-                                        </div>
+                                    <div class="flex flex-col items-center justify-center space-y-1.5 p-2 text-center">
+                                        @if($product->product_type === 'PHYSICAL')
+                                            <!-- Physical Aksesoris Icon -->
+                                            <div class="w-10 h-10 rounded-xl bg-white text-[#3F7A5D] border border-[#E3EEE8] flex items-center justify-center shadow-sm">
+                                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                                                </svg>
+                                            </div>
+                                        @elseif($product->product_type === 'DIGITAL')
+                                            <!-- Digital / Pulsa Icon -->
+                                            <div class="w-10 h-10 rounded-xl bg-emerald-700 text-white flex items-center justify-center shadow-sm">
+                                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                                </svg>
+                                            </div>
+                                        @else
+                                            <!-- Service / Transfer Icon -->
+                                            <div class="w-10 h-10 rounded-xl bg-[#C2AC7C] text-white flex items-center justify-center shadow-sm">
+                                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
+                                                </svg>
+                                            </div>
+                                        @endif
+                                        <span class="text-[10px] font-bold text-[#718379] tracking-tight uppercase">
+                                            {{ $product->product_type === 'PHYSICAL' ? 'AKSESORIS' : ($product->product_type === 'DIGITAL' ? 'PULSA/E-MONEY' : 'JASA/TRANSFER') }}
+                                        </span>
                                     </div>
                                 @endif
                             </div>
