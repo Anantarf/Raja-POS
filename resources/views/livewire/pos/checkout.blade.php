@@ -107,7 +107,7 @@
                 </div>
             </div>
 
-            <!-- Product Cards Grid (Spacious Height Cards & No Banner Clipping) -->
+            <!-- Product Cards Grid (Subtle Soft Badges) -->
             <div class="flex-1 overflow-y-auto pr-1 grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3.5">
                 @forelse($products as $product)
                     @php
@@ -122,15 +122,15 @@
                         class="bg-white border border-[#E3EEE8] hover:border-[#3F7A5D] rounded-3xl overflow-hidden flex flex-col justify-between h-[235px] cursor-pointer transition-all duration-200 relative group hover:shadow-sm {{ $isIncomplete ? 'opacity-65 bg-rose-50/20' : '' }}"
                     >
                         <div>
-                            <!-- Seamless Top Gradient Image Banner Container (Fixed Height h-28 for Spacious Display) -->
-                            <div class="w-full h-28 relative overflow-hidden bg-gradient-to-br from-[#E3EEE8] via-[#F3F6F4] to-[#E3EEE8]/60 flex items-center justify-center shrink-0">
+                            <!-- Seamless Top Gradient Image Banner Container -->
+                            <div class="w-full h-28 relative overflow-hidden bg-gradient-to-br from-[#E3EEE8]/70 via-[#F3F6F4] to-[#E3EEE8]/40 flex items-center justify-center shrink-0">
 
-                                <!-- Top Floating Overlay Badges -->
-                                <div class="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between z-10">
-                                    <span class="text-[10px] font-mono text-[#3F7A5D] bg-white/90 backdrop-blur-md px-2 py-0.5 rounded-md font-bold shadow-sm border border-white/40">
+                                <!-- Subtle Soft Floating Overlay Badges (Fix: Subtle Non-Distracting Badges) -->
+                                <div class="absolute top-2 left-2 right-2 flex items-center justify-between z-10 opacity-80 group-hover:opacity-100 transition-opacity">
+                                    <span class="text-[9px] font-mono text-[#3F7A5D] bg-white/70 backdrop-blur-sm px-1.5 py-0.5 rounded font-bold border border-[#3F7A5D]/15">
                                         {{ $product->code }}
                                     </span>
-                                    <span class="text-[9px] uppercase font-extrabold px-2 py-0.5 rounded-full backdrop-blur-md shadow-sm border border-white/40 {{ $product->product_type === 'PHYSICAL' ? 'bg-[#3F7A5D]/90 text-white' : ($product->product_type === 'DIGITAL' ? 'bg-emerald-700/90 text-white' : 'bg-[#C2AC7C]/90 text-white') }}">
+                                    <span class="text-[9px] uppercase font-bold px-1.5 py-0.5 rounded backdrop-blur-sm border {{ $product->product_type === 'PHYSICAL' ? 'bg-[#3F7A5D]/10 text-[#3F7A5D] border-[#3F7A5D]/20' : ($product->product_type === 'DIGITAL' ? 'bg-emerald-100/90 text-emerald-800 border-emerald-300/60' : 'bg-[#C2AC7C]/15 text-[#8F794B] border-[#C2AC7C]/30') }}">
                                         {{ $product->product_type === 'PHYSICAL' ? 'FISIK' : ($product->product_type === 'DIGITAL' ? 'DIGITAL' : 'SERVICE') }}
                                     </span>
                                 </div>
@@ -141,7 +141,7 @@
                                 @else
                                     <div class="flex flex-col items-center justify-center space-y-1.5 p-2 text-center pt-5">
                                         @if($product->product_type === 'PHYSICAL')
-                                            <div class="w-10 h-10 rounded-2xl bg-white/90 text-[#3F7A5D] backdrop-blur-md border border-white/60 flex items-center justify-center shadow-sm">
+                                            <div class="w-10 h-10 rounded-2xl bg-white/80 text-[#3F7A5D] backdrop-blur-md border border-white/60 flex items-center justify-center shadow-sm">
                                                 <svg class="w-5.5 h-5.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
                                                 </svg>
