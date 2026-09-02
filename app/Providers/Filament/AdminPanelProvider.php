@@ -27,11 +27,23 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login(\App\Filament\Pages\Auth\Login::class)
-            ->brandName('Raja Aksesoris POS')
+            ->brandName('RAJA POS')
             ->font('Poppins')
             ->darkMode(false)
             ->colors([
-                'primary' => Color::Blue,
+                'primary' => [
+                    50 => '239, 246, 255',
+                    100 => '219, 234, 254',
+                    200 => '191, 219, 254',
+                    300 => '147, 197, 253',
+                    400 => '96, 165, 250',
+                    500 => '59, 130, 246',
+                    600 => '37, 99, 235',   // #2563EB (Cashier Royal Blue)
+                    700 => '29, 78, 216',
+                    800 => '30, 64, 175',
+                    900 => '30, 58, 138',
+                    950 => '23, 37, 84',
+                ],
                 'gray' => Color::Slate,
                 'warning' => Color::Amber,
                 'danger' => Color::Red,
@@ -48,18 +60,24 @@ class AdminPanelProvider extends PanelProvider
             ->renderHook(
                 'panels::head.done',
                 fn (): string => '<style>
-                    /* Custom Filament Light Theme Matching Cashier UI Style */
+                    /* Custom Filament Theme Matching Cashier UI Style Exactly */
                     body, .fi-body {
                         background-color: #F8FAFC !important;
+                        font-family: "Poppins", sans-serif !important;
                     }
                     .fi-topbar {
                         background-color: #0F172A !important;
                         border-bottom: 1px solid #1E293B !important;
                     }
                     .fi-topbar-brand-name {
-                        color: #FFFFFF !important;
-                        font-weight: 700 !important;
-                        letter-spacing: -0.025em;
+                        background-color: #F59E0B !important;
+                        color: #0F172A !important;
+                        font-weight: 800 !important;
+                        padding: 4px 12px !important;
+                        border-radius: 9999px !important;
+                        font-size: 0.75rem !important;
+                        letter-spacing: 0.05em !important;
+                        text-transform: uppercase !important;
                     }
                     .fi-topbar-item, .fi-topbar-user-menu button {
                         color: #E2E8F0 !important;
@@ -86,6 +104,7 @@ class AdminPanelProvider extends PanelProvider
                         background-color: #2563EB !important;
                         color: #FFFFFF !important;
                         font-weight: 600 !important;
+                        border-radius: 0.75rem !important;
                     }
                     .fi-section, .fi-card, .fi-wi-stats-overview-stat {
                         background-color: #FFFFFF !important;
@@ -94,15 +113,23 @@ class AdminPanelProvider extends PanelProvider
                     }
                     .fi-btn-primary {
                         background-color: #2563EB !important;
+                        border-color: #2563EB !important;
+                        border-radius: 0.75rem !important;
                     }
                     .fi-btn-primary:hover {
                         background-color: #1D4ED8 !important;
+                        border-color: #1D4ED8 !important;
+                    }
+                    .fi-badge-primary {
+                        background-color: #EFF6FF !important;
+                        color: #2563EB !important;
+                        border: 1px solid #BFDBFE !important;
                     }
                 </style>'
             )
             ->renderHook(
                 'panels::user-menu.before',
-                fn (): string => '<a href="/pos" class="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold text-xs flex items-center gap-1.5 shadow-sm transition mr-2"><span>Layar Kasir POS</span> &rarr;</a>'
+                fn (): string => '<a href="/pos" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-xs flex items-center gap-1.5 shadow-sm transition mr-3"><span>Layar Kasir POS</span> &rarr;</a>'
             )
             ->widgets([
                 Widgets\AccountWidget::class,
