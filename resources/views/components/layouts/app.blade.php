@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full bg-[#F5F5F9] font-sans antialiased selection:bg-[#696CFF] selection:text-white">
+<html lang="id" class="h-full bg-[#F3F6F4] font-sans antialiased selection:bg-[#3F7A5D] selection:text-white">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,19 +17,21 @@
                         mono: ['Poppins', 'Courier New', 'monospace'],
                     },
                     colors: {
-                        sneat: {
-                            primary: '#696CFF',
-                            'primary-hover': '#5F61E6',
-                            'primary-light': '#E7E7FF',
-                            dark: '#232333',
-                            body: '#F5F5F9',
-                            muted: '#A1ACB8',
+                        emco: {
+                            primary: '#3F7A5D',       // EMCO 49/70 Deep Jade Emerald
+                            'primary-hover': '#32634B',
+                            'primary-light': '#E3EEE8', // EMCO 120 Light Sage
+                            sand: '#C2AC7C',          // EMCO 79 Warm Sand Ochre
+                            mint: '#A9D1A0',          // EMCO 46 Fresh Mint
+                            dark: '#232E28',          // Deep Forest Dark
+                            body: '#F3F6F4',          // Soft Tinted Cream/Sage BG
+                            muted: '#86968E',
                         }
                     },
                     boxShadow: {
-                        'sneat': '0 2px 14px 0 rgba(161, 172, 184, 0.18)',
-                        'sneat-hover': '0 4px 20px 0 rgba(161, 172, 184, 0.28)',
-                        'sneat-primary': '0 4px 12px 0 rgba(105, 108, 255, 0.4)',
+                        'emco': '0 2px 14px 0 rgba(63, 122, 93, 0.08)',
+                        'emco-hover': '0 4px 20px 0 rgba(63, 122, 93, 0.16)',
+                        'emco-primary': '0 4px 12px 0 rgba(63, 122, 93, 0.35)',
                     }
                 }
             }
@@ -38,7 +40,7 @@
     <style>
         body {
             font-family: 'Public Sans', 'Poppins', sans-serif;
-            background-color: #F5F5F9;
+            background-color: #F3F6F4;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
@@ -59,7 +61,7 @@
     </style>
     @livewireStyles
 </head>
-<body class="h-full bg-[#F5F5F9] flex flex-col text-[#566A7F] overflow-hidden">
+<body class="h-full bg-[#F3F6F4] flex flex-col text-[#232E28] overflow-hidden">
 
     {{ $slot }}
 
@@ -75,9 +77,9 @@
             const isDanger = data.type === 'danger';
             const isWarning = data.type === 'warning';
 
-            const bgClass = isDanger ? 'bg-rose-600 text-white' : (isWarning ? 'bg-amber-500 text-white' : 'bg-[#232333] text-white');
+            const bgClass = isDanger ? 'bg-rose-600 text-white' : (isWarning ? 'bg-amber-600 text-white' : 'bg-[#232E28] text-white');
 
-            toast.className = `${bgClass} px-4 py-3 rounded-2xl shadow-sneat text-xs font-bold flex items-center gap-2 transform transition-all duration-200 translate-y-[-8px] opacity-0 pointer-events-auto border border-white/10 font-sans tracking-wide`;
+            toast.className = `${bgClass} px-4 py-3 rounded-2xl shadow-emco text-xs font-bold flex items-center gap-2 transform transition-all duration-200 translate-y-[-8px] opacity-0 pointer-events-auto border border-white/10 font-sans tracking-wide`;
             toast.innerHTML = `
                 <span>${isDanger ? '⚠️' : (isWarning ? '⚠️' : '✓')}</span>
                 <span>${data.message}</span>
