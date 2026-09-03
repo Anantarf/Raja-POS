@@ -46,19 +46,13 @@
                 <input type="checkbox" wire:model="remember" class="w-4 h-4 text-[#3F7A5D] rounded border-slate-300 focus:ring-[#3F7A5D]">
                 <span class="text-[#718379] font-medium">Ingat Saya</span>
             </label>
-            <span class="bg-[#E3EEE8] text-[#3F7A5D] border border-[#3F7A5D]/20 px-2 py-0.5 rounded-md font-mono text-[10px] font-bold">Raja Aksesoris 2.0</span>
         </div>
 
         <button
             type="submit"
-            class="w-full py-4 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-2xl text-xs uppercase tracking-wider transition active:scale-95 shadow-md mt-2"
+            class="w-full py-4 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-2xl text-xs uppercase tracking-wider transition active:scale-95 shadow-md mt-2 cursor-pointer"
         >
             MASUK KE SISTEM POS
         </button>
     </form>
-
-    <!-- Quick Info -->
-    <div class="pt-2 border-t border-slate-100 text-center text-[11px] text-[#718379] font-medium">
-        Default Superadmin Login: <span class="font-mono font-bold text-[#232E28] bg-slate-100 px-1.5 py-0.5 rounded">superadmin</span> / <span class="font-mono font-bold text-[#232E28] bg-slate-100 px-1.5 py-0.5 rounded">password</span>
-    </div>
 </div>
