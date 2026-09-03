@@ -219,4 +219,18 @@ class InventoryTest extends TestCase
         $this->assertEquals(10, Inventory::where('product_id', $product->id)->value('quantity'));
         $this->assertEquals(-1, $item->fresh()->difference);
     }
+
+    public function test_inventories_page_sorting_by_stock_status(): void
+    {
+        $user = User::where('username', 'superadmin')->first();
+
+        \Livewire\Livewire::actingAs($user)
+            ->test(\App\Livewire\Admin\Inventories::class)
+            ->call('sortBy', 'stock_status')
+            ->assertSet('sortField', 'stock_status')
+            ->assertSet('sortDirection', 'asc')
+            ->call('sortBy', 'stock_status')
+            ->assertSet('sortDirection', 'desc')
+            ->assertStatus(200);
+    }
 }

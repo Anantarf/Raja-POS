@@ -5,12 +5,13 @@ namespace App\Livewire\Admin;
 use App\Models\BalanceAccount;
 use App\Models\BalanceTransaction;
 use App\Services\BalanceService;
+use App\Traits\WithSorting;
 use Livewire\Component;
 use Livewire\WithPagination;
 
 class Balances extends Component
 {
-    use WithPagination;
+    use WithPagination, WithSorting;
 
     public $search = '';
 
@@ -113,7 +114,11 @@ class Balances extends Component
             });
         }
 
-        $transactions = $query->orderBy('created_at', 'desc')->paginate(10);
+        $allowedSorts = ['transaction_number', 'amount', 'created_at'];
+        $field = in_array($this->sortField, $allowedSorts) ? $this->sortField : 'created_at';
+        $direction = in_array($this->sortDirection, ['asc', 'desc']) ? $this->sortDirection : 'desc';
+
+        $transactions = $query->orderBy($field, $direction)->paginate(10);
         $totalBalance = $accounts->sum('balance');
         $totalCash = $accounts->where('account_type', 'CASH')->sum('balance');
         $totalBank = $accounts->whereIn('account_type', ['BANK', 'QRIS'])->sum('balance');

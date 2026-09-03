@@ -68,10 +68,37 @@
                 <table class="w-full text-xs text-left">
                     <thead class="bg-[#F3F6F4] border-b border-slate-200/80 text-[#718379] uppercase text-[11px] font-extrabold tracking-wider">
                         <tr>
-                            <th class="py-3.5 px-4">Nama Barang</th>
+                            <th wire:click="sortBy('product_name')" class="py-3.5 px-4 cursor-pointer hover:text-[#3F7A5D] transition select-none">
+                                <div class="flex items-center gap-1">
+                                    <span>Nama Barang</span>
+                                    @if($sortField === 'product_name')
+                                        <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
+                                    @else
+                                        <span class="text-slate-300">↕</span>
+                                    @endif
+                                </div>
+                            </th>
                             <th class="py-3.5 px-4">Lokasi Toko</th>
-                            <th class="py-3.5 px-4 text-center">Jumlah Stok</th>
-                            <th class="py-3.5 px-4 text-center">Status Stok</th>
+                            <th wire:click="sortBy('quantity')" class="py-3.5 px-4 text-center cursor-pointer hover:text-[#3F7A5D] transition select-none">
+                                <div class="flex items-center justify-center gap-1">
+                                    <span>Jumlah Stok</span>
+                                    @if($sortField === 'quantity')
+                                        <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
+                                    @else
+                                        <span class="text-slate-300">↕</span>
+                                    @endif
+                                </div>
+                            </th>
+                            <th wire:click="sortBy('stock_status')" class="py-3.5 px-4 text-center cursor-pointer hover:text-[#3F7A5D] transition select-none">
+                                <div class="flex items-center justify-center gap-1">
+                                    <span>Status Stok</span>
+                                    @if($sortField === 'stock_status')
+                                        <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
+                                    @else
+                                        <span class="text-slate-300">↕</span>
+                                    @endif
+                                </div>
+                            </th>
                             <th class="py-3.5 px-4 text-center">Aksi</th>
                         </tr>
                     </thead>

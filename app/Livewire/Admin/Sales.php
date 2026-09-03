@@ -5,12 +5,13 @@ namespace App\Livewire\Admin;
 use App\Models\PaymentMethod;
 use App\Models\Sale;
 use App\Services\SaleCancellationService;
+use App\Traits\WithSorting;
 use Livewire\Component;
 use Livewire\WithPagination;
 
 class Sales extends Component
 {
-    use WithPagination;
+    use WithPagination, WithSorting;
 
     public $search = '';
     public $startDate = '';
@@ -98,7 +99,11 @@ class Sales extends Component
             });
         }
 
-        $sales = $query->orderBy('created_at', 'desc')->paginate(12);
+        $allowedSorts = ['invoice_number', 'grand_total', 'status', 'created_at'];
+        $field = in_array($this->sortField, $allowedSorts) ? $this->sortField : 'created_at';
+        $direction = in_array($this->sortDirection, ['asc', 'desc']) ? $this->sortDirection : 'desc';
+
+        $sales = $query->orderBy($field, $direction)->paginate(12);
         $selectedSale = $this->selectedSaleId ? Sale::with(['items', 'payments.paymentMethod', 'cashier', 'user'])->find($this->selectedSaleId) : null;
         $receiptSale = $this->receiptSaleId ? Sale::with(['items', 'payments.paymentMethod', 'cashier', 'user'])->find($this->receiptSaleId) : null;
 

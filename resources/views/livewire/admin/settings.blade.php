@@ -32,9 +32,9 @@
             $storeSettings = [
                 ['label' => 'Nama Toko', 'value' => $settingMap->get('store_name', 'Raja Aksesoris'), 'hint' => 'Nama resmi toko yang tampil di sistem dan struk belanja.'],
                 ['label' => 'Mata Uang', 'value' => $settingMap->get('currency', 'Rupiah (Rp.)'), 'hint' => 'Format simbol mata uang untuk transaksi & laporan.'],
-                ['label' => 'Zona Waktu', 'value' => $settingMap->get('timezone', 'Asia/Jakarta (WIB)'), 'hint' => 'Acuan waktu tanggal nota, laporan harian, dan audit.'],
-                ['label' => 'Kertas Struk Thermal', 'value' => $settingMap->get('receipt_paper_width', '80mm Thermal'), 'hint' => 'Ukuran kertas printer thermal saat cetak struk kasir.'],
-                ['label' => 'Batas Stok Minimum', 'value' => $settingMap->get('minimum_stock_default', '5 Item'), 'hint' => 'Jumlah ambang batas awal peringatan stok menipis.'],
+                ['label' => 'Zona Waktu', 'value' => $settingMap->get('timezone', 'Asia/Jakarta (WIB)'), 'hint' => 'Acuan waktu tanggal transaksi, laporan harian, dan audit.'],
+                ['label' => 'Mode Transaksi', 'value' => 'Multi-Payment & Split Account', 'hint' => 'Mendukung Tunai, Bank, QRIS, & E-Wallet dalam 1 transaksi.'],
+                ['label' => 'Validasi Stok', 'value' => 'Server-Side Strict Guard', 'hint' => 'Mencegah transaksi jika stok barang fisik di toko kosong.'],
             ];
         @endphp
 
@@ -44,7 +44,7 @@
                 <div class="flex items-start justify-between gap-4 border-b border-slate-100 pb-3.5">
                     <div>
                         <h3 class="text-sm font-extrabold text-[#232E28] uppercase tracking-wider">Profil &amp; Preferensi Toko</h3>
-                        <p class="text-xs text-[#718379] font-medium mt-0.5">Konfigurasi dasar operasional kasir, cetak nota, dan pencatatan laporan.</p>
+                        <p class="text-xs text-[#718379] font-medium mt-0.5">Konfigurasi dasar operasional kasir, cetak struk, dan pencatatan laporan.</p>
                     </div>
                     <span class="px-3 py-1 rounded-lg bg-[#E3EEE8] text-[#3F7A5D] text-[10px] font-black uppercase tracking-wider border border-[#3F7A5D]/20">Aktif &amp; Berjalan</span>
                 </div>

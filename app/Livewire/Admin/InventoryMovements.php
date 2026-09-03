@@ -3,12 +3,13 @@
 namespace App\Livewire\Admin;
 
 use App\Models\InventoryMovement;
+use App\Traits\WithSorting;
 use Livewire\Component;
 use Livewire\WithPagination;
 
 class InventoryMovements extends Component
 {
-    use WithPagination;
+    use WithPagination, WithSorting;
 
     public string $search = '';
 
@@ -28,8 +29,7 @@ class InventoryMovements extends Component
 
     public function render()
     {
-        $query = InventoryMovement::with(['product', 'location', 'creator'])
-            ->latest();
+        $query = InventoryMovement::with(['product', 'location', 'creator']);
 
         if ($this->movementType !== 'ALL') {
             $query->where('movement_type', $this->movementType);
@@ -46,8 +46,12 @@ class InventoryMovements extends Component
             });
         }
 
+        $allowedSorts = ['movement_type', 'quantity_change', 'created_at'];
+        $field = in_array($this->sortField, $allowedSorts) ? $this->sortField : 'created_at';
+        $direction = in_array($this->sortDirection, ['asc', 'desc']) ? $this->sortDirection : 'desc';
+
         return view('livewire.admin.inventory-movements', [
-            'movements' => $query->paginate(12),
+            'movements' => $query->orderBy($field, $direction)->paginate(12),
             'movementTypes' => InventoryMovement::query()
                 ->select('movement_type')
                 ->distinct()

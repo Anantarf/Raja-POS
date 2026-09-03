@@ -9,13 +9,14 @@ use App\Models\Location;
 use App\Models\Product;
 use App\Services\InventoryService;
 use App\Services\ProductImportService;
+use App\Traits\WithSorting;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 
 class Products extends Component
 {
-    use WithFileUploads, WithPagination;
+    use WithPagination, WithFileUploads, WithSorting;
 
     public $search = '';
 
@@ -282,7 +283,18 @@ class Products extends Component
             })
             ->count();
 
-        $products = $query->orderBy('created_at', 'desc')->paginate(12);
+        $direction = in_array($this->sortDirection, ['asc', 'desc']) ? $this->sortDirection : 'desc';
+
+        if ($this->sortField === 'stock' || $this->sortField === 'quantity') {
+            $query->withSum('inventories', 'quantity')
+                ->orderBy('inventories_sum_quantity', $direction);
+        } else {
+            $allowedSorts = ['name', 'code', 'cost_price', 'selling_price', 'product_type', 'created_at'];
+            $field = in_array($this->sortField, $allowedSorts) ? $this->sortField : 'created_at';
+            $query->orderBy($field, $direction);
+        }
+
+        $products = $query->paginate(12);
 
         return view('livewire.admin.products', [
             'products' => $products,

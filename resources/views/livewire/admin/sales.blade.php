@@ -3,7 +3,7 @@
     <div class="flex items-center justify-between">
         <div>
             <h1 class="text-2xl font-extrabold text-[#232E28] tracking-tight">Riwayat Transaksi</h1>
-            <p class="text-xs text-[#718379] font-medium mt-0.5">Daftar seluruh nota transaksi penjualan toko, rincian pembayaran, dan cetak ulang struk kasir.</p>
+            <p class="text-xs text-[#718379] font-medium mt-0.5">Daftar seluruh transaksi penjualan toko, rincian pembayaran, dan cetak ulang struk kasir.</p>
         </div>
     </div>
 
@@ -55,11 +55,38 @@
             <table class="w-full text-xs text-left">
                 <thead class="bg-[#F3F6F4] border-b border-slate-200/80 text-[#718379] uppercase text-[11px] font-extrabold tracking-wider whitespace-nowrap">
                     <tr>
-                        <th class="py-3.5 px-4">No. TRX &amp; Waktu</th>
+                        <th wire:click="sortBy('invoice_number')" class="py-3.5 px-4 cursor-pointer hover:text-[#3F7A5D] transition select-none">
+                            <div class="flex items-center gap-1">
+                                <span>No. TRX &amp; Waktu</span>
+                                @if($sortField === 'invoice_number' || $sortField === 'created_at')
+                                    <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
+                                @else
+                                    <span class="text-slate-300">↕</span>
+                                @endif
+                            </div>
+                        </th>
                         <th class="py-3.5 px-4">Kasir & Lokasi</th>
                         <th class="py-3.5 px-4">Metode Pembayaran</th>
-                        <th class="py-3.5 px-4 text-right">Total Transaksi</th>
-                        <th class="py-3.5 px-4 text-center">Status</th>
+                        <th wire:click="sortBy('grand_total')" class="py-3.5 px-4 text-right cursor-pointer hover:text-[#3F7A5D] transition select-none">
+                            <div class="flex items-center justify-end gap-1">
+                                <span>Total Transaksi</span>
+                                @if($sortField === 'grand_total')
+                                    <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
+                                @else
+                                    <span class="text-slate-300">↕</span>
+                                @endif
+                            </div>
+                        </th>
+                        <th wire:click="sortBy('status')" class="py-3.5 px-4 text-center cursor-pointer hover:text-[#3F7A5D] transition select-none">
+                            <div class="flex items-center justify-center gap-1">
+                                <span>Status</span>
+                                @if($sortField === 'status')
+                                    <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
+                                @else
+                                    <span class="text-slate-300">↕</span>
+                                @endif
+                            </div>
+                        </th>
                         <th class="py-3.5 px-4 text-center">Aksi</th>
                     </tr>
                 </thead>
@@ -94,7 +121,7 @@
                             <td class="py-3.5 px-4 text-center whitespace-nowrap">
                                 <div class="flex items-center justify-center gap-1.5 whitespace-nowrap">
                                     <button wire:click="openDetailModal({{ $sale->id }})" class="px-3 py-1.5 bg-slate-100 hover:bg-[#E3EEE8] text-[#232E28] hover:text-[#3F7A5D] border border-slate-200/80 rounded-xl text-xs font-extrabold transition cursor-pointer shadow-sm">
-                                        Detail Nota
+                                        Detail Transaksi
                                     </button>
                                     <button wire:click="openReceiptModal({{ $sale->id }})" class="px-3 py-1.5 bg-slate-100 hover:bg-[#E3EEE8] text-[#232E28] hover:text-[#3F7A5D] border border-slate-200/80 rounded-xl text-xs font-extrabold transition cursor-pointer shadow-sm flex items-center gap-1">
                                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
@@ -129,7 +156,7 @@
                 <!-- Modal Header -->
                 <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                     <div>
-                        <h3 class="text-base font-extrabold text-[#232E28]">Detail Transaksi Nota</h3>
+                        <h3 class="text-base font-extrabold text-[#232E28]">Detail Transaksi</h3>
                         <div class="text-xs font-mono text-[#3F7A5D] font-bold bg-[#E3EEE8] border border-[#3F7A5D]/20 px-2.5 py-0.5 rounded-md inline-block mt-1">{{ $selectedSale->invoice_number }}</div>
                     </div>
                     <button type="button" wire:click="$set('showDetailModal', false)" class="text-slate-400 hover:text-slate-600 p-1 cursor-pointer">

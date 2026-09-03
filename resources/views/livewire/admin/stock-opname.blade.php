@@ -40,12 +40,30 @@
             <table class="w-full text-xs text-left">
                 <thead class="bg-[#F3F6F4] border-b border-slate-200/80 text-[#718379] uppercase text-[11px] font-extrabold tracking-wider whitespace-nowrap">
                     <tr>
-                        <th class="py-3.5 px-4">No. Opname & Waktu</th>
+                        <th wire:click="sortBy('opname_number')" class="py-3.5 px-4 cursor-pointer hover:text-[#3F7A5D] transition select-none">
+                            <div class="flex items-center gap-1">
+                                <span>No. Opname &amp; Waktu</span>
+                                @if($sortField === 'opname_number' || $sortField === 'created_at')
+                                    <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
+                                @else
+                                    <span class="text-slate-300">↕</span>
+                                @endif
+                            </div>
+                        </th>
                         <th class="py-3.5 px-4">Rincian Barang & Lokasi</th>
                         <th class="py-3.5 px-4 text-center">Stok Sistem</th>
                         <th class="py-3.5 px-4 text-center">Stok Fisik</th>
                         <th class="py-3.5 px-4 text-center">Total Selisih</th>
-                        <th class="py-3.5 px-4 text-center">Status</th>
+                        <th wire:click="sortBy('status')" class="py-3.5 px-4 text-center cursor-pointer hover:text-[#3F7A5D] transition select-none">
+                            <div class="flex items-center justify-center gap-1">
+                                <span>Status</span>
+                                @if($sortField === 'status')
+                                    <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
+                                @else
+                                    <span class="text-slate-300">↕</span>
+                                @endif
+                            </div>
+                        </th>
                         <th class="py-3.5 px-4 text-center">Aksi</th>
                     </tr>
                 </thead>

@@ -3,13 +3,20 @@
 namespace App\Livewire\Admin;
 
 use App\Models\Brand;
+use App\Traits\WithSorting;
 use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\WithPagination;
 
 class Brands extends Component
 {
-    use WithPagination;
+    use WithPagination, WithSorting;
+
+    public function mount(): void
+    {
+        $this->sortField = 'name';
+        $this->sortDirection = 'asc';
+    }
 
     public $search = '';
 
@@ -61,8 +68,12 @@ class Brands extends Component
 
     public function render()
     {
+        $allowedSorts = ['name', 'slug', 'created_at'];
+        $field = in_array($this->sortField, $allowedSorts) ? $this->sortField : 'name';
+        $direction = in_array($this->sortDirection, ['asc', 'desc']) ? $this->sortDirection : 'asc';
+
         $brands = Brand::where('name', 'like', '%'.$this->search.'%')
-            ->orderBy('name')
+            ->orderBy($field, $direction)
             ->paginate(10);
 
         return view('livewire.admin.brands', [

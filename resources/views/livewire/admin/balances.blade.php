@@ -123,7 +123,7 @@
                     <input
                         type="text"
                         wire:model.live.debounce.300ms="search"
-                        placeholder="Cari No. Mutasi / Nota..."
+                        placeholder="Cari No. Mutasi / Ref..."
                         class="w-full pl-9 pr-3 py-2 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] bg-[#F3F6F4]"
                     />
                     <svg class="w-4 h-4 text-slate-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -137,10 +137,28 @@
             <table class="w-full text-xs text-left">
                 <thead class="bg-[#F3F6F4] border-b border-[#E3EEE8] text-[#718379] uppercase text-[10px] font-extrabold tracking-wider">
                     <tr>
-                        <th class="py-3.5 px-4">No. Mutasi &amp; Waktu</th>
+                        <th wire:click="sortBy('transaction_number')" class="py-3.5 px-4 cursor-pointer hover:text-[#3F7A5D] transition select-none">
+                            <div class="flex items-center gap-1">
+                                <span>No. Mutasi &amp; Waktu</span>
+                                @if($sortField === 'transaction_number' || $sortField === 'created_at')
+                                    <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
+                                @else
+                                    <span class="text-slate-300">↕</span>
+                                @endif
+                            </div>
+                        </th>
                         <th class="py-3.5 px-4">Tipe Transaksi</th>
                         <th class="py-3.5 px-4">Aliran Akun</th>
-                        <th class="py-3.5 px-4 text-right">Nominal</th>
+                        <th wire:click="sortBy('amount')" class="py-3.5 px-4 text-right cursor-pointer hover:text-[#3F7A5D] transition select-none">
+                            <div class="flex items-center justify-end gap-1">
+                                <span>Nominal</span>
+                                @if($sortField === 'amount')
+                                    <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
+                                @else
+                                    <span class="text-slate-300">↕</span>
+                                @endif
+                            </div>
+                        </th>
                         <th class="py-3.5 px-4 text-right">Saldo Akhir</th>
                         <th class="py-3.5 px-4">Keterangan &amp; Petugas</th>
                     </tr>

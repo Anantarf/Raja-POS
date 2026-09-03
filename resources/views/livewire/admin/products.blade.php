@@ -65,6 +65,22 @@
                 @endforeach
             </select>
 
+            <!-- Sort Dropdown & Direction Toggle -->
+            <div class="flex items-center gap-1.5 shrink-0">
+                <select wire:model.live="sortField" class="px-3 py-2 border border-slate-200 rounded-xl text-xs font-semibold bg-white text-[#232E28] focus:ring-2 focus:ring-[#3F7A5D]/20">
+                    <option value="created_at">Urutkan: Terbaru</option>
+                    <option value="name">Urutkan: Nama Barang</option>
+                    <option value="stock">Urutkan: Jumlah Stok</option>
+                    <option value="selling_price">Urutkan: Harga Jual</option>
+                    @if(auth()->user()->can('cost_price.view'))
+                        <option value="cost_price">Urutkan: Modal (COGS)</option>
+                    @endif
+                </select>
+                <button type="button" wire:click="$set('sortDirection', '{{ $sortDirection === 'asc' ? 'desc' : 'asc' }}')" class="px-2.5 py-2 border border-slate-200 rounded-xl bg-white hover:bg-[#F3F6F4] font-extrabold text-xs text-[#3F7A5D] transition shrink-0 cursor-pointer shadow-sm select-none" title="Ubah Arah Urutan (Ascending / Descending)">
+                    {{ $sortDirection === 'asc' ? '↑ ASC' : '↓ DESC' }}
+                </button>
+            </div>
+
             <!-- Jenis Stok Filter Pills -->
             <div class="flex items-center gap-1 bg-slate-100 p-1 rounded-xl shrink-0 flex-wrap">
                 <button type="button" @click="$wire.filterType('ALL')" wire:click="filterType('ALL')" class="px-3 py-1 rounded-lg font-bold text-xs transition cursor-pointer {{ $selectedType === 'ALL' ? 'bg-[#3F7A5D] text-white shadow-sm' : 'text-slate-600 hover:text-slate-900' }}">Semua</button>
@@ -227,13 +243,59 @@
                 <table class="w-full text-xs text-left">
                     <thead class="bg-[#F3F6F4] border-b border-slate-200/80 text-[#718379] uppercase text-[11px] font-extrabold tracking-wider">
                         <tr>
-                            <th class="py-3.5 px-4">Nama Barang / Layanan</th>
-                            <th class="py-3.5 px-4">Jenis Stok</th>
+                            <th wire:click="sortBy('name')" class="py-3.5 px-4 cursor-pointer hover:text-[#3F7A5D] transition select-none">
+                                <div class="flex items-center gap-1">
+                                    <span>Nama Barang / Layanan</span>
+                                    @if($sortField === 'name')
+                                        <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
+                                    @else
+                                        <span class="text-slate-300">↕</span>
+                                    @endif
+                                </div>
+                            </th>
+                            <th wire:click="sortBy('product_type')" class="py-3.5 px-4 cursor-pointer hover:text-[#3F7A5D] transition select-none">
+                                <div class="flex items-center gap-1">
+                                    <span>Jenis Stok</span>
+                                    @if($sortField === 'product_type')
+                                        <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
+                                    @else
+                                        <span class="text-slate-300">↕</span>
+                                    @endif
+                                </div>
+                            </th>
                             <th class="py-3.5 px-4">Kategori &bull; Jenis &bull; Merk</th>
+                            <th wire:click="sortBy('stock')" class="py-3.5 px-4 text-center cursor-pointer hover:text-[#3F7A5D] transition select-none">
+                                <div class="flex items-center justify-center gap-1">
+                                    <span>Jumlah Stok</span>
+                                    @if($sortField === 'stock' || $sortField === 'quantity')
+                                        <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
+                                    @else
+                                        <span class="text-slate-300">↕</span>
+                                    @endif
+                                </div>
+                            </th>
                             @if(auth()->user()->can('cost_price.view'))
-                                <th class="py-3.5 px-4 text-right">Modal</th>
+                                <th wire:click="sortBy('cost_price')" class="py-3.5 px-4 text-right cursor-pointer hover:text-[#3F7A5D] transition select-none">
+                                    <div class="flex items-center justify-end gap-1">
+                                        <span>Modal</span>
+                                        @if($sortField === 'cost_price')
+                                            <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
+                                        @else
+                                            <span class="text-slate-300">↕</span>
+                                        @endif
+                                    </div>
+                                </th>
                             @endif
-                            <th class="py-3.5 px-4 text-right">Harga Jual</th>
+                            <th wire:click="sortBy('selling_price')" class="py-3.5 px-4 text-right cursor-pointer hover:text-[#3F7A5D] transition select-none">
+                                <div class="flex items-center justify-end gap-1">
+                                    <span>Harga Jual</span>
+                                    @if($sortField === 'selling_price')
+                                        <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
+                                    @else
+                                        <span class="text-slate-300">↕</span>
+                                    @endif
+                                </div>
+                            </th>
                             <th class="py-3.5 px-4 text-center">Aksi</th>
                         </tr>
                     </thead>
@@ -279,6 +341,18 @@
                                             <span class="text-slate-600">{{ $product->brand->name }}</span>
                                         @endif
                                     </div>
+                                </td>
+
+                                <!-- Col 4: Jumlah Stok -->
+                                <td class="py-3.5 px-4 text-center font-mono font-bold whitespace-nowrap">
+                                    @if($product->product_type === 'PHYSICAL')
+                                        @php $totalStock = $product->inventories->sum('quantity'); @endphp
+                                        <span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold {{ $totalStock > 0 ? 'bg-emerald-50 text-emerald-700 border border-emerald-200/80' : 'bg-rose-50 text-rose-700 border border-rose-200/80' }}">
+                                            {{ number_format($totalStock, 0, ',', '.') }} unit
+                                        </span>
+                                    @else
+                                        <span class="text-slate-400 text-[11px] font-normal">Tak Terbatas</span>
+                                    @endif
                                 </td>
 
                                 <!-- Col 4: Modal -->

@@ -34,11 +34,38 @@
             <table class="w-full text-xs text-left">
                 <thead class="bg-[#F3F6F4] border-b border-slate-200/80 text-[#718379] uppercase text-[11px] font-extrabold tracking-wider whitespace-nowrap">
                     <tr>
-                        <th class="py-3.5 px-4">Waktu</th>
+                        <th wire:click="sortBy('created_at')" class="py-3.5 px-4 cursor-pointer hover:text-[#3F7A5D] transition select-none">
+                            <div class="flex items-center gap-1">
+                                <span>Waktu</span>
+                                @if($sortField === 'created_at')
+                                    <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
+                                @else
+                                    <span class="text-slate-300">↕</span>
+                                @endif
+                            </div>
+                        </th>
                         <th class="py-3.5 px-4">Nama Barang & Lokasi</th>
-                        <th class="py-3.5 px-4">Tipe Pergerakan</th>
+                        <th wire:click="sortBy('movement_type')" class="py-3.5 px-4 cursor-pointer hover:text-[#3F7A5D] transition select-none">
+                            <div class="flex items-center gap-1">
+                                <span>Tipe Pergerakan</span>
+                                @if($sortField === 'movement_type')
+                                    <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
+                                @else
+                                    <span class="text-slate-300">↕</span>
+                                @endif
+                            </div>
+                        </th>
                         <th class="py-3.5 px-4 text-center">Sebelum</th>
-                        <th class="py-3.5 px-4 text-center">Perubahan</th>
+                        <th wire:click="sortBy('quantity_change')" class="py-3.5 px-4 text-center cursor-pointer hover:text-[#3F7A5D] transition select-none">
+                            <div class="flex items-center justify-center gap-1">
+                                <span>Perubahan</span>
+                                @if($sortField === 'quantity_change')
+                                    <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
+                                @else
+                                    <span class="text-slate-300">↕</span>
+                                @endif
+                            </div>
+                        </th>
                         <th class="py-3.5 px-4 text-center">Sesudah</th>
                         <th class="py-3.5 px-4">No. Referensi / Catatan</th>
                     </tr>

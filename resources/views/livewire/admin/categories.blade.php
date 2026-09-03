@@ -30,8 +30,26 @@
         <table class="w-full text-xs text-left">
             <thead class="bg-[#F3F6F4] border-b border-slate-200/80 text-[#718379] uppercase text-[11px] font-extrabold tracking-wider">
                 <tr>
-                    <th class="py-3.5 px-4">Nama Kategori</th>
-                    <th class="py-3.5 px-4">Slug URL</th>
+                    <th wire:click="sortBy('name')" class="py-3.5 px-4 cursor-pointer hover:text-[#3F7A5D] transition select-none">
+                        <div class="flex items-center gap-1">
+                            <span>Nama Kategori</span>
+                            @if($sortField === 'name')
+                                <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
+                            @else
+                                <span class="text-slate-300">↕</span>
+                            @endif
+                        </div>
+                    </th>
+                    <th wire:click="sortBy('slug')" class="py-3.5 px-4 cursor-pointer hover:text-[#3F7A5D] transition select-none">
+                        <div class="flex items-center gap-1">
+                            <span>Slug URL</span>
+                            @if($sortField === 'slug')
+                                <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
+                            @else
+                                <span class="text-slate-300">↕</span>
+                            @endif
+                        </div>
+                    </th>
                     <th class="py-3.5 px-4 text-center">Aksi</th>
                 </tr>
             </thead>

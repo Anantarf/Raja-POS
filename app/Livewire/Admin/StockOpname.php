@@ -8,12 +8,13 @@ use App\Models\Location;
 use App\Models\Product;
 use App\Models\StockOpname as StockOpnameModel;
 use App\Services\InventoryService;
+use App\Traits\WithSorting;
 use Livewire\Component;
 use Livewire\WithPagination;
 
 class StockOpname extends Component
 {
-    use WithPagination;
+    use WithPagination, WithSorting;
 
     public $showCreateModal = false;
 
@@ -215,6 +216,10 @@ class StockOpname extends Component
 
     public function render()
     {
+        $allowedSorts = ['opname_number', 'status', 'created_at'];
+        $field = in_array($this->sortField, $allowedSorts) ? $this->sortField : 'created_at';
+        $direction = in_array($this->sortDirection, ['asc', 'desc']) ? $this->sortDirection : 'desc';
+
         $sessions = StockOpnameModel::with(['location', 'items.product', 'creator', 'approver'])
             ->withCount('items')
             ->when($this->search, function ($query) {
@@ -225,7 +230,7 @@ class StockOpname extends Component
                             ->orWhere('code', 'like', '%'.$this->search.'%');
                     });
             })
-            ->orderBy('created_at', 'desc')
+            ->orderBy($field, $direction)
             ->paginate(10);
 
         return view('livewire.admin.stock-opname', [

@@ -8,12 +8,13 @@ use App\Models\Location;
 use App\Models\Product;
 use App\Models\StockOpname as StockOpnameModel;
 use App\Services\InventoryService;
+use App\Traits\WithSorting;
 use Livewire\Component;
 use Livewire\WithPagination;
 
 class Inventories extends Component
 {
-    use WithPagination;
+    use WithPagination, WithSorting;
 
     public $activeTab = 'stok'; // 'stok' or 'opname'
 
@@ -66,6 +67,8 @@ class Inventories extends Component
 
     public function mount()
     {
+        $this->sortField = 'quantity';
+        $this->sortDirection = 'asc';
         $this->selectedLocationId = Location::first()?->id;
         if (request()->query('tab') === 'opname') {
             $this->activeTab = 'opname';
@@ -305,10 +308,14 @@ class Inventories extends Component
     public function render()
     {
         // Query Tab 1: Inventories
-        $inventoryQuery = Inventory::with(['product.category', 'location']);
+        $inventoryQuery = Inventory::query()
+            ->select('inventories.*')
+            ->with(['product.category', 'location']);
+
         if ($this->selectedLocationId) {
-            $inventoryQuery->where('location_id', $this->selectedLocationId);
+            $inventoryQuery->where('inventories.location_id', $this->selectedLocationId);
         }
+
         if ($this->search) {
             $inventoryQuery->whereHas('product', function ($q) {
                 $q->where('name', 'like', '%'.$this->search.'%')
@@ -316,6 +323,20 @@ class Inventories extends Component
                     ->orWhere('barcode', 'like', '%'.$this->search.'%');
             });
         }
+
+        $direction = in_array($this->sortDirection, ['asc', 'desc']) ? $this->sortDirection : 'asc';
+
+        if ($this->sortField === 'product_name') {
+            $inventoryQuery->join('products', 'inventories.product_id', '=', 'products.id')
+                ->orderBy('products.name', $direction);
+        } elseif ($this->sortField === 'stock_status' || $this->sortField === 'quantity') {
+            $inventoryQuery->orderBy('inventories.quantity', $direction);
+        } elseif (in_array($this->sortField, ['updated_at', 'created_at'])) {
+            $inventoryQuery->orderBy('inventories.'.$this->sortField, $direction);
+        } else {
+            $inventoryQuery->orderBy('inventories.quantity', 'asc');
+        }
+
         $inventories = $inventoryQuery->paginate(12);
 
         // Query Tab 2: Stock Opnames
