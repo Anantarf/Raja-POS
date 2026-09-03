@@ -22,9 +22,19 @@
         <div class="bg-white rounded-2xl p-5 border border-slate-200/80 hover:border-[#3F7A5D]/50 shadow-sm hover:shadow-md transition-all duration-200">
             <div class="flex items-center justify-between mb-3">
                 <span class="text-xs text-[#718379] font-extrabold uppercase tracking-wider">Total Omset</span>
-                <span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold text-[#3F7A5D] bg-[#E3EEE8] border border-[#3F7A5D]/20">
-                    ↑ +100%
-                </span>
+                @if(($metrics['omset_growth'] ?? 0) > 0)
+                    <span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold text-[#3F7A5D] bg-[#E3EEE8] border border-[#3F7A5D]/20">
+                        ↑ +{{ $metrics['omset_growth'] }}%
+                    </span>
+                @elseif(($metrics['omset_growth'] ?? 0) < 0)
+                    <span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold text-rose-600 bg-rose-50 border border-rose-200">
+                        ↓ {{ $metrics['omset_growth'] }}%
+                    </span>
+                @else
+                    <span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold text-slate-600 bg-slate-100 border border-slate-200">
+                        Hari Ini
+                    </span>
+                @endif
             </div>
             <div class="text-2xl font-extrabold text-[#232E28] font-mono tracking-tight mt-1">
                 Rp {{ number_format($metrics['omset'], 0, ',', '.') }}

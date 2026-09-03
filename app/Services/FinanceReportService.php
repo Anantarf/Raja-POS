@@ -33,12 +33,26 @@ class FinanceReportService
 
         $totalBalance = (float) BalanceAccount::where('status', 'ACTIVE')->sum('current_balance');
 
+        // Calculate comparison with previous day for growth percentage
+        $todayOmset = (float) Sale::where('status', 'COMPLETED')->whereDate('transaction_date', Carbon::today())->sum('total_amount');
+        $yesterdayOmset = (float) Sale::where('status', 'COMPLETED')->whereDate('transaction_date', Carbon::yesterday())->sum('total_amount');
+
+        $growth = 0.0;
+        if ($yesterdayOmset > 0) {
+            $growth = (($todayOmset - $yesterdayOmset) / $yesterdayOmset) * 100;
+        } elseif ($todayOmset > 0) {
+            $growth = 100.0;
+        } else {
+            $growth = 0.0;
+        }
+
         return [
             'omset' => $omset,
             'cogs' => $cogs,
             'gross_profit' => $grossProfit,
             'total_balance' => $totalBalance,
             'sales_count' => $salesCount,
+            'omset_growth' => round($growth, 1),
         ];
     }
 
