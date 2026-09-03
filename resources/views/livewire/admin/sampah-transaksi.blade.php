@@ -26,7 +26,7 @@
     <div class="bg-white border border-slate-200/80 rounded-2xl shadow-sm overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-xs text-left">
-                <thead class="bg-[#F3F6F4] border-b border-slate-200/80 text-[#718379] uppercase text-[11px] font-extrabold tracking-wider">
+                <thead class="bg-[#F3F6F4] border-b border-slate-200/80 text-[#718379] uppercase text-[11px] font-extrabold tracking-wider whitespace-nowrap">
                     <tr>
                         <th class="py-3.5 px-4">No. Nota & Waktu Dibatalkan</th>
                         <th class="py-3.5 px-4">Kasir & Lokasi</th>
@@ -38,25 +38,25 @@
                 <tbody class="divide-y divide-slate-100 font-medium">
                     @forelse($trashedSales as $sale)
                         <tr class="hover:bg-[#F3F6F4]/60 transition">
-                            <td class="py-3.5 px-4">
+                            <td class="py-3.5 px-4 whitespace-nowrap">
                                 <div class="font-bold text-[#3F7A5D] font-mono text-xs bg-[#F3F6F4] border border-slate-200/80 px-2.5 py-0.5 rounded-md inline-block">{{ $sale->invoice_number }}</div>
-                                <div class="text-xs text-[#718379] mt-1 font-semibold">Dibatalkan: {{ $sale->updated_at->format('d M Y, H:i') }}</div>
+                                <div class="text-xs text-[#718379] mt-1 font-semibold whitespace-nowrap">Dibatalkan: {{ $sale->updated_at->format('d M Y, H:i') }}</div>
                             </td>
-                            <td class="py-3.5 px-4 text-[#232E28]">
+                            <td class="py-3.5 px-4 text-[#232E28] whitespace-nowrap">
                                 <div class="font-bold text-[#232E28]">{{ $sale->user?->name }}</div>
                                 <div class="text-xs text-[#718379] font-semibold">{{ $sale->location?->name }}</div>
                             </td>
-                            <td class="py-3.5 px-4 text-right font-mono font-extrabold text-rose-600 text-sm">
+                            <td class="py-3.5 px-4 text-right font-mono font-extrabold text-rose-600 text-sm whitespace-nowrap">
                                 Rp {{ number_format($sale->grand_total, 0, ',', '.') }}
                             </td>
-                            <td class="py-4 px-5 text-center">
-                                <span class="px-3 py-1 rounded-full text-[10px] font-bold uppercase bg-rose-50 text-rose-700 border border-rose-200">
-                                    DIBATALKAN (TRASHED)
+                            <td class="py-3.5 px-4 text-center whitespace-nowrap">
+                                <span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold uppercase tracking-wider bg-rose-50 text-rose-800 border border-rose-200/80 whitespace-nowrap inline-block">
+                                    DIBATALKAN
                                 </span>
                             </td>
-                            <td class="py-4 px-5 text-center">
+                            <td class="py-3.5 px-4 text-center whitespace-nowrap">
                                 @if(auth()->user()->can('sales.restore'))
-                                    <button wire:click="restoreSale({{ $sale->id }})" wire:confirm="Pulihkan transaksi ini dari Sampah Transaksi? Stok dan saldo akan dipotongan ulang." class="px-3.5 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200/80 rounded-xl text-xs font-extrabold transition active:scale-95">
+                                    <button wire:click="restoreSale({{ $sale->id }})" wire:confirm="Pulihkan transaksi ini dari Sampah Transaksi? Stok dan saldo akan dipotongan ulang." class="px-3.5 py-1.5 bg-[#3F7A5D] hover:bg-[#32634B] text-white rounded-xl font-extrabold text-xs transition uppercase tracking-wider shadow-sm cursor-pointer whitespace-nowrap">
                                         Pulihkan Transaksi
                                     </button>
                                 @endif

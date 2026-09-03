@@ -26,7 +26,7 @@
     <div class="bg-white border border-slate-200/80 rounded-2xl shadow-sm overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-xs text-left">
-                <thead class="bg-[#F3F6F4] border-b border-slate-200/80 text-[#718379] uppercase text-[11px] font-extrabold tracking-wider">
+                <thead class="bg-[#F3F6F4] border-b border-slate-200/80 text-[#718379] uppercase text-[11px] font-extrabold tracking-wider whitespace-nowrap">
                     <tr>
                         <th class="py-3.5 px-4">No. Nota & Waktu</th>
                         <th class="py-3.5 px-4">Kasir & Lokasi</th>
@@ -39,41 +39,41 @@
                 <tbody class="divide-y divide-slate-100 font-medium">
                     @forelse($sales as $sale)
                         <tr class="hover:bg-[#F3F6F4]/60 transition">
-                            <td class="py-3.5 px-4">
+                            <td class="py-3.5 px-4 whitespace-nowrap">
                                 <div class="font-bold text-[#3F7A5D] font-mono text-xs bg-[#F3F6F4] border border-slate-200/80 px-2.5 py-0.5 rounded-md inline-block">{{ $sale->invoice_number }}</div>
-                                <div class="text-xs text-[#718379] mt-1 font-semibold">{{ $sale->created_at->format('d M Y, H:i') }}</div>
+                                <div class="text-xs text-[#718379] mt-1 font-semibold whitespace-nowrap">{{ $sale->created_at->format('d M Y, H:i') }}</div>
                             </td>
-                            <td class="py-3.5 px-4 text-[#232E28]">
+                            <td class="py-3.5 px-4 text-[#232E28] whitespace-nowrap">
                                 <div class="font-bold text-[#232E28]">{{ $sale->user?->name ?? 'Kasir' }}</div>
                                 <div class="text-xs text-[#718379] font-semibold">{{ $sale->location?->name ?? 'Toko' }}</div>
                             </td>
-                            <td class="py-3.5 px-4">
+                            <td class="py-3.5 px-4 whitespace-nowrap">
                                 <div class="flex flex-wrap gap-1">
                                     @foreach($sale->payments as $p)
-                                        <span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-[#F3F6F4] text-[#232E28] border border-slate-200">
+                                        <span class="px-2.5 py-0.5 rounded-md text-[11px] font-mono font-bold bg-[#F3F6F4] text-[#232E28] border border-slate-200/80 inline-block whitespace-nowrap">
                                             {{ $p->paymentMethod?->name }}: Rp {{ number_format($p->amount, 0, ',', '.') }}
                                         </span>
                                     @endforeach
                                 </div>
                             </td>
-                            <td class="py-3.5 px-4 text-right font-mono font-extrabold text-[#232E28] text-sm">
+                            <td class="py-3.5 px-4 text-right font-mono font-extrabold text-[#232E28] text-sm whitespace-nowrap">
                                 Rp {{ number_format($sale->grand_total, 0, ',', '.') }}
                             </td>
-                            <td class="py-3.5 px-4 text-center">
-                                <span class="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-700">
-                                    {{ $sale->status }}
+                            <td class="py-3.5 px-4 text-center whitespace-nowrap">
+                                <span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold uppercase tracking-wider whitespace-nowrap inline-block {{ $sale->status === 'COMPLETED' ? 'bg-[#E3EEE8] text-[#3F7A5D] border border-[#3F7A5D]/20' : 'bg-amber-50 text-amber-800 border border-amber-200/80' }}">
+                                    {{ $sale->status === 'COMPLETED' ? 'LUNAS' : $sale->status }}
                                 </span>
                             </td>
-                            <td class="py-3.5 px-4 text-center">
-                                <div class="flex items-center justify-center gap-1.5">
-                                    <button wire:click="openDetailModal({{ $sale->id }})" class="px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 border border-indigo-200/80 rounded-xl text-xs font-extrabold transition active:scale-95">
+                            <td class="py-3.5 px-4 text-center whitespace-nowrap">
+                                <div class="flex items-center justify-center gap-1.5 whitespace-nowrap">
+                                    <button wire:click="openDetailModal({{ $sale->id }})" class="px-3 py-1.5 bg-slate-100 hover:bg-[#E3EEE8] text-[#232E28] hover:text-[#3F7A5D] border border-slate-200/80 rounded-xl text-xs font-extrabold transition cursor-pointer shadow-sm">
                                         Detail Nota
                                     </button>
-                                    <a href="/receipt/thermal/{{ $sale->id }}" target="_blank" class="px-3 py-1.5 bg-[#E3EEE8] hover:bg-emerald-100 text-[#3F7A5D] border border-[#3F7A5D]/20 rounded-xl text-xs font-extrabold transition active:scale-95">
+                                    <a href="/receipt/thermal/{{ $sale->id }}" target="_blank" class="px-3 py-1.5 bg-slate-100 hover:bg-[#E3EEE8] text-[#232E28] hover:text-[#3F7A5D] border border-slate-200/80 rounded-xl text-xs font-extrabold transition cursor-pointer shadow-sm">
                                         Struk
                                     </a>
                                     @if(auth()->user()->can('sales.trash'))
-                                        <button wire:click="moveToTrash({{ $sale->id }})" wire:confirm="Pindahkan transaksi ini ke Sampah Transaksi? Stok dan saldo akan dikembalikan." class="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200/80 rounded-xl text-xs font-extrabold transition active:scale-95">
+                                        <button wire:click="moveToTrash({{ $sale->id }})" wire:confirm="Pindahkan transaksi ini ke Sampah Transaksi? Stok dan saldo akan dikembalikan." class="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200/80 rounded-xl text-xs font-extrabold transition cursor-pointer shadow-sm">
                                             Ke Sampah
                                         </button>
                                     @endif
@@ -97,7 +97,7 @@
     <!-- Detail Snapshot Modal -->
     @if($showDetailModal && $selectedSale)
         <div class="fixed inset-0 bg-[#232E28]/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-            <div class="bg-white rounded-3xl p-6 max-w-lg w-full shadow-2xl space-y-4 border border-slate-100">
+            <div class="bg-white rounded-2xl p-6 max-w-lg w-full shadow-xl space-y-4 border border-slate-100">
                 <div class="flex items-center justify-between border-b pb-3">
                     <div>
                         <h3 class="text-base font-extrabold text-[#232E28]">Detail Transaksi Nota</h3>
