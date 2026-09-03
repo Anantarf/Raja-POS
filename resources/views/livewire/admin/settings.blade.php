@@ -1,16 +1,16 @@
 <div class="space-y-5">
     <div>
-        <h1 class="text-xl font-extrabold text-slate-900 tracking-tight">Owner Settings</h1>
-        <p class="text-xs text-slate-500 font-medium mt-0.5">Pengaturan owner untuk Users, Roles, Payment Methods, Locations, dan Store Settings sesuai MD utama.</p>
+        <h1 class="text-xl font-extrabold text-slate-900 tracking-tight">Pengaturan Owner</h1>
+        <p class="text-xs text-slate-500 font-medium mt-0.5">Pengaturan khusus Owner untuk user, role & permission, metode pembayaran, lokasi toko, dan pengaturan toko.</p>
     </div>
 
     <div class="flex flex-wrap items-center gap-2 border-b border-slate-200 text-xs font-bold pb-2">
         @foreach([
-            'STORE_SETTINGS' => ['Store Settings', '/admin/settings/store-settings'],
-            'USERS' => ['Users', '/admin/settings/users'],
-            'ROLES' => ['Roles', '/admin/settings/roles'],
-            'PAYMENT_METHODS' => ['Payment Methods', '/admin/settings/payment-methods'],
-            'LOCATIONS' => ['Locations', '/admin/settings/locations'],
+            'STORE_SETTINGS' => ['Pengaturan Toko', '/admin/settings/store-settings'],
+            'USERS' => ['User', '/admin/settings/users'],
+            'ROLES' => ['Role & Permission', '/admin/settings/roles'],
+            'PAYMENT_METHODS' => ['Metode Pembayaran', '/admin/settings/payment-methods'],
+            'LOCATIONS' => ['Lokasi Toko', '/admin/settings/locations'],
         ] as $tab => [$label, $href])
             <a href="{{ $href }}" class="px-4 py-2 rounded-xl transition {{ $activeTab === $tab ? 'bg-[#3F7A5D] text-white shadow-sm' : 'text-slate-600 hover:bg-slate-100' }}">{{ $label }}</a>
         @endforeach
@@ -20,7 +20,7 @@
         <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden">
             <table class="w-full text-xs text-left">
                 <thead class="bg-slate-50 text-slate-500 uppercase text-[10px] font-extrabold border-b">
-                    <tr><th class="py-2.5 px-3">Key</th><th class="py-2.5 px-3">Value</th></tr>
+                    <tr><th class="py-2.5 px-3">Kode Pengaturan</th><th class="py-2.5 px-3">Nilai</th></tr>
                 </thead>
                 <tbody class="divide-y font-medium">
                     @foreach($settings as $setting)
@@ -33,7 +33,7 @@
         <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden">
             <table class="w-full text-xs text-left">
                 <thead class="bg-slate-50 text-slate-500 uppercase text-[10px] font-extrabold border-b">
-                    <tr><th class="py-2.5 px-3">Username</th><th class="py-2.5 px-3">Name</th><th class="py-2.5 px-3">Role</th><th class="py-2.5 px-3 text-center">Status</th></tr>
+                    <tr><th class="py-2.5 px-3">Username</th><th class="py-2.5 px-3">Nama</th><th class="py-2.5 px-3">Role</th><th class="py-2.5 px-3 text-center">Status</th></tr>
                 </thead>
                 <tbody class="divide-y font-medium">
                     @foreach($users as $user)
@@ -51,7 +51,7 @@
         <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden">
             <table class="w-full text-xs text-left">
                 <thead class="bg-slate-50 text-slate-500 uppercase text-[10px] font-extrabold border-b">
-                    <tr><th class="py-2.5 px-3">Role</th><th class="py-2.5 px-3 text-center">Users</th></tr>
+                    <tr><th class="py-2.5 px-3">Role</th><th class="py-2.5 px-3 text-center">Jumlah User</th></tr>
                 </thead>
                 <tbody class="divide-y font-medium">
                     @foreach($roles as $role)
@@ -63,10 +63,10 @@
     @elseif($activeTab === 'LOCATIONS')
         <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
             <div class="md:col-span-2 bg-white border border-slate-200 rounded-2xl p-4 shadow-sm">
-                <h3 class="text-sm font-extrabold text-slate-900 mb-3">Locations</h3>
+                <h3 class="text-sm font-extrabold text-slate-900 mb-3">Lokasi Toko</h3>
                 <table class="w-full text-xs text-left">
                     <thead class="bg-slate-50 text-slate-500 uppercase text-[10px] font-extrabold border-b">
-                        <tr><th class="py-2.5 px-3">Code</th><th class="py-2.5 px-3">Name</th><th class="py-2.5 px-3 text-center">Status</th></tr>
+                        <tr><th class="py-2.5 px-3">Kode</th><th class="py-2.5 px-3">Nama</th><th class="py-2.5 px-3 text-center">Status</th></tr>
                     </thead>
                     <tbody class="divide-y font-medium">
                         @foreach($locations as $loc)
@@ -76,21 +76,21 @@
                 </table>
             </div>
             <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm space-y-3">
-                <h3 class="text-sm font-extrabold text-slate-900">Tambah Location</h3>
+                <h3 class="text-sm font-extrabold text-slate-900">Tambah Lokasi Toko</h3>
                 <form wire:submit.prevent="addLocation" class="space-y-3 text-xs">
                     <input type="text" wire:model="locationCode" placeholder="RAJA-BANGO" class="w-full p-2.5 border rounded-xl font-mono uppercase" required />
                     <input type="text" wire:model="locationName" placeholder="Raja Aksesoris Bango" class="w-full p-2.5 border rounded-xl" required />
-                    <button type="submit" class="w-full py-2.5 bg-[#3F7A5D] text-white font-bold rounded-xl">Tambah Location</button>
+                    <button type="submit" class="w-full py-2.5 bg-[#3F7A5D] text-white font-bold rounded-xl">Tambah Lokasi Toko</button>
                 </form>
             </div>
         </div>
     @else
         <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
             <div class="md:col-span-2 bg-white border border-slate-200 rounded-2xl p-4 shadow-sm">
-                <h3 class="text-sm font-extrabold text-slate-900 mb-3">Payment Methods</h3>
+                <h3 class="text-sm font-extrabold text-slate-900 mb-3">Metode Pembayaran</h3>
                 <table class="w-full text-xs text-left">
                     <thead class="bg-slate-50 text-slate-500 uppercase text-[10px] font-extrabold border-b">
-                        <tr><th class="py-2.5 px-3">Name</th><th class="py-2.5 px-3">Type</th><th class="py-2.5 px-3 text-center">Status</th></tr>
+                        <tr><th class="py-2.5 px-3">Nama</th><th class="py-2.5 px-3">Tipe</th><th class="py-2.5 px-3 text-center">Status</th></tr>
                     </thead>
                     <tbody class="divide-y font-medium">
                         @foreach($paymentMethods as $pm)
@@ -100,7 +100,7 @@
                 </table>
             </div>
             <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm space-y-3">
-                <h3 class="text-sm font-extrabold text-slate-900">Tambah Payment Method</h3>
+                <h3 class="text-sm font-extrabold text-slate-900">Tambah Metode Pembayaran</h3>
                 <form wire:submit.prevent="addPaymentMethod" class="space-y-3 text-xs">
                     <input type="text" wire:model="pmName" placeholder="Transfer Bank" class="w-full p-2.5 border rounded-xl" required />
                     <select wire:model="pmType" class="w-full p-2.5 border rounded-xl bg-white font-semibold">
@@ -109,7 +109,7 @@
                         <option value="TRANSFER">TRANSFER</option>
                         <option value="E_WALLET">E_WALLET</option>
                     </select>
-                    <button type="submit" class="w-full py-2.5 bg-[#3F7A5D] text-white font-bold rounded-xl">Tambah Payment Method</button>
+                    <button type="submit" class="w-full py-2.5 bg-[#3F7A5D] text-white font-bold rounded-xl">Tambah Metode Pembayaran</button>
                 </form>
             </div>
         </div>

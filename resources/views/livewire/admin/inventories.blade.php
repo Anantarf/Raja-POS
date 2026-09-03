@@ -38,7 +38,7 @@
                 <thead class="bg-[#F5F5F9] border-b border-slate-100 text-[#A1ACB8] uppercase text-[10px] font-extrabold tracking-wider">
                     <tr>
                         <th class="py-3.5 px-4">Produk</th>
-                        <th class="py-3.5 px-4">Lokasi Cabang</th>
+                        <th class="py-3.5 px-4">Lokasi Toko</th>
                         <th class="py-3.5 px-4 text-center">Jumlah Stok</th>
                         <th class="py-3.5 px-4 text-center">Status Stok</th>
                         <th class="py-3.5 px-4 text-center">Aksi</th>
@@ -130,3 +130,4 @@
         </div>
     @endif
 </div>
+

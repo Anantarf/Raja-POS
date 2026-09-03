@@ -88,7 +88,7 @@
                     </div>
 
                     <div>
-                        <label class="block font-bold text-[#232E28] mb-1.5">Hasil Hitung Stok Fisik Real *</label>
+                        <label class="block font-bold text-[#232E28] mb-1.5">Hasil Hitung Stok Fisik *</label>
                         <input type="number" wire:model="physical_qty" class="w-full p-3 border border-slate-200 rounded-2xl text-xs font-mono font-bold focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]" required min="0" placeholder="0" />
                     </div>
 
@@ -106,3 +106,4 @@
         </div>
     @endif
 </div>
+

@@ -6,7 +6,7 @@
                 Selamat Datang, {{ auth()->user()->name }}!
             </h1>
             <p class="text-sm text-[#52645B] max-w-2xl leading-relaxed">
-                <span class="font-bold text-[#232E28]">Dashboard Overview:</span> Anda memiliki akses penuh sebagai <span class="font-bold text-[#3F7A5D] text-base">{{ auth()->user()->role?->name ?? 'Kasir' }}</span> pada sistem kasir & manajemen ritel Raja Aksesoris POS.
+                <span class="font-bold text-[#232E28]">Ringkasan Operasional:</span> Anda memiliki akses penuh sebagai <span class="font-bold text-[#3F7A5D] text-base">{{ auth()->user()->role?->name ?? 'Kasir' }}</span> pada sistem kasir & manajemen ritel Raja Aksesoris POS.
             </p>
             <div class="pt-2">
                 <a href="/pos" class="px-5 py-3 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-bold rounded-2xl text-sm inline-flex items-center gap-2 transition active:scale-95">
@@ -36,15 +36,15 @@
             <div class="text-3xl font-extrabold text-[#232E28] font-mono tracking-tight mt-1.5">
                 Rp {{ number_format($metrics['omset'], 0, ',', '.') }}
             </div>
-            <div class="text-xs text-[#718379] mt-2 font-medium">Transaksi Completed</div>
+            <div class="text-xs text-[#718379] mt-2 font-medium">Transaksi Selesai</div>
         </div>
 
-        <!-- 2. Gross Profit -->
+        <!-- 2. Margin Kotor -->
         <div class="bg-white rounded-3xl p-6 border border-[#E3EEE8] hover:border-[#C2AC7C]/50 transition-all duration-200">
             <div class="flex items-center justify-between mb-4">
                 <span class="text-xs text-[#718379] font-extrabold uppercase tracking-wider">Laba Kotor</span>
                 <span class="px-3 py-1 rounded-full text-xs font-bold text-[#8F794B] bg-[#C2AC7C]/20 border border-[#C2AC7C]/40">
-                    Gross Profit
+                    Margin Kotor
                 </span>
             </div>
             @if(auth()->user()->hasRole('OWNER') || auth()->user()->hasPermission('report.profit.view') || auth()->user()->can('report.profit.view'))
@@ -217,3 +217,4 @@
         chart.render();
     });
 </script>
+

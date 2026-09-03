@@ -81,12 +81,12 @@ class FoundationTest extends TestCase
         $this->actingAs($superadmin)
             ->get('/admin/dashboard')
             ->assertStatus(200)
-            ->assertSee('Operasional')
-            ->assertSee('Inventory')
-            ->assertSee('Katalog')
-            ->assertSee('Keuangan')
+            ->assertSee('Operasional POS')
+            ->assertSee('Stok &amp; Inventaris', false)
+            ->assertSee('Katalog &amp; Produk', false)
+            ->assertSee('Keuangan &amp; Saldo', false)
             ->assertSee('Laporan')
-            ->assertSee('Owner Settings');
+            ->assertSee('Pengaturan Owner');
 
         $this->get('/admin/inventory-movements')
             ->assertStatus(200)
@@ -95,11 +95,11 @@ class FoundationTest extends TestCase
         $this->get('/admin/reports/sales')
             ->assertStatus(200)
             ->assertSee('Laporan')
-            ->assertSee('Sales');
+            ->assertSee('Penjualan');
 
         $this->get('/admin/settings/payment-methods')
             ->assertStatus(200)
-            ->assertSee('Payment Methods');
+            ->assertSee('Metode Pembayaran');
     }
 
     public function test_admin_panel_and_custom_dashboard_render_for_authenticated_user(): void
@@ -113,6 +113,6 @@ class FoundationTest extends TestCase
 
         $dashboardResponse = $this->get('/admin/dashboard');
         $dashboardResponse->assertStatus(200);
-        $dashboardResponse->assertSee('Dashboard Overview');
+        $dashboardResponse->assertSee('Ringkasan Operasional');
     }
 }

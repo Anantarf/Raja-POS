@@ -35,7 +35,7 @@ Route::middleware(['auth'])->group(function () {
     // Livewire Kasir POS
     Route::get('/pos', Checkout::class)->name('pos');
 
-    // 100% Custom Livewire Admin Portal Routes
+    // Custom Livewire Admin Routes
     Route::get('/admin', Dashboard::class)->name('admin');
     Route::get('/admin/dashboard', Dashboard::class)->name('admin.dashboard');
     Route::get('/admin/sales', Sales::class)->name('admin.sales');

@@ -3,7 +3,7 @@
     <div class="flex items-center justify-between">
         <div>
             <h1 class="text-xl font-extrabold text-[#232E28] tracking-tight">Sampah Transaksi Penjualan</h1>
-            <p class="text-xs text-[#718379] font-medium mt-0.5">Daftar transaksi yang dibatalkan kasir/admin. Transaksi otomatis dihapus permanen setelah 30 hari retention.</p>
+            <p class="text-xs text-[#718379] font-medium mt-0.5">Daftar transaksi yang dibatalkan kasir/admin. Transaksi otomatis diarsipkan setelah 30 hari retensi.</p>
         </div>
     </div>
 
@@ -13,7 +13,7 @@
             <input
                 type="text"
                 wire:model.live.debounce.300ms="search"
-                placeholder="Cari No. Invoice..."
+                placeholder="Cari No. Nota..."
                 class="w-full pl-10 pr-4 py-2.5 border border-slate-200 rounded-2xl text-xs font-medium focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] bg-[#F3F6F4] placeholder:text-[#718379]"
             />
             <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -22,13 +22,13 @@
         </div>
     </div>
 
-    <!-- Trashed Sales Table -->
+    <!-- Tabel Sampah Transaksi -->
     <div class="bg-white border border-[#E3EEE8] rounded-3xl shadow-emco overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-xs text-left">
                 <thead class="bg-[#F3F6F4] border-b border-[#E3EEE8] text-[#718379] uppercase text-[10px] font-extrabold tracking-wider">
                     <tr>
-                        <th class="py-4 px-5">No. Invoice & Waktu Dibatalkan</th>
+                        <th class="py-4 px-5">No. Nota & Waktu Dibatalkan</th>
                         <th class="py-4 px-5">Kasir & Lokasi</th>
                         <th class="py-4 px-5 text-right">Total Nominal</th>
                         <th class="py-4 px-5 text-center">Status</th>
@@ -76,3 +76,4 @@
         </div>
     </div>
 </div>
+
