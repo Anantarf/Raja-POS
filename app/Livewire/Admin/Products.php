@@ -200,6 +200,7 @@ class Products extends Component
 
         $this->showCreateModal = false;
         $this->resetForm();
+        app(\App\Services\CatalogCacheService::class)->clearCatalogCache();
         $this->dispatch('notify', message: $message, type: 'success');
     }
 
@@ -215,6 +216,7 @@ class Products extends Component
 
         $this->showImportModal = false;
         $this->importFile = null;
+        app(\App\Services\CatalogCacheService::class)->clearCatalogCache();
 
         $msg = "Import Selesai: {$result['imported_count']} produk sukses ditambahkan.";
         if (count($result['errors']) > 0) {
@@ -229,6 +231,7 @@ class Products extends Component
         abort_unless(auth()->user()->can('product.delete'), 403);
         $product = Product::findOrFail($productId);
         $product->delete();
+        app(\App\Services\CatalogCacheService::class)->clearCatalogCache();
         $this->dispatch('notify', message: 'Produk berhasil dihapus.', type: 'danger');
     }
 

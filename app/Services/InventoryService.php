@@ -13,6 +13,9 @@ use InvalidArgumentException;
 
 class InventoryService
 {
+    public function __construct(
+        protected CatalogCacheService $catalogCacheService
+    ) {}
     /**
      * Adjust stock for a physical product at a specific location.
      * Uses row locking (SELECT ... FOR UPDATE) and DB Transaction.
@@ -59,6 +62,9 @@ class InventoryService
                 'quantity' => $quantityAfter,
                 'last_stock_at' => now(),
             ]);
+
+            // Clear catalog cache for this location
+            $this->catalogCacheService->clearCatalogCache($location->id);
 
             // Create movement log
             return InventoryMovement::create([
