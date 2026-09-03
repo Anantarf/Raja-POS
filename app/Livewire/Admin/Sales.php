@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Admin;
 
-use App\Models\Location;
+use App\Models\PaymentMethod;
 use App\Models\Sale;
 use App\Services\SaleCancellationService;
 use Livewire\Component;
@@ -15,7 +15,7 @@ class Sales extends Component
     public $search = '';
     public $startDate = '';
     public $endDate = '';
-    public $selectedLocationId = '';
+    public $paymentMethodId = '';
 
     public $selectedSaleId = null;
     public $showDetailModal = false;
@@ -37,7 +37,7 @@ class Sales extends Component
         $this->resetPage();
     }
 
-    public function updatingSelectedLocationId()
+    public function updatingPaymentMethodId()
     {
         $this->resetPage();
     }
@@ -66,21 +66,19 @@ class Sales extends Component
 
     public function render()
     {
-        $baseQuery = Sale::where('status', 'COMPLETED')
+        $query = Sale::where('status', 'COMPLETED')
             ->when($this->startDate, function ($q) {
                 $q->whereDate('created_at', '>=', $this->startDate);
             })
             ->when($this->endDate, function ($q) {
                 $q->whereDate('created_at', '<=', $this->endDate);
-            });
-
-        // KPI Summary Stats
-        $totalRevenue = (clone $baseQuery)->sum('total_amount');
-        $totalTransactions = (clone $baseQuery)->count();
-        $averageBasket = $totalTransactions > 0 ? $totalRevenue / $totalTransactions : 0;
-
-        // Sales Table Query
-        $query = (clone $baseQuery)->with(['cashier', 'user', 'payments.paymentMethod']);
+            })
+            ->when($this->paymentMethodId, function ($q) {
+                $q->whereHas('payments', function ($pq) {
+                    $pq->where('payment_method_id', $this->paymentMethodId);
+                });
+            })
+            ->with(['cashier', 'user', 'payments.paymentMethod']);
 
         if ($this->search) {
             $query->where(function ($q) {
@@ -97,10 +95,7 @@ class Sales extends Component
         return view('livewire.admin.sales', [
             'sales' => $sales,
             'selectedSale' => $selectedSale,
-            'locations' => Location::all(),
-            'totalRevenue' => $totalRevenue,
-            'totalTransactions' => $totalTransactions,
-            'averageBasket' => $averageBasket,
-        ])->layout('components.layouts.admin', ['title' => 'Riwayat Penjualan']);
+            'paymentMethods' => PaymentMethod::all(),
+        ])->layout('components.layouts.admin', ['title' => 'Riwayat Transaksi']);
     }
 }
