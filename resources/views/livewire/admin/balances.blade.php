@@ -20,7 +20,7 @@
             </button>
             <button wire:click="openModal('ADJUSTMENT')" class="px-3.5 py-2 bg-amber-600 hover:bg-amber-700 text-white font-extrabold rounded-2xl text-xs transition active:scale-95 flex items-center gap-1.5 shrink-0 cursor-pointer shadow-sm">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
-                <span>Rekon Saldo</span>
+                <span>Koreksi Saldo</span>
             </button>
         </div>
     </div>
@@ -59,7 +59,7 @@
     <!-- Mutation Audit Table -->
     <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden space-y-3">
         <div class="p-4 sm:p-5 border-b border-slate-200/80 flex items-center justify-between">
-            <h2 class="text-sm font-extrabold text-[#232E28] uppercase tracking-wider">Audit Log Mutasi Saldo</h2>
+            <h2 class="text-sm font-extrabold text-[#232E28] uppercase tracking-wider">Riwayat Mutasi Saldo</h2>
             <div class="relative w-64">
                 <input
                     type="text"
@@ -105,7 +105,7 @@
                                 $label = 'PENARIKAN KAS';
                             } elseif (str_contains($refType, 'ADJUSTMENT') || str_contains($refType, 'REKON')) {
                                 $badgeClass = 'bg-amber-50 text-amber-800 border-amber-200/80';
-                                $label = 'REKONSILIASI';
+                                $label = 'KOREKSI SALDO';
                             }
                         @endphp
                         <tr class="hover:bg-[#F3F6F4]/60 transition">
@@ -151,7 +151,7 @@
             <div class="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl space-y-4 border border-slate-100">
                 <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                     <h3 class="text-base font-extrabold text-[#232E28]">
-                        {{ $showModal === 'TRANSFER' ? 'Transfer Saldo Antar Akun' : ($showModal === 'DEPOSIT' ? 'Deposit / Setor Saldo' : ($showModal === 'WITHDRAWAL' ? 'Penarikan Saldo Kas' : 'Penyesuaian (Rekon) Saldo')) }}
+                        {{ $showModal === 'TRANSFER' ? 'Transfer Saldo Antar Akun' : ($showModal === 'DEPOSIT' ? 'Deposit / Setor Saldo' : ($showModal === 'WITHDRAWAL' ? 'Penarikan Saldo Kas' : 'Koreksi / Penyesuaian Saldo')) }}
                     </h3>
                     <button type="button" wire:click="$set('showModal', null)" class="text-slate-400 hover:text-slate-600 p-1 cursor-pointer">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
