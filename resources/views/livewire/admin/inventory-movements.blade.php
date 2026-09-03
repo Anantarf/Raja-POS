@@ -1,7 +1,7 @@
 <div class="space-y-5">
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-            <h1 class="text-xl font-extrabold text-[#232E28] tracking-tight">Pergerakan Stok</h1>
+            <h1 class="text-2xl font-extrabold text-[#232E28] tracking-tight">Pergerakan Stok</h1>
             <p class="text-xs text-[#718379] font-medium mt-0.5">Histori SALE, TRASH_RESTORE, ADJUSTMENT, DAMAGE, dan STOCK_OPNAME terpadu.</p>
         </div>
     </div>

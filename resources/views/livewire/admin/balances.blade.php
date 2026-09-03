@@ -2,7 +2,7 @@
     <!-- Header -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-            <h1 class="text-xl font-extrabold text-[#232E28] tracking-tight">Keuangan & Akun Saldo Kas/Bank</h1>
+            <h1 class="text-2xl font-extrabold text-[#232E28] tracking-tight">Keuangan & Akun Saldo Kas/Bank</h1>
             <p class="text-xs text-[#718379] font-medium mt-0.5">Kelola saldo kas fisik, rekening bank, mutasi transfer, dan rekonsiliasi keuangan.</p>
         </div>
         <div class="flex items-center gap-2 overflow-x-auto py-1">

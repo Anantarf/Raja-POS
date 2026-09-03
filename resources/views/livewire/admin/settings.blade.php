@@ -1,6 +1,6 @@
 <div class="space-y-5">
     <div>
-        <h1 class="text-xl font-extrabold text-[#232E28] tracking-tight">Pengaturan Owner</h1>
+        <h1 class="text-2xl font-extrabold text-[#232E28] tracking-tight">Pengaturan Owner</h1>
         <p class="text-xs text-[#718379] font-medium mt-0.5">Pengaturan khusus Owner untuk user, role & hak akses, metode pembayaran, lokasi toko, dan preferensi toko.</p>
     </div>
 

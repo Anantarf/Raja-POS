@@ -2,7 +2,7 @@
     <!-- Header -->
     <div class="flex items-center justify-between">
         <div>
-            <h1 class="text-xl font-extrabold text-[#232E28] tracking-tight">Manajemen Stok Fisik Produk</h1>
+            <h1 class="text-2xl font-extrabold text-[#232E28] tracking-tight">Manajemen Stok Fisik Produk</h1>
             <p class="text-xs text-[#718379] font-medium mt-0.5">Pantau jumlah ketersediaan stok fisik barang per lokasi cabang toko.</p>
         </div>
     </div>

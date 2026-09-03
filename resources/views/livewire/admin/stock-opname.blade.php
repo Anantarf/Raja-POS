@@ -1,14 +1,14 @@
 <div class="space-y-5">
-    <div class="flex items-center justify-between">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-            <h1 class="text-xl font-extrabold text-[#232E28] tracking-tight">Sesi Stock Opname</h1>
+            <h1 class="text-2xl font-extrabold text-[#232E28] tracking-tight">Sesi Stock Opname</h1>
             <p class="text-xs text-[#718379] font-medium mt-0.5">Penyesuaian stok fisik berkala dan audit selisih stok.</p>
         </div>
-        <button wire:click="openCreateModal" class="px-4 py-2 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-bold rounded-xl text-xs transition flex items-center gap-1.5 shadow-sm active:scale-95 cursor-pointer">
+        <button wire:click="openCreateModal" class="px-4 py-2.5 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-2xl text-xs transition flex items-center gap-2 shadow-sm active:scale-95 cursor-pointer uppercase tracking-wider shrink-0">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
             </svg>
-            <span>Buat Sesi Opname</span>
+            <span>+ Buat Sesi Opname</span>
         </button>
     </div>
 

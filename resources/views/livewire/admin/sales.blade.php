@@ -2,7 +2,7 @@
     <!-- Header -->
     <div class="flex items-center justify-between">
         <div>
-            <h1 class="text-xl font-extrabold text-[#232E28] tracking-tight">Riwayat Transaksi Penjualan</h1>
+            <h1 class="text-2xl font-extrabold text-[#232E28] tracking-tight">Riwayat Transaksi Penjualan</h1>
             <p class="text-xs text-[#718379] font-medium mt-0.5">Daftar seluruh nota penjualan toko, rincian pembayaran, dan struk kasir.</p>
         </div>
     </div>

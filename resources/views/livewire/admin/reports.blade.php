@@ -1,6 +1,6 @@
 <div class="space-y-5">
     <div>
-        <h1 class="text-xl font-extrabold text-[#232E28] tracking-tight">Laporan System & Analytics</h1>
+        <h1 class="text-2xl font-extrabold text-[#232E28] tracking-tight">Laporan System & Analytics</h1>
         <p class="text-xs text-[#718379] font-medium mt-0.5">Ringkasan laporan penjualan, stok, pembayaran, saldo, dan produk terpadu.</p>
     </div>
 
