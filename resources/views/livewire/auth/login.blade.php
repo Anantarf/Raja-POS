@@ -4,7 +4,7 @@
         <img src="{{ asset('favicon.svg') }}" alt="Raja POS" class="w-14 h-14 mx-auto rounded-2xl shadow-md shrink-0">
         <div>
             <h1 class="text-2xl font-extrabold text-[#232E28] tracking-tight">RAJA AKSESORIS</h1>
-            <p class="text-xs text-[#718379] font-medium mt-1">Sistem Kasir & Ritel Aksesoris Terintegrasi</p>
+            <p class="text-xs text-[#718379] font-bold mt-1 uppercase tracking-wider">Retail Management System</p>
         </div>
     </div>
 
