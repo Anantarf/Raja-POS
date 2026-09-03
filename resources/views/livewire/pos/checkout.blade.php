@@ -56,19 +56,19 @@
                 </div>
 
                 <!-- Category Tabs & Product Type Pills -->
-                <div class="flex items-center justify-between gap-3 text-xs pt-0.5">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 text-xs pt-0.5">
                     <!-- Category Tabs -->
-                    <div class="flex items-center gap-2 overflow-x-auto py-1 px-0.5 shrink min-w-0">
+                    <div class="flex items-center gap-2 overflow-x-auto py-1 px-0.5 shrink min-w-0 no-scrollbar">
                         <button
                             wire:click="$set('selectedCategory', null)"
-                            class="px-4 py-2 rounded-2xl text-xs font-bold transition-all shrink-0 border {{ $selectedCategory === null ? 'bg-[#3F7A5D] text-white border-[#3F7A5D]' : 'bg-[#F3F6F4] text-[#232E28] border-slate-200 hover:bg-slate-200' }}"
+                            class="px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-2xl text-xs font-bold transition-all shrink-0 border {{ $selectedCategory === null ? 'bg-[#3F7A5D] text-white border-[#3F7A5D]' : 'bg-[#F3F6F4] text-[#232E28] border-slate-200 hover:bg-slate-200' }}"
                         >
                             Semua Kategori
                         </button>
                         @foreach($categories as $cat)
                             <button
                                 wire:click="$set('selectedCategory', {{ $cat->id }})"
-                                class="px-4 py-2 rounded-2xl text-xs font-bold transition-all shrink-0 border {{ $selectedCategory === $cat->id ? 'bg-[#3F7A5D] text-white border-[#3F7A5D]' : 'bg-[#F3F6F4] text-[#232E28] border-slate-200 hover:bg-slate-200' }}"
+                                class="px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-2xl text-xs font-bold transition-all shrink-0 border {{ $selectedCategory === $cat->id ? 'bg-[#3F7A5D] text-white border-[#3F7A5D]' : 'bg-[#F3F6F4] text-[#232E28] border-slate-200 hover:bg-slate-200' }}"
                             >
                                 {{ $cat->name }}
                             </button>
@@ -76,28 +76,28 @@
                     </div>
 
                     <!-- Type Filter Pills -->
-                    <div class="flex items-center gap-1.5 shrink-0 text-xs font-bold border-l border-[#E3EEE8] pl-3">
+                    <div class="flex items-center gap-1.5 overflow-x-auto shrink-0 text-xs font-bold sm:border-l sm:border-[#E3EEE8] sm:pl-3 pt-1 sm:pt-0">
                         <button
                             wire:click="$set('selectedType', 'ALL')"
-                            class="px-3.5 py-1.5 rounded-xl transition border {{ $selectedType === 'ALL' ? 'bg-[#232E28] text-white border-[#232E28]' : 'bg-white text-[#232E28] border-slate-200 hover:bg-slate-50' }}"
+                            class="px-3 py-1.5 rounded-xl transition border {{ $selectedType === 'ALL' ? 'bg-[#232E28] text-white border-[#232E28]' : 'bg-white text-[#232E28] border-slate-200 hover:bg-slate-50' }}"
                         >
                             Semua
                         </button>
                         <button
                             wire:click="$set('selectedType', 'PHYSICAL')"
-                            class="px-3.5 py-1.5 rounded-xl transition border {{ $selectedType === 'PHYSICAL' ? 'bg-[#3F7A5D] text-white border-[#3F7A5D]' : 'bg-white text-[#232E28] border-slate-200 hover:bg-slate-50' }}"
+                            class="px-3 py-1.5 rounded-xl transition border {{ $selectedType === 'PHYSICAL' ? 'bg-[#3F7A5D] text-white border-[#3F7A5D]' : 'bg-white text-[#232E28] border-slate-200 hover:bg-slate-50' }}"
                         >
                             Fisik
                         </button>
                         <button
                             wire:click="$set('selectedType', 'DIGITAL')"
-                            class="px-3.5 py-1.5 rounded-xl transition border {{ $selectedType === 'DIGITAL' ? 'bg-emerald-700 text-white border-emerald-700' : 'bg-white text-[#232E28] border-slate-200 hover:bg-slate-50' }}"
+                            class="px-3 py-1.5 rounded-xl transition border {{ $selectedType === 'DIGITAL' ? 'bg-emerald-700 text-white border-emerald-700' : 'bg-white text-[#232E28] border-slate-200 hover:bg-slate-50' }}"
                         >
                             Digital
                         </button>
                         <button
                             wire:click="$set('selectedType', 'SERVICE')"
-                            class="px-3.5 py-1.5 rounded-xl transition border {{ $selectedType === 'SERVICE' ? 'bg-[#C2AC7C] text-white border-[#C2AC7C]' : 'bg-white text-[#232E28] border-slate-200 hover:bg-slate-50' }}"
+                            class="px-3 py-1.5 rounded-xl transition border {{ $selectedType === 'SERVICE' ? 'bg-[#C2AC7C] text-white border-[#C2AC7C]' : 'bg-white text-[#232E28] border-slate-200 hover:bg-slate-50' }}"
                         >
                             Service
                         </button>
