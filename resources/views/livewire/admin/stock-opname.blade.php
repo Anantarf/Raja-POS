@@ -12,6 +12,21 @@
         </button>
     </div>
 
+    <!-- Search Toolbar -->
+    <div class="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+        <div class="w-full sm:w-80 relative">
+            <input
+                type="text"
+                wire:model.live.debounce.300ms="search"
+                placeholder="Cari No. Opname, nama barang, barcode..."
+                class="w-full pl-9 pr-3.5 py-2.5 border border-slate-200 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] bg-[#F3F6F4] text-[#232E28] placeholder:text-[#718379]"
+            />
+            <svg class="w-4 h-4 text-slate-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+        </div>
+    </div>
+
     <div class="bg-white border border-slate-200/80 rounded-2xl shadow-sm overflow-hidden">
         <table class="w-full text-xs text-left">
             <thead class="bg-[#F3F6F4] border-b border-slate-200/80 text-[#718379] uppercase text-[11px] font-extrabold tracking-wider whitespace-nowrap">
@@ -62,17 +77,23 @@
                 @endforelse
             </tbody>
         </table>
-        <div class="p-4 border-t border-[#E3EEE8]">{{ $sessions->links() }}</div>
+        <div class="p-3.5 border-t border-[#E3EEE8]">{{ $sessions->links() }}</div>
     </div>
 
     @if($showCreateModal)
         <div class="fixed inset-0 bg-[#232E28]/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
             <div class="bg-white rounded-2xl p-6 max-w-md w-full shadow-xl space-y-4 border border-slate-100">
-                <h3 class="text-base font-extrabold text-[#232E28]">Buat Sesi Stock Opname Baru</h3>
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                    <h3 class="text-base font-extrabold text-[#232E28]">Buat Sesi Stock Opname Baru</h3>
+                    <button type="button" wire:click="$set('showCreateModal', false)" class="text-slate-400 hover:text-slate-600 p-1">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+
                 <form wire:submit.prevent="createSession" class="space-y-4 text-xs">
                     <div>
                         <label class="block font-bold text-[#232E28] mb-1.5">Lokasi Toko</label>
-                        <select wire:model="location_id" class="w-full p-3 border border-slate-200 rounded-2xl bg-white text-xs font-semibold focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]" required>
+                        <select wire:model="location_id" class="w-full p-3 border border-slate-200 rounded-xl bg-[#F3F6F4] text-xs font-semibold focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] transition" required>
                             <option value="">-- Pilih Lokasi --</option>
                             @foreach($locations as $loc)
                                 <option value="{{ $loc->id }}">{{ $loc->name }}</option>
@@ -81,8 +102,8 @@
                     </div>
 
                     <div>
-                        <label class="block font-bold text-[#232E28] mb-1.5">Produk</label>
-                        <select wire:model="product_id" class="w-full p-3 border border-slate-200 rounded-2xl bg-white text-xs font-semibold focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]" required>
+                        <label class="block font-bold text-[#232E28] mb-1.5">Produk *</label>
+                        <select wire:model="product_id" class="w-full p-3 border border-slate-200 rounded-xl bg-[#F3F6F4] text-xs font-semibold focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] transition" required>
                             <option value="">-- Pilih Produk --</option>
                             @foreach($products as $prod)
                                 <option value="{{ $prod->id }}">{{ $prod->name }} (Barcode: {{ $prod->effective_barcode }})</option>
@@ -92,21 +113,20 @@
 
                     <div>
                         <label class="block font-bold text-[#232E28] mb-1.5">Hasil Hitung Stok Fisik *</label>
-                        <input type="number" wire:model="physical_qty" class="w-full p-3 border border-slate-200 rounded-2xl text-xs font-mono font-bold focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]" required min="0" placeholder="0" />
+                        <input type="number" wire:model="physical_qty" class="w-full p-3 border border-slate-200 rounded-xl bg-[#F3F6F4] text-xs font-mono font-bold focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] transition" required min="0" placeholder="0" />
                     </div>
 
                     <div>
                         <label class="block font-bold text-[#232E28] mb-1.5">Catatan / Alasan Opname</label>
-                        <textarea wire:model="notes" rows="2" class="w-full p-3 border border-slate-200 rounded-2xl text-xs focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]" placeholder="Misal: Barang hilang/rusak saat pajang"></textarea>
+                        <textarea wire:model="notes" rows="2" class="w-full p-3 border border-slate-200 rounded-xl bg-[#F3F6F4] text-xs focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] transition" placeholder="Misal: Barang hilang/rusak saat pajang"></textarea>
                     </div>
 
-                    <div class="flex gap-2 pt-2">
-                        <button type="submit" class="flex-1 py-3 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-2xl text-xs transition uppercase tracking-wider">Simpan Opname</button>
-                        <button type="button" wire:click="$set('showCreateModal', false)" class="py-3 px-4 bg-slate-100 hover:bg-slate-200 text-[#232E28] font-bold rounded-2xl text-xs transition">Batal</button>
+                    <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
+                        <button type="button" wire:click="$set('showCreateModal', false)" class="py-2.5 px-4 bg-slate-100 hover:bg-slate-200 text-[#232E28] font-bold rounded-2xl text-xs transition cursor-pointer">Batal</button>
+                        <button type="submit" class="py-2.5 px-5 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-2xl text-xs uppercase tracking-wider transition active:scale-95 shadow-sm cursor-pointer">Simpan Opname</button>
                     </div>
                 </form>
             </div>
         </div>
     @endif
-</div>
 

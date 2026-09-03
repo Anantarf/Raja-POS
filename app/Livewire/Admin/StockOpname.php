@@ -24,7 +24,14 @@ class StockOpname extends Component
 
     public $notes = '';
 
+    public $search = '';
+
     protected $paginationTheme = 'tailwind';
+
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
 
     public function openCreateModal()
     {
@@ -86,6 +93,14 @@ class StockOpname extends Component
     public function render()
     {
         $sessions = StockOpnameModel::with(['location', 'items.product', 'creator', 'approver'])
+            ->when($this->search, function ($query) {
+                $query->where('opname_number', 'like', '%'.$this->search.'%')
+                    ->orWhereHas('items.product', function ($q) {
+                        $q->where('name', 'like', '%'.$this->search.'%')
+                            ->orWhere('barcode', 'like', '%'.$this->search.'%')
+                            ->orWhere('sku_code', 'like', '%'.$this->search.'%');
+                    });
+            })
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
