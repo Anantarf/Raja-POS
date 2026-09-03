@@ -73,12 +73,30 @@ Route::middleware(['auth'])->group(function () {
         ]);
     })->name('receipt.thermal');
 
-    // Download CSV Template
-    Route::get('/admin/products/template-csv', function () {
+    // Download Excel Template
+    Route::get('/admin/products/template-excel', function () {
         $csvContent = app(ProductImportService::class)->generateCsvTemplate();
 
         return response($csvContent)
-            ->header('Content-Type', 'text/csv')
-            ->header('Content-Disposition', 'attachment; filename="template_import_produk_raja_pos.csv"');
-    })->name('products.template-csv');
+            ->header('Content-Type', 'text/csv; charset=UTF-8')
+            ->header('Content-Disposition', 'attachment; filename="Template_Import_Barang_RajaPOS.csv"');
+    })->name('products.template-excel');
+
+    // Also support alias template-csv
+    Route::get('/admin/products/template-csv', function () {
+        return redirect()->route('products.template-excel');
+    });
+
+    // Export Products Data to Excel
+    Route::get('/admin/products/export-excel', function () {
+        $categoryId = request()->query('category_id');
+        $productType = request()->query('type');
+        $content = app(ProductImportService::class)->exportProductsToExcel($categoryId, $productType);
+
+        $filename = 'Export_Master_Produk_RajaPOS_' . date('Ymd_His') . '.csv';
+
+        return response($content)
+            ->header('Content-Type', 'text/csv; charset=UTF-8')
+            ->header('Content-Disposition', "attachment; filename=\"{$filename}\"");
+    })->name('products.export-excel');
 });

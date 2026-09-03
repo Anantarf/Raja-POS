@@ -15,6 +15,6 @@ class Dashboard extends Component
         return view('livewire.admin.dashboard', [
             'metrics' => $metrics,
             'dailyTrends' => $dailyTrends,
-        ])->layout('components.layouts.admin', ['title' => 'Dashboard - Raja POS']);
+        ])->layout('components.layouts.admin', ['title' => 'Dashboard']);
     }
 }

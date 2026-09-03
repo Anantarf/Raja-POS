@@ -101,6 +101,6 @@ class Inventories extends Component
         return view('livewire.admin.inventories', [
             'inventories' => $inventories,
             'locations' => Location::all(),
-        ])->layout('components.layouts.admin', ['title' => 'Stok Fisik - Raja POS']);
+        ])->layout('components.layouts.admin', ['title' => 'Stok Fisik']);
     }
 }

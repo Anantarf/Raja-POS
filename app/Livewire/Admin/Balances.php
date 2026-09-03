@@ -89,6 +89,6 @@ class Balances extends Component
         return view('livewire.admin.balances', [
             'accounts' => $accounts,
             'transactions' => $transactions,
-        ])->layout('components.layouts.admin', ['title' => 'Keuangan & Saldo - Raja POS']);
+        ])->layout('components.layouts.admin', ['title' => 'Keuangan & Saldo']);
     }
 }

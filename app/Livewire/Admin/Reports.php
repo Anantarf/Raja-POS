@@ -32,6 +32,6 @@ class Reports extends Component
             'balanceAccounts' => BalanceAccount::where('status', 'ACTIVE')->orderBy('name')->get(),
             'productCount' => Product::count(),
             'incompleteProductCount' => Product::where('price_status', 'INCOMPLETE')->count(),
-        ])->layout('components.layouts.admin', ['title' => 'Laporan - Raja POS']);
+        ])->layout('components.layouts.admin', ['title' => 'Laporan']);
     }
 }

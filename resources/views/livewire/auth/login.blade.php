@@ -2,10 +2,10 @@
     <!-- Brand Header & Mascot -->
     <div class="text-center space-y-3">
         <div class="w-20 h-20 mx-auto rounded-3xl bg-white border border-[#E3EEE8] p-1 flex items-center justify-center shadow-md overflow-hidden">
-            <img src="/images/dashboard_welcome_character_3d.jpg" alt="Raja POS Mascot" class="w-full h-full object-cover rounded-2xl">
+            <img src="/images/dashboard_welcome_character_3d.jpg" alt="Raja Aksesoris Mascot" class="w-full h-full object-cover rounded-2xl">
         </div>
         <div>
-            <h1 class="text-2xl font-extrabold text-[#232E28] tracking-tight">RAJA POS</h1>
+            <h1 class="text-2xl font-extrabold text-[#232E28] tracking-tight">RAJA AKSESORIS</h1>
             <p class="text-xs text-[#718379] font-medium mt-1">Sistem Kasir & Ritel Aksesoris Terintegrasi</p>
         </div>
     </div>
@@ -46,7 +46,7 @@
                 <input type="checkbox" wire:model="remember" class="w-4 h-4 text-[#3F7A5D] rounded border-slate-300 focus:ring-[#3F7A5D]">
                 <span class="text-[#718379] font-medium">Ingat Saya</span>
             </label>
-            <span class="text-indigo-600 bg-indigo-50 border border-indigo-200/60 px-2 py-0.5 rounded-md font-mono text-[10px] font-bold">Raja POS 2.0</span>
+            <span class="text-indigo-600 bg-indigo-50 border border-indigo-200/60 px-2 py-0.5 rounded-md font-mono text-[10px] font-bold">Raja Aksesoris 2.0</span>
         </div>
 
         <button

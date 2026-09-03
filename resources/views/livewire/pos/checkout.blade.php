@@ -3,7 +3,7 @@
     <header class="px-3 sm:px-6 pt-3 sm:pt-4 pb-2 sm:pb-3 flex-shrink-0">
         <div class="bg-white rounded-2xl border border-[#E3EEE8] px-4 sm:px-6 py-3 flex items-center justify-between gap-3">
             <div class="flex items-center gap-3">
-                <span class="bg-[#3F7A5D] text-white font-extrabold px-3 sm:px-3.5 py-1.5 rounded-xl text-xs sm:text-sm tracking-wider uppercase shadow-sm">RAJA POS</span>
+                <span class="bg-[#3F7A5D] text-white font-extrabold px-3 sm:px-3.5 py-1.5 rounded-xl text-xs sm:text-sm tracking-wider uppercase shadow-sm">RAJA AKSESORIS</span>
                 <span class="text-xs sm:text-sm font-extrabold text-[#232E28] hidden md:inline border-l border-[#E3EEE8] pl-4">
                     {{ $location?->name ?? 'Raja Aksesoris Bango' }}
                 </span>

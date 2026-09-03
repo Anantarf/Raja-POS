@@ -81,7 +81,7 @@ class FoundationTest extends TestCase
         $this->actingAs($superadmin)
             ->get('/admin/dashboard')
             ->assertStatus(200)
-            ->assertSee('Operasional POS')
+            ->assertSee('Operasional Kasir')
             ->assertSee('Stok &amp; Inventaris', false)
             ->assertSee('Katalog &amp; Produk', false)
             ->assertSee('Keuangan &amp; Saldo', false)

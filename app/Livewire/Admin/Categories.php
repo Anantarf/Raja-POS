@@ -63,6 +63,6 @@ class Categories extends Component
 
         return view('livewire.admin.categories', [
             'categories' => $categories,
-        ])->layout('components.layouts.admin', ['title' => 'Kategori Produk - Raja POS']);
+        ])->layout('components.layouts.admin', ['title' => 'Kategori Produk']);
     }
 }

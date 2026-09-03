@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\BalanceAccount;
 use App\Models\Brand;
 use App\Models\Category;
+use App\Models\Inventory;
 use App\Models\Location;
 use App\Models\Product;
 use App\Models\User;
@@ -275,9 +276,76 @@ class ProductImportService
         $rows = [$headers, $sample1, $sample2, $sample3];
 
         $output = fopen('php://temp', 'r+');
+        // Add UTF-8 BOM for Microsoft Excel native compatibility
+        fwrite($output, "\xEF\xBB\xBF");
         foreach ($rows as $row) {
             fputcsv($output, $row);
         }
+        rewind($output);
+        $csvContent = stream_get_contents($output);
+        fclose($output);
+
+        return $csvContent;
+    }
+
+    /**
+     * Export all products to clean Excel-compatible CSV string with UTF-8 BOM.
+     */
+    public function exportProductsToExcel(?string $categoryId = null, ?string $productType = null): string
+    {
+        $query = Product::with(['category', 'brand', 'defaultBalanceAccount']);
+
+        if (!empty($categoryId)) {
+            $query->where('category_id', $categoryId);
+        }
+
+        if (!empty($productType) && $productType !== 'ALL') {
+            $query->where('product_type', $productType);
+        }
+
+        $products = $query->orderBy('name')->get();
+
+        $headers = [
+            'Kode Produk',
+            'Nama Barang/Layanan',
+            'Kategori',
+            'Jenis',
+            'Merk',
+            'Jenis Stok',
+            'Modal',
+            'Harga Jual',
+            'Barcode',
+            'Stok',
+            'Provider Akun',
+            'Status Kelengkapan',
+        ];
+
+        $output = fopen('php://temp', 'r+');
+        // Add UTF-8 BOM for Microsoft Excel native compatibility
+        fwrite($output, "\xEF\xBB\xBF");
+        fputcsv($output, $headers);
+
+        foreach ($products as $product) {
+            $inv = $product->product_type === 'PHYSICAL' ? Inventory::where('product_id', $product->id)->first() : null;
+            $stock = $inv?->quantity ?? 0;
+
+            $row = [
+                $product->code,
+                $product->name,
+                $product->category?->name ?? 'Umum',
+                $product->product_subtype ?? '',
+                $product->brand?->name ?? '',
+                $product->product_type,
+                $product->cost_price ?? 0,
+                $product->selling_price ?? 0,
+                $product->effective_barcode ?? '',
+                $product->product_type === 'PHYSICAL' ? $stock : '-',
+                $product->defaultBalanceAccount?->name ?? '',
+                $product->price_status === 'COMPLETE' ? 'Lengkap' : 'Harga Belum Lengkap',
+            ];
+            fputcsv($output, $row);
+        }
+
         rewind($output);
         $csvContent = stream_get_contents($output);
         fclose($output);

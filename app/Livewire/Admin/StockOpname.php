@@ -93,6 +93,6 @@ class StockOpname extends Component
             'sessions' => $sessions,
             'locations' => Location::all(),
             'products' => Product::where('product_type', 'PHYSICAL')->orderBy('name')->get(),
-        ])->layout('components.layouts.admin', ['title' => 'Stock Opname - Raja POS']);
+        ])->layout('components.layouts.admin', ['title' => 'Stock Opname']);
     }
 }

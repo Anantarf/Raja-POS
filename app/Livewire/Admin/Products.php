@@ -49,6 +49,22 @@ class Products extends Component
         $this->resetPage();
     }
 
+    public function updatingSelectedCategory()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingSelectedType()
+    {
+        $this->resetPage();
+    }
+
+    public function filterType($type)
+    {
+        $this->selectedType = $type;
+        $this->resetPage();
+    }
+
     public function setViewMode($mode)
     {
         $this->viewMode = $mode;
@@ -202,7 +218,7 @@ class Products extends Component
             'products' => $products,
             'categories' => Category::orderBy('name')->get(),
             'brands' => Brand::orderBy('name')->get(),
-        ])->layout('components.layouts.admin', ['title' => 'Master Produk - Raja POS']);
+        ])->layout('components.layouts.admin', ['title' => 'Master Produk']);
     }
 }
 

@@ -53,6 +53,6 @@ class InventoryMovements extends Component
                 ->distinct()
                 ->orderBy('movement_type')
                 ->pluck('movement_type'),
-        ])->layout('components.layouts.admin', ['title' => 'Pergerakan Stok - Raja POS']);
+        ])->layout('components.layouts.admin', ['title' => 'Pergerakan Stok']);
     }
 }

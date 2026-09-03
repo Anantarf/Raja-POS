@@ -6,16 +6,16 @@
             <p class="text-xs text-[#718379] font-medium mt-0.5">Kelola saldo kas fisik, rekening bank, mutasi transfer, dan rekonsiliasi keuangan.</p>
         </div>
         <div class="flex items-center gap-2 overflow-x-auto py-1">
-            <button wire:click="openModal('TRANSFER')" class="px-4 py-2.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 border border-indigo-200/80 font-extrabold rounded-2xl text-xs transition active:scale-95 flex items-center gap-1.5 shrink-0">
+            <button wire:click="openModal('TRANSFER')" class="px-3.5 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200/80 font-bold rounded-xl text-xs transition active:scale-95 flex items-center gap-1.5 shrink-0 cursor-pointer">
                 <span>Transfer Saldo</span>
             </button>
-            <button wire:click="openModal('DEPOSIT')" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold rounded-2xl text-xs transition active:scale-95 flex items-center gap-1.5 shrink-0">
+            <button wire:click="openModal('DEPOSIT')" class="px-3.5 py-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-xl text-xs transition active:scale-95 flex items-center gap-1.5 shrink-0 cursor-pointer">
                 <span>Deposit / Setor</span>
             </button>
-            <button wire:click="openModal('WITHDRAWAL')" class="px-4 py-2.5 bg-rose-600 hover:bg-rose-700 text-white font-extrabold rounded-2xl text-xs transition active:scale-95 flex items-center gap-1.5 shrink-0">
+            <button wire:click="openModal('WITHDRAWAL')" class="px-3.5 py-2 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-xl text-xs transition active:scale-95 flex items-center gap-1.5 shrink-0 cursor-pointer">
                 <span>Penarikan Kas</span>
             </button>
-            <button wire:click="openModal('ADJUSTMENT')" class="px-4 py-2.5 bg-amber-600 hover:bg-amber-700 text-white font-extrabold rounded-2xl text-xs transition active:scale-95 flex items-center gap-1.5 shrink-0">
+            <button wire:click="openModal('ADJUSTMENT')" class="px-3.5 py-2 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-xl text-xs transition active:scale-95 flex items-center gap-1.5 shrink-0 cursor-pointer">
                 <span>Rekon Saldo</span>
             </button>
         </div>
@@ -24,10 +24,10 @@
     <!-- Account Cards Grid -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         @foreach($accounts as $acc)
-            <div class="bg-white rounded-3xl p-5 shadow-emco border border-[#E3EEE8] relative overflow-hidden hover:border-[#3F7A5D]/40 transition-all duration-200">
+            <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200/80 relative overflow-hidden hover:border-[#3F7A5D]/50 hover:shadow-md transition-all duration-200">
                 <div class="flex items-center justify-between text-xs text-[#718379] font-extrabold uppercase tracking-wider mb-2">
                     <span>{{ $acc->name }}</span>
-                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase bg-indigo-50 text-indigo-600 border border-indigo-200/60">
+                    <span class="px-2 py-0.5 rounded-md text-[11px] font-bold uppercase bg-indigo-50 text-indigo-600 border border-indigo-200/60">
                         {{ $acc->account_type }}
                     </span>
                 </div>
@@ -35,7 +35,7 @@
                     Rp {{ number_format($acc->balance, 0, ',', '.') }}
                 </div>
                 @if($acc->balance < 0 && $acc->account_type === 'CASH')
-                    <div class="text-[11px] text-amber-800 bg-amber-50 p-2.5 rounded-2xl border border-amber-200 mt-3 font-bold">
+                    <div class="text-xs text-amber-800 bg-amber-50 p-2.5 rounded-xl border border-amber-200 mt-3 font-semibold">
                         Uang Kasir Minus. Operasional dapat diganti dari rekening.
                     </div>
                 @endif
@@ -44,15 +44,15 @@
     </div>
 
     <!-- Mutation Audit Table -->
-    <div class="bg-white rounded-3xl border border-[#E3EEE8] shadow-emco overflow-hidden space-y-3">
-        <div class="p-5 border-b border-[#E3EEE8] flex items-center justify-between">
+    <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden space-y-3">
+        <div class="p-4 sm:p-5 border-b border-slate-200/80 flex items-center justify-between">
             <h2 class="text-sm font-extrabold text-[#232E28] uppercase tracking-wider">Audit Log Mutasi Saldo</h2>
             <div class="relative w-64">
                 <input
                     type="text"
                     wire:model.live.debounce.300ms="search"
                     placeholder="Cari No. Mutasi / Keterangan..."
-                    class="w-full pl-9 pr-3 py-2 border border-slate-200 rounded-2xl text-xs font-medium focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] bg-[#F3F6F4]"
+                    class="w-full pl-9 pr-3 py-2 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] bg-[#F3F6F4]"
                 />
                 <svg class="w-4 h-4 text-slate-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>

@@ -64,6 +64,6 @@ class Sales extends Component
         return view('livewire.admin.sales', [
             'sales' => $sales,
             'selectedSale' => $selectedSale,
-        ])->layout('components.layouts.admin', ['title' => 'Riwayat Penjualan - Raja POS']);
+        ])->layout('components.layouts.admin', ['title' => 'Riwayat Penjualan']);
     }
 }

@@ -3,30 +3,30 @@
     <div class="flex items-center justify-between">
         <div>
             <h1 class="text-xl font-extrabold text-[#232E28] tracking-tight">Riwayat Transaksi Penjualan</h1>
-            <p class="text-xs text-[#86968E] font-medium mt-0.5">Daftar seluruh nota penjualan toko, rincian pembayaran, dan struk kasir.</p>
+            <p class="text-xs text-[#718379] font-medium mt-0.5">Daftar seluruh nota penjualan toko, rincian pembayaran, dan struk kasir.</p>
         </div>
     </div>
 
     <!-- Search Toolbar -->
-    <div class="bg-white p-4 rounded-2xl border border-[#E3EEE8] shadow-emco flex items-center justify-between text-xs">
-        <div class="w-full sm:w-1/3 relative">
+    <div class="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between text-xs">
+        <div class="w-full sm:w-72 relative">
             <input
                 type="text"
                 wire:model.live.debounce.300ms="search"
                 placeholder="Cari No. Nota / Nama Kasir..."
-                class="w-full pl-10 pr-4 py-2.5 border border-slate-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] bg-[#F3F6F4] placeholder:text-[#86968E]"
+                class="w-full pl-9 pr-3 py-2 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] bg-[#F3F6F4] placeholder:text-[#718379]"
             />
-            <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-4 h-4 text-slate-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
             </svg>
         </div>
     </div>
 
     <!-- Sales Table -->
-    <div class="bg-white border border-[#E3EEE8] rounded-2xl shadow-emco overflow-hidden">
+    <div class="bg-white border border-slate-200/80 rounded-2xl shadow-sm overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-xs text-left">
-                <thead class="bg-[#F3F6F4] border-b border-[#E3EEE8] text-[#86968E] uppercase text-[10px] font-extrabold tracking-wider">
+                <thead class="bg-[#F3F6F4] border-b border-slate-200/80 text-[#718379] uppercase text-[11px] font-extrabold tracking-wider">
                     <tr>
                         <th class="py-3.5 px-4">No. Nota & Waktu</th>
                         <th class="py-3.5 px-4">Kasir & Lokasi</th>
@@ -41,16 +41,16 @@
                         <tr class="hover:bg-[#F3F6F4]/60 transition">
                             <td class="py-3.5 px-4">
                                 <div class="font-bold text-indigo-600 font-mono text-xs bg-indigo-50 border border-indigo-200/70 px-2 py-0.5 rounded-md inline-block">{{ $sale->invoice_number }}</div>
-                                <div class="text-[10px] text-[#86968E] mt-1 font-semibold">{{ $sale->created_at->format('d M Y, H:i') }}</div>
+                                <div class="text-xs text-[#718379] mt-1 font-semibold">{{ $sale->created_at->format('d M Y, H:i') }}</div>
                             </td>
                             <td class="py-3.5 px-4 text-[#232E28]">
                                 <div class="font-bold text-[#232E28]">{{ $sale->user?->name ?? 'Kasir' }}</div>
-                                <div class="text-[10px] text-[#86968E] font-semibold">{{ $sale->location?->name ?? 'Toko' }}</div>
+                                <div class="text-xs text-[#718379] font-semibold">{{ $sale->location?->name ?? 'Toko' }}</div>
                             </td>
                             <td class="py-3.5 px-4">
                                 <div class="flex flex-wrap gap-1">
                                     @foreach($sale->payments as $p)
-                                        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#F3F6F4] text-[#232E28] border border-slate-200">
+                                        <span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-[#F3F6F4] text-[#232E28] border border-slate-200">
                                             {{ $p->paymentMethod?->name }}: Rp {{ number_format($p->amount, 0, ',', '.') }}
                                         </span>
                                     @endforeach

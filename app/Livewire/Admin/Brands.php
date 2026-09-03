@@ -63,6 +63,6 @@ class Brands extends Component
 
         return view('livewire.admin.brands', [
             'brands' => $brands,
-        ])->layout('components.layouts.admin', ['title' => 'Brand Merek - Raja POS']);
+        ])->layout('components.layouts.admin', ['title' => 'Merk / Brand']);
     }
 }

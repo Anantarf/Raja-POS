@@ -1,10 +1,10 @@
 <div class="space-y-5">
     <div>
-        <h1 class="text-xl font-extrabold text-slate-900 tracking-tight">Pengaturan Owner</h1>
-        <p class="text-xs text-slate-500 font-medium mt-0.5">Pengaturan khusus Owner untuk user, role & hak akses, metode pembayaran, lokasi toko, dan pengaturan toko.</p>
+        <h1 class="text-xl font-extrabold text-[#232E28] tracking-tight">Pengaturan Owner</h1>
+        <p class="text-xs text-[#718379] font-medium mt-0.5">Pengaturan khusus Owner untuk user, role & hak akses, metode pembayaran, lokasi toko, dan preferensi toko.</p>
     </div>
 
-    <div class="flex flex-wrap items-center gap-2 border-b border-slate-200 text-xs font-bold pb-2">
+    <div class="flex flex-wrap items-center gap-2 border-b border-slate-200/80 text-xs font-bold pb-2">
         @foreach([
             'STORE_SETTINGS' => ['Pengaturan Toko', '/admin/settings/store-settings'],
             'USERS' => ['User', '/admin/settings/users'],
@@ -12,7 +12,7 @@
             'PAYMENT_METHODS' => ['Metode Pembayaran', '/admin/settings/payment-methods'],
             'LOCATIONS' => ['Lokasi Toko', '/admin/settings/locations'],
         ] as $tab => [$label, $href])
-            <a href="{{ $href }}" class="px-4 py-2 rounded-xl transition {{ $activeTab === $tab ? 'bg-[#3F7A5D] text-white shadow-sm' : 'text-slate-600 hover:bg-slate-100' }}">{{ $label }}</a>
+            <a href="{{ $href }}" class="px-3.5 py-1.5 rounded-xl transition {{ $activeTab === $tab ? 'bg-[#3F7A5D] text-white shadow-sm' : 'text-slate-600 hover:bg-[#F3F6F4] hover:text-[#232E28]' }}">{{ $label }}</a>
         @endforeach
     </div>
 
@@ -29,20 +29,20 @@
         @endphp
 
         <div class="grid grid-cols-1 xl:grid-cols-3 gap-5">
-            <div class="xl:col-span-2 bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+            <div class="xl:col-span-2 bg-white border border-slate-200/80 rounded-2xl p-5 shadow-sm">
                 <div class="flex items-start justify-between gap-4 mb-5">
                     <div>
-                        <h3 class="text-base font-extrabold text-slate-900">Profil & Preferensi Toko</h3>
-                        <p class="text-xs text-slate-500 font-medium mt-1">Ringkasan pengaturan dasar yang dipakai kasir, struk, laporan, dan stok.</p>
+                        <h3 class="text-base font-extrabold text-[#232E28]">Profil & Preferensi Toko</h3>
+                        <p class="text-xs text-[#718379] font-medium mt-0.5">Ringkasan pengaturan dasar yang dipakai kasir, struk, laporan, dan stok.</p>
                     </div>
-                    <span class="px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100 text-[10px] font-extrabold">Aktif</span>
+                    <span class="px-2.5 py-0.5 rounded-md bg-emerald-50 text-emerald-700 text-[11px] font-bold">Aktif</span>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                     @foreach($storeSettings as $item)
-                        <div class="rounded-xl border border-slate-200 bg-slate-50/70 p-4">
-                            <div class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500">{{ $item['label'] }}</div>
-                            <div class="mt-1.5 text-sm font-extrabold text-slate-900">{{ filled($item['value']) ? $item['value'] : 'Belum diisi' }}</div>
+                        <div class="rounded-xl border border-slate-200/80 bg-[#F3F6F4]/50 p-4">
+                            <div class="text-[11px] font-extrabold uppercase tracking-wider text-[#718379]">{{ $item['label'] }}</div>
+                            <div class="mt-1 text-sm font-bold text-[#232E28]">{{ filled($item['value']) ? $item['value'] : 'Belum diisi' }}</div>
                             <div class="mt-1 text-xs text-slate-500 leading-relaxed">{{ $item['hint'] }}</div>
                         </div>
                     @endforeach

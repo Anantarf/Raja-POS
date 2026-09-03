@@ -4,53 +4,56 @@
             <h1 class="text-xl font-extrabold text-[#232E28] tracking-tight">Sesi Stock Opname</h1>
             <p class="text-xs text-[#718379] font-medium mt-0.5">Penyesuaian stok fisik berkala dan audit selisih stok.</p>
         </div>
-        <button wire:click="openCreateModal" class="px-5 py-2.5 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-2xl text-xs transition flex items-center gap-1.5 shadow-sm active:scale-95">
-            <span>+ Buat Sesi Opname</span>
+        <button wire:click="openCreateModal" class="px-4 py-2 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-bold rounded-xl text-xs transition flex items-center gap-1.5 shadow-sm active:scale-95 cursor-pointer">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+            </svg>
+            <span>Buat Sesi Opname</span>
         </button>
     </div>
 
-    <div class="bg-white border border-[#E3EEE8] rounded-3xl shadow-emco overflow-hidden">
+    <div class="bg-white border border-slate-200/80 rounded-2xl shadow-sm overflow-hidden">
         <table class="w-full text-xs text-left">
-            <thead class="bg-[#F3F6F4] border-b border-[#E3EEE8] text-[#718379] uppercase text-[10px] font-extrabold tracking-wider">
+            <thead class="bg-[#F3F6F4] border-b border-slate-200/80 text-[#718379] uppercase text-[11px] font-extrabold tracking-wider">
                 <tr>
-                    <th class="py-4 px-5">No. Opname & Waktu</th>
-                    <th class="py-4 px-5">Produk & Lokasi</th>
-                    <th class="py-4 px-5 text-center">Stok Sistem</th>
-                    <th class="py-4 px-5 text-center">Stok Fisik</th>
-                    <th class="py-4 px-5 text-center">Selisih</th>
-                    <th class="py-4 px-5 text-center">Status</th>
-                    <th class="py-4 px-5 text-center">Aksi</th>
+                    <th class="py-3.5 px-4">No. Opname & Waktu</th>
+                    <th class="py-3.5 px-4">Produk & Lokasi</th>
+                    <th class="py-3.5 px-4 text-center">Stok Sistem</th>
+                    <th class="py-3.5 px-4 text-center">Stok Fisik</th>
+                    <th class="py-3.5 px-4 text-center">Selisih</th>
+                    <th class="py-3.5 px-4 text-center">Status</th>
+                    <th class="py-3.5 px-4 text-center">Aksi</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-slate-100 font-medium">
                 @forelse($sessions as $opn)
                     @php($item = $opn->items->first())
                     <tr class="hover:bg-[#F3F6F4]/60 transition">
-                        <td class="py-4 px-5 font-mono text-xs">
+                        <td class="py-3.5 px-4 font-mono text-xs">
                             <div class="font-bold text-indigo-600 bg-indigo-50 border border-indigo-200/70 px-2 py-0.5 rounded-md inline-block">{{ $opn->opname_number }}</div>
                             <div class="text-[10px] text-[#718379] font-sans mt-1 font-semibold">{{ $opn->created_at->format('d M Y, H:i') }}</div>
                         </td>
-                        <td class="py-4 px-5">
-                            <div class="font-extrabold text-[#232E28] text-sm">{{ $item?->product?->name }}</div>
-                            <div class="text-[10px] text-[#718379] font-semibold">{{ $opn->location?->name }}</div>
+                        <td class="py-3.5 px-4">
+                            <div class="font-bold text-[#232E28] text-sm">{{ $item?->product?->name }}</div>
+                            <div class="text-xs text-[#718379] font-semibold">{{ $opn->location?->name }}</div>
                         </td>
-                        <td class="py-4 px-5 text-center font-mono font-bold text-[#232E28]">{{ $item?->system_quantity ?? 0 }}</td>
-                        <td class="py-4 px-5 text-center font-mono font-extrabold text-indigo-600 text-sm">{{ $item?->physical_quantity ?? 0 }}</td>
-                        <td class="py-4 px-5 text-center font-mono font-extrabold {{ ($item?->difference ?? 0) < 0 ? 'text-rose-600' : (($item?->difference ?? 0) > 0 ? 'text-emerald-600' : 'text-[#718379]') }}">
+                        <td class="py-3.5 px-4 text-center font-mono font-bold text-[#232E28]">{{ $item?->system_quantity ?? 0 }}</td>
+                        <td class="py-3.5 px-4 text-center font-mono font-extrabold text-indigo-600 text-sm">{{ $item?->physical_quantity ?? 0 }}</td>
+                        <td class="py-3.5 px-4 text-center font-mono font-extrabold {{ ($item?->difference ?? 0) < 0 ? 'text-rose-600' : (($item?->difference ?? 0) > 0 ? 'text-emerald-600' : 'text-[#718379]') }}">
                             {{ ($item?->difference ?? 0) > 0 ? '+' : '' }}{{ $item?->difference ?? 0 }}
                         </td>
-                        <td class="py-4 px-5 text-center">
-                            <span class="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider {{ $opn->status === 'COMPLETED' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-amber-50 text-amber-700 border border-amber-200' }}">
+                        <td class="py-3.5 px-4 text-center">
+                            <span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold uppercase tracking-wider {{ $opn->status === 'COMPLETED' ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700' }}">
                                 {{ $opn->status }}
                             </span>
                         </td>
-                        <td class="py-4 px-5 text-center">
+                        <td class="py-3.5 px-4 text-center">
                             @if($opn->status === 'DRAFT')
-                                <button wire:click="approveSession({{ $opn->id }})" wire:confirm="Setujui penyesuaian stok opname ini?" class="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-extrabold text-xs transition active:scale-95">
+                                <button wire:click="approveSession({{ $opn->id }})" wire:confirm="Setujui penyesuaian stok opname ini?" class="px-3 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg font-bold text-xs transition">
                                     Approve
                                 </button>
                             @else
-                                <span class="text-[10px] text-[#718379] font-semibold">Disetujui: {{ $opn->approver?->name }}</span>
+                                <span class="text-xs text-[#718379] font-semibold">Disetujui: {{ $opn->approver?->name }}</span>
                             @endif
                         </td>
                     </tr>

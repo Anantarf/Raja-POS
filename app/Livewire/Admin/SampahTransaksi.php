@@ -44,6 +44,6 @@ class SampahTransaksi extends Component
 
         return view('livewire.admin.sampah-transaksi', [
             'trashedSales' => $trashedSales,
-        ])->layout('components.layouts.admin', ['title' => 'Sampah Transaksi - Raja POS']);
+        ])->layout('components.layouts.admin', ['title' => 'Sampah Transaksi']);
     }
 }

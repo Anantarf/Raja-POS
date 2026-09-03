@@ -74,6 +74,6 @@ class Settings extends Component
             'users' => User::with('role')->orderBy('name')->get(),
             'roles' => Role::withCount('users')->orderBy('name')->get(),
             'settings' => Setting::orderBy('key')->get(),
-        ])->layout('components.layouts.admin', ['title' => 'Pengaturan Toko - Raja POS']);
+        ])->layout('components.layouts.admin', ['title' => 'Pengaturan Toko']);
     }
 }

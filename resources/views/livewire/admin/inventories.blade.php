@@ -2,28 +2,28 @@
     <!-- Header -->
     <div class="flex items-center justify-between">
         <div>
-            <h1 class="text-xl font-extrabold text-[#566A7F] tracking-tight">Manajemen Stok Fisik Produk</h1>
-            <p class="text-xs text-[#A1ACB8] font-medium mt-0.5">Pantau jumlah ketersediaan stok fisik barang per lokasi cabang toko.</p>
+            <h1 class="text-xl font-extrabold text-[#232E28] tracking-tight">Manajemen Stok Fisik Produk</h1>
+            <p class="text-xs text-[#718379] font-medium mt-0.5">Pantau jumlah ketersediaan stok fisik barang per lokasi cabang toko.</p>
         </div>
     </div>
 
     <!-- Filter & Search Toolbar -->
-    <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sneat flex flex-col md:flex-row items-center justify-between gap-3 text-xs">
-        <div class="w-full md:w-1/3 relative">
+    <div class="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col md:flex-row items-center justify-between gap-3 text-xs">
+        <div class="w-full md:w-72 relative">
             <input
                 type="text"
                 wire:model.live.debounce.300ms="search"
-                placeholder="Cari nama produk, SKU, barcode..."
-                class="w-full pl-10 pr-4 py-2.5 border border-slate-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-[#696CFF]/20 focus:border-[#696CFF] bg-[#F5F5F9] placeholder:text-[#A1ACB8]"
+                placeholder="Cari produk, SKU, barcode..."
+                class="w-full pl-9 pr-3 py-2 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] bg-[#F3F6F4] placeholder:text-[#718379]"
             />
-            <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-4 h-4 text-slate-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
             </svg>
         </div>
 
         <div class="w-full md:w-auto flex items-center gap-2">
-            <label class="font-semibold text-[#566A7F]">Lokasi Toko:</label>
-            <select wire:model.live="selectedLocationId" class="px-3.5 py-2 border border-slate-200 rounded-xl text-xs font-semibold bg-white text-[#566A7F]">
+            <label class="font-bold text-[#232E28]">Lokasi Toko:</label>
+            <select wire:model.live="selectedLocationId" class="px-3 py-2 border border-slate-200 rounded-xl text-xs font-bold bg-white text-[#232E28] focus:ring-2 focus:ring-[#3F7A5D]/20">
                 @foreach($locations as $loc)
                     <option value="{{ $loc->id }}">{{ $loc->name }}</option>
                 @endforeach
@@ -32,10 +32,10 @@
     </div>
 
     <!-- Inventories Table -->
-    <div class="bg-white border border-slate-100 rounded-2xl shadow-sneat overflow-hidden">
+    <div class="bg-white border border-slate-200/80 rounded-2xl shadow-sm overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-xs text-left">
-                <thead class="bg-[#F5F5F9] border-b border-slate-100 text-[#A1ACB8] uppercase text-[10px] font-extrabold tracking-wider">
+                <thead class="bg-[#F3F6F4] border-b border-slate-200/80 text-[#718379] uppercase text-[11px] font-extrabold tracking-wider">
                     <tr>
                         <th class="py-3.5 px-4">Produk</th>
                         <th class="py-3.5 px-4">Lokasi Toko</th>
@@ -46,18 +46,18 @@
                 </thead>
                 <tbody class="divide-y divide-slate-100 font-medium">
                     @forelse($inventories as $inv)
-                        <tr class="hover:bg-[#F5F5F9]/60 transition">
-                            <td class="py-4 px-5">
+                        <tr class="hover:bg-[#F3F6F4]/60 transition">
+                            <td class="py-3.5 px-4">
                                 <div class="font-bold text-[#232E28] leading-tight text-sm">{{ $inv->product?->name }}</div>
                                 <div class="text-xs text-[#718379] font-mono mt-1 flex items-center gap-2">
                                     <span class="bg-indigo-50 text-indigo-600 border border-indigo-200/70 px-2 py-0.5 rounded-md font-bold text-[11px]">SKU: {{ $inv->product?->code }}</span>
                                     <span>&bull; Kategori: {{ $inv->product?->category?->name ?? '-' }}</span>
                                 </div>
                             </td>
-                            <td class="py-4 px-5 font-semibold text-[#232E28] text-sm">
+                            <td class="py-3.5 px-4 font-semibold text-[#232E28] text-sm">
                                 {{ $inv->location?->name }}
                             </td>
-                            <td class="py-4 px-5 text-center font-mono font-extrabold text-base text-[#232E28]">
+                            <td class="py-3.5 px-4 text-center font-mono font-extrabold text-base text-[#232E28]">
                                 {{ number_format($inv->quantity, 0, ',', '.') }}
                             </td>
                             <td class="py-4 px-5 text-center">
