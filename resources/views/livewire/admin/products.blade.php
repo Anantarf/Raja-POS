@@ -148,13 +148,17 @@
                             </div>
                         </div>
 
-                        <!-- 3 Dimensions: Kategori • Jenis • Merk (Clean Text Dots) -->
+                        <!-- Dimensions: Kategori • Subtipe (jika ada) • Merk -->
                         <div class="text-xs text-slate-500 flex items-center gap-1.5 flex-wrap font-medium">
                             <span class="text-slate-700 font-semibold">{{ $product->category?->name ?? 'Umum' }}</span>
-                            <span class="text-slate-300">&bull;</span>
-                            <span class="text-indigo-600 font-bold">{{ $product->product_subtype ?: '-' }}</span>
-                            <span class="text-slate-300">&bull;</span>
-                            <span class="text-slate-600">{{ $product->brand?->name ?? '-' }}</span>
+                            @if(!empty($product->product_subtype) && trim($product->product_subtype) !== '-')
+                                <span class="text-slate-300">&bull;</span>
+                                <span class="text-[#3F7A5D] font-bold">{{ $product->product_subtype }}</span>
+                            @endif
+                            @if(!empty($product->brand?->name) && trim($product->brand->name) !== '-')
+                                <span class="text-slate-300">&bull;</span>
+                                <span class="text-slate-600">{{ $product->brand->name }}</span>
+                            @endif
                         </div>
                     </div>
 
@@ -245,15 +249,15 @@
                                     </span>
                                 </td>
 
-                                <!-- Col 3: Kategori • Jenis • Merk -->
+                                <!-- Col 3: Kategori • Subtipe (jika ada) • Merk -->
                                 <td class="py-3.5 px-4 text-slate-500 text-xs">
                                     <div class="flex items-center gap-1.5 flex-wrap">
                                         <span class="text-slate-700 font-semibold">{{ $product->category?->name ?? 'Umum' }}</span>
-                                        @if(!empty($product->product_subtype))
+                                        @if(!empty($product->product_subtype) && trim($product->product_subtype) !== '-')
                                             <span class="text-slate-300">&bull;</span>
-                                            <span class="text-indigo-600 font-bold">{{ $product->product_subtype }}</span>
+                                            <span class="text-[#3F7A5D] font-bold">{{ $product->product_subtype }}</span>
                                         @endif
-                                        @if(!empty($product->brand?->name))
+                                        @if(!empty($product->brand?->name) && trim($product->brand->name) !== '-')
                                             <span class="text-slate-300">&bull;</span>
                                             <span class="text-slate-600">{{ $product->brand->name }}</span>
                                         @endif
