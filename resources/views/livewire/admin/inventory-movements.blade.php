@@ -2,7 +2,7 @@
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
             <h1 class="text-2xl font-extrabold text-[#232E28] tracking-tight">Pergerakan Stok</h1>
-            <p class="text-xs text-[#718379] font-medium mt-0.5">Histori SALE, TRASH_RESTORE, ADJUSTMENT, DAMAGE, dan STOCK_OPNAME terpadu.</p>
+            <p class="text-xs text-[#718379] font-medium mt-0.5">Riwayat lengkap keluar-masuk stok barang (Penjualan, Opname, Penyesuaian, dan Pemulihan Transaksi).</p>
         </div>
     </div>
 
@@ -22,7 +22,9 @@
         <select wire:model.live="movementType" class="w-full md:w-auto px-3 py-2 border border-slate-200 rounded-xl bg-white font-bold text-[#232E28] focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]">
             <option value="ALL">Semua Tipe Pergerakan</option>
             @foreach($movementTypes as $type)
-                <option value="{{ $type }}">{{ $type }}</option>
+                <option value="{{ $type }}">
+                    {{ $type === 'SALE' ? 'Penjualan Kasir' : ($type === 'STOCK_OPNAME' ? 'Stock Opname' : ($type === 'ADJUSTMENT' ? 'Penyesuaian Manual' : ($type === 'TRASH_RESTORE' ? 'Pemulihan Transaksi' : ($type === 'DAMAGE' ? 'Barang Rusak / Hilang' : $type)))) }}
+                </option>
             @endforeach
         </select>
     </div>
@@ -43,13 +45,23 @@
                 </thead>
                 <tbody class="divide-y divide-slate-100 font-medium">
                     @forelse($movements as $movement)
+                        @php
+                            $typeLabel = match($movement->movement_type) {
+                                'SALE' => 'Penjualan Kasir',
+                                'STOCK_OPNAME' => 'Stock Opname',
+                                'ADJUSTMENT' => 'Penyesuaian Manual',
+                                'TRASH_RESTORE' => 'Pemulihan Transaksi',
+                                'DAMAGE' => 'Barang Rusak / Hilang',
+                                default => $movement->movement_type,
+                            };
+                        @endphp
                         <tr class="hover:bg-[#F3F6F4]/60 transition">
                             <td class="py-3.5 px-4 text-[#718379] font-semibold">{{ $movement->created_at->format('d M Y, H:i') }}</td>
                             <td class="py-3.5 px-4">
                                 <div class="font-bold text-[#232E28] text-sm">{{ $movement->product?->name ?? '-' }}</div>
                                 <div class="text-xs text-[#718379] font-mono mt-0.5">Barcode: {{ $movement->product?->effective_barcode ?? '-' }} &bull; {{ $movement->location?->name ?? '-' }}</div>
                             </td>
-                            <td class="py-3.5 px-4"><span class="px-2.5 py-0.5 rounded-md bg-[#F3F6F4] text-[#3F7A5D] border border-slate-200/80 font-bold font-mono text-[11px]">{{ $movement->movement_type }}</span></td>
+                            <td class="py-3.5 px-4"><span class="px-2.5 py-0.5 rounded-md bg-[#F3F6F4] text-[#3F7A5D] border border-slate-200/80 font-bold font-sans text-[11px]">{{ $typeLabel }}</span></td>
                             <td class="py-3.5 px-4 text-center font-mono font-bold">{{ $movement->quantity_before }}</td>
                             <td class="py-3.5 px-4 text-center font-mono font-extrabold {{ $movement->quantity_change < 0 ? 'text-rose-600' : 'text-emerald-600' }}">{{ $movement->quantity_change > 0 ? '+' : '' }}{{ $movement->quantity_change }}</td>
                             <td class="py-3.5 px-4 text-center font-mono font-bold">{{ $movement->quantity_after }}</td>
