@@ -71,7 +71,13 @@
                         <tr class="hover:bg-[#F3F6F4]/60 transition">
                             <td class="py-4 px-5">
                                 <div class="flex items-center gap-3.5">
-                                    <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="w-12 h-12 object-cover rounded-2xl bg-slate-100 border border-slate-200/80 shrink-0">
+                                    @if(!empty($product->image_path) && Illuminate\Support\Facades\Storage::disk('public')->exists($product->image_path))
+                                        <img src="{{ Illuminate\Support\Facades\Storage::url($product->image_path) }}" alt="{{ $product->name }}" class="w-10 h-10 object-cover rounded-2xl bg-slate-100 border border-slate-200/80 shrink-0">
+                                    @else
+                                        <div class="w-10 h-10 rounded-2xl bg-[#E3EEE8] border border-[#3F7A5D]/20 text-[#3F7A5D] font-mono font-extrabold text-xs flex items-center justify-center shrink-0">
+                                            {{ strtoupper(substr($product->code, 0, 2)) }}
+                                        </div>
+                                    @endif
                                     <div>
                                         <div class="font-bold text-[#232E28] text-sm leading-snug tracking-tight">{{ $product->name }}</div>
                                         <div class="text-xs font-mono text-[#718379] mt-0.5">

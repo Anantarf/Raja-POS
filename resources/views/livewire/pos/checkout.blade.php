@@ -135,15 +135,15 @@
                                     </span>
                                 </div>
 
-                                @if($product->image_url && !str_contains($product->image_url, 'via.placeholder.com') && !str_contains($product->image_url, 'placeholder.com'))
-                                    <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                @if(!empty($product->image_path) && Illuminate\Support\Facades\Storage::disk('public')->exists($product->image_path))
+                                    <img src="{{ Illuminate\Support\Facades\Storage::url($product->image_path) }}" alt="{{ $product->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                                     <div class="absolute inset-x-0 bottom-0 h-6 bg-gradient-to-t from-white via-white/40 to-transparent"></div>
                                 @else
-                                    <!-- Compact Poppins Bold Initials Badge -->
-                                    <div class="flex items-center justify-center pt-4">
-                                        <div class="w-12 h-12 rounded-2xl bg-white/90 backdrop-blur-md border border-[#3F7A5D]/20 text-[#3F7A5D] font-mono font-extrabold text-base flex items-center justify-center shadow-sm tracking-wider">
+                                    <!-- Poppins Bold Initials (Clean & Direct, No Box Wrap) -->
+                                    <div class="flex items-center justify-center h-full pt-2">
+                                        <span class="text-2xl font-mono font-extrabold text-[#3F7A5D]/80 tracking-wider">
                                             {{ strtoupper(substr($product->code, 0, 2)) }}
-                                        </div>
+                                        </span>
                                     </div>
                                     <div class="absolute inset-x-0 bottom-0 h-6 bg-gradient-to-t from-white to-transparent"></div>
                                 @endif
