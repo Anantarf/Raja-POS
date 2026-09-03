@@ -2,8 +2,8 @@
     <!-- Header Controls (Clean Single-Row Enterprise Alignment) -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-1">
         <div>
-            <h1 class="text-2xl font-extrabold text-[#232E28] tracking-tight">Master Produk</h1>
-            <p class="text-xs text-[#718379] font-medium mt-0.5">Kelola data barang fisik, produk digital, dan layanan dalam format Excel ritel terpadu.</p>
+            <h1 class="text-2xl font-extrabold text-[#232E28] tracking-tight">Katalog &amp; Daftar Produk</h1>
+            <p class="text-xs text-[#718379] font-medium mt-0.5">Kelola data barang fisik, produk digital, dan daftar harga jual toko.</p>
         </div>
 
         <div class="flex items-center gap-2 flex-wrap sm:flex-nowrap">
@@ -24,19 +24,19 @@
             </a>
 
             <!-- Import CSV / Excel -->
-            <button wire:click="$set('showImportModal', true)" title="Import File CSV / Excel" class="px-3 py-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-xl text-xs shadow-sm transition flex items-center gap-1.5 active:scale-95 shrink-0">
+            <button wire:click="$set('showImportModal', true)" title="Impor File Excel / CSV" class="px-3 py-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-xl text-xs shadow-sm transition flex items-center gap-1.5 active:scale-95 shrink-0">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
                 </svg>
-                <span>Import</span>
+                <span>Impor Excel</span>
             </button>
 
-            <!-- Tambah Barang/Layanan -->
+            <!-- Tambah Produk Baru -->
             <button wire:click="openCreateModal" class="px-3.5 py-2 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-bold rounded-xl text-xs shadow-sm transition flex items-center gap-1.5 active:scale-95 shrink-0 cursor-pointer">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                 </svg>
-                <span>Tambah Barang/Layanan</span>
+                <span>Tambah Produk</span>
             </button>
         </div>
     </div>

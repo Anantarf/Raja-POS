@@ -2,8 +2,8 @@
     <!-- Header -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-            <h1 class="text-2xl font-extrabold text-[#232E28] tracking-tight">Manajemen Stok & Opname</h1>
-            <p class="text-xs text-[#718379] font-medium mt-0.5">Pemantauan stok fisik barang toko dan audit opname berkala.</p>
+            <h1 class="text-2xl font-extrabold text-[#232E28] tracking-tight">Stok &amp; Hitung Fisik Barang</h1>
+            <p class="text-xs text-[#718379] font-medium mt-0.5">Pantau sisa stok barang real-time, riwayat hitung fisik (opname), dan penyesuaian stok.</p>
         </div>
 
         @if($activeTab === 'opname')
@@ -12,13 +12,13 @@
                     <svg class="w-4 h-4 text-[#3F7A5D]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
                     </svg>
-                    <span>📋 Opname Masal (Banyak Barang)</span>
+                    <span>📋 Hitung Banyak Barang Sekaligus</span>
                 </button>
                 <button wire:click="openCreateModal" class="px-4 py-2.5 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-2xl text-xs transition flex items-center gap-2 shadow-sm active:scale-95 cursor-pointer uppercase tracking-wider shrink-0">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                     </svg>
-                    <span>Opname Cepat (1 Barang)</span>
+                    <span>Hitung Cepat (1 Barang)</span>
                 </button>
             </div>
         @endif
@@ -28,11 +28,11 @@
     <div class="border-b border-slate-200/80 flex items-center gap-2 text-xs">
         <button wire:click="setTab('stok')" class="px-5 py-3 font-extrabold border-b-2 transition flex items-center gap-2 cursor-pointer {{ $activeTab === 'stok' ? 'border-[#3F7A5D] text-[#3F7A5D] bg-[#E3EEE8]/50 rounded-t-xl' : 'border-transparent text-[#718379] hover:text-[#232E28]' }}">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
-            <span>Data Stok Fisik</span>
+            <span>Stok Barang Saat Ini</span>
         </button>
         <button wire:click="setTab('opname')" class="px-5 py-3 font-extrabold border-b-2 transition flex items-center gap-2 cursor-pointer {{ $activeTab === 'opname' ? 'border-[#3F7A5D] text-[#3F7A5D] bg-[#E3EEE8]/50 rounded-t-xl' : 'border-transparent text-[#718379] hover:text-[#232E28]' }}">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
-            <span>Audit & Opname Toko</span>
+            <span>Riwayat Hitung Stok (Opname)</span>
         </button>
     </div>
 

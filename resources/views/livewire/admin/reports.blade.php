@@ -1,7 +1,7 @@
 <div class="space-y-5">
     <div>
-        <h1 class="text-2xl font-extrabold text-[#232E28] tracking-tight">Laporan System & Analytics</h1>
-        <p class="text-xs text-[#718379] font-medium mt-0.5">Ringkasan laporan penjualan, stok, pembayaran, saldo, dan produk terpadu.</p>
+        <h1 class="text-2xl font-extrabold text-[#232E28] tracking-tight">Laporan Keuntungan &amp; Penjualan Toko</h1>
+        <p class="text-xs text-[#718379] font-medium mt-0.5">Ringkasan lengkap laporan penjualan, sisa stok, pembayaran, saldo, dan keuntungan toko.</p>
     </div>
 
     <div class="flex flex-wrap gap-2 border-b border-slate-200/80 pb-3 text-xs font-bold">
@@ -13,7 +13,7 @@
     @if($type === 'sales')
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div class="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-sm"><div class="text-xs text-[#718379] font-extrabold uppercase tracking-wider">Omzet Penjualan</div><div class="text-2xl font-mono font-extrabold text-[#232E28] mt-2">Rp {{ number_format($metrics['omset'], 0, ',', '.') }}</div></div>
-            <div class="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-sm"><div class="text-xs text-[#718379] font-extrabold uppercase tracking-wider">Margin Kotor</div><div class="text-2xl font-mono font-extrabold text-[#8F794B] mt-2">Rp {{ number_format($metrics['gross_profit'], 0, ',', '.') }}</div></div>
+            <div class="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-sm"><div class="text-xs text-[#718379] font-extrabold uppercase tracking-wider">Keuntungan Kotor (Profit)</div><div class="text-2xl font-mono font-extrabold text-[#8F794B] mt-2">Rp {{ number_format($metrics['gross_profit'], 0, ',', '.') }}</div></div>
             <div class="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-sm"><div class="text-xs text-[#718379] font-extrabold uppercase tracking-wider">Jumlah Transaksi</div><div class="text-2xl font-mono font-extrabold text-[#232E28] mt-2">{{ number_format($salesCount, 0, ',', '.') }} Nota</div></div>
         </div>
     @elseif($type === 'inventory')

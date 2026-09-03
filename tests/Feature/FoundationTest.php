@@ -82,14 +82,14 @@ class FoundationTest extends TestCase
             ->get('/admin/dashboard')
             ->assertStatus(200)
             ->assertSee('Operasional Kasir')
-            ->assertSee('Katalog &amp; Inventaris', false)
+            ->assertSee('Katalog &amp; Stok Barang', false)
             ->assertSee('Keuangan &amp; Saldo', false)
-            ->assertSee('Laporan')
+            ->assertSee('Laporan Toko')
             ->assertSee('Pengaturan Owner');
 
         $this->get('/admin/inventory-movements')
             ->assertStatus(200)
-            ->assertSee('Pergerakan Stok');
+            ->assertSee('Riwayat Stok Masuk / Keluar');
 
         $this->get('/admin/reports/sales')
             ->assertStatus(200)

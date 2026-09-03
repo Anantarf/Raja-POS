@@ -1,8 +1,8 @@
 <div class="space-y-5">
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-            <h1 class="text-2xl font-extrabold text-[#232E28] tracking-tight">Pergerakan Stok</h1>
-            <p class="text-xs text-[#718379] font-medium mt-0.5">Riwayat lengkap keluar-masuk stok barang (Penjualan, Opname, Penyesuaian, dan Pemulihan Transaksi).</p>
+            <h1 class="text-2xl font-extrabold text-[#232E28] tracking-tight">Riwayat Stok Masuk / Keluar</h1>
+            <p class="text-xs text-[#718379] font-medium mt-0.5">Riwayat lengkap pergerakan keluar-masuk barang (Penjualan, Opname, Penyesuaian, dan Pemulihan Transaksi).</p>
         </div>
     </div>
 

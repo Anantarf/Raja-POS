@@ -2,8 +2,8 @@
     <!-- Header -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-            <h1 class="text-2xl font-extrabold text-[#232E28] tracking-tight">Monitoring Saldo Kas & Rekening</h1>
-            <p class="text-xs text-[#718379] font-medium mt-0.5">Kelola saldo kas fisik, rekening bank, mutasi transfer, dan rekonsiliasi keuangan toko.</p>
+            <h1 class="text-2xl font-extrabold text-[#232E28] tracking-tight">Monitoring Saldo</h1>
+            <p class="text-xs text-[#718379] font-medium mt-0.5">Kelola saldo kas fisik, rekening bank, mutasi transfer, dan penyesuaian saldo toko.</p>
         </div>
         <div class="flex items-center gap-2 overflow-x-auto py-1">
             <button wire:click="openModal('TRANSFER')" class="px-3.5 py-2 bg-[#E3EEE8] hover:bg-[#d5e5dc] text-[#3F7A5D] border border-[#3F7A5D]/20 font-extrabold rounded-2xl text-xs transition active:scale-95 flex items-center gap-1.5 shrink-0 cursor-pointer shadow-sm">
@@ -31,8 +31,17 @@
             <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200/80 relative overflow-hidden hover:border-[#3F7A5D]/50 hover:shadow-md transition-all duration-200">
                 <div class="flex items-center justify-between text-xs text-[#718379] font-extrabold uppercase tracking-wider mb-2">
                     <span>{{ $acc->name }}</span>
-                    <span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold uppercase bg-[#F3F6F4] text-[#3F7A5D] border border-slate-200/80">
-                        {{ $acc->account_type }}
+                    @php
+                        $typeLabel = match(strtoupper($acc->account_type)) {
+                            'E_WALLET', 'E-WALLET' => 'E-Wallet',
+                            'CASH' => 'Kas Fisik',
+                            'BANK' => 'Bank',
+                            'QRIS' => 'QRIS',
+                            default => str_replace('_', '-', $acc->account_type)
+                        };
+                    @endphp
+                    <span class="px-2.5 py-0.5 rounded-md text-[11px] font-extrabold bg-[#F3F6F4] text-[#3F7A5D] border border-slate-200/80">
+                        {{ $typeLabel }}
                     </span>
                 </div>
                 <div class="text-2xl font-extrabold text-[#232E28] font-mono tracking-tight mt-1 {{ $acc->balance < 0 ? 'text-rose-600' : '' }}">

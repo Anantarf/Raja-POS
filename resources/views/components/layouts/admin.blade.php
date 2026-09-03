@@ -127,15 +127,15 @@
                 </nav>
             </div>
 
-            <!-- Katalog & Inventaris Group -->
+            <!-- Katalog & Stok Barang Group -->
             <div>
-                <div class="px-3 text-[11px] font-extrabold text-[#718379] uppercase tracking-wider mb-2">Katalog &amp; Inventaris</div>
+                <div class="px-3 text-[11px] font-extrabold text-[#718379] uppercase tracking-wider mb-2">Katalog &amp; Stok Barang</div>
                 <nav class="space-y-1">
                     <a href="/admin/products" class="flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-bold transition {{ request()->is('admin/products*') ? 'bg-[#3F7A5D] text-white shadow-emco-primary' : 'text-[#52645B] hover:bg-[#F3F6F4] hover:text-[#232E28]' }}">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
                         </svg>
-                        <span>Master Produk</span>
+                        <span>Daftar Produk</span>
                     </a>
                     <a href="/admin/inventories" class="flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-bold transition {{ request()->is('admin/inventories*') || request()->is('admin/stock-opname*') ? 'bg-[#3F7A5D] text-white shadow-emco-primary' : 'text-[#52645B] hover:bg-[#F3F6F4] hover:text-[#232E28]' }}">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -147,7 +147,7 @@
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
                         </svg>
-                        <span>Mutasi Stok</span>
+                        <span>Stok Masuk / Keluar</span>
                     </a>
                 </nav>
             </div>
@@ -172,20 +172,20 @@
                         <svg class="w-4 h-4 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                         </svg>
-                        <span>Sampah Transaksi</span>
+                        <span>Transaksi Dibatalkan</span>
                     </a>
                 </nav>
             </div>
 
             <!-- Laporan Group -->
             <div>
-                <div class="px-3 text-[11px] font-extrabold text-[#718379] uppercase tracking-wider mb-2">Laporan</div>
+                <div class="px-3 text-[11px] font-extrabold text-[#718379] uppercase tracking-wider mb-2">Laporan Toko</div>
                 <nav class="space-y-1">
                     <a href="/admin/reports" class="flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-bold transition {{ request()->is('admin/reports*') ? 'bg-[#3F7A5D] text-white shadow-emco-primary' : 'text-[#52645B] hover:bg-[#F3F6F4] hover:text-[#232E28]' }}">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
                         </svg>
-                        <span>Laporan Laba & Margin</span>
+                        <span>Laporan Keuntungan</span>
                     </a>
                 </nav>
             </div>
