@@ -1,9 +1,7 @@
 <div class="w-full max-w-md bg-white/90 backdrop-blur-md rounded-3xl p-8 border border-[#E3EEE8] shadow-2xl space-y-6">
     <!-- Brand Header -->
     <div class="text-center space-y-3">
-        <div class="w-14 h-14 mx-auto rounded-2xl bg-[#3F7A5D] text-white font-extrabold flex items-center justify-center text-2xl shadow-md">
-            R
-        </div>
+        <img src="{{ asset('favicon.svg') }}" alt="Raja POS" class="w-14 h-14 mx-auto rounded-2xl shadow-md shrink-0">
         <div>
             <h1 class="text-2xl font-extrabold text-[#232E28] tracking-tight">RAJA AKSESORIS</h1>
             <p class="text-xs text-[#718379] font-medium mt-1">Sistem Kasir & Ritel Aksesoris Terintegrasi</p>

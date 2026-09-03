@@ -86,9 +86,7 @@
         <!-- Sidebar Brand Header -->
         <div class="h-20 px-6 flex items-center justify-between border-b border-[#E3EEE8]">
             <div class="flex items-center gap-3.5">
-                <div class="w-10 h-10 rounded-2xl bg-[#3F7A5D] text-white font-extrabold flex items-center justify-center text-lg shadow-sm">
-                    R
-                </div>
+                <img src="{{ asset('favicon.svg') }}" alt="Raja POS" class="w-10 h-10 rounded-2xl shadow-sm shrink-0">
                 <div>
                     <div class="font-extrabold text-lg text-[#232E28] tracking-tight">
                         RAJA AKSESORIS
