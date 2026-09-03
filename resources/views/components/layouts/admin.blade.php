@@ -127,9 +127,9 @@
                 </nav>
             </div>
 
-            <!-- Katalog & Produk Group -->
+            <!-- Katalog & Inventaris Group -->
             <div>
-                <div class="px-3 text-[11px] font-extrabold text-[#718379] uppercase tracking-wider mb-2">Katalog &amp; Produk</div>
+                <div class="px-3 text-[11px] font-extrabold text-[#718379] uppercase tracking-wider mb-2">Katalog &amp; Inventaris</div>
                 <nav class="space-y-1">
                     <a href="/admin/products" class="flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-bold transition {{ request()->is('admin/products*') ? 'bg-[#3F7A5D] text-white shadow-emco-primary' : 'text-[#52645B] hover:bg-[#F3F6F4] hover:text-[#232E28]' }}">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -137,13 +137,6 @@
                         </svg>
                         <span>Master Produk</span>
                     </a>
-                </nav>
-            </div>
-
-            <!-- Stok & Inventaris Group -->
-            <div>
-                <div class="px-3 text-[11px] font-extrabold text-[#718379] uppercase tracking-wider mb-2">Stok &amp; Inventaris</div>
-                <nav class="space-y-1">
                     <a href="/admin/inventories" class="flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-bold transition {{ request()->is('admin/inventories*') ? 'bg-[#3F7A5D] text-white shadow-emco-primary' : 'text-[#52645B] hover:bg-[#F3F6F4] hover:text-[#232E28]' }}">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
