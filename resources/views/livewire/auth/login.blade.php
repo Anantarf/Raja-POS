@@ -1,4 +1,4 @@
-<div class="w-full max-w-md bg-white rounded-3xl p-8 border border-[#E3EEE8] shadow-2xl space-y-6">
+<div class="w-full max-w-md bg-white/90 backdrop-blur-md rounded-3xl p-8 border border-[#E3EEE8] shadow-2xl space-y-6">
     <!-- Brand Header & Mascot -->
     <div class="text-center space-y-3">
         <div class="w-20 h-20 mx-auto rounded-3xl bg-white border border-[#E3EEE8] p-1 flex items-center justify-center shadow-md overflow-hidden">
