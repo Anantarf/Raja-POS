@@ -4,19 +4,32 @@ namespace App\Livewire\Admin;
 
 use App\Models\Location;
 use App\Models\PaymentMethod;
+use App\Models\Role;
+use App\Models\Setting;
+use App\Models\User;
 use Livewire\Component;
 
 class Settings extends Component
 {
-    public $activeTab = 'LOCATIONS'; // LOCATIONS, PAYMENT_METHODS
+    public $activeTab = 'STORE_SETTINGS'; // STORE_SETTINGS, USERS, ROLES, PAYMENT_METHODS, LOCATIONS
+
+    public array $allowedTabs = ['STORE_SETTINGS', 'USERS', 'ROLES', 'PAYMENT_METHODS', 'LOCATIONS'];
 
     // Location Form
     public $locationName = '';
+
     public $locationCode = '';
 
     // Payment Method Form
     public $pmName = '';
+
     public $pmType = 'CASH';
+
+    public function mount(?string $section = null): void
+    {
+        $tab = strtoupper(str_replace('-', '_', $section ?: 'store-settings'));
+        $this->activeTab = in_array($tab, $this->allowedTabs, true) ? $tab : 'STORE_SETTINGS';
+    }
 
     public function addLocation()
     {
@@ -28,7 +41,7 @@ class Settings extends Component
         Location::create([
             'name' => $this->locationName,
             'code' => strtoupper($this->locationCode),
-            'is_active' => true,
+            'status' => 'ACTIVE',
         ]);
 
         $this->locationName = '';
@@ -46,7 +59,7 @@ class Settings extends Component
         PaymentMethod::create([
             'name' => $this->pmName,
             'type' => $this->pmType,
-            'is_active' => true,
+            'status' => 'ACTIVE',
         ]);
 
         $this->pmName = '';
@@ -58,6 +71,9 @@ class Settings extends Component
         return view('livewire.admin.settings', [
             'locations' => Location::all(),
             'paymentMethods' => PaymentMethod::all(),
+            'users' => User::with('role')->orderBy('name')->get(),
+            'roles' => Role::withCount('users')->orderBy('name')->get(),
+            'settings' => Setting::orderBy('key')->get(),
         ])->layout('components.layouts.admin', ['title' => 'Pengaturan Toko - Raja POS']);
     }
 }

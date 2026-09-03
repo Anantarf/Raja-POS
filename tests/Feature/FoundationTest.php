@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Models\BalanceAccount;
 use App\Models\Location;
 use App\Models\PaymentMethod;
-use App\Models\Permission;
 use App\Models\Role;
 use App\Models\Setting;
 use App\Models\User;
@@ -73,6 +72,34 @@ class FoundationTest extends TestCase
         $this->assertEquals(7, BalanceAccount::count()); // CASH, QRIS, BANK BCA, BANK MAS, DANA, MULTI, WAHANA
         $this->assertEquals(1, Location::where('code', 'RAJA-BANGO')->count());
         $this->assertEquals('Raja Aksesoris', Setting::get('store_name'));
+    }
+
+    public function test_admin_management_menu_routes_render_for_owner(): void
+    {
+        $superadmin = User::where('username', 'superadmin')->first();
+
+        $this->actingAs($superadmin)
+            ->get('/admin/dashboard')
+            ->assertStatus(200)
+            ->assertSee('Operasional')
+            ->assertSee('Inventory')
+            ->assertSee('Katalog')
+            ->assertSee('Keuangan')
+            ->assertSee('Laporan')
+            ->assertSee('Owner Settings');
+
+        $this->get('/admin/inventory-movements')
+            ->assertStatus(200)
+            ->assertSee('Pergerakan Stok');
+
+        $this->get('/admin/reports/sales')
+            ->assertStatus(200)
+            ->assertSee('Laporan')
+            ->assertSee('Sales');
+
+        $this->get('/admin/settings/payment-methods')
+            ->assertStatus(200)
+            ->assertSee('Payment Methods');
     }
 
     public function test_admin_panel_and_custom_dashboard_render_for_authenticated_user(): void
