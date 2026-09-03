@@ -43,14 +43,14 @@
                             {{ ($item?->difference ?? 0) > 0 ? '+' : '' }}{{ $item?->difference ?? 0 }}
                         </td>
                         <td class="py-3.5 px-4 text-center">
-                            <span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold uppercase tracking-wider {{ $opn->status === 'COMPLETED' ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700' }}">
-                                {{ $opn->status }}
+                            <span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold uppercase tracking-wider {{ $opn->status === 'COMPLETED' ? 'bg-[#E3EEE8] text-[#3F7A5D] border border-[#3F7A5D]/20' : 'bg-amber-50 text-amber-800 border border-amber-200/80' }}">
+                                {{ $opn->status === 'COMPLETED' ? 'SELESAI' : 'DRAFT' }}
                             </span>
                         </td>
                         <td class="py-3.5 px-4 text-center">
                             @if($opn->status === 'DRAFT')
-                                <button wire:click="approveSession({{ $opn->id }})" wire:confirm="Setujui penyesuaian stok opname ini?" class="px-3 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg font-bold text-xs transition">
-                                    Approve
+                                <button wire:click="approveSession({{ $opn->id }})" wire:confirm="Setujui penyesuaian stok opname ini?" class="px-3.5 py-1.5 bg-[#3F7A5D] hover:bg-[#32634B] text-white rounded-xl font-extrabold text-xs transition uppercase tracking-wider shadow-sm cursor-pointer">
+                                    Setujui Opname
                                 </button>
                             @else
                                 <span class="text-xs text-[#718379] font-semibold">Disetujui: {{ $opn->approver?->name }}</span>
@@ -67,7 +67,7 @@
 
     @if($showCreateModal)
         <div class="fixed inset-0 bg-[#232E28]/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-            <div class="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl space-y-4 border border-slate-100">
+            <div class="bg-white rounded-2xl p-6 max-w-md w-full shadow-xl space-y-4 border border-slate-100">
                 <h3 class="text-base font-extrabold text-[#232E28]">Buat Sesi Stock Opname Baru</h3>
                 <form wire:submit.prevent="createSession" class="space-y-4 text-xs">
                     <div>
@@ -85,7 +85,7 @@
                         <select wire:model="product_id" class="w-full p-3 border border-slate-200 rounded-2xl bg-white text-xs font-semibold focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]" required>
                             <option value="">-- Pilih Produk --</option>
                             @foreach($products as $prod)
-                                <option value="{{ $prod->id }}">{{ $prod->name }} (SKU: {{ $prod->code }})</option>
+                                <option value="{{ $prod->id }}">{{ $prod->name }} (Barcode: {{ $prod->effective_barcode }})</option>
                             @endforeach
                         </select>
                     </div>

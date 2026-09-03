@@ -18,8 +18,8 @@
         </div>
     @elseif($type === 'inventory')
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-sm"><div class="text-xs text-[#718379] font-extrabold uppercase tracking-wider">Data Stok Fisik</div><div class="text-2xl font-mono font-extrabold text-[#232E28] mt-2">{{ number_format($inventoryCount, 0, ',', '.') }} SKU</div></div>
-            <div class="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-sm"><div class="text-xs text-[#718379] font-extrabold uppercase tracking-wider">Stok Menipis / Habis</div><div class="text-2xl font-mono font-extrabold text-rose-600 mt-2">{{ number_format($lowStockCount, 0, ',', '.') }} SKU</div></div>
+            <div class="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-sm"><div class="text-xs text-[#718379] font-extrabold uppercase tracking-wider">Data Stok Fisik</div><div class="text-2xl font-mono font-extrabold text-[#232E28] mt-2">{{ number_format($inventoryCount, 0, ',', '.') }} Item Produk</div></div>
+            <div class="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-sm"><div class="text-xs text-[#718379] font-extrabold uppercase tracking-wider">Stok Menipis / Habis</div><div class="text-2xl font-mono font-extrabold text-rose-600 mt-2">{{ number_format($lowStockCount, 0, ',', '.') }} Item Produk</div></div>
         </div>
     @elseif($type === 'payment')
         <div class="bg-white border border-slate-200/80 rounded-2xl shadow-sm overflow-hidden">
