@@ -19,6 +19,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        \Illuminate\Support\Facades\Gate::before(function ($user, $ability) {
+            if ($user->hasRole('OWNER') || $user->hasRole('SUPERADMIN') || $user->hasRole('ADMIN')) {
+                // Owner and Admin have full access to management
+                if ($user->hasRole('OWNER')) {
+                    return true;
+                }
+            }
+            return $user->hasPermission($ability) ? true : null;
+        });
     }
 }

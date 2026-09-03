@@ -47,7 +47,7 @@
                     Gross Profit
                 </span>
             </div>
-            @if(auth()->user()->can('report.profit.view'))
+            @if(auth()->user()->hasRole('OWNER') || auth()->user()->hasPermission('report.profit.view') || auth()->user()->can('report.profit.view'))
                 <div class="text-3xl font-extrabold text-[#8F794B] font-mono tracking-tight mt-1.5">
                     Rp {{ number_format($metrics['gross_profit'], 0, ',', '.') }}
                 </div>
