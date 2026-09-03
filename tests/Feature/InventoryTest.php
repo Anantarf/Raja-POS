@@ -105,6 +105,31 @@ class InventoryTest extends TestCase
         $this->assertNull($digitalMovement);
     }
 
+    public function test_inventory_service_blocks_negative_stock(): void
+    {
+        $location = Location::where('code', 'RAJA-BANGO')->first();
+        $owner = User::where('username', 'superadmin')->first();
+        $inventoryService = app(InventoryService::class);
+
+        $product = Product::create([
+            'code' => 'ACC-NEG-001',
+            'name' => 'Kabel Negative Guard',
+            'product_type' => 'PHYSICAL',
+            'cost_price' => 10000,
+            'selling_price' => 20000,
+        ]);
+
+        $this->expectException(\InvalidArgumentException::class);
+
+        $inventoryService->adjustStock(
+            product: $product,
+            location: $location,
+            quantityChange: -1,
+            movementType: 'SALE',
+            user: $owner
+        );
+    }
+
     public function test_stock_opname_creation_and_approval_flow(): void
     {
         $location = Location::where('code', 'RAJA-BANGO')->first();

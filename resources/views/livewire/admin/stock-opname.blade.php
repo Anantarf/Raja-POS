@@ -24,27 +24,28 @@
             </thead>
             <tbody class="divide-y divide-slate-100 font-medium">
                 @forelse($sessions as $opn)
+                    @php($item = $opn->items->first())
                     <tr class="hover:bg-[#F3F6F4]/60 transition">
                         <td class="py-4 px-5 font-mono text-xs">
                             <div class="font-bold text-indigo-600 bg-indigo-50 border border-indigo-200/70 px-2 py-0.5 rounded-md inline-block">{{ $opn->opname_number }}</div>
                             <div class="text-[10px] text-[#718379] font-sans mt-1 font-semibold">{{ $opn->created_at->format('d M Y, H:i') }}</div>
                         </td>
                         <td class="py-4 px-5">
-                            <div class="font-extrabold text-[#232E28] text-sm">{{ $opn->product?->name }}</div>
+                            <div class="font-extrabold text-[#232E28] text-sm">{{ $item?->product?->name }}</div>
                             <div class="text-[10px] text-[#718379] font-semibold">{{ $opn->location?->name }}</div>
                         </td>
-                        <td class="py-4 px-5 text-center font-mono font-bold text-[#232E28]">{{ $opn->system_quantity }}</td>
-                        <td class="py-4 px-5 text-center font-mono font-extrabold text-indigo-600 text-sm">{{ $opn->physical_quantity }}</td>
-                        <td class="py-4 px-5 text-center font-mono font-extrabold {{ $opn->difference < 0 ? 'text-rose-600' : ($opn->difference > 0 ? 'text-emerald-600' : 'text-[#718379]') }}">
-                            {{ $opn->difference > 0 ? '+' : '' }}{{ $opn->difference }}
+                        <td class="py-4 px-5 text-center font-mono font-bold text-[#232E28]">{{ $item?->system_quantity ?? 0 }}</td>
+                        <td class="py-4 px-5 text-center font-mono font-extrabold text-indigo-600 text-sm">{{ $item?->physical_quantity ?? 0 }}</td>
+                        <td class="py-4 px-5 text-center font-mono font-extrabold {{ ($item?->difference ?? 0) < 0 ? 'text-rose-600' : (($item?->difference ?? 0) > 0 ? 'text-emerald-600' : 'text-[#718379]') }}">
+                            {{ ($item?->difference ?? 0) > 0 ? '+' : '' }}{{ $item?->difference ?? 0 }}
                         </td>
                         <td class="py-4 px-5 text-center">
-                            <span class="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider {{ $opn->status === 'APPROVED' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-amber-50 text-amber-700 border border-amber-200' }}">
+                            <span class="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider {{ $opn->status === 'COMPLETED' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-amber-50 text-amber-700 border border-amber-200' }}">
                                 {{ $opn->status }}
                             </span>
                         </td>
                         <td class="py-4 px-5 text-center">
-                            @if($opn->status === 'PENDING')
+                            @if($opn->status === 'DRAFT')
                                 <button wire:click="approveSession({{ $opn->id }})" wire:confirm="Setujui penyesuaian stok opname ini?" class="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-extrabold text-xs transition active:scale-95">
                                     Approve
                                 </button>
@@ -88,7 +89,7 @@
 
                     <div>
                         <label class="block font-bold text-[#232E28] mb-1.5">Hasil Hitung Stok Fisik Real *</label>
-                        <input type="number" wire:model="physical_quantity" class="w-full p-3 border border-slate-200 rounded-2xl text-xs font-mono font-bold focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]" required min="0" placeholder="0" />
+                        <input type="number" wire:model="physical_qty" class="w-full p-3 border border-slate-200 rounded-2xl text-xs font-mono font-bold focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]" required min="0" placeholder="0" />
                     </div>
 
                     <div>

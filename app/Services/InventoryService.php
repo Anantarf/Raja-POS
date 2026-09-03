@@ -38,7 +38,7 @@ class InventoryService
                 ->lockForUpdate()
                 ->first();
 
-            if (!$inventory) {
+            if (! $inventory) {
                 $inventory = Inventory::create([
                     'product_id' => $product->id,
                     'location_id' => $location->id,
@@ -49,6 +49,10 @@ class InventoryService
 
             $quantityBefore = $inventory->quantity;
             $quantityAfter = $quantityBefore + $quantityChange;
+
+            if ($quantityAfter < 0) {
+                throw new InvalidArgumentException("Stok produk '{$product->name}' tidak mencukupi.");
+            }
 
             // Update inventory
             $inventory->update([
@@ -91,7 +95,7 @@ class InventoryService
                         location: $location,
                         quantityChange: $item->difference,
                         movementType: 'STOCK_OPNAME',
-                        notes: 'Penyesuaian Opname #' . $stockOpname->opname_number . ($item->notes ? ' - ' . $item->notes : ''),
+                        notes: 'Penyesuaian Opname #'.$stockOpname->opname_number.($item->notes ? ' - '.$item->notes : ''),
                         user: $approver,
                         reference: $stockOpname
                     );

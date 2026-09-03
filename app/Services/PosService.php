@@ -13,6 +13,7 @@ use App\Models\Sale;
 use App\Models\SaleItem;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use InvalidArgumentException;
 
 class PosService
@@ -24,11 +25,8 @@ class PosService
     /**
      * Process POS checkout atomically inside a DB Transaction.
      *
-     * @param User $cashier
-     * @param array $cartItems format: [['product' => Product, 'quantity' => int], ...]
-     * @param array $paymentsData format: [['payment_method_id' => int, 'balance_account_id' => ?int, 'amount' => float, 'reference_number' => ?string], ...]
-     * @param string|null $notes
-     * @return Sale
+     * @param  array  $cartItems  format: [['product' => Product, 'quantity' => int], ...]
+     * @param  array  $paymentsData  format: [['payment_method_id' => int, 'balance_account_id' => ?int, 'amount' => float, 'reference_number' => ?string], ...]
      */
     public function processCheckout(
         User $cashier,
@@ -46,6 +44,10 @@ class PosService
 
         $location = Location::where('code', 'RAJA-BANGO')->first()
             ?? Location::where('status', 'ACTIVE')->first();
+
+        if (! $location) {
+            throw new InvalidArgumentException('Lokasi aktif belum tersedia.');
+        }
 
         // 1. Validate items (Price Complete & Stock sufficiency)
         $subtotal = 0;
@@ -92,11 +94,66 @@ class PosService
             ];
         }
 
+        if (empty($validatedItems)) {
+            throw new InvalidArgumentException('Keranjang belanja tidak memiliki item valid.');
+        }
+
         $totalAmount = $subtotal;
-        $totalPaid = array_sum(array_column($paymentsData, 'amount'));
+        $validatedPayments = [];
+        $totalPaid = 0;
+
+        foreach ($paymentsData as $paymentData) {
+            $amount = (float) ($paymentData['amount'] ?? 0);
+            $paymentMethodId = $paymentData['payment_method_id'] ?? null;
+            $paymentMethod = $paymentMethodId ? PaymentMethod::where('status', 'ACTIVE')->find($paymentMethodId) : null;
+
+            if (! $paymentMethod) {
+                throw new InvalidArgumentException('Metode pembayaran tidak valid atau tidak aktif.');
+            }
+
+            if ($amount <= 0) {
+                throw new InvalidArgumentException('Nominal pembayaran harus lebih dari 0.');
+            }
+
+            $balanceAccountId = $paymentData['balance_account_id'] ?? null;
+            if (! $balanceAccountId && $paymentMethod->type === 'CASH') {
+                $balanceAccountId = BalanceAccount::where('code', 'CASH')->where('status', 'ACTIVE')->value('id');
+            } elseif (! $balanceAccountId && $paymentMethod->type === 'QRIS') {
+                $balanceAccountId = BalanceAccount::where('code', 'QRIS')->where('status', 'ACTIVE')->value('id');
+            }
+
+            if (! $balanceAccountId) {
+                throw new InvalidArgumentException("Akun tujuan pembayaran {$paymentMethod->name} wajib dipilih.");
+            }
+
+            $balanceAccount = BalanceAccount::where('status', 'ACTIVE')->find($balanceAccountId);
+            if (! $balanceAccount) {
+                throw new InvalidArgumentException('Akun saldo pembayaran tidak valid atau tidak aktif.');
+            }
+
+            $validAccountTypes = match ($paymentMethod->type) {
+                'CASH' => ['CASH'],
+                'QRIS' => ['QRIS'],
+                'TRANSFER' => ['BANK'],
+                'E_WALLET' => ['E_WALLET'],
+                default => [],
+            };
+
+            if ($validAccountTypes && ! in_array($balanceAccount->account_type, $validAccountTypes, true)) {
+                throw new InvalidArgumentException("Akun saldo tidak sesuai untuk metode pembayaran {$paymentMethod->name}.");
+            }
+
+            $validatedPayments[] = [
+                'payment_method' => $paymentMethod,
+                'balance_account_id' => $balanceAccount->id,
+                'amount' => $amount,
+                'reference_number' => $paymentData['reference_number'] ?? null,
+            ];
+            $totalPaid += $amount;
+        }
 
         if ($totalPaid < $totalAmount) {
-            throw new InvalidArgumentException("Jumlah pembayaran (Rp" . number_format($totalPaid, 0, ',', '.') . ") kurang dari total belanja (Rp" . number_format($totalAmount, 0, ',', '.') . ").");
+            throw new InvalidArgumentException('Jumlah pembayaran (Rp'.number_format($totalPaid, 0, ',', '.').') kurang dari total belanja (Rp'.number_format($totalAmount, 0, ',', '.').').');
         }
 
         $changeAmount = $totalPaid - $totalAmount;
@@ -107,7 +164,7 @@ class PosService
             $cashier,
             $location,
             $validatedItems,
-            $paymentsData,
+            $validatedPayments,
             $subtotal,
             $totalAmount,
             $totalPaid,
@@ -118,8 +175,7 @@ class PosService
         ) {
             // Generate Invoice Number server-side (PRD Bab 55)
             $datePrefix = date('Ymd');
-            $countToday = Sale::whereDate('created_at', today())->count() + 1;
-            $invoiceNumber = 'INV-' . $datePrefix . '-' . sprintf('%06d', $countToday);
+            $invoiceNumber = 'INV-'.$datePrefix.'-'.now()->format('His').'-'.Str::upper(Str::random(8));
 
             // Create Sale
             $sale = Sale::create([
@@ -165,7 +221,7 @@ class PosService
                         location: $location,
                         quantityChange: -$qty,
                         movementType: 'SALE',
-                        notes: 'Penjualan POS #' . $invoiceNumber,
+                        notes: 'Penjualan POS #'.$invoiceNumber,
                         user: $cashier,
                         reference: $sale
                     );
@@ -175,22 +231,13 @@ class PosService
             // Create Payments & Balance Transactions
             $cashAccount = BalanceAccount::where('code', 'CASH')->first();
 
-            foreach ($paymentsData as $pData) {
-                $pm = PaymentMethod::find($pData['payment_method_id']);
-                $balanceAccountId = $pData['balance_account_id'] ?? null;
-
-                // Fallback balance account based on payment method type
-                if (!$balanceAccountId && $pm) {
-                    if ($pm->type === 'CASH') {
-                        $balanceAccountId = $cashAccount?->id;
-                    } elseif ($pm->type === 'QRIS') {
-                        $balanceAccountId = BalanceAccount::where('code', 'QRIS')->first()?->id;
-                    }
-                }
+            foreach ($validatedPayments as $pData) {
+                $pm = $pData['payment_method'];
+                $balanceAccountId = $pData['balance_account_id'];
 
                 Payment::create([
                     'sale_id' => $sale->id,
-                    'payment_method_id' => $pData['payment_method_id'],
+                    'payment_method_id' => $pm->id,
                     'balance_account_id' => $balanceAccountId,
                     'amount' => $pData['amount'],
                     'change_amount' => 0,
@@ -201,7 +248,7 @@ class PosService
 
                 // Update Balance Account
                 if ($balanceAccountId) {
-                    $account = BalanceAccount::find($balanceAccountId);
+                    $account = BalanceAccount::whereKey($balanceAccountId)->lockForUpdate()->first();
                     if ($account) {
                         $before = $account->current_balance;
                         $after = $before + $pData['amount'];
@@ -209,7 +256,7 @@ class PosService
                         $account->update(['current_balance' => $after]);
 
                         BalanceTransaction::create([
-                            'transaction_number' => 'TRX-' . date('YmdHis') . '-' . sprintf('%03d', rand(100, 999)),
+                            'transaction_number' => 'TRX-'.date('YmdHis').'-'.sprintf('%03d', rand(100, 999)),
                             'transaction_type' => 'SALE_RECEIPT',
                             'destination_account_id' => $account->id,
                             'amount' => $pData['amount'],
@@ -234,7 +281,7 @@ class PosService
                 $cashAccount->update(['current_balance' => $afterCash]);
 
                 BalanceTransaction::create([
-                    'transaction_number' => 'TRX-' . date('YmdHis') . '-CHG',
+                    'transaction_number' => 'TRX-'.date('YmdHis').'-CHG',
                     'transaction_type' => 'WITHDRAWAL',
                     'source_account_id' => $cashAccount->id,
                     'amount' => $changeAmount,

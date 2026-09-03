@@ -34,6 +34,10 @@ class SaleCancellationService
         $location = Location::where('code', 'RAJA-BANGO')->first()
             ?? Location::where('status', 'ACTIVE')->first();
 
+        if (! $location) {
+            throw new InvalidArgumentException('Lokasi aktif belum tersedia.');
+        }
+
         return DB::transaction(function () use ($sale, $user, $reason, $location) {
             // 1. Revert Physical Inventory Stock
             foreach ($sale->items as $item) {
@@ -43,7 +47,7 @@ class SaleCancellationService
                         location: $location,
                         quantityChange: $item->quantity, // Add back stock
                         movementType: 'TRASH_RESTORE',
-                        notes: 'Pembatalan Transaksi #' . $sale->invoice_number . ' - ' . $reason,
+                        notes: 'Pembatalan Transaksi #'.$sale->invoice_number.' - '.$reason,
                         user: $user,
                         reference: $sale
                     );
@@ -53,7 +57,7 @@ class SaleCancellationService
             // 2. Revert Payments & Balance Accounts
             foreach ($sale->payments as $payment) {
                 if ($payment->balance_account_id) {
-                    $account = BalanceAccount::find($payment->balance_account_id);
+                    $account = BalanceAccount::whereKey($payment->balance_account_id)->lockForUpdate()->first();
                     if ($account) {
                         $before = $account->current_balance;
                         $after = $before - $payment->amount; // Deduct payment back
@@ -61,7 +65,7 @@ class SaleCancellationService
                         $account->update(['current_balance' => $after]);
 
                         BalanceTransaction::create([
-                            'transaction_number' => 'TRX-' . date('YmdHis') . '-REV',
+                            'transaction_number' => 'TRX-'.date('YmdHis').'-REV',
                             'transaction_type' => 'TRASH_REVERSAL',
                             'source_account_id' => $account->id,
                             'amount' => $payment->amount,
@@ -87,7 +91,7 @@ class SaleCancellationService
                     $cashAccount->update(['current_balance' => $afterCash]);
 
                     BalanceTransaction::create([
-                        'transaction_number' => 'TRX-' . date('YmdHis') . '-CHGREV',
+                        'transaction_number' => 'TRX-'.date('YmdHis').'-CHGREV',
                         'transaction_type' => 'TRASH_REVERSAL',
                         'destination_account_id' => $cashAccount->id,
                         'amount' => $sale->change_amount,
@@ -131,6 +135,10 @@ class SaleCancellationService
         $location = Location::where('code', 'RAJA-BANGO')->first()
             ?? Location::where('status', 'ACTIVE')->first();
 
+        if (! $location) {
+            throw new InvalidArgumentException('Lokasi aktif belum tersedia.');
+        }
+
         // Validate stock sufficiency for physical items before restoring
         foreach ($sale->items as $item) {
             if ($item->product_type_snapshot === 'PHYSICAL' && $item->product) {
@@ -153,7 +161,7 @@ class SaleCancellationService
                         location: $location,
                         quantityChange: -$item->quantity,
                         movementType: 'SALE',
-                        notes: 'Restore Transaksi POS #' . $sale->invoice_number,
+                        notes: 'Restore Transaksi POS #'.$sale->invoice_number,
                         user: $user,
                         reference: $sale
                     );
@@ -163,7 +171,7 @@ class SaleCancellationService
             // 2. Re-apply Payments & Balance Accounts
             foreach ($sale->payments as $payment) {
                 if ($payment->balance_account_id) {
-                    $account = BalanceAccount::find($payment->balance_account_id);
+                    $account = BalanceAccount::whereKey($payment->balance_account_id)->lockForUpdate()->first();
                     if ($account) {
                         $before = $account->current_balance;
                         $after = $before + $payment->amount;
@@ -171,7 +179,7 @@ class SaleCancellationService
                         $account->update(['current_balance' => $after]);
 
                         BalanceTransaction::create([
-                            'transaction_number' => 'TRX-' . date('YmdHis') . '-RST',
+                            'transaction_number' => 'TRX-'.date('YmdHis').'-RST',
                             'transaction_type' => 'RESTORE_REVERSAL',
                             'destination_account_id' => $account->id,
                             'amount' => $payment->amount,
@@ -197,7 +205,7 @@ class SaleCancellationService
                     $cashAccount->update(['current_balance' => $afterCash]);
 
                     BalanceTransaction::create([
-                        'transaction_number' => 'TRX-' . date('YmdHis') . '-CHGRST',
+                        'transaction_number' => 'TRX-'.date('YmdHis').'-CHGRST',
                         'transaction_type' => 'RESTORE_REVERSAL',
                         'source_account_id' => $cashAccount->id,
                         'amount' => $sale->change_amount,

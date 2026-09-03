@@ -4,7 +4,6 @@ namespace App\Livewire\Admin;
 
 use App\Models\Inventory;
 use App\Models\Location;
-
 use App\Services\InventoryService;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -14,13 +13,18 @@ class Inventories extends Component
     use WithPagination;
 
     public $search = '';
+
     public $selectedLocationId = null;
 
     // Adjustment Modal
     public $showAdjustmentModal = false;
+
     public $adjustInventoryId = null;
+
     public $adjustQuantity = 0;
+
     public $adjustType = 'SET'; // ADD, SUBTRACT, SET
+
     public $adjustReason = 'Penyesuaian manual stok admin';
 
     protected $paginationTheme = 'tailwind';
@@ -48,22 +52,25 @@ class Inventories extends Component
         ]);
 
         try {
-            $inv = Inventory::findOrFail($this->adjustInventoryId);
-            $newQty = $this->adjustQuantity;
+            $inv = Inventory::with(['product', 'location'])->findOrFail($this->adjustInventoryId);
+            $quantityChange = $this->adjustQuantity - $inv->quantity;
+            $movementType = $quantityChange >= 0 ? 'ADJUSTMENT_IN' : 'ADJUSTMENT_OUT';
 
             if ($this->adjustType === 'ADD') {
-                $newQty = $inv->quantity + $this->adjustQuantity;
+                $quantityChange = $this->adjustQuantity;
+                $movementType = 'ADJUSTMENT_IN';
             } elseif ($this->adjustType === 'SUBTRACT') {
-                $newQty = max(0, $inv->quantity - $this->adjustQuantity);
+                $quantityChange = -$this->adjustQuantity;
+                $movementType = 'ADJUSTMENT_OUT';
             }
 
             $inventoryService->adjustStock(
-                $inv->product_id,
-                $inv->location_id,
-                $newQty,
-                'MANUAL_ADJUSTMENT',
+                $inv->product,
+                $inv->location,
+                $quantityChange,
+                $movementType,
                 $this->adjustReason,
-                auth()->id()
+                auth()->user()
             );
 
             $this->showAdjustmentModal = false;
@@ -83,9 +90,9 @@ class Inventories extends Component
 
         if ($this->search) {
             $query->whereHas('product', function ($q) {
-                $q->where('name', 'like', '%' . $this->search . '%')
-                  ->orWhere('code', 'like', '%' . $this->search . '%')
-                  ->orWhere('barcode', 'like', '%' . $this->search . '%');
+                $q->where('name', 'like', '%'.$this->search.'%')
+                    ->orWhere('code', 'like', '%'.$this->search.'%')
+                    ->orWhere('barcode', 'like', '%'.$this->search.'%');
             });
         }
 

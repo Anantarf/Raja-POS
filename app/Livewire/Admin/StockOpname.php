@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin;
 
+use App\Models\Inventory;
 use App\Models\Location;
 use App\Models\Product;
 use App\Models\StockOpname as StockOpnameModel;
@@ -14,9 +15,13 @@ class StockOpname extends Component
     use WithPagination;
 
     public $showCreateModal = false;
+
     public $location_id = '';
+
     public $product_id = '';
+
     public $physical_qty = 0;
+
     public $notes = '';
 
     protected $paginationTheme = 'tailwind';
@@ -39,19 +44,23 @@ class StockOpname extends Component
         ]);
 
         $product = Product::findOrFail($this->product_id);
-        $systemQty = \App\Models\Inventory::where('product_id', $this->product_id)
+        $systemQty = Inventory::where('product_id', $this->product_id)
             ->where('location_id', $this->location_id)->value('quantity') ?? 0;
 
-        StockOpnameModel::create([
-            'opname_number' => 'OPN-' . date('Ymd') . '-' . rand(100, 999),
+        $opname = StockOpnameModel::create([
+            'opname_number' => 'OPN-'.date('YmdHis').'-'.random_int(100, 999),
             'location_id' => $this->location_id,
-            'product_id' => $this->product_id,
+            'status' => 'DRAFT',
+            'created_by' => auth()->id(),
+            'started_at' => now(),
+        ]);
+
+        $opname->items()->create([
+            'product_id' => $product->id,
             'system_quantity' => $systemQty,
             'physical_quantity' => $this->physical_qty,
             'difference' => $this->physical_qty - $systemQty,
-            'status' => 'PENDING',
             'notes' => $this->notes,
-            'created_by' => auth()->id(),
         ]);
 
         $this->showCreateModal = false;
@@ -62,22 +71,11 @@ class StockOpname extends Component
     {
         try {
             $opname = StockOpnameModel::findOrFail($id);
-            if ($opname->status !== 'PENDING') return;
+            if ($opname->status !== 'DRAFT') {
+                return;
+            }
 
-            $inventoryService->adjustStock(
-                $opname->product_id,
-                $opname->location_id,
-                $opname->physical_quantity,
-                'STOCK_OPNAME',
-                'Stock Opname Approval: ' . $opname->opname_number,
-                auth()->id()
-            );
-
-            $opname->update([
-                'status' => 'APPROVED',
-                'approved_by' => auth()->id(),
-                'approved_at' => now(),
-            ]);
+            $inventoryService->approveStockOpname($opname, auth()->user());
 
             $this->dispatch('notify', message: 'Sesi Stock Opname berhasil disetujui & stok fisik terupdate.', type: 'success');
         } catch (\Exception $e) {
@@ -87,7 +85,7 @@ class StockOpname extends Component
 
     public function render()
     {
-        $sessions = StockOpnameModel::with(['location', 'product', 'creator', 'approver'])
+        $sessions = StockOpnameModel::with(['location', 'items.product', 'creator', 'approver'])
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 

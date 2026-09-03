@@ -7,7 +7,6 @@ use App\Models\Inventory;
 use App\Models\Location;
 use App\Models\PaymentMethod;
 use App\Models\Product;
-use App\Models\Sale;
 use App\Models\User;
 use App\Services\InventoryService;
 use App\Services\PosService;
@@ -187,6 +186,32 @@ class PosCheckoutTest extends TestCase
         $posService->processCheckout($cashier, $cartItems, $paymentsData);
     }
 
+    public function test_pos_checkout_blocks_payment_account_type_mismatch(): void
+    {
+        $location = Location::where('code', 'RAJA-BANGO')->first();
+        $cashier = User::where('username', 'superadmin')->first();
+        $product = Product::create([
+            'code' => 'ACC-PAY-01',
+            'name' => 'Adapter Payment Guard',
+            'product_type' => 'PHYSICAL',
+            'cost_price' => 10000,
+            'selling_price' => 25000,
+        ]);
+
+        app(InventoryService::class)->adjustStock($product, $location, 1, 'ADJUSTMENT_IN', 'Stock', $cashier);
+
+        $transferPm = PaymentMethod::where('code', 'TRANSFER')->first();
+        $cashAccount = BalanceAccount::where('code', 'CASH')->first();
+
+        $this->expectException(\InvalidArgumentException::class);
+
+        app(PosService::class)->processCheckout(
+            cashier: $cashier,
+            cartItems: [['product' => $product, 'quantity' => 1]],
+            paymentsData: [['payment_method_id' => $transferPm->id, 'balance_account_id' => $cashAccount->id, 'amount' => 25000]]
+        );
+    }
+
     public function test_thermal_receipt_route(): void
     {
         $location = Location::where('code', 'RAJA-BANGO')->first();
@@ -211,7 +236,7 @@ class PosCheckoutTest extends TestCase
             paymentsData: [['payment_method_id' => $cashPm->id, 'balance_account_id' => $cashAccount->id, 'amount' => 20000]]
         );
 
-        $response = $this->actingAs($superadmin)->get('/receipt/thermal/' . $sale->id);
+        $response = $this->actingAs($superadmin)->get('/receipt/thermal/'.$sale->id);
         $response->assertStatus(200);
         $response->assertSee('Raja Aksesoris');
         $response->assertSee($sale->invoice_number);
