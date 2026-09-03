@@ -115,9 +115,9 @@
     <div class="divider"></div>
 
     <div class="footer text-center">
-        <div>Terima Kasih</div>
-        <div>Barang yang sudah dibeli</div>
-        <div>tidak dapat ditukar/dikembalikan</div>
+        <div class="bold">Terima Kasih Telah Berbelanja!</div>
+        <div>Kepuasan Anda Adalah Kebanggaan Kami.</div>
+        <div>Sampai Jumpa Kembali di Raja Aksesoris!</div>
     </div>
 </body>
 </html>

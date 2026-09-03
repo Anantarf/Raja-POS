@@ -96,9 +96,10 @@
                                     <button wire:click="openDetailModal({{ $sale->id }})" class="px-3 py-1.5 bg-slate-100 hover:bg-[#E3EEE8] text-[#232E28] hover:text-[#3F7A5D] border border-slate-200/80 rounded-xl text-xs font-extrabold transition cursor-pointer shadow-sm">
                                         Detail Nota
                                     </button>
-                                    <a href="/receipt/thermal/{{ $sale->id }}" target="_blank" class="px-3 py-1.5 bg-slate-100 hover:bg-[#E3EEE8] text-[#232E28] hover:text-[#3F7A5D] border border-slate-200/80 rounded-xl text-xs font-extrabold transition cursor-pointer shadow-sm">
-                                        Struk
-                                    </a>
+                                    <button wire:click="openReceiptModal({{ $sale->id }})" class="px-3 py-1.5 bg-slate-100 hover:bg-[#E3EEE8] text-[#232E28] hover:text-[#3F7A5D] border border-slate-200/80 rounded-xl text-xs font-extrabold transition cursor-pointer shadow-sm flex items-center gap-1">
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+                                        <span>Struk</span>
+                                    </button>
                                     @if(auth()->user()->can('sales.trash'))
                                         <button wire:click="moveToTrash({{ $sale->id }})" wire:confirm="Pindahkan transaksi ini ke Sampah Transaksi? Stok dan saldo akan dikembalikan." class="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200/80 rounded-xl text-xs font-extrabold transition cursor-pointer shadow-sm">
                                             Ke Sampah
@@ -204,10 +205,10 @@
 
                 <!-- Modal Actions -->
                 <div class="pt-3 flex items-center justify-between border-t border-slate-100">
-                    <a href="/receipt/thermal/{{ $selectedSale->id }}" target="_blank" class="py-2.5 px-4 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-2xl text-xs uppercase tracking-wider flex items-center gap-2 shadow-sm transition active:scale-95 cursor-pointer">
+                    <button type="button" wire:click="openReceiptModal({{ $selectedSale->id }})" class="py-2.5 px-4 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-2xl text-xs uppercase tracking-wider flex items-center gap-2 shadow-sm transition active:scale-95 cursor-pointer">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
-                        <span>Cetak Struk Thermal</span>
-                    </a>
+                        <span>Lihat &amp; Cetak Struk</span>
+                    </button>
                     <button type="button" wire:click="$set('showDetailModal', false)" class="py-2.5 px-5 bg-slate-100 hover:bg-slate-200 text-[#232E28] font-bold rounded-2xl text-xs transition cursor-pointer">
                         Tutup
                     </button>
@@ -215,5 +216,151 @@
             </div>
         </div>
     @endif
+
+    <!-- In-Page Thermal Receipt Pop-Up Modal -->
+    @if($showReceiptModal && $receiptSale)
+        <div
+            class="fixed inset-0 bg-[#232E28]/70 backdrop-blur-sm flex items-center justify-center z-[60] p-4 overflow-y-auto"
+            x-data="{
+                printReceipt() {
+                    const printContents = document.getElementById('printable-receipt-content').innerHTML;
+                    const printWindow = window.open('', '_blank', 'width=400,height=600');
+                    printWindow.document.write(`
+                        <html>
+                            <head>
+                                <title>Struk #${ '{{ $receiptSale->invoice_number }}' }</title>
+                                <style>
+                                    @page { margin: 0; }
+                                    body {
+                                        font-family: 'Courier New', Courier, monospace;
+                                        font-size: 12px;
+                                        color: #000;
+                                        background: #fff;
+                                        margin: 0;
+                                        padding: 10px;
+                                        width: 58mm;
+                                    }
+                                    .text-center { text-align: center; }
+                                    .text-right { text-align: right; }
+                                    .text-left { text-align: left; }
+                                    .bold { font-weight: bold; }
+                                    .divider { border-top: 1px dashed #000; margin: 8px 0; }
+                                    .table-items { width: 100%; border-collapse: collapse; }
+                                    .table-items td { padding: 2px 0; vertical-align: top; }
+                                    .totals-table { width: 100%; margin-top: 5px; }
+                                    .totals-table td { padding: 2px 0; }
+                                    .footer { margin-top: 15px; font-size: 11px; }
+                                </style>
+                            </head>
+                            <body onload='window.print(); setTimeout(function(){ window.close(); }, 500);'>
+                                ${printContents}
+                            </body>
+                        </html>
+                    `);
+                    printWindow.document.close();
+                }
+            }"
+        >
+            <div class="bg-white rounded-2xl p-5 max-w-sm w-full shadow-2xl space-y-4 border border-slate-100 relative my-auto animate-fade-in">
+                <!-- Modal Header -->
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 rounded-xl bg-[#E3EEE8] text-[#3F7A5D] flex items-center justify-center">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-extrabold text-[#232E28]">Preview Struk Kasir</h3>
+                            <p class="text-[11px] font-mono text-[#718379]">Kertas Thermal 58mm</p>
+                        </div>
+                    </div>
+                    <button type="button" wire:click="$set('showReceiptModal', false)" class="text-slate-400 hover:text-slate-600 p-1 cursor-pointer">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+
+                <!-- Receipt Paper Simulation Box -->
+                <div class="bg-[#F3F6F4] p-3 rounded-xl border border-slate-200/80 max-h-[380px] overflow-y-auto">
+                    <div id="printable-receipt-content" class="bg-white p-4 rounded-lg shadow-sm border border-slate-200 font-mono text-xs text-black leading-relaxed space-y-2 select-text">
+                        <div class="text-center font-bold text-sm uppercase tracking-wide">RAJA AKSESORIS</div>
+                        <div class="text-center text-[10px] text-slate-600">Retail Management System</div>
+
+                        <div class="border-t border-dashed border-black my-2"></div>
+
+                        <div class="text-[11px] space-y-0.5">
+                            <div><strong>No:</strong> {{ $receiptSale->invoice_number }}</div>
+                            <div><strong>Tgl:</strong> {{ $receiptSale->created_at->format('d/m/Y H:i') }}</div>
+                            <div><strong>Kasir:</strong> {{ $receiptSale->user?->name ?? 'Kasir' }}</div>
+                        </div>
+
+                        <div class="border-t border-dashed border-black my-2"></div>
+
+                        <!-- Table Items -->
+                        <table class="w-full text-xs text-left">
+                            @foreach($receiptSale->items as $item)
+                                <tr>
+                                    <td colspan="2" class="font-bold pt-1">{{ $item->product_name_snapshot }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left text-[11px] text-slate-700">{{ $item->quantity }} x Rp{{ number_format($item->selling_price, 0, ',', '.') }}</td>
+                                    <td class="text-right font-bold whitespace-nowrap">Rp{{ number_format($item->subtotal, 0, ',', '.') }}</td>
+                                </tr>
+                            @endforeach
+                        </table>
+
+                        <div class="border-t border-dashed border-black my-2"></div>
+
+                        <!-- Totals -->
+                        <div class="space-y-1 text-xs">
+                            <div class="flex justify-between font-bold text-sm">
+                                <span>TOTAL</span>
+                                <span>Rp{{ number_format($receiptSale->total_amount, 0, ',', '.') }}</span>
+                            </div>
+                            @foreach($receiptSale->payments as $payment)
+                                <div class="flex justify-between text-[11px]">
+                                    <span>BAYAR ({{ $payment->paymentMethod?->name ?? 'Metode' }})</span>
+                                    <span>Rp{{ number_format($payment->amount, 0, ',', '.') }}</span>
+                                </div>
+                            @endforeach
+                            <div class="flex justify-between text-[11px]">
+                                <span>KEMBALI</span>
+                                <span>Rp{{ number_format($receiptSale->change_amount, 0, ',', '.') }}</span>
+                            </div>
+                        </div>
+
+                        <div class="border-t border-dashed border-black my-2"></div>
+
+                        <div class="text-center text-[10px] text-slate-600 pt-1 space-y-0.5">
+                            <div class="font-bold">Terima Kasih Telah Berbelanja!</div>
+                            <div>Kepuasan Anda Adalah Kebanggaan Kami.</div>
+                            <div>Sampai Jumpa Kembali di Raja Aksesoris!</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal Actions Footer -->
+                <div class="pt-2 space-y-2">
+                    <button
+                        type="button"
+                        @click="printReceipt()"
+                        class="w-full py-2.5 px-4 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-2xl text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm transition active:scale-95 cursor-pointer"
+                    >
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+                        <span>Cetak Struk Sekarang</span>
+                    </button>
+
+                    <div class="flex items-center justify-between text-xs pt-1">
+                        <a href="/receipt/thermal/{{ $receiptSale->id }}" target="_blank" class="text-[#3F7A5D] hover:underline font-bold text-[11px] flex items-center gap-1">
+                            <span>Buka versi cetak penuh</span>
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                        </a>
+                        <button type="button" wire:click="$set('showReceiptModal', false)" class="py-1.5 px-4 bg-slate-100 hover:bg-slate-200 text-[#232E28] font-bold rounded-xl text-xs transition cursor-pointer">
+                            Tutup
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+</div>
 </div>
 

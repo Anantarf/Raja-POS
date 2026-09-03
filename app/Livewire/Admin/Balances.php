@@ -66,7 +66,7 @@ class Balances extends Component
 
     private function resetForm()
     {
-        $accounts = BalanceAccount::where('status', 'ACTIVE')->get();
+        $accounts = BalanceAccount::where('status', 'ACTIVE')->where('account_type', '!=', 'PROVIDER')->get();
         $this->sourceAccountId = $accounts->first()?->id;
         $this->destinationAccountId = $accounts->skip(1)->first()?->id;
         $this->amount = 0;
@@ -76,7 +76,7 @@ class Balances extends Component
 
     public function render()
     {
-        $accounts = BalanceAccount::where('status', 'ACTIVE')->get();
+        $accounts = BalanceAccount::where('status', 'ACTIVE')->where('account_type', '!=', 'PROVIDER')->get();
         $query = BalanceTransaction::with(['sourceAccount', 'destinationAccount', 'creator', 'user']);
 
         if ($this->search) {
@@ -89,6 +89,6 @@ class Balances extends Component
         return view('livewire.admin.balances', [
             'accounts' => $accounts,
             'transactions' => $transactions,
-        ])->layout('components.layouts.admin', ['title' => 'Keuangan & Saldo']);
+        ])->layout('components.layouts.admin', ['title' => 'Monitoring Saldo']);
     }
 }

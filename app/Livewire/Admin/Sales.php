@@ -20,6 +20,9 @@ class Sales extends Component
     public $selectedSaleId = null;
     public $showDetailModal = false;
 
+    public $receiptSaleId = null;
+    public $showReceiptModal = false;
+
     protected $paginationTheme = 'tailwind';
 
     public function updatingSearch()
@@ -46,6 +49,12 @@ class Sales extends Component
     {
         $this->selectedSaleId = $saleId;
         $this->showDetailModal = true;
+    }
+
+    public function openReceiptModal($saleId)
+    {
+        $this->receiptSaleId = $saleId;
+        $this->showReceiptModal = true;
     }
 
     public function moveToTrash($saleId, SaleCancellationService $cancellationService)
@@ -91,10 +100,12 @@ class Sales extends Component
 
         $sales = $query->orderBy('created_at', 'desc')->paginate(12);
         $selectedSale = $this->selectedSaleId ? Sale::with(['items', 'payments.paymentMethod', 'cashier', 'user'])->find($this->selectedSaleId) : null;
+        $receiptSale = $this->receiptSaleId ? Sale::with(['items', 'payments.paymentMethod', 'cashier', 'user'])->find($this->receiptSaleId) : null;
 
         return view('livewire.admin.sales', [
             'sales' => $sales,
             'selectedSale' => $selectedSale,
+            'receiptSale' => $receiptSale,
             'paymentMethods' => PaymentMethod::all(),
         ])->layout('components.layouts.admin', ['title' => 'Riwayat Transaksi']);
     }
