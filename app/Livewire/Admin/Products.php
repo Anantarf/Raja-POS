@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Inventory;
 use App\Models\Location;
 use App\Models\Product;
+use App\Services\InventoryService;
 use App\Services\ProductImportService;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -14,29 +15,44 @@ use Livewire\WithPagination;
 
 class Products extends Component
 {
-    use WithPagination, WithFileUploads;
+    use WithFileUploads, WithPagination;
 
     public $search = '';
+
     public $selectedCategory = null;
+
     public $selectedType = 'ALL';
-    public $viewMode = 'card'; // 'card' or 'table'
+
+    public $viewMode = 'table'; // 'card' or 'table'
 
     // Modal state
     public $showCreateModal = false;
+
     public $showImportModal = false;
+
     public $editingProductId = null;
 
     // Form Fields
     public $code = '';
+
     public $barcode = '';
+
     public $name = '';
+
     public $category_id = '';
+
     public $brand_id = '';
+
     public $product_type = 'PHYSICAL';
+
     public $product_subtype = '';
+
     public $cost_price = 0;
+
     public $selling_price = 0;
+
     public $description = '';
+
     public $initial_stock = 0;
 
     // Import file
@@ -70,9 +86,38 @@ class Products extends Component
         $this->viewMode = $mode;
     }
 
+    public function generateAutoCode(): void
+    {
+        $lastProduct = Product::where('code', 'LIKE', 'RJA-%')->orderBy('id', 'desc')->first();
+        $nextNum = 1200;
+
+        if ($lastProduct && preg_match('/(\d+)$/', $lastProduct->code, $matches)) {
+            $nextNum = (int) $matches[1] + 1;
+        }
+
+        $prefix = 'RJA-PROD';
+        if ($this->brand_id) {
+            $brand = Brand::find($this->brand_id);
+            if ($brand && ! empty($brand->name)) {
+                $cleanBrand = strtoupper(preg_replace('/[^A-Za-z0-9]/', '', $brand->name));
+                $prefix = 'RJA-'.substr($cleanBrand, 0, 4);
+            }
+        }
+
+        $this->code = sprintf('%s-%04d', $prefix, $nextNum);
+    }
+
+    public function updatedBrandId()
+    {
+        if (! $this->editingProductId && empty($this->code)) {
+            $this->generateAutoCode();
+        }
+    }
+
     public function openCreateModal()
     {
         $this->resetForm();
+        $this->generateAutoCode();
         $this->showCreateModal = true;
     }
 
@@ -97,18 +142,19 @@ class Products extends Component
         $this->showCreateModal = true;
     }
 
-    public function saveProduct()
+    public function saveProduct(InventoryService $inventoryService)
     {
+        abort_unless(auth()->user()->can($this->editingProductId ? 'product.update' : 'product.create'), 403);
         $this->validate([
-            'code' => 'required|string|max:50|unique:products,code,' . $this->editingProductId,
+            'code' => 'required|string|max:50|unique:products,code,'.$this->editingProductId,
             'name' => 'required|string|max:255',
-            'product_type' => 'required|in:PHYSICAL,DIGITAL,LAYANAN,SERVICE',
+            'product_type' => 'required|in:PHYSICAL,DIGITAL,LAYANAN',
             'product_subtype' => 'nullable|string|max:255',
             'selling_price' => 'required|numeric|min:0',
             'cost_price' => 'required|numeric|min:0',
         ]);
 
-        $priceStatus = ($this->cost_price > 0 && $this->selling_price > 0) ? 'COMPLETE' : 'INCOMPLETE';
+        $priceStatus = ($this->product_type === 'LAYANAN' || ($this->cost_price > 0 && $this->selling_price > 0)) ? 'COMPLETE' : 'INCOMPLETE';
 
         $data = [
             'code' => $this->code,
@@ -134,10 +180,17 @@ class Products extends Component
             if ($product->product_type === 'PHYSICAL') {
                 $location = Location::first();
                 if ($location) {
-                    Inventory::updateOrCreate(
-                        ['product_id' => $product->id, 'location_id' => $location->id],
-                        ['quantity' => $this->initial_stock ?: 0, 'stock_status' => $this->initial_stock > 0 ? 'AVAILABLE' : 'OUT_OF_STOCK']
-                    );
+                    if ($this->initial_stock > 0) {
+                        $inventoryService->adjustStock(
+                            product: $product,
+                            location: $location,
+                            quantityChange: (int) $this->initial_stock,
+                            movementType: 'ADJUSTMENT_IN',
+                            notes: 'Stok awal produk baru',
+                            user: auth()->user(),
+                            reference: $product
+                        );
+                    }
                 }
             }
 
@@ -151,19 +204,20 @@ class Products extends Component
 
     public function processImport(ProductImportService $importService)
     {
+        abort_unless(auth()->user()->can('excel_import.commit'), 403);
         $this->validate([
-            'importFile' => 'required|file|mimes:csv,txt,xlsx,xls|max:10240',
+            'importFile' => 'required|file|mimes:xlsx|max:10240',
         ]);
 
         $path = $this->importFile->getRealPath();
-        $result = $importService->importFromCsv($path, auth()->user());
+        $result = $importService->importFromExcel($path, auth()->user());
 
         $this->showImportModal = false;
         $this->importFile = null;
 
         $msg = "Import Selesai: {$result['imported_count']} produk sukses ditambahkan.";
         if (count($result['errors']) > 0) {
-            $msg .= " (" . count($result['errors']) . " baris gagal)";
+            $msg .= ' ('.count($result['errors']).' baris gagal)';
         }
 
         $this->dispatch('notify', message: $msg, type: count($result['errors']) > 0 ? 'warning' : 'success');
@@ -171,6 +225,7 @@ class Products extends Component
 
     public function deleteProduct($productId)
     {
+        abort_unless(auth()->user()->can('product.delete'), 403);
         $product = Product::findOrFail($productId);
         $product->delete();
         $this->dispatch('notify', message: 'Produk berhasil dihapus.', type: 'danger');
@@ -179,7 +234,7 @@ class Products extends Component
     private function resetForm()
     {
         $this->editingProductId = null;
-        $this->code = 'PRD-' . rand(1000, 9999);
+        $this->code = 'PRD-'.rand(1000, 9999);
         $this->barcode = '';
         $this->name = '';
         $this->category_id = '';
@@ -194,13 +249,13 @@ class Products extends Component
 
     public function render()
     {
-        $query = Product::with(['category', 'brand']);
+        $query = Product::with(['category', 'brand', 'inventories']);
 
         if ($this->search) {
             $query->where(function ($q) {
-                $q->where('name', 'like', '%' . $this->search . '%')
-                  ->orWhere('code', 'like', '%' . $this->search . '%')
-                  ->orWhere('barcode', 'like', '%' . $this->search . '%');
+                $q->where('name', 'like', '%'.$this->search.'%')
+                    ->orWhere('code', 'like', '%'.$this->search.'%')
+                    ->orWhere('barcode', 'like', '%'.$this->search.'%');
             });
         }
 
@@ -208,18 +263,32 @@ class Products extends Component
             $query->where('category_id', $this->selectedCategory);
         }
 
-        if ($this->selectedType !== 'ALL') {
+        if ($this->selectedType === 'INCOMPLETE') {
+            $query->where('product_type', '!=', 'LAYANAN')
+                ->where(function ($q) {
+                    $q->where('price_status', 'INCOMPLETE')
+                        ->orWhere('cost_price', '<=', 0)
+                        ->orWhere('selling_price', '<=', 0);
+                });
+        } elseif ($this->selectedType !== 'ALL') {
             $query->where('product_type', $this->selectedType);
         }
+
+        $incompleteCount = Product::where('product_type', '!=', 'LAYANAN')
+            ->where(function ($q) {
+                $q->where('price_status', 'INCOMPLETE')
+                    ->orWhere('cost_price', '<=', 0)
+                    ->orWhere('selling_price', '<=', 0);
+            })
+            ->count();
 
         $products = $query->orderBy('created_at', 'desc')->paginate(12);
 
         return view('livewire.admin.products', [
             'products' => $products,
+            'incompleteCount' => $incompleteCount,
             'categories' => Category::orderBy('name')->get(),
             'brands' => Brand::orderBy('name')->get(),
         ])->layout('components.layouts.admin', ['title' => 'Master Produk']);
     }
 }
-
-

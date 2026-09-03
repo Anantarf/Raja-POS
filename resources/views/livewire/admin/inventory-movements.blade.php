@@ -83,6 +83,6 @@
                 </tbody>
             </table>
         </div>
-        <div class="p-3.5 border-t border-[#E3EEE8]">{{ $movements->links() }}</div>
+        <div class="p-3.5 border-t border-[#E3EEE8]">{{ $movements->links('components.emco-pagination') }}</div>
     </div>
 </div>

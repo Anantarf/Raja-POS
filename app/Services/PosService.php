@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Models\BalanceAccount;
 use App\Models\BalanceTransaction;
 use App\Models\Inventory;
-use App\Models\Location;
 use App\Models\Payment;
 use App\Models\PaymentMethod;
 use App\Models\Product;
@@ -42,11 +41,10 @@ class PosService
             throw new InvalidArgumentException('Metode pembayaran wajib diisi.');
         }
 
-        $location = Location::where('code', 'RAJA-BANGO')->first()
-            ?? Location::where('status', 'ACTIVE')->first();
+        $location = $cashier->location;
 
-        if (! $location) {
-            throw new InvalidArgumentException('Lokasi aktif belum tersedia.');
+        if (! $location || $location->status !== 'ACTIVE') {
+            throw new InvalidArgumentException('Lokasi kerja kasir belum diatur atau tidak aktif.');
         }
 
         // 1. Validate items (Price Complete & Stock sufficiency)
@@ -63,12 +61,33 @@ class PosService
                 continue;
             }
 
-            // Block INCOMPLETE price status (PRD Bab 7.1)
-            if ($product->price_status === 'INCOMPLETE') {
+            $isService = $product->product_type === 'LAYANAN';
+            $costPrice = $isService ? (float) ($item['cost_price'] ?? 0) : (float) $product->cost_price;
+            $sellingPrice = $isService ? (float) ($item['price'] ?? 0) : (float) $product->selling_price;
+            $nameSnapshot = $isService && ! empty($item['name']) ? $item['name'] : $product->name;
+
+            // Block INCOMPLETE price status if no valid custom price provided
+            if ($product->price_status === 'INCOMPLETE' && $sellingPrice <= 0) {
                 throw new InvalidArgumentException("Produk '{$product->name}' memiliki status harga INCOMPLETE (modal/jual 0). Harap lengkapi harga sebelum checkout.");
             }
 
-            // Validate physical stock availability (PRD Bab 72)
+            // [CELAH #7] LAYANAN server-side final guard
+            if ($product->product_type === 'LAYANAN') {
+                // Minimum nominal Rp 1.000
+                if ($sellingPrice < 1000) {
+                    throw new InvalidArgumentException("Nominal layanan '{$product->name}' terlalu kecil (minimum Rp 1.000).");
+                }
+                // Margin must be positive: selling >= cost
+                if ($sellingPrice < $costPrice) {
+                    throw new InvalidArgumentException("Margin negatif terdeteksi pada '{$product->name}'. Harga jual tidak boleh lebih kecil dari modal.");
+                }
+                // Quantity must be 1 per line
+                if ($qty > 1) {
+                    throw new InvalidArgumentException("Item layanan '{$product->name}' hanya bisa 1 transaksi per baris.");
+                }
+            }
+
+            // Validate physical stock availability (PRD Bab 7.2)
             if ($product->product_type === 'PHYSICAL') {
                 $availableStock = Inventory::where('product_id', $product->id)
                     ->where('location_id', $location->id)
@@ -79,8 +98,8 @@ class PosService
                 }
             }
 
-            $itemSubtotal = $product->selling_price * $qty;
-            $itemCostSubtotal = $product->cost_price * $qty;
+            $itemSubtotal = $sellingPrice * $qty;
+            $itemCostSubtotal = $costPrice * $qty;
 
             $subtotal += $itemSubtotal;
             $totalCost += $itemCostSubtotal;
@@ -88,8 +107,9 @@ class PosService
             $validatedItems[] = [
                 'product' => $product,
                 'quantity' => $qty,
-                'cost_price' => $product->cost_price,
-                'selling_price' => $product->selling_price,
+                'name' => $nameSnapshot,
+                'cost_price' => $costPrice,
+                'selling_price' => $sellingPrice,
                 'subtotal' => $itemSubtotal,
             ];
         }
@@ -157,6 +177,10 @@ class PosService
         }
 
         $changeAmount = $totalPaid - $totalAmount;
+        $cashTendered = collect($validatedPayments)->filter(fn ($payment) => $payment['payment_method']->type === 'CASH')->sum('amount');
+        if ($changeAmount > 0 && $cashTendered < $changeAmount) {
+            throw new InvalidArgumentException('Kembalian hanya dapat diberikan dari pembayaran tunai.');
+        }
         $grossProfit = $totalAmount - $totalCost;
 
         // 2. Perform Atomic Transaction
@@ -173,14 +197,15 @@ class PosService
             $grossProfit,
             $notes
         ) {
-            // Generate Invoice Number server-side (PRD Bab 55)
+            // Generate Transaction Number server-side (TRX-YYYYMMDD-XXXXXX)
             $datePrefix = date('Ymd');
-            $invoiceNumber = 'INV-'.$datePrefix.'-'.now()->format('His').'-'.Str::upper(Str::random(8));
+            $invoiceNumber = 'TRX-'.$datePrefix.'-'.Str::upper(Str::random(6));
 
             // Create Sale
             $sale = Sale::create([
                 'invoice_number' => $invoiceNumber,
                 'cashier_id' => $cashier->id,
+                'location_id' => $location->id,
                 'transaction_date' => now(),
                 'subtotal' => $subtotal,
                 'discount_amount' => 0,
@@ -202,7 +227,7 @@ class PosService
                 SaleItem::create([
                     'sale_id' => $sale->id,
                     'product_id' => $product->id,
-                    'product_name_snapshot' => $product->name,
+                    'product_name_snapshot' => $vItem['name'],
                     'product_code_snapshot' => $product->code,
                     'product_type_snapshot' => $product->product_type,
                     'product_subtype_snapshot' => $product->product_subtype,
@@ -229,7 +254,7 @@ class PosService
             }
 
             // Create Payments & Balance Transactions
-            $cashAccount = BalanceAccount::where('code', 'CASH')->first();
+            $cashAccount = BalanceAccount::where('code', 'CASH')->where('status', 'ACTIVE')->lockForUpdate()->first();
 
             foreach ($validatedPayments as $pData) {
                 $pm = $pData['payment_method'];
@@ -256,7 +281,7 @@ class PosService
                         $account->update(['current_balance' => $after]);
 
                         BalanceTransaction::create([
-                            'transaction_number' => 'TRX-'.date('YmdHis').'-'.sprintf('%03d', rand(100, 999)),
+                            'transaction_number' => 'TRX-'.Str::uuid(),
                             'transaction_type' => 'SALE_RECEIPT',
                             'destination_account_id' => $account->id,
                             'amount' => $pData['amount'],
@@ -281,7 +306,7 @@ class PosService
                 $cashAccount->update(['current_balance' => $afterCash]);
 
                 BalanceTransaction::create([
-                    'transaction_number' => 'TRX-'.date('YmdHis').'-CHG',
+                    'transaction_number' => 'TRX-'.Str::uuid(),
                     'transaction_type' => 'WITHDRAWAL',
                     'source_account_id' => $cashAccount->id,
                     'amount' => $changeAmount,

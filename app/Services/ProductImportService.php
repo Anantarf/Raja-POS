@@ -5,13 +5,15 @@ namespace App\Services;
 use App\Models\BalanceAccount;
 use App\Models\Brand;
 use App\Models\Category;
-use App\Models\Inventory;
-use App\Models\Location;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
+use OpenSpout\Common\Entity\Row;
+use OpenSpout\Common\Entity\Style\Style;
+use OpenSpout\Reader\XLSX\Reader;
+use OpenSpout\Writer\XLSX\Writer;
 
 class ProductImportService
 {
@@ -24,20 +26,20 @@ class ProductImportService
      */
     public function importFromCsv(string $filePath, User $user): array
     {
-        if (!file_exists($filePath)) {
+        if (! file_exists($filePath)) {
             throw new InvalidArgumentException("File tidak ditemukan pada path: {$filePath}");
         }
 
         $handle = fopen($filePath, 'r');
         if ($handle === false) {
-            throw new InvalidArgumentException("Gagal membuka file CSV.");
+            throw new InvalidArgumentException('Gagal membuka file CSV.');
         }
 
         // Read header row
         $rawHeaders = fgetcsv($handle, 2000, ',');
-        if (!$rawHeaders) {
+        if (! $rawHeaders) {
             fclose($handle);
-            throw new InvalidArgumentException("File CSV kosong atau format header tidak terdeteksi.");
+            throw new InvalidArgumentException('File CSV kosong atau format header tidak terdeteksi.');
         }
 
         // Normalize headers
@@ -63,8 +65,10 @@ class ProductImportService
         $incompleteCount = 0;
         $errors = [];
 
-        $location = Location::where('code', 'RAJA-BANGO')->first()
-            ?? Location::where('status', 'ACTIVE')->first();
+        $location = $user->location;
+        if (! $location || $location->status !== 'ACTIVE') {
+            throw new InvalidArgumentException('Lokasi kerja pengguna belum diatur atau tidak aktif.');
+        }
 
         while (($row = fgetcsv($handle, 2000, ',')) !== false) {
             $rowNumber++;
@@ -77,12 +81,13 @@ class ProductImportService
             $name = $idxName !== null ? trim($row[$idxName] ?? '') : '';
             if (empty($name)) {
                 $errors[] = "Baris {$rowNumber}: Nama barang/layanan wajib diisi.";
+
                 continue;
             }
 
             $code = $idxCode !== null ? trim($row[$idxCode] ?? '') : '';
             if (empty($code)) {
-                $code = 'PRD-' . strtoupper(Str::random(6));
+                $code = 'PRD-'.strtoupper(Str::random(6));
             }
 
             $catName = $idxCategory !== null ? trim($row[$idxCategory] ?? '') : 'Umum';
@@ -135,7 +140,7 @@ class ProductImportService
 
                     // Resolve Brand
                     $brand = null;
-                    if (!empty($brandName)) {
+                    if (! empty($brandName)) {
                         $brand = Brand::firstOrCreate(
                             ['name' => $brandName],
                             ['slug' => Str::slug($brandName), 'status' => 'ACTIVE']
@@ -144,7 +149,7 @@ class ProductImportService
 
                     // Resolve Balance Account for Provider if given
                     $balanceAccount = null;
-                    if (!empty($accountName)) {
+                    if (! empty($accountName)) {
                         $balanceAccount = BalanceAccount::where('name', 'like', "%{$accountName}%")
                             ->orWhere('code', $accountName)
                             ->first();
@@ -156,14 +161,14 @@ class ProductImportService
                         ['code' => $code],
                         [
                             'name' => $name,
-                            'slug' => Str::slug($name) . '-' . Str::lower(Str::random(4)),
+                            'slug' => Str::slug($name).'-'.Str::lower(Str::random(4)),
                             'category_id' => $category->id,
                             'brand_id' => $brand?->id,
                             'product_type' => $productType,
-                            'product_subtype' => !empty($subtypeName) ? $subtypeName : null,
+                            'product_subtype' => ! empty($subtypeName) ? $subtypeName : null,
                             'cost_price' => $costPrice,
                             'selling_price' => $sellingPrice,
-                            'barcode' => !empty($barcode) ? $barcode : null,
+                            'barcode' => ! empty($barcode) ? $barcode : null,
                             'minimum_stock' => $minStock > 0 ? $minStock : 3,
                             'default_balance_account_id' => $balanceAccount?->id,
                             'status' => 'ACTIVE',
@@ -181,7 +186,7 @@ class ProductImportService
                     }
 
                     // Initial Stock Adjustment for PHYSICAL products
-                    if ($productType === 'PHYSICAL' && $initialStock > 0 && $location) {
+                    if (! $existingProduct && $productType === 'PHYSICAL' && $initialStock > 0) {
                         $this->inventoryService->adjustStock(
                             product: $product,
                             location: $location,
@@ -194,7 +199,7 @@ class ProductImportService
                     }
                 });
             } catch (\Exception $e) {
-                $errors[] = "Baris {$rowNumber}: " . $e->getMessage();
+                $errors[] = "Baris {$rowNumber}: ".$e->getMessage();
             }
         }
 
@@ -208,149 +213,170 @@ class ProductImportService
         ];
     }
 
-    /**
-     * Generate template CSV string for download.
-     */
-    public function generateCsvTemplate(): string
+    public function importFromExcel(string $filePath, User $user): array
     {
-        $headers = [
-            'Kode Produk',
-            'Nama Barang/Layanan',
-            'Kategori',
-            'Jenis',
-            'Merk',
-            'Jenis Stok',
-            'Modal',
-            'Harga Jual',
-            'Barcode',
-            'Stok Awal',
-            'Stok Minimum',
-            'Provider Akun',
-        ];
-
-        $sample1 = [
-            'RJA-ACOM-0004',
-            'ACOME selfie stick SS07A black',
-            'AKSESORIS',
-            'TRIPOD',
-            'ACOME',
-            'FISIK',
-            '40000',
-            '80000',
-            '8991234567890',
-            '20',
-            '5',
-            '',
-        ];
-
-        $sample2 = [
-            'RJA-XL-0001',
-            'XL COMBO FLEX MAX - 7 GB 28 HARI',
-            'Pulsa',
-            'MULTI',
-            'Xl',
-            'DIGITAL',
-            '32174',
-            '35000',
-            '',
-            '0',
-            '0',
-            'MULTI',
-        ];
-
-        $sample3 = [
-            'SVC-TG-0001',
-            'Jasa Pasang Tempered Glass / Hydrogel',
-            'Jasa & Layanan',
-            'LAYANAN',
-            'RAJA',
-            'LAYANAN',
-            '0',
-            '10000',
-            '',
-            '0',
-            '0',
-            '',
-        ];
-
-        $rows = [$headers, $sample1, $sample2, $sample3];
-
-        $output = fopen('php://temp', 'r+');
-        // Add UTF-8 BOM for Microsoft Excel native compatibility
-        fwrite($output, "\xEF\xBB\xBF");
-        foreach ($rows as $row) {
-            fputcsv($output, $row);
+        if (! file_exists($filePath)) {
+            throw new InvalidArgumentException("File tidak ditemukan pada path: {$filePath}");
         }
-        rewind($output);
-        $csvContent = stream_get_contents($output);
-        fclose($output);
 
-        return $csvContent;
+        $reader = new Reader;
+        $reader->open($filePath);
+        $temporaryCsv = tempnam(sys_get_temp_dir(), 'raja-pos-import-');
+        $handle = fopen($temporaryCsv, 'w');
+        $hasRows = false;
+        $headerFound = false;
+
+        try {
+            foreach ($reader->getSheetIterator() as $sheet) {
+                foreach ($sheet->getRowIterator() as $row) {
+                    $values = $row->toArray();
+                    $normalized = array_map(fn ($value) => strtolower(trim((string) $value)), $values);
+
+                    if (! $headerFound) {
+                        if (! in_array('kode produk', $normalized, true) || ! in_array('nama barang/layanan', $normalized, true)) {
+                            continue;
+                        }
+
+                        $headerFound = true;
+                    }
+
+                    fputcsv($handle, $values);
+                    $hasRows = true;
+                }
+
+                if ($headerFound) {
+                    break;
+                }
+            }
+        } finally {
+            fclose($handle);
+            $reader->close();
+        }
+
+        if (! $hasRows) {
+            @unlink($temporaryCsv);
+            throw new InvalidArgumentException('Worksheet Excel kosong.');
+        }
+
+        try {
+            return $this->importFromCsv($temporaryCsv, $user);
+        } finally {
+            @unlink($temporaryCsv);
+        }
     }
 
-    /**
-     * Export all products to clean Excel-compatible CSV string with UTF-8 BOM.
-     */
+    public function generateExcelTemplate(): string
+    {
+        $path = $this->temporaryXlsxPath('Template_Import_Produk_RajaPOS');
+        $writer = $this->openFormattedWorkbook($path, 'Template Produk');
+        $writer->addRow(Row::fromValues(['RAJA POS - TEMPLATE MASTER PRODUK'], $this->titleStyle()));
+        $writer->addRow(Row::fromValues(['Isi data mulai baris berikut. Jenis Stok hanya: PHYSICAL, DIGITAL, atau LAYANAN.'], $this->noteStyle()));
+        $writer->addRow(Row::fromValues($this->excelHeaders(), $this->headerStyle()));
+        $writer->addRow($this->productDataRow(['RJA-ACOM-0004', 'ACOME Selfie Stick SS07A', 'Aksesoris', 'Tripod', 'ACOME', 'PHYSICAL', 40000, 80000, '8991234567890', 20, 5, '']));
+        $writer->addRow($this->productDataRow(['RJA-XL-0001', 'XL Combo Flex Max 7 GB', 'Pulsa', 'Multi', 'XL', 'DIGITAL', 32174, 35000, '', 0, 0, 'MULTI']));
+        $writer->addRow($this->productDataRow(['SVC-TG-0001', 'Jasa Pasang Tempered Glass', 'Jasa & Layanan', 'Layanan', 'RAJA', 'LAYANAN', 0, 10000, '', 0, 0, '']));
+        $writer->close();
+
+        return $path;
+    }
+
     public function exportProductsToExcel(?string $categoryId = null, ?string $productType = null): string
     {
-        $query = Product::with(['category', 'brand', 'defaultBalanceAccount']);
-
-        if (!empty($categoryId)) {
+        $query = Product::with(['category', 'brand', 'defaultBalanceAccount', 'inventories']);
+        if (! empty($categoryId)) {
             $query->where('category_id', $categoryId);
         }
-
-        if (!empty($productType) && $productType !== 'ALL') {
+        if (! empty($productType) && $productType !== 'ALL') {
             $query->where('product_type', $productType);
         }
 
-        $products = $query->orderBy('name')->get();
+        $path = $this->temporaryXlsxPath('Export_Master_Produk_RajaPOS');
+        $writer = $this->openFormattedWorkbook($path, 'Master Produk');
+        $writer->addRow(Row::fromValues(['RAJA POS - MASTER PRODUK'], $this->titleStyle()));
+        $writer->addRow(Row::fromValues(['Diekspor pada '.now()->format('d M Y H:i').' | Stok merupakan total seluruh lokasi.'], $this->noteStyle()));
+        $writer->addRow(Row::fromValues([...$this->excelHeaders(), 'Status Harga'], $this->headerStyle()));
 
-        $headers = [
-            'Kode Produk',
-            'Nama Barang/Layanan',
-            'Kategori',
-            'Jenis',
-            'Merk',
-            'Jenis Stok',
-            'Modal',
-            'Harga Jual',
-            'Barcode',
-            'Stok',
-            'Provider Akun',
-            'Status Kelengkapan',
-        ];
-
-        $output = fopen('php://temp', 'r+');
-        // Add UTF-8 BOM for Microsoft Excel native compatibility
-        fwrite($output, "\xEF\xBB\xBF");
-        fputcsv($output, $headers);
-
-        foreach ($products as $product) {
-            $inv = $product->product_type === 'PHYSICAL' ? Inventory::where('product_id', $product->id)->first() : null;
-            $stock = $inv?->quantity ?? 0;
-
-            $row = [
+        foreach ($query->orderBy('name')->cursor() as $product) {
+            $writer->addRow($this->productDataRow([
                 $product->code,
                 $product->name,
                 $product->category?->name ?? 'Umum',
                 $product->product_subtype ?? '',
                 $product->brand?->name ?? '',
                 $product->product_type,
-                $product->cost_price ?? 0,
-                $product->selling_price ?? 0,
-                $product->effective_barcode ?? '',
-                $product->product_type === 'PHYSICAL' ? $stock : '-',
+                (float) $product->cost_price,
+                (float) $product->selling_price,
+                $product->effective_barcode,
+                $product->product_type === 'PHYSICAL' ? $product->inventories->sum('quantity') : 0,
+                $product->minimum_stock,
                 $product->defaultBalanceAccount?->name ?? '',
                 $product->price_status === 'COMPLETE' ? 'Lengkap' : 'Harga Belum Lengkap',
-            ];
-            fputcsv($output, $row);
+            ]));
         }
 
-        rewind($output);
-        $csvContent = stream_get_contents($output);
-        fclose($output);
+        $writer->close();
 
-        return $csvContent;
+        return $path;
+    }
+
+    private function openFormattedWorkbook(string $path, string $sheetName): Writer
+    {
+        $writer = new Writer;
+        $writer->openToFile($path);
+        $sheet = $writer->getCurrentSheet();
+        $sheet->setName($sheetName);
+        $sheet->setColumnWidth(18, 1);
+        $sheet->setColumnWidth(36, 2);
+        $sheet->setColumnWidth(18, 3, 6);
+        $sheet->setColumnWidth(16, 7, 8);
+        $sheet->setColumnWidth(20, 9);
+        $sheet->setColumnWidth(12, 10, 11);
+        $sheet->setColumnWidth(20, 12, 13);
+
+        return $writer;
+    }
+
+    private function excelHeaders(): array
+    {
+        return ['Kode Produk', 'Nama Barang/Layanan', 'Kategori', 'Jenis', 'Merk', 'Jenis Stok', 'Modal', 'Harga Jual', 'Barcode', 'Stok Awal', 'Stok Minimum', 'Provider Akun'];
+    }
+
+    private function titleStyle(): Style
+    {
+        return (new Style)->setFontBold()->setFontSize(14)->setFontColor('FFFFFFFF')->setBackgroundColor('FF3F7A5D');
+    }
+
+    private function headerStyle(): Style
+    {
+        return (new Style)->setFontBold()->setFontColor('FFFFFFFF')->setBackgroundColor('FF3F7A5D')->setShouldWrapText();
+    }
+
+    private function noteStyle(): Style
+    {
+        return (new Style)->setFontColor('FF52655B')->setBackgroundColor('FFE3EEE8')->setShouldWrapText();
+    }
+
+    private function dataStyle(): Style
+    {
+        return (new Style)->setShouldWrapText();
+    }
+
+    private function currencyStyle(): Style
+    {
+        return (new Style)->setFormat('[$Rp-421] #,##0');
+    }
+
+    private function productDataRow(array $values): Row
+    {
+        return Row::fromValuesWithStyles($values, $this->dataStyle(), [6 => $this->currencyStyle(), 7 => $this->currencyStyle()]);
+    }
+
+    private function temporaryXlsxPath(string $prefix): string
+    {
+        $temporaryFile = tempnam(sys_get_temp_dir(), $prefix.'-');
+        @unlink($temporaryFile);
+
+        return $temporaryFile.'.xlsx';
     }
 
     protected function findHeaderIndex(array $headers, array $candidates): ?int

@@ -25,10 +25,49 @@ class Settings extends Component
 
     public $pmType = 'CASH';
 
+    // User Form
+    public $userName = '';
+
+    public $userUsername = '';
+
+    public $userPassword = '';
+
+    public $userRoleId = '';
+
+    public $userLocationId = '';
+
     public function mount(?string $section = null): void
     {
         $tab = strtoupper(str_replace('-', '_', $section ?: 'store-settings'));
         $this->activeTab = in_array($tab, $this->allowedTabs, true) ? $tab : 'STORE_SETTINGS';
+    }
+
+    public function addUser()
+    {
+        $this->validate([
+            'userName' => 'required|string|max:255',
+            'userUsername' => 'required|string|max:255|unique:users,username',
+            'userPassword' => 'required|string|min:4',
+            'userRoleId' => 'required|exists:roles,id',
+            'userLocationId' => 'required|exists:locations,id',
+        ]);
+
+        User::create([
+            'name' => $this->userName,
+            'username' => $this->userUsername,
+            'password' => bcrypt($this->userPassword),
+            'role_id' => $this->userRoleId,
+            'location_id' => $this->userLocationId,
+            'status' => 'ACTIVE',
+        ]);
+
+        $this->userName = '';
+        $this->userUsername = '';
+        $this->userPassword = '';
+        $this->userRoleId = '';
+        $this->userLocationId = '';
+
+        $this->dispatch('notify', message: 'Pengguna baru berhasil ditambahkan.', type: 'success');
     }
 
     public function addLocation()
@@ -46,7 +85,7 @@ class Settings extends Component
 
         $this->locationName = '';
         $this->locationCode = '';
-        $this->dispatch('notify', message: 'Lokasi cabang baru ditambahkan.', type: 'success');
+        $this->dispatch('notify', message: 'Cabang toko berhasil ditambahkan.', type: 'success');
     }
 
     public function addPaymentMethod()
@@ -63,7 +102,7 @@ class Settings extends Component
         ]);
 
         $this->pmName = '';
-        $this->dispatch('notify', message: 'Metode pembayaran baru ditambahkan.', type: 'success');
+        $this->dispatch('notify', message: 'Metode pembayaran berhasil ditambahkan.', type: 'success');
     }
 
     public function render()
@@ -73,7 +112,7 @@ class Settings extends Component
             'paymentMethods' => PaymentMethod::all(),
             'users' => User::with('role')->orderBy('name')->get(),
             'roles' => Role::withCount('users')->orderBy('name')->get(),
-            'settings' => Setting::orderBy('key')->get(),
+            'settings' => Setting::query()->orderBy('key')->get(),
         ])->layout('components.layouts.admin', ['title' => 'Pengaturan Toko']);
     }
 }

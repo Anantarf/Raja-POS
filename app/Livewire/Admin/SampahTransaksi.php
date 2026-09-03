@@ -17,8 +17,9 @@ class SampahTransaksi extends Component
 
     public function restoreSale($saleId, SaleCancellationService $cancellationService)
     {
-        if (!auth()->user()->can('sales.restore')) {
+        if (! auth()->user()->can('sales.restore')) {
             $this->dispatch('notify', message: 'Anda tidak memiliki hak akses memulihkan transaksi dari sampah.', type: 'danger');
+
             return;
         }
 
@@ -33,11 +34,11 @@ class SampahTransaksi extends Component
 
     public function render()
     {
-        $query = Sale::with(['user', 'location', 'payments.paymentMethod'])
+        $query = Sale::with(['user', 'payments.paymentMethod'])
             ->where('status', 'TRASHED');
 
         if ($this->search) {
-            $query->where('invoice_number', 'like', '%' . $this->search . '%');
+            $query->where('invoice_number', 'like', '%'.$this->search.'%');
         }
 
         $trashedSales = $query->orderBy('updated_at', 'desc')->paginate(12);

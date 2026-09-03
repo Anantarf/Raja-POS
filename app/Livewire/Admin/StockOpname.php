@@ -16,18 +16,27 @@ class StockOpname extends Component
     use WithPagination;
 
     public $showCreateModal = false;
+
     public $showBulkModal = false;
+
     public $showDetailModal = false;
+
     public $selectedOpnameDetail = null;
 
     public $location_id = '';
+
     public $product_id = '';
+
     public $physical_qty = 0;
+
     public $notes = '';
 
     public $bulk_location_id = '';
+
     public $bulk_category_id = '';
+
     public $bulk_search = '';
+
     public $bulkItems = [];
 
     public $search = '';
@@ -50,6 +59,7 @@ class StockOpname extends Component
 
     public function createSession()
     {
+        abort_unless(auth()->user()->can('stock_opname.create'), 403);
         $this->validate([
             'location_id' => 'required',
             'product_id' => 'required',
@@ -91,7 +101,9 @@ class StockOpname extends Component
 
     public function loadBulkItems()
     {
-        if (!$this->bulk_location_id) return;
+        if (! $this->bulk_location_id) {
+            return;
+        }
 
         $products = Product::where('product_type', 'PHYSICAL')
             ->when($this->bulk_category_id, function ($q) {
@@ -101,7 +113,7 @@ class StockOpname extends Component
                 $q->where(function ($sub) {
                     $sub->where('name', 'like', '%'.$this->bulk_search.'%')
                         ->orWhere('barcode', 'like', '%'.$this->bulk_search.'%')
-                        ->orWhere('sku_code', 'like', '%'.$this->bulk_search.'%');
+                        ->orWhere('code', 'like', '%'.$this->bulk_search.'%');
                 });
             })
             ->orderBy('name')
@@ -141,8 +153,10 @@ class StockOpname extends Component
 
     public function createBulkSession()
     {
-        if (empty($this->bulkItems) || !$this->bulk_location_id) {
+        abort_unless(auth()->user()->can('stock_opname.create'), 403);
+        if (empty($this->bulkItems) || ! $this->bulk_location_id) {
             $this->dispatch('notify', message: 'Tidak ada data barang yang diaudit.', type: 'warning');
+
             return;
         }
 
@@ -184,6 +198,7 @@ class StockOpname extends Component
 
     public function approveSession($id, InventoryService $inventoryService)
     {
+        abort_unless(auth()->user()->can('stock_opname.approve'), 403);
         try {
             $opname = StockOpnameModel::findOrFail($id);
             if ($opname->status !== 'DRAFT') {
@@ -207,7 +222,7 @@ class StockOpname extends Component
                     ->orWhereHas('items.product', function ($q) {
                         $q->where('name', 'like', '%'.$this->search.'%')
                             ->orWhere('barcode', 'like', '%'.$this->search.'%')
-                            ->orWhere('sku_code', 'like', '%'.$this->search.'%');
+                            ->orWhere('code', 'like', '%'.$this->search.'%');
                     });
             })
             ->orderBy('created_at', 'desc')

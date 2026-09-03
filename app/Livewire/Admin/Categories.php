@@ -12,7 +12,9 @@ class Categories extends Component
     use WithPagination;
 
     public $search = '';
+
     public $showModal = false;
+
     public $editingCategoryId = null;
 
     public $name = '';
@@ -32,6 +34,7 @@ class Categories extends Component
 
     public function saveCategory()
     {
+        abort_unless(auth()->user()->can($this->editingCategoryId ? 'product.update' : 'product.create'), 403);
         $this->validate(['name' => 'required|string|max:255']);
 
         Category::updateOrCreate(
@@ -45,6 +48,7 @@ class Categories extends Component
 
     public function deleteCategory($id)
     {
+        abort_unless(auth()->user()->can('product.delete'), 403);
         Category::findOrFail($id)->delete();
         $this->dispatch('notify', message: 'Kategori berhasil dihapus.', type: 'danger');
     }
@@ -57,7 +61,7 @@ class Categories extends Component
 
     public function render()
     {
-        $categories = Category::where('name', 'like', '%' . $this->search . '%')
+        $categories = Category::where('name', 'like', '%'.$this->search.'%')
             ->orderBy('name')
             ->paginate(10);
 

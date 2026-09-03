@@ -6,19 +6,12 @@
                 Selamat Datang, {{ auth()->user()->name }}!
             </h1>
             <p class="text-xs text-[#52645B] max-w-2xl leading-relaxed">
-                <span class="font-bold text-[#232E28]">Ringkasan Operasional:</span> Anda memiliki akses penuh sebagai <span class="font-bold text-[#3F7A5D]">{{ auth()->user()->role?->name ?? 'Kasir' }}</span> pada sistem kasir & manajemen ritel Raja Aksesoris.
+                <span class="font-bold text-[#232E28]">Ringkasan Operasional:</span> Anda memiliki akses penuh sebagai <span class="font-bold text-[#3F7A5D]">{{ auth()->user()->role?->name ?? 'Kasir' }}</span> pada sistem kasir &amp; manajemen ritel Raja Aksesoris.
             </p>
             <div class="pt-2">
                 <a href="/pos" class="px-4 py-2.5 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-bold rounded-xl text-xs inline-flex items-center gap-2 transition active:scale-95 shadow-sm">
                     <span>Buka Layar Kasir</span> &rarr;
                 </a>
-            </div>
-        </div>
-
-        <!-- Friendly 3D Waving Hand Element -->
-        <div class="hidden md:block shrink-0 pr-2">
-            <div class="w-28 h-28 rounded-2xl bg-white border border-slate-200/80 p-2 flex items-center justify-center shadow-sm hover:scale-105 transition-transform duration-300 overflow-hidden">
-                <img src="/images/waving_hand.png" alt="Say Hi Waving Hand" class="w-full h-full object-contain">
             </div>
         </div>
     </div>
@@ -39,19 +32,19 @@
             <div class="text-xs text-[#718379] mt-1.5 font-medium">Transaksi Selesai</div>
         </div>
 
-        <!-- 2. Margin Kotor -->
+        <!-- 2. Margin -->
         <div class="bg-white rounded-2xl p-5 border border-slate-200/80 hover:border-[#C2AC7C]/50 shadow-sm hover:shadow-md transition-all duration-200">
             <div class="flex items-center justify-between mb-3">
-                <span class="text-xs text-[#718379] font-extrabold uppercase tracking-wider">Laba Kotor</span>
+                <span class="text-xs text-[#718379] font-extrabold uppercase tracking-wider">Margin Toko</span>
                 <span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold text-[#8F794B] bg-[#C2AC7C]/20 border border-[#C2AC7C]/40">
-                    Margin Kotor
+                    Margin
                 </span>
             </div>
             @if(auth()->user()->hasRole('OWNER') || auth()->user()->hasPermission('report.profit.view') || auth()->user()->can('report.profit.view'))
                 <div class="text-2xl font-extrabold text-[#8F794B] font-mono tracking-tight mt-1">
                     Rp {{ number_format($metrics['gross_profit'], 0, ',', '.') }}
                 </div>
-                <div class="text-xs text-[#718379] mt-1.5 font-medium">Omset dikurangi HPP</div>
+                <div class="text-xs text-[#718379] mt-1.5 font-medium">Omzet dikurangi Modal</div>
             @else
                 <div class="text-xs font-bold text-slate-400 mt-2 italic bg-[#F3F6F4] px-3 py-1.5 rounded-xl border border-slate-200 text-center">
                     [Akses Terbatas - Owner]
@@ -59,10 +52,10 @@
             @endif
         </div>
 
-        <!-- 3. Total Kas & Bank -->
+        <!-- 3. Total Saldo Toko -->
         <div class="bg-white rounded-2xl p-5 border border-slate-200/80 hover:border-[#3F7A5D]/50 shadow-sm hover:shadow-md transition-all duration-200">
             <div class="flex items-center justify-between mb-3">
-                <span class="text-xs text-[#718379] font-extrabold uppercase tracking-wider">Total Kas & Bank</span>
+                <span class="text-xs text-[#718379] font-extrabold uppercase tracking-wider">Total Saldo Toko</span>
                 <span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold text-[#3F7A5D] bg-[#E3EEE8]">
                     Aktif
                 </span>
@@ -70,21 +63,21 @@
             <div class="text-2xl font-extrabold text-[#232E28] font-mono tracking-tight mt-1">
                 Rp {{ number_format($metrics['total_balance'], 0, ',', '.') }}
             </div>
-            <div class="text-xs text-[#718379] mt-1.5 font-medium">Saldo riil seluruh akun</div>
+            <div class="text-xs text-[#718379] mt-1.5 font-medium">Saldo riil seluruh akun &amp; cash</div>
         </div>
 
-        <!-- 4. Jumlah Transaksi -->
+        <!-- 4. Total Transaksi -->
         <div class="bg-white rounded-2xl p-5 border border-slate-200/80 hover:border-[#3F7A5D]/50 shadow-sm hover:shadow-md transition-all duration-200">
             <div class="flex items-center justify-between mb-3">
-                <span class="text-xs text-[#718379] font-extrabold uppercase tracking-wider">Jumlah Transaksi</span>
+                <span class="text-xs text-[#718379] font-extrabold uppercase tracking-wider">Total Transaksi</span>
                 <span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold text-[#3F7A5D] bg-[#E3EEE8]">
                     Sukses
                 </span>
             </div>
             <div class="text-2xl font-extrabold text-[#232E28] font-mono tracking-tight mt-1">
-                {{ number_format($metrics['sales_count'], 0, ',', '.') }} <span class="text-xs text-[#718379] font-normal">Nota</span>
+                {{ number_format($metrics['sales_count'], 0, ',', '.') }} <span class="text-xs text-[#718379] font-normal">Trx</span>
             </div>
-            <div class="text-xs text-[#718379] mt-1.5 font-medium">Nota berhasil diproses</div>
+            <div class="text-xs text-[#718379] mt-1.5 font-medium">Transaksi berhasil diproses</div>
         </div>
     </div>
 

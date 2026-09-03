@@ -12,7 +12,9 @@ class Brands extends Component
     use WithPagination;
 
     public $search = '';
+
     public $showModal = false;
+
     public $editingBrandId = null;
 
     public $name = '';
@@ -32,6 +34,7 @@ class Brands extends Component
 
     public function saveBrand()
     {
+        abort_unless(auth()->user()->can($this->editingBrandId ? 'product.update' : 'product.create'), 403);
         $this->validate(['name' => 'required|string|max:255']);
 
         Brand::updateOrCreate(
@@ -45,6 +48,7 @@ class Brands extends Component
 
     public function deleteBrand($id)
     {
+        abort_unless(auth()->user()->can('product.delete'), 403);
         Brand::findOrFail($id)->delete();
         $this->dispatch('notify', message: 'Brand berhasil dihapus.', type: 'danger');
     }
@@ -57,7 +61,7 @@ class Brands extends Component
 
     public function render()
     {
-        $brands = Brand::where('name', 'like', '%' . $this->search . '%')
+        $brands = Brand::where('name', 'like', '%'.$this->search.'%')
             ->orderBy('name')
             ->paginate(10);
 

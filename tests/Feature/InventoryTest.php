@@ -185,4 +185,38 @@ class InventoryTest extends TestCase
             'quantity_after' => 10,
         ]);
     }
+
+    public function test_stock_opname_uses_current_stock_at_approval(): void
+    {
+        $location = Location::where('code', 'RAJA-BANGO')->first();
+        $owner = User::where('username', 'superadmin')->first();
+        $product = Product::create([
+            'code' => 'ACC-OPNAME-CURRENT',
+            'name' => 'Produk Opname Terkini',
+            'product_type' => 'PHYSICAL',
+            'cost_price' => 10000,
+            'selling_price' => 20000,
+        ]);
+        $service = app(InventoryService::class);
+        $service->adjustStock($product, $location, 12, 'ADJUSTMENT_IN', 'Stok awal', $owner);
+
+        $opname = StockOpname::create([
+            'opname_number' => 'SOP-CURRENT-001',
+            'location_id' => $location->id,
+            'status' => 'DRAFT',
+            'created_by' => $owner->id,
+        ]);
+        $item = $opname->items()->create([
+            'product_id' => $product->id,
+            'system_quantity' => 12,
+            'physical_quantity' => 10,
+            'difference' => -2,
+        ]);
+
+        $service->adjustStock($product, $location, -1, 'SALE', 'Penjualan setelah hitung', $owner);
+        $service->approveStockOpname($opname, $owner);
+
+        $this->assertEquals(10, Inventory::where('product_id', $product->id)->value('quantity'));
+        $this->assertEquals(-1, $item->fresh()->difference);
+    }
 }

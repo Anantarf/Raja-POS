@@ -3,53 +3,89 @@
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
             <h1 class="text-2xl font-extrabold text-[#232E28] tracking-tight">Monitoring Saldo</h1>
-            <p class="text-xs text-[#718379] font-medium mt-0.5">Kelola saldo kas fisik, rekening bank, mutasi transfer, dan penyesuaian saldo toko.</p>
+            <p class="text-xs text-[#718379] font-medium mt-0.5">Kelola saldo toko, rekening bank, mutasi transfer, dan penyesuaian saldo.</p>
         </div>
         <div class="flex items-center gap-2 overflow-x-auto py-1">
-            <button wire:click="openModal('TRANSFER')" class="px-3.5 py-2 bg-[#E3EEE8] hover:bg-[#d5e5dc] text-[#3F7A5D] border border-[#3F7A5D]/20 font-extrabold rounded-2xl text-xs transition active:scale-95 flex items-center gap-1.5 shrink-0 cursor-pointer shadow-sm">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
+            <button wire:click="openModal('TRANSFER')" class="px-3.5 py-2 bg-[#F3F6F4] hover:bg-[#E3EEE8] text-[#3F7A5D] border border-slate-200/80 font-extrabold rounded-2xl text-xs transition active:scale-95 flex items-center gap-1.5 shrink-0 cursor-pointer shadow-sm">
+                <svg class="w-4 h-4 text-[#3F7A5D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
                 <span>Transfer Saldo</span>
             </button>
             <button wire:click="openModal('DEPOSIT')" class="px-3.5 py-2 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-2xl text-xs transition active:scale-95 flex items-center gap-1.5 shrink-0 cursor-pointer shadow-sm">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                 <span>Deposit / Setor</span>
             </button>
-            <button wire:click="openModal('WITHDRAWAL')" class="px-3.5 py-2 bg-rose-600 hover:bg-rose-700 text-white font-extrabold rounded-2xl text-xs transition active:scale-95 flex items-center gap-1.5 shrink-0 cursor-pointer shadow-sm">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path></svg>
-                <span>Penarikan Kas</span>
+            <button wire:click="openModal('WITHDRAWAL')" class="px-3.5 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200/80 font-extrabold rounded-2xl text-xs transition active:scale-95 flex items-center gap-1.5 shrink-0 cursor-pointer shadow-sm">
+                <svg class="w-4 h-4 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path></svg>
+                <span>Penarikan Saldo</span>
             </button>
-            <button wire:click="openModal('ADJUSTMENT')" class="px-3.5 py-2 bg-amber-600 hover:bg-amber-700 text-white font-extrabold rounded-2xl text-xs transition active:scale-95 flex items-center gap-1.5 shrink-0 cursor-pointer shadow-sm">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
+            <button wire:click="openModal('ADJUSTMENT')" class="px-3.5 py-2 bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200/80 font-extrabold rounded-2xl text-xs transition active:scale-95 flex items-center gap-1.5 shrink-0 cursor-pointer shadow-sm">
+                <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
                 <span>Koreksi Saldo</span>
             </button>
         </div>
     </div>
 
-    <!-- Account Cards Grid -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        @foreach($accounts as $acc)
-            <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200/80 relative overflow-hidden hover:border-[#3F7A5D]/50 hover:shadow-md transition-all duration-200">
-                <div class="flex items-center justify-between text-xs text-[#718379] font-extrabold uppercase tracking-wider mb-2">
-                    <span>{{ $acc->name }}</span>
-                    @php
-                        $typeLabel = match(strtoupper($acc->account_type)) {
-                            'E_WALLET', 'E-WALLET' => 'E-Wallet',
-                            'CASH' => 'Kas Fisik',
-                            'BANK' => 'Bank',
-                            'QRIS' => 'QRIS',
-                            default => str_replace('_', '-', $acc->account_type)
-                        };
-                    @endphp
-                    <span class="px-2.5 py-0.5 rounded-md text-[11px] font-extrabold bg-[#F3F6F4] text-[#3F7A5D] border border-slate-200/80">
-                        {{ $typeLabel }}
-                    </span>
+    <!-- Summary KPI Banner (EMCO Palette Touch) -->
+    <div class="bg-white rounded-2xl p-5 border border-slate-200/80 border-l-4 border-l-[#3F7A5D] shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-5">
+        <div class="space-y-1">
+            <div class="text-[11px] text-[#718379] font-extrabold uppercase tracking-wider">Total Saldo Operasional Toko</div>
+            <div class="text-3xl font-black text-[#3F7A5D] font-mono tracking-tight">
+                Rp {{ number_format($totalBalance, 0, ',', '.') }}
+            </div>
+            <p class="text-xs text-[#718379] font-medium">Gabungan saldo uang cash, rekening bank, QRIS, dan e-wallet toko.</p>
+        </div>
+
+        <div class="flex items-center gap-3 flex-wrap">
+            <div class="bg-[#E3EEE8]/60 px-4 py-2.5 rounded-2xl border border-[#3F7A5D]/20 flex items-center gap-3">
+                <div class="w-8 h-8 rounded-xl bg-[#3F7A5D] text-white flex items-center justify-center shrink-0">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
                 </div>
-                <div class="text-2xl font-extrabold text-[#232E28] font-mono tracking-tight mt-1 {{ $acc->balance < 0 ? 'text-rose-600' : '' }}">
+                <div>
+                    <div class="text-[10px] text-[#3F7A5D] uppercase font-extrabold tracking-wider">Uang Cash</div>
+                    <div class="text-sm font-mono font-black text-[#232E28]">Rp {{ number_format($totalCash, 0, ',', '.') }}</div>
+                </div>
+            </div>
+
+            <div class="bg-[#F3F6F4] px-4 py-2.5 rounded-2xl border border-slate-200/70 flex items-center gap-3">
+                <div class="w-8 h-8 rounded-xl bg-slate-200 text-[#52645B] flex items-center justify-center shrink-0">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5m0 0h4m-4 0V11m0 4h4m-4-8h4m-4-4h4"></path></svg>
+                </div>
+                <div>
+                    <div class="text-[10px] text-[#718379] uppercase font-extrabold tracking-wider">Bank &amp; QRIS</div>
+                    <div class="text-sm font-mono font-extrabold text-[#232E28]">Rp {{ number_format($totalBank, 0, ',', '.') }}</div>
+                </div>
+            </div>
+
+            <div class="bg-[#F3F6F4] px-4 py-2.5 rounded-2xl border border-slate-200/70 flex items-center gap-3">
+                <div class="w-8 h-8 rounded-xl bg-slate-200 text-[#52645B] flex items-center justify-center shrink-0">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                </div>
+                <div>
+                    <div class="text-[10px] text-[#718379] uppercase font-extrabold tracking-wider">E-Wallet</div>
+                    <div class="text-sm font-mono font-extrabold text-[#232E28]">Rp {{ number_format($totalEwallet, 0, ',', '.') }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Account Cards Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5">
+        @foreach($accounts as $acc)
+            @php
+                $hasBalance = $acc->balance > 0;
+                $isMinus = $acc->balance < 0;
+            @endphp
+            <div class="bg-white rounded-2xl p-4 shadow-sm border transition {{ $hasBalance ? 'border-[#3F7A5D]/40 bg-gradient-to-b from-[#E3EEE8]/30 to-white' : 'border-slate-200/80 hover:border-slate-300' }}">
+                <div class="text-[11px] text-[#718379] font-extrabold uppercase tracking-wider mb-2 flex items-center justify-between">
+                    <span>{{ $acc->name }}</span>
+                    <span class="w-2 h-2 rounded-full {{ $hasBalance ? 'bg-[#3F7A5D]' : 'bg-slate-300' }} inline-block"></span>
+                </div>
+                <div class="text-xl font-black font-mono tracking-tight {{ $isMinus ? 'text-rose-600' : ($hasBalance ? 'text-[#3F7A5D]' : 'text-slate-400') }}">
                     Rp {{ number_format($acc->balance, 0, ',', '.') }}
                 </div>
-                @if($acc->balance < 0 && $acc->account_type === 'CASH')
-                    <div class="text-xs text-amber-800 bg-amber-50 p-2.5 rounded-xl border border-amber-200 mt-3 font-semibold">
-                        Uang Kasir Minus. Operasional dapat diganti dari rekening.
+                @if($isMinus && $acc->account_type === 'CASH')
+                    <div class="text-[11px] text-amber-800 bg-amber-50 p-2 rounded-xl border border-amber-200 mt-2 font-semibold leading-tight">
+                        Saldo Minus.
                     </div>
                 @endif
             </div>
@@ -58,18 +94,42 @@
 
     <!-- Mutation Audit Table -->
     <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden space-y-3">
-        <div class="p-4 sm:p-5 border-b border-slate-200/80 flex items-center justify-between">
-            <h2 class="text-sm font-extrabold text-[#232E28] uppercase tracking-wider">Riwayat Mutasi Saldo</h2>
-            <div class="relative w-64">
-                <input
-                    type="text"
-                    wire:model.live.debounce.300ms="search"
-                    placeholder="Cari No. Mutasi / Keterangan..."
-                    class="w-full pl-9 pr-3 py-2 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] bg-[#F3F6F4]"
-                />
-                <svg class="w-4 h-4 text-slate-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                </svg>
+        <!-- Table Header & Quick Filters -->
+        <div class="p-4 sm:p-5 border-b border-slate-200/80 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+                <h2 class="text-sm font-extrabold text-[#232E28] uppercase tracking-wider">Riwayat Mutasi Saldo</h2>
+                <p class="text-xs text-[#718379] font-medium mt-0.5">Audit lengkap aliran uang masuk, keluar, transfer antar rekening, dan sisa saldo setelah mutasi.</p>
+            </div>
+
+            <div class="flex items-center gap-2 flex-wrap">
+                <!-- Filter Tabs (Clean text without emoji noise) -->
+                <div class="bg-[#F3F6F4] p-1 rounded-xl flex items-center gap-1 text-[11px] font-extrabold text-[#718379]">
+                    <button wire:click="setFilterType('ALL')" class="px-3 py-1.5 rounded-lg transition {{ $filterType === 'ALL' ? 'bg-white text-[#3F7A5D] shadow-sm' : 'hover:text-[#232E28]' }}">
+                        Semua Mutasi
+                    </button>
+                    <button wire:click="setFilterType('IN')" class="px-3 py-1.5 rounded-lg transition {{ $filterType === 'IN' ? 'bg-emerald-600 text-white shadow-sm' : 'hover:text-emerald-700' }}">
+                        Uang Masuk (+)
+                    </button>
+                    <button wire:click="setFilterType('OUT')" class="px-3 py-1.5 rounded-lg transition {{ $filterType === 'OUT' ? 'bg-rose-600 text-white shadow-sm' : 'hover:text-rose-700' }}">
+                        Uang Keluar (-)
+                    </button>
+                    <button wire:click="setFilterType('TRANSFER')" class="px-3 py-1.5 rounded-lg transition {{ $filterType === 'TRANSFER' ? 'bg-indigo-600 text-white shadow-sm' : 'hover:text-indigo-700' }}">
+                        Transfer
+                    </button>
+                </div>
+
+                <!-- Search Input -->
+                <div class="relative w-full sm:w-56">
+                    <input
+                        type="text"
+                        wire:model.live.debounce.300ms="search"
+                        placeholder="Cari No. Mutasi / Nota..."
+                        class="w-full pl-9 pr-3 py-2 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] bg-[#F3F6F4]"
+                    />
+                    <svg class="w-4 h-4 text-slate-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </div>
             </div>
         </div>
 
@@ -77,63 +137,111 @@
             <table class="w-full text-xs text-left">
                 <thead class="bg-[#F3F6F4] border-b border-[#E3EEE8] text-[#718379] uppercase text-[10px] font-extrabold tracking-wider">
                     <tr>
-                        <th class="py-3.5 px-4">No. Mutasi & Waktu</th>
+                        <th class="py-3.5 px-4">No. Mutasi &amp; Waktu</th>
                         <th class="py-3.5 px-4">Tipe Transaksi</th>
-                        <th class="py-3.5 px-4">Akun Asal & Tujuan</th>
+                        <th class="py-3.5 px-4">Aliran Akun</th>
                         <th class="py-3.5 px-4 text-right">Nominal</th>
-                        <th class="py-3.5 px-4">Keterangan & Petugas</th>
+                        <th class="py-3.5 px-4 text-right">Saldo Akhir</th>
+                        <th class="py-3.5 px-4">Keterangan &amp; Petugas</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100 font-medium">
                     @forelse($transactions as $trx)
                         @php
+                            $isIncoming = !is_null($trx->destination_account_id) && is_null($trx->source_account_id);
+                            $isOutgoing = !is_null($trx->source_account_id) && is_null($trx->destination_account_id);
+                            $isTransfer = !is_null($trx->source_account_id) && !is_null($trx->destination_account_id);
+
                             $refType = strtoupper($trx->reference_type ?? '');
                             $badgeClass = 'bg-slate-100 text-slate-700 border-slate-200';
                             $label = $refType;
 
                             if (str_contains($refType, 'SALE') || str_contains($refType, 'POS')) {
-                                $badgeClass = 'bg-[#E3EEE8] text-[#3F7A5D] border-[#3F7A5D]/20';
-                                $label = 'PENJUALAN POS';
+                                $badgeClass = 'bg-[#E3EEE8] text-[#3F7A5D] border-[#3F7A5D]/30';
+                                $label = 'PENJUALAN';
+                            } elseif (str_contains($refType, 'DEPOSIT')) {
+                                $badgeClass = 'bg-emerald-50 text-emerald-800 border-emerald-200/80';
+                                $label = 'DEPOSIT / SETOR';
+                            } elseif (str_contains($refType, 'WITHDRAWAL') || str_contains($refType, 'PENARIKAN')) {
+                                $badgeClass = 'bg-rose-50 text-rose-800 border-rose-200/80';
+                                $label = 'PENARIKAN SALDO';
                             } elseif (str_contains($refType, 'TRANSFER')) {
                                 $badgeClass = 'bg-indigo-50 text-indigo-700 border-indigo-200/80';
                                 $label = 'TRANSFER SALDO';
-                            } elseif (str_contains($refType, 'DEPOSIT')) {
-                                $badgeClass = 'bg-emerald-50 text-emerald-700 border-emerald-200/80';
-                                $label = 'DEPOSIT / SETOR';
-                            } elseif (str_contains($refType, 'WITHDRAWAL') || str_contains($refType, 'PENARIKAN')) {
-                                $badgeClass = 'bg-rose-50 text-rose-700 border-rose-200/80';
-                                $label = 'PENARIKAN KAS';
                             } elseif (str_contains($refType, 'ADJUSTMENT') || str_contains($refType, 'REKON')) {
                                 $badgeClass = 'bg-amber-50 text-amber-800 border-amber-200/80';
                                 $label = 'KOREKSI SALDO';
                             }
                         @endphp
                         <tr class="hover:bg-[#F3F6F4]/60 transition">
+                            <!-- No Mutasi & Waktu -->
                             <td class="py-3.5 px-4 whitespace-nowrap">
                                 <div class="font-bold text-[#3F7A5D] font-mono text-xs bg-[#F3F6F4] border border-slate-200/80 px-2.5 py-0.5 rounded-md inline-block">{{ $trx->transaction_number }}</div>
                                 <div class="text-[10px] text-[#718379] mt-1 font-semibold whitespace-nowrap">{{ $trx->created_at->format('d M Y, H:i') }}</div>
                             </td>
+
+                            <!-- Tipe Transaksi (Clean Badge without Emoji) -->
                             <td class="py-3.5 px-4 whitespace-nowrap">
-                                <span class="px-2.5 py-1 rounded-md text-[10px] font-extrabold tracking-wider border uppercase {{ $badgeClass }}">
+                                <span class="px-2.5 py-1 rounded-lg text-[10px] font-extrabold tracking-wider border uppercase {{ $badgeClass }}">
                                     {{ $label }}
                                 </span>
                             </td>
+
+                            <!-- Aliran Akun -->
                             <td class="py-3.5 px-4 text-[#232E28] font-semibold whitespace-nowrap">
-                                @if($trx->sourceAccount) <span class="font-extrabold text-rose-600">{{ $trx->sourceAccount->name }}</span> @else - @endif
-                                &rarr;
-                                @if($trx->destinationAccount) <span class="font-extrabold text-emerald-600">{{ $trx->destinationAccount->name }}</span> @else - @endif
+                                <div class="flex items-center gap-1.5 text-xs">
+                                    @if($trx->sourceAccount)
+                                        <span class="font-extrabold text-rose-600">{{ $trx->sourceAccount->name }}</span>
+                                    @else
+                                        <span class="text-slate-500 font-medium">Pelanggan</span>
+                                    @endif
+
+                                    <span class="text-slate-400 font-bold">&rarr;</span>
+
+                                    @if($trx->destinationAccount)
+                                        <span class="font-extrabold text-[#3F7A5D]">{{ $trx->destinationAccount->name }}</span>
+                                    @else
+                                        <span class="text-slate-500 font-medium">Pengeluaran</span>
+                                    @endif
+                                </div>
                             </td>
-                            <td class="py-3.5 px-4 text-right font-mono font-extrabold text-[#232E28] text-sm whitespace-nowrap">
-                                Rp {{ number_format($trx->amount, 0, ',', '.') }}
+
+                            <!-- Nominal Mutasi -->
+                            <td class="py-3.5 px-4 text-right font-mono font-black text-sm whitespace-nowrap">
+                                @if($isIncoming)
+                                    <span class="text-[#3F7A5D]">+ Rp {{ number_format($trx->amount, 0, ',', '.') }}</span>
+                                @elseif($isOutgoing)
+                                    <span class="text-rose-600">- Rp {{ number_format($trx->amount, 0, ',', '.') }}</span>
+                                @else
+                                    <span class="text-indigo-600">Rp {{ number_format($trx->amount, 0, ',', '.') }}</span>
+                                @endif
                             </td>
+
+                            <!-- Posisi Saldo Akhir -->
+                            <td class="py-3.5 px-4 text-right whitespace-nowrap">
+                                <div class="font-mono text-xs text-[#232E28] font-bold">
+                                    Rp {{ number_format($trx->balance_after, 0, ',', '.') }}
+                                </div>
+                                <div class="text-[10px] text-[#718379] font-medium mt-0.5">
+                                    (Awal: Rp {{ number_format($trx->balance_before, 0, ',', '.') }})
+                                </div>
+                            </td>
+
+                            <!-- Keterangan & Petugas -->
                             <td class="py-3.5 px-4">
-                                <div class="text-[#232E28] font-semibold leading-snug">{{ $trx->description }}</div>
-                                <div class="text-[10px] text-[#718379] font-medium mt-0.5">Oleh: {{ $trx->user?->name ?? 'System' }}</div>
+                                <div class="text-[#232E28] font-semibold leading-snug">
+                                    @php
+                                        $desc = e($trx->description);
+                                        $desc = preg_replace('/(#INV-[\w-]+)/', '<span class="px-1.5 py-0.5 bg-indigo-50 text-indigo-700 font-mono font-bold rounded border border-indigo-200/80 text-[11px] inline-block mb-0.5">$1</span>', $desc);
+                                    @endphp
+                                    {!! $desc !!}
+                                </div>
+                                <div class="text-[10px] text-[#718379] font-medium mt-0.5">Oleh: <span class="font-bold text-[#232E28]">{{ $trx->user?->name ?? 'System' }}</span></div>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="py-12 text-center text-slate-400 font-medium">Belum ada catatan mutasi saldo.</td>
+                            <td colspan="6" class="py-12 text-center text-slate-400 font-medium">Belum ada catatan mutasi saldo.</td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -141,7 +249,7 @@
         </div>
 
         <div class="p-3.5 border-t border-slate-100">
-            {{ $transactions->links() }}
+            {{ $transactions->links('components.emco-pagination') }}
         </div>
     </div>
 
@@ -151,7 +259,7 @@
             <div class="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl space-y-4 border border-slate-100">
                 <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                     <h3 class="text-base font-extrabold text-[#232E28]">
-                        {{ $showModal === 'TRANSFER' ? 'Transfer Saldo Antar Akun' : ($showModal === 'DEPOSIT' ? 'Deposit / Setor Saldo' : ($showModal === 'WITHDRAWAL' ? 'Penarikan Saldo Kas' : 'Koreksi / Penyesuaian Saldo')) }}
+                        {{ $showModal === 'TRANSFER' ? 'Transfer Saldo Antar Akun' : ($showModal === 'DEPOSIT' ? 'Deposit / Setor Saldo' : ($showModal === 'WITHDRAWAL' ? 'Penarikan Saldo' : 'Koreksi / Penyesuaian Saldo')) }}
                     </h3>
                     <button type="button" wire:click="$set('showModal', null)" class="text-slate-400 hover:text-slate-600 p-1 cursor-pointer">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
@@ -183,7 +291,23 @@
 
                     <div>
                         <label class="block text-[#718379] font-bold uppercase tracking-wider text-[11px] mb-1">Nominal (Rp) *</label>
-                        <input type="number" wire:model="amount" min="1" class="w-full p-2.5 border border-slate-200 rounded-xl font-mono font-extrabold text-base text-[#3F7A5D] bg-[#F3F6F4] focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]" required />
+                        <div class="relative">
+                            <span class="absolute left-3 top-2.5 text-xs font-bold text-[#718379]">Rp</span>
+                            <input
+                                type="text"
+                                x-data
+                                x-on:input="
+                                    let val = $el.value.replace(/\D/g, '');
+                                    if (val && parseInt(val) > 1000000000) val = '1000000000';
+                                    $el.value = val ? parseInt(val).toLocaleString('id-ID') : '';
+                                    $wire.set('amount', val ? parseInt(val) : 0);
+                                "
+                                value="{{ $amount ? number_format($amount, 0, ',', '.') : '' }}"
+                                placeholder="0"
+                                class="w-full pl-9 pr-3 py-2.5 border border-slate-200 rounded-xl font-mono font-extrabold text-right text-sm text-[#3F7A5D] bg-[#F3F6F4] focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]"
+                                required
+                            />
+                        </div>
                     </div>
 
                     <div>

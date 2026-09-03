@@ -19,32 +19,47 @@ class Inventories extends Component
 
     // Tab 1: Stok Fisik
     public $search = '';
+
     public $selectedLocationId = null;
 
     // Adjustment Modal (Tab 1)
     public $showAdjustmentModal = false;
+
     public $adjustInventoryId = null;
+
     public $adjustQuantity = 0;
+
     public $adjustType = 'SET'; // ADD, SUBTRACT, SET
+
     public $adjustReason = 'Penyesuaian manual stok admin';
 
     // Tab 2: Stock Opname
     public $opnameSearch = '';
+
     public $showCreateModal = false;
+
     public $showBulkModal = false;
+
     public $showDetailModal = false;
+
     public $selectedOpnameDetail = null;
 
     // Single Opname Modal (Tab 2)
     public $location_id = '';
+
     public $product_id = '';
+
     public $physical_qty = 0;
+
     public $notes = '';
 
     // Bulk Opname Sheet Modal (Tab 2)
     public $bulk_location_id = '';
+
     public $bulk_category_id = '';
+
     public $bulk_search = '';
+
     public $bulkItems = [];
 
     protected $paginationTheme = 'tailwind';
@@ -86,6 +101,7 @@ class Inventories extends Component
 
     public function processAdjustment(InventoryService $inventoryService)
     {
+        abort_unless(auth()->user()->can('inventory.adjust'), 403);
         $this->validate([
             'adjustQuantity' => 'required|integer|min:0',
             'adjustReason' => 'required|string|max:255',
@@ -132,6 +148,7 @@ class Inventories extends Component
 
     public function createSession()
     {
+        abort_unless(auth()->user()->can('stock_opname.create'), 403);
         $this->validate([
             'location_id' => 'required',
             'product_id' => 'required',
@@ -173,7 +190,9 @@ class Inventories extends Component
 
     public function loadBulkItems()
     {
-        if (!$this->bulk_location_id) return;
+        if (! $this->bulk_location_id) {
+            return;
+        }
 
         $products = Product::where('product_type', 'PHYSICAL')
             ->when($this->bulk_category_id, function ($q) {
@@ -183,7 +202,7 @@ class Inventories extends Component
                 $q->where(function ($sub) {
                     $sub->where('name', 'like', '%'.$this->bulk_search.'%')
                         ->orWhere('barcode', 'like', '%'.$this->bulk_search.'%')
-                        ->orWhere('sku_code', 'like', '%'.$this->bulk_search.'%');
+                        ->orWhere('code', 'like', '%'.$this->bulk_search.'%');
                 });
             })
             ->orderBy('name')
@@ -223,8 +242,10 @@ class Inventories extends Component
 
     public function createBulkSession()
     {
-        if (empty($this->bulkItems) || !$this->bulk_location_id) {
+        abort_unless(auth()->user()->can('stock_opname.create'), 403);
+        if (empty($this->bulkItems) || ! $this->bulk_location_id) {
             $this->dispatch('notify', message: 'Tidak ada data barang yang diaudit.', type: 'warning');
+
             return;
         }
 
@@ -266,6 +287,7 @@ class Inventories extends Component
 
     public function approveSession($id, InventoryService $inventoryService)
     {
+        abort_unless(auth()->user()->can('stock_opname.approve'), 403);
         try {
             $opname = StockOpnameModel::findOrFail($id);
             if ($opname->status !== 'DRAFT') {
@@ -304,7 +326,7 @@ class Inventories extends Component
                     ->orWhereHas('items.product', function ($q) {
                         $q->where('name', 'like', '%'.$this->opnameSearch.'%')
                             ->orWhere('barcode', 'like', '%'.$this->opnameSearch.'%')
-                            ->orWhere('sku_code', 'like', '%'.$this->opnameSearch.'%');
+                            ->orWhere('code', 'like', '%'.$this->opnameSearch.'%');
                     });
             })
             ->orderBy('created_at', 'desc');

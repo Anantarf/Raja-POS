@@ -83,13 +83,17 @@ class FoundationTest extends TestCase
             ->assertStatus(200)
             ->assertSee('Operasional Kasir')
             ->assertSee('Katalog &amp; Stok Barang', false)
-            ->assertSee('Keuangan &amp; Saldo', false)
+            ->assertSee('Transaksi &amp; Saldo', false)
             ->assertSee('Laporan Toko')
-            ->assertSee('Pengaturan Owner');
+            ->assertSee('Pengaturan Toko');
 
         $this->get('/admin/inventory-movements')
             ->assertStatus(200)
             ->assertSee('Riwayat Stok Masuk / Keluar');
+
+        $this->get('/admin/stock-opname')
+            ->assertStatus(200)
+            ->assertSee('Stock Opname');
 
         $this->get('/admin/reports/sales')
             ->assertStatus(200)
@@ -113,5 +117,19 @@ class FoundationTest extends TestCase
         $dashboardResponse = $this->get('/admin/dashboard');
         $dashboardResponse->assertStatus(200);
         $dashboardResponse->assertSee('Ringkasan Operasional');
+    }
+
+    public function test_cashier_cannot_open_management_routes(): void
+    {
+        $cashier = User::create([
+            'name' => 'Kasir Route Test',
+            'username' => 'cashier-route',
+            'password' => bcrypt('password'),
+            'role_id' => Role::where('name', 'CASHIER')->value('id'),
+            'status' => 'ACTIVE',
+        ]);
+
+        $this->actingAs($cashier)->get('/admin/balances')->assertForbidden();
+        $this->get('/portal/settings')->assertForbidden();
     }
 }

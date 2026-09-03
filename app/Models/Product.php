@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Storage;
 
@@ -42,7 +43,7 @@ class Product extends Model
 
         static::saving(function ($product) {
             // Price status logic (PRD 7.1)
-            if ((float) $product->cost_price <= 0 || (float) $product->selling_price <= 0) {
+            if ($product->product_type !== 'LAYANAN' && ((float) $product->cost_price <= 0 || (float) $product->selling_price <= 0)) {
                 $product->price_status = 'INCOMPLETE';
             } else {
                 $product->price_status = 'COMPLETE';
@@ -52,16 +53,16 @@ class Product extends Model
 
     public function getEffectiveBarcodeAttribute(): string
     {
-        return !empty($this->barcode) ? $this->barcode : $this->code;
+        return ! empty($this->barcode) ? $this->barcode : $this->code;
     }
 
     public function getImageUrlAttribute(): string
     {
-        if (!empty($this->image_path) && Storage::disk('public')->exists($this->image_path)) {
+        if (! empty($this->image_path) && Storage::disk('public')->exists($this->image_path)) {
             return Storage::url($this->image_path);
         }
 
-        return 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&color=1E3A8A&background=EEF4FF';
+        return 'https://ui-avatars.com/api/?name='.urlencode($this->name).'&color=1E3A8A&background=EEF4FF';
     }
 
     public function category(): BelongsTo
@@ -72,6 +73,11 @@ class Product extends Model
     public function brand(): BelongsTo
     {
         return $this->belongsTo(Brand::class);
+    }
+
+    public function inventories(): HasMany
+    {
+        return $this->hasMany(Inventory::class);
     }
 
     public function defaultBalanceAccount(): BelongsTo

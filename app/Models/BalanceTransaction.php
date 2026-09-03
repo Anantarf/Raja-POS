@@ -18,6 +18,8 @@ class BalanceTransaction extends Model
         'amount',
         'balance_before',
         'balance_after',
+        'destination_balance_before',
+        'destination_balance_after',
         'reference_type',
         'reference_id',
         'description',
@@ -29,6 +31,8 @@ class BalanceTransaction extends Model
         'amount' => 'decimal:2',
         'balance_before' => 'decimal:2',
         'balance_after' => 'decimal:2',
+        'destination_balance_before' => 'decimal:2',
+        'destination_balance_after' => 'decimal:2',
         'transaction_date' => 'datetime',
     ];
 

@@ -17,6 +17,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role_id',
+        'location_id',
         'status',
         'last_login_at',
     ];
@@ -32,6 +33,11 @@ class User extends Authenticatable
             'last_login_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function location(): BelongsTo
+    {
+        return $this->belongsTo(Location::class);
     }
 
     public function role(): BelongsTo
@@ -50,7 +56,7 @@ class User extends Authenticatable
             return true;
         }
 
-        if (!$this->role) {
+        if (! $this->role) {
             return false;
         }
 

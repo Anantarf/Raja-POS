@@ -135,4 +135,13 @@ class FinanceAndReportingTest extends TestCase
         $this->assertFalse($cashier->hasPermission('report.profit.view'));
         $this->assertTrue($owner->hasPermission('report.profit.view'));
     }
+
+    public function test_balance_service_blocks_overdraw(): void
+    {
+        $owner = User::where('username', 'superadmin')->first();
+        $cash = BalanceAccount::where('code', 'CASH')->first();
+
+        $this->expectException(\InvalidArgumentException::class);
+        app(BalanceService::class)->withdraw($cash, 1, 'Uji saldo kurang', $owner);
+    }
 }

@@ -12,7 +12,7 @@
                     <svg class="w-4 h-4 text-[#3F7A5D]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
                     </svg>
-                    <span>📋 Hitung Banyak Barang Sekaligus</span>
+                    <span>Hitung Banyak Barang Sekaligus</span>
                 </button>
                 <button wire:click="openCreateModal" class="px-4 py-2.5 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-2xl text-xs transition flex items-center gap-2 shadow-sm active:scale-95 cursor-pointer uppercase tracking-wider shrink-0">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -115,7 +115,7 @@
             </div>
 
             <div class="p-3.5 border-t border-slate-100">
-                {{ $inventories->links() }}
+                {{ $inventories->links('components.emco-pagination') }}
             </div>
         </div>
     @endif
@@ -208,7 +208,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="p-3.5 border-t border-[#E3EEE8]">{{ $opnames->links() }}</div>
+            <div class="p-3.5 border-t border-[#E3EEE8]">{{ $opnames->links('components.emco-pagination') }}</div>
         </div>
     @endif
 
@@ -313,7 +313,7 @@
             <div class="bg-white rounded-2xl p-5 sm:p-6 max-w-5xl w-full shadow-2xl space-y-4 border border-slate-100 max-h-[90vh] flex flex-col">
                 <div class="flex items-center justify-between border-b border-slate-100 pb-3 shrink-0">
                     <div>
-                        <h3 class="text-lg font-extrabold text-[#232E28]">📋 Lembar Hitung Stock Opname Masal</h3>
+                        <h3 class="text-lg font-extrabold text-[#232E28]">Lembar Hitung Stock Opname Masal</h3>
                         <p class="text-xs text-[#718379] font-medium mt-0.5">Audit seluruh barang toko sekaligus. Masukkan hasil hitung fisik pada kolom yang tersedia.</p>
                     </div>
                     <button type="button" wire:click="$set('showBulkModal', false)" class="text-slate-400 hover:text-slate-600 p-1">

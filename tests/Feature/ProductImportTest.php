@@ -44,7 +44,7 @@ class ProductImportTest extends TestCase
 
         $this->assertEquals(3, $result['imported_count']);
         $this->assertEquals(0, $result['updated_count']);
-        $this->assertEquals(2, $result['incomplete_count']); // IMP-002 & IMP-003 have cost 0
+        $this->assertEquals(1, $result['incomplete_count']); // Digital item has no modal; layanan may use nominal transaksi.
         $this->assertEmpty($result['errors']);
 
         // Assert Product IMP-001 created
@@ -74,13 +74,50 @@ class ProductImportTest extends TestCase
         $this->assertEquals('DIGITAL', $p2->product_type);
     }
 
-    public function test_generate_csv_template(): void
+    public function test_generate_and_import_formatted_excel_template(): void
     {
-        $importService = app(ProductImportService::class);
-        $template = $importService->generateCsvTemplate();
+        $service = app(ProductImportService::class);
+        $path = $service->generateExcelTemplate();
 
-        $this->assertStringContainsString('Kode Produk', $template);
-        $this->assertStringContainsString('Nama Barang/Layanan', $template);
-        $this->assertStringContainsString('ACOME selfie stick SS07A black', $template);
+        $this->assertFileExists($path);
+        $this->assertSame('PK', file_get_contents($path, false, null, 0, 2));
+
+        $result = $service->importFromExcel($path, User::where('username', 'superadmin')->first());
+        @unlink($path);
+
+        $this->assertEquals(3, $result['imported_count']);
+        $this->assertEmpty($result['errors']);
+    }
+
+    public function test_export_products_to_formatted_excel(): void
+    {
+        Product::create([
+            'code' => 'EXP-001',
+            'name' => 'Produk Export Excel',
+            'product_type' => 'PHYSICAL',
+            'cost_price' => 10000,
+            'selling_price' => 20000,
+        ]);
+
+        $path = app(ProductImportService::class)->exportProductsToExcel();
+        $this->assertFileExists($path);
+        $this->assertSame('PK', file_get_contents($path, false, null, 0, 2));
+        @unlink($path);
+    }
+
+    public function test_reimport_does_not_add_initial_stock_twice(): void
+    {
+        $superadmin = User::where('username', 'superadmin')->first();
+        $csv = "Kode,Nama,Jenis Stok,Harga Modal,Harga Jual,Stok Awal\nIMP-IDEMP,Kabel Idempotent,PHYSICAL,10000,20000,8";
+        Storage::fake('local');
+        Storage::disk('local')->put('idempotent.csv', $csv);
+        $path = Storage::disk('local')->path('idempotent.csv');
+
+        $service = app(ProductImportService::class);
+        $service->importFromCsv($path, $superadmin);
+        $service->importFromCsv($path, $superadmin);
+
+        $product = Product::where('code', 'IMP-IDEMP')->firstOrFail();
+        $this->assertEquals(8, Inventory::where('product_id', $product->id)->value('quantity'));
     }
 }

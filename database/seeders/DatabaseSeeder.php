@@ -86,11 +86,11 @@ class DatabaseSeeder extends Seeder
         $ownerRole->permissions()->sync(array_column($permissionModels, 'id'));
 
         // Admin gets admin permissions
-        $adminIds = array_map(fn($key) => $permissionModels[$key]->id, array_filter($adminPermissionKeys, fn($k) => isset($permissionModels[$k])));
+        $adminIds = array_map(fn ($key) => $permissionModels[$key]->id, array_filter($adminPermissionKeys, fn ($k) => isset($permissionModels[$k])));
         $adminRole->permissions()->sync($adminIds);
 
         // Cashier gets cashier permissions
-        $cashierIds = array_map(fn($key) => $permissionModels[$key]->id, array_filter($cashierPermissionKeys, fn($k) => isset($permissionModels[$k])));
+        $cashierIds = array_map(fn ($key) => $permissionModels[$key]->id, array_filter($cashierPermissionKeys, fn ($k) => isset($permissionModels[$k])));
         $cashierRole->permissions()->sync($cashierIds);
 
         // 3. Superadmin User
@@ -138,12 +138,16 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
+        User::where('username', 'superadmin')->update([
+            'location_id' => Location::where('code', 'RAJA-BANGO')->value('id'),
+        ]);
+
         // 7. Default Settings
         $defaultSettings = [
             'store_name' => 'Raja Aksesoris',
             'receipt_paper_width' => '58mm',
             'minimum_stock_default' => '3',
-            'currency' => 'IDR',
+            'currency' => 'Rp.',
             'timezone' => 'Asia/Jakarta',
         ];
         foreach ($defaultSettings as $key => $value) {

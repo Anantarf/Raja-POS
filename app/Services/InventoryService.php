@@ -89,11 +89,22 @@ class InventoryService
             $location = $stockOpname->location;
 
             foreach ($stockOpname->items as $item) {
-                if ($item->difference != 0) {
+                $currentQuantity = (int) (Inventory::where('product_id', $item->product_id)
+                    ->where('location_id', $location->id)
+                    ->lockForUpdate()
+                    ->value('quantity') ?? 0);
+                $quantityChange = $item->physical_quantity - $currentQuantity;
+
+                $item->update([
+                    'system_quantity' => $currentQuantity,
+                    'difference' => $quantityChange,
+                ]);
+
+                if ($quantityChange !== 0) {
                     $this->adjustStock(
                         product: $item->product,
                         location: $location,
-                        quantityChange: $item->difference,
+                        quantityChange: $quantityChange,
                         movementType: 'STOCK_OPNAME',
                         notes: 'Penyesuaian Opname #'.$stockOpname->opname_number.($item->notes ? ' - '.$item->notes : ''),
                         user: $approver,

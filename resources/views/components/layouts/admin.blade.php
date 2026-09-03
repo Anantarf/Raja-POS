@@ -39,13 +39,10 @@
         }
     </script>
     <style>
-        html {
-            font-size: 110%;
-        }
         body {
             font-family: 'Public Sans', 'Poppins', sans-serif;
             background-color: #F3F6F4;
-            font-size: 15px;
+            font-size: 14px;
         }
         ::-webkit-scrollbar {
             width: 7px;
@@ -152,9 +149,9 @@
                 </nav>
             </div>
 
-            <!-- Keuangan & Saldo Group -->
+            <!-- Transaksi & Saldo Group -->
             <div>
-                <div class="px-3 text-[11px] font-extrabold text-[#718379] uppercase tracking-wider mb-2">Keuangan &amp; Saldo</div>
+                <div class="px-3 text-[11px] font-extrabold text-[#718379] uppercase tracking-wider mb-2">Transaksi &amp; Saldo</div>
                 <nav class="space-y-1">
                     <a href="/admin/sales" class="flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-bold transition {{ request()->is('admin/sales*') ? 'bg-[#3F7A5D] text-white shadow-emco-primary' : 'text-[#52645B] hover:bg-[#F3F6F4] hover:text-[#232E28]' }}">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -185,14 +182,14 @@
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
                         </svg>
-                        <span>Laporan Keuntungan</span>
+                        <span>Laporan Toko</span>
                     </a>
                 </nav>
             </div>
 
-            <!-- Pengaturan Owner Group -->
+            <!-- Pengaturan Toko & Sistem Group -->
             <div>
-                <div class="px-3 text-[11px] font-extrabold text-[#718379] uppercase tracking-wider mb-2">Pengaturan Owner</div>
+                <div class="px-3 text-[11px] font-extrabold text-[#718379] uppercase tracking-wider mb-2">Pengaturan Toko &amp; Sistem</div>
                 <nav class="space-y-1">
                     <a href="/admin/settings" class="flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-bold transition {{ request()->is('admin/settings*') ? 'bg-[#3F7A5D] text-white shadow-emco-primary' : 'text-[#52645B] hover:bg-[#F3F6F4] hover:text-[#232E28]' }}">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -232,7 +229,7 @@
     <!-- Main Application Wrapper -->
     <div class="flex-1 flex flex-col min-w-0 h-full overflow-hidden">
         <!-- Top Navbar -->
-        <header class="h-20 bg-white border-b border-[#E3EEE8] px-4 sm:px-8 flex items-center justify-between shrink-0">
+        <header class="min-h-[70px] py-3.5 bg-white border-b border-[#E3EEE8] px-4 sm:px-8 flex items-center justify-between shrink-0">
             <div class="flex items-center gap-4">
                 <button @click="mobileMenuOpen = !mobileMenuOpen" class="lg:hidden p-2 text-slate-600 hover:text-slate-900 rounded-xl bg-slate-100">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

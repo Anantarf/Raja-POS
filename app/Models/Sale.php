@@ -15,6 +15,7 @@ class Sale extends Model
     protected $fillable = [
         'invoice_number',
         'cashier_id',
+        'location_id',
         'transaction_date',
         'subtotal',
         'discount_amount',
@@ -45,6 +46,11 @@ class Sale extends Model
         'gross_profit' => 'decimal:2',
     ];
 
+    public function location(): BelongsTo
+    {
+        return $this->belongsTo(Location::class);
+    }
+
     public function cashier(): BelongsTo
     {
         return $this->belongsTo(User::class, 'cashier_id');
@@ -73,10 +79,5 @@ class Sale extends Model
     public function getPaidAmountAttribute()
     {
         return $this->attributes['amount_paid'] ?? 0;
-    }
-
-    public function getLocationAttribute()
-    {
-        return Location::first();
     }
 }

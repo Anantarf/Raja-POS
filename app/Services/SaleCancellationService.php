@@ -5,10 +5,10 @@ namespace App\Services;
 use App\Models\BalanceAccount;
 use App\Models\BalanceTransaction;
 use App\Models\Inventory;
-use App\Models\Location;
 use App\Models\Sale;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use InvalidArgumentException;
 
 class SaleCancellationService
@@ -31,8 +31,7 @@ class SaleCancellationService
             throw new InvalidArgumentException('Alasan pembatalan wajib diisi.');
         }
 
-        $location = Location::where('code', 'RAJA-BANGO')->first()
-            ?? Location::where('status', 'ACTIVE')->first();
+        $location = $sale->location;
 
         if (! $location) {
             throw new InvalidArgumentException('Lokasi aktif belum tersedia.');
@@ -65,7 +64,7 @@ class SaleCancellationService
                         $account->update(['current_balance' => $after]);
 
                         BalanceTransaction::create([
-                            'transaction_number' => 'TRX-'.date('YmdHis').'-REV',
+                            'transaction_number' => 'TRX-'.Str::uuid(),
                             'transaction_type' => 'TRASH_REVERSAL',
                             'source_account_id' => $account->id,
                             'amount' => $payment->amount,
@@ -83,7 +82,7 @@ class SaleCancellationService
 
             // 3. Revert Change Amount back to CASH account if change was given
             if ($sale->change_amount > 0) {
-                $cashAccount = BalanceAccount::where('code', 'CASH')->first();
+                $cashAccount = BalanceAccount::where('code', 'CASH')->where('status', 'ACTIVE')->lockForUpdate()->first();
                 if ($cashAccount) {
                     $beforeCash = $cashAccount->current_balance;
                     $afterCash = $beforeCash + $sale->change_amount; // Put cash back
@@ -91,7 +90,7 @@ class SaleCancellationService
                     $cashAccount->update(['current_balance' => $afterCash]);
 
                     BalanceTransaction::create([
-                        'transaction_number' => 'TRX-'.date('YmdHis').'-CHGREV',
+                        'transaction_number' => 'TRX-'.Str::uuid(),
                         'transaction_type' => 'TRASH_REVERSAL',
                         'destination_account_id' => $cashAccount->id,
                         'amount' => $sale->change_amount,
@@ -132,8 +131,7 @@ class SaleCancellationService
             throw new InvalidArgumentException('Transaksi yang dibatalkan lebih dari 30 hari telah melewati masa retensi dan tidak dapat di-restore.');
         }
 
-        $location = Location::where('code', 'RAJA-BANGO')->first()
-            ?? Location::where('status', 'ACTIVE')->first();
+        $location = $sale->location;
 
         if (! $location) {
             throw new InvalidArgumentException('Lokasi aktif belum tersedia.');
@@ -179,7 +177,7 @@ class SaleCancellationService
                         $account->update(['current_balance' => $after]);
 
                         BalanceTransaction::create([
-                            'transaction_number' => 'TRX-'.date('YmdHis').'-RST',
+                            'transaction_number' => 'TRX-'.Str::uuid(),
                             'transaction_type' => 'RESTORE_REVERSAL',
                             'destination_account_id' => $account->id,
                             'amount' => $payment->amount,
@@ -197,7 +195,7 @@ class SaleCancellationService
 
             // 3. Re-deduct Change Amount from CASH account
             if ($sale->change_amount > 0) {
-                $cashAccount = BalanceAccount::where('code', 'CASH')->first();
+                $cashAccount = BalanceAccount::where('code', 'CASH')->where('status', 'ACTIVE')->lockForUpdate()->first();
                 if ($cashAccount) {
                     $beforeCash = $cashAccount->current_balance;
                     $afterCash = $beforeCash - $sale->change_amount;
@@ -205,7 +203,7 @@ class SaleCancellationService
                     $cashAccount->update(['current_balance' => $afterCash]);
 
                     BalanceTransaction::create([
-                        'transaction_number' => 'TRX-'.date('YmdHis').'-CHGRST',
+                        'transaction_number' => 'TRX-'.Str::uuid(),
                         'transaction_type' => 'RESTORE_REVERSAL',
                         'source_account_id' => $cashAccount->id,
                         'amount' => $sale->change_amount,

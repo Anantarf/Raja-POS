@@ -33,38 +33,39 @@ Route::middleware(['auth'])->group(function () {
     })->name('logout');
 
     // Livewire Kasir POS
-    Route::get('/pos', Checkout::class)->name('pos');
+    Route::get('/pos', Checkout::class)->middleware('can:sales.create')->name('pos');
 
     // Custom Livewire Admin Routes
-    Route::get('/admin', Dashboard::class)->name('admin');
-    Route::get('/admin/dashboard', Dashboard::class)->name('admin.dashboard');
-    Route::get('/admin/sales', Sales::class)->name('admin.sales');
-    Route::get('/admin/trash', SampahTransaksi::class)->name('admin.trash');
-    Route::get('/admin/inventories', Inventories::class)->name('admin.inventories');
-    Route::get('/admin/inventory-movements', InventoryMovements::class)->name('admin.inventory-movements');
-    Route::get('/admin/stock-opname', Inventories::class)->name('admin.stock-opname');
-    Route::get('/admin/products', Products::class)->name('admin.products');
-    Route::get('/admin/categories', Categories::class)->name('admin.categories');
-    Route::get('/admin/brands', Brands::class)->name('admin.brands');
-    Route::get('/admin/balances', Balances::class)->name('admin.balances');
-    Route::get('/admin/reports/{type?}', Reports::class)->name('admin.reports');
-    Route::get('/admin/settings/{section?}', Settings::class)->name('admin.settings');
+    Route::get('/admin', Dashboard::class)->middleware('can:dashboard.view')->name('admin');
+    Route::get('/admin/dashboard', Dashboard::class)->middleware('can:dashboard.view')->name('admin.dashboard');
+    Route::get('/admin/sales', Sales::class)->middleware('can:sales.view_all')->name('admin.sales');
+    Route::get('/admin/trash', SampahTransaksi::class)->middleware('can:sales.restore')->name('admin.trash');
+    Route::get('/admin/inventories', Inventories::class)->middleware('can:inventory.view')->name('admin.inventories');
+    Route::get('/admin/inventory-movements', InventoryMovements::class)->middleware('can:inventory.view')->name('admin.inventory-movements');
+    Route::get('/admin/stock-opname', StockOpname::class)->middleware('can:stock_opname.view')->name('admin.stock-opname');
+    Route::get('/admin/products', Products::class)->middleware('can:product.view')->name('admin.products');
+    Route::get('/admin/categories', Categories::class)->middleware('can:product.view')->name('admin.categories');
+    Route::get('/admin/brands', Brands::class)->middleware('can:product.view')->name('admin.brands');
+    Route::get('/admin/balances', Balances::class)->middleware('can:balance.view')->name('admin.balances');
+    Route::get('/admin/reports/{type?}', Reports::class)->middleware('can:report.sales.view')->name('admin.reports');
+    Route::get('/admin/settings/{section?}', Settings::class)->middleware('can:settings.manage')->name('admin.settings');
 
     // Also support /portal/* route aliases
-    Route::get('/portal/sales', Sales::class)->name('portal.sales');
-    Route::get('/portal/trash', SampahTransaksi::class)->name('portal.trash');
-    Route::get('/portal/inventories', Inventories::class)->name('portal.inventories');
-    Route::get('/portal/inventory-movements', InventoryMovements::class)->name('portal.inventory-movements');
-    Route::get('/portal/stock-opname', Inventories::class)->name('portal.stock-opname');
-    Route::get('/portal/products', Products::class)->name('portal.products');
-    Route::get('/portal/categories', Categories::class)->name('portal.categories');
-    Route::get('/portal/brands', Brands::class)->name('portal.brands');
-    Route::get('/portal/balances', Balances::class)->name('portal.balances');
-    Route::get('/portal/reports/{type?}', Reports::class)->name('portal.reports');
-    Route::get('/portal/settings/{section?}', Settings::class)->name('portal.settings');
+    Route::get('/portal/sales', Sales::class)->middleware('can:sales.view_all')->name('portal.sales');
+    Route::get('/portal/trash', SampahTransaksi::class)->middleware('can:sales.restore')->name('portal.trash');
+    Route::get('/portal/inventories', Inventories::class)->middleware('can:inventory.view')->name('portal.inventories');
+    Route::get('/portal/inventory-movements', InventoryMovements::class)->middleware('can:inventory.view')->name('portal.inventory-movements');
+    Route::get('/portal/stock-opname', StockOpname::class)->middleware('can:stock_opname.view')->name('portal.stock-opname');
+    Route::get('/portal/products', Products::class)->middleware('can:product.view')->name('portal.products');
+    Route::get('/portal/categories', Categories::class)->middleware('can:product.view')->name('portal.categories');
+    Route::get('/portal/brands', Brands::class)->middleware('can:product.view')->name('portal.brands');
+    Route::get('/portal/balances', Balances::class)->middleware('can:balance.view')->name('portal.balances');
+    Route::get('/portal/reports/{type?}', Reports::class)->middleware('can:report.sales.view')->name('portal.reports');
+    Route::get('/portal/settings/{section?}', Settings::class)->middleware('can:settings.manage')->name('portal.settings');
 
     // Receipt Route
     Route::get('/receipt/thermal/{sale}', function (Sale $sale) {
+        abort_unless(auth()->user()->can('sales.view_all') || (auth()->user()->can('sales.view_own') && $sale->cashier_id === auth()->id()), 403);
         $sale->load(['cashier', 'items', 'payments.paymentMethod']);
 
         return view('receipt.thermal', [
@@ -73,30 +74,18 @@ Route::middleware(['auth'])->group(function () {
         ]);
     })->name('receipt.thermal');
 
-    // Download Excel Template
     Route::get('/admin/products/template-excel', function () {
-        $csvContent = app(ProductImportService::class)->generateCsvTemplate();
+        $path = app(ProductImportService::class)->generateExcelTemplate();
 
-        return response($csvContent)
-            ->header('Content-Type', 'text/csv; charset=UTF-8')
-            ->header('Content-Disposition', 'attachment; filename="Template_Import_Barang_RajaPOS.csv"');
-    })->name('products.template-excel');
+        return response()->download($path, 'Template_Import_Produk_RajaPOS.xlsx')->deleteFileAfterSend(true);
+    })->middleware('can:product.view')->name('products.template-excel');
 
-    // Also support alias template-csv
-    Route::get('/admin/products/template-csv', function () {
-        return redirect()->route('products.template-excel');
-    });
-
-    // Export Products Data to Excel
     Route::get('/admin/products/export-excel', function () {
-        $categoryId = request()->query('category_id');
-        $productType = request()->query('type');
-        $content = app(ProductImportService::class)->exportProductsToExcel($categoryId, $productType);
+        $path = app(ProductImportService::class)->exportProductsToExcel(
+            request()->query('category_id'),
+            request()->query('type')
+        );
 
-        $filename = 'Export_Master_Produk_RajaPOS_' . date('Ymd_His') . '.csv';
-
-        return response($content)
-            ->header('Content-Type', 'text/csv; charset=UTF-8')
-            ->header('Content-Disposition', "attachment; filename=\"{$filename}\"");
-    })->name('products.export-excel');
+        return response()->download($path, 'Export_Master_Produk_RajaPOS_'.date('Ymd_His').'.xlsx')->deleteFileAfterSend(true);
+    })->middleware('can:product.view')->name('products.export-excel');
 });

@@ -24,7 +24,7 @@
             </a>
 
             <!-- Import CSV / Excel -->
-            <button wire:click="$set('showImportModal', true)" title="Impor File Excel / CSV" class="px-3 py-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-xl text-xs shadow-sm transition flex items-center gap-1.5 active:scale-95 shrink-0">
+            <button wire:click="$set('showImportModal', true)" title="Impor File Excel" class="px-3 py-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-xl text-xs shadow-sm transition flex items-center gap-1.5 active:scale-95 shrink-0">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
                 </svg>
@@ -66,11 +66,15 @@
             </select>
 
             <!-- Jenis Stok Filter Pills -->
-            <div class="flex items-center gap-1 bg-slate-100 p-1 rounded-xl shrink-0">
+            <div class="flex items-center gap-1 bg-slate-100 p-1 rounded-xl shrink-0 flex-wrap">
                 <button type="button" @click="$wire.filterType('ALL')" wire:click="filterType('ALL')" class="px-3 py-1 rounded-lg font-bold text-xs transition cursor-pointer {{ $selectedType === 'ALL' ? 'bg-[#3F7A5D] text-white shadow-sm' : 'text-slate-600 hover:text-slate-900' }}">Semua</button>
                 <button type="button" @click="$wire.filterType('PHYSICAL')" wire:click="filterType('PHYSICAL')" class="px-3 py-1 rounded-lg font-bold text-xs transition cursor-pointer {{ $selectedType === 'PHYSICAL' ? 'bg-[#3F7A5D] text-white shadow-sm' : 'text-slate-600 hover:text-slate-900' }}">Fisik</button>
                 <button type="button" @click="$wire.filterType('DIGITAL')" wire:click="filterType('DIGITAL')" class="px-3 py-1 rounded-lg font-bold text-xs transition cursor-pointer {{ $selectedType === 'DIGITAL' ? 'bg-emerald-700 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900' }}">Digital</button>
                 <button type="button" @click="$wire.filterType('LAYANAN')" wire:click="filterType('LAYANAN')" class="px-3 py-1 rounded-lg font-bold text-xs transition cursor-pointer {{ $selectedType === 'LAYANAN' || $selectedType === 'SERVICE' ? 'bg-[#C2AC7C] text-white shadow-sm' : 'text-slate-600 hover:text-slate-900' }}">Layanan</button>
+                <button type="button" @click="$wire.filterType('INCOMPLETE')" wire:click="filterType('INCOMPLETE')" class="px-3 py-1 rounded-lg font-bold text-xs transition cursor-pointer flex items-center gap-1 {{ $selectedType === 'INCOMPLETE' ? 'bg-rose-600 text-white shadow-sm font-extrabold' : 'bg-rose-50 text-rose-700 hover:bg-rose-100 font-extrabold border border-rose-200/80' }}" title="Filter Khusus Produk yang Harganya Belum Lengkap">
+                    <span>Belum Lengkap</span>
+                    <span class="px-1.5 py-0.2 rounded-full text-[10px] font-mono font-black {{ $selectedType === 'INCOMPLETE' ? 'bg-white/20 text-white' : 'bg-rose-200/60 text-rose-800' }}">{{ $incompleteCount }}</span>
+                </button>
             </div>
 
             <!-- View Mode Switcher (Card vs Table) -->
@@ -107,9 +111,14 @@
             @forelse($products as $product)
                 @php
                     $isIncomplete = $product->cost_price <= 0 || $product->selling_price <= 0;
-                    $inv = $product->product_type === 'PHYSICAL' ? \App\Models\Inventory::where('product_id', $product->id)->first() : null;
+                    $inv = $product->product_type === 'PHYSICAL' ? $product->inventories->first() : null;
                     $stockQty = $inv?->quantity ?? 0;
                     $stockStatus = $inv?->stock_status ?? 'AVAILABLE';
+
+                    $words = array_values(array_filter(explode(' ', trim($product->name))));
+                    $initials = (count($words) >= 2)
+                        ? strtoupper(substr($words[0], 0, 1) . substr($words[1], 0, 1))
+                        : strtoupper(substr($product->name, 0, 2));
                 @endphp
 
                 <div class="bg-white rounded-2xl border border-slate-200/80 p-4 shadow-sm hover:shadow-md hover:border-[#3F7A5D]/50 transition-all duration-200 flex flex-col justify-between h-[350px] group">
@@ -133,7 +142,7 @@
                                 <img src="{{ Illuminate\Support\Facades\Storage::url($product->image_path) }}" alt="{{ $product->name }}" class="w-full h-full object-cover rounded-xl group-hover:scale-105 transition-transform duration-300">
                             @else
                                 <span class="text-2xl font-mono font-extrabold text-[#3F7A5D]/80 tracking-wider">
-                                    {{ strtoupper(substr($product->code, 0, 2)) }}
+                                    {{ $initials }}
                                 </span>
                             @endif
                         </div>
@@ -148,7 +157,7 @@
                             </div>
                         </div>
 
-                        <!-- Dimensions: Kategori • Subtipe (jika ada) • Merk -->
+                        <!-- Dimensions: Kategori ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ Subtipe (jika ada) ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ Merk -->
                         <div class="text-xs text-slate-500 flex items-center gap-1.5 flex-wrap font-medium">
                             <span class="text-slate-700 font-semibold">{{ $product->category?->name ?? 'Umum' }}</span>
                             @if(!empty($product->product_subtype) && trim($product->product_subtype) !== '-')
@@ -163,29 +172,37 @@
                     </div>
 
                     <!-- Card Footer: Prices & Action Buttons -->
-                    <div class="pt-3 border-t border-slate-100 flex items-end justify-between gap-2">
-                        <div>
+                    <div class="pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
+                        <div class="min-w-0 flex-1">
                             @if(auth()->user()->can('cost_price.view'))
                                 <div class="text-[10px] text-slate-500 font-medium whitespace-nowrap">
-                                    Modal: 
-                                    @if($product->cost_price > 0)
+                                    Modal:
+                                    @if($product->product_type === 'LAYANAN')
+                                        <span class="text-[9.5px] font-bold text-teal-600">Input saat transaksi</span>
+                                    @elseif($product->cost_price > 0)
                                         <span class="font-mono font-semibold text-slate-700">Rp {{ number_format($product->cost_price, 0, ',', '.') }}</span>
                                     @else
-                                        <span class="text-[9.5px] font-bold text-rose-500 whitespace-nowrap">*Belum dilengkapi</span>
+                                        <span class="text-[9.5px] font-bold text-rose-500">*Belum dilengkapi</span>
                                     @endif
                                 </div>
                             @endif
 
-                            <div class="text-base font-extrabold text-[#232E28] font-mono tracking-tight">
-                                @if($product->selling_price > 0)
-                                    Rp {{ number_format($product->selling_price, 0, ',', '.') }}
+                            <div class="font-extrabold text-[#232E28] font-mono tracking-tight leading-tight">
+                                @if($product->product_type === 'LAYANAN')
+                                    <span class="inline-flex items-center gap-1 text-[10px] font-bold text-teal-700 bg-teal-50 border border-teal-200 rounded-md px-1.5 py-0.5 whitespace-nowrap">
+                                        Input saat transaksi
+                                    </span>
+                                @elseif($product->selling_price > 0)
+                                    <span class="text-base">Rp {{ number_format($product->selling_price, 0, ',', '.') }}</span>
                                 @else
-                                    <span class="text-xs font-bold text-rose-600">*Harga jual belum diisi</span>
+                                    <span class="inline-flex items-center gap-1 text-[10px] font-bold text-rose-600 bg-rose-50 border border-rose-200 rounded-md px-1.5 py-0.5 whitespace-nowrap">
+                                        Harga jual belum diisi
+                                    </span>
                                 @endif
                             </div>
                         </div>
 
-                        <div class="flex items-center gap-1.5">
+                        <div class="flex items-center gap-1.5 shrink-0">
                             <button wire:click="openEditModal({{ $product->id }})" class="px-3 py-1.5 bg-slate-100 hover:bg-indigo-50 hover:text-indigo-600 text-slate-700 rounded-lg text-xs font-bold transition">
                                 Edit
                             </button>
@@ -249,7 +266,7 @@
                                     </span>
                                 </td>
 
-                                <!-- Col 3: Kategori • Subtipe (jika ada) • Merk -->
+                                <!-- Col 3: Kategori ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ Subtipe (jika ada) ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ Merk -->
                                 <td class="py-3.5 px-4 text-slate-500 text-xs">
                                     <div class="flex items-center gap-1.5 flex-wrap">
                                         <span class="text-slate-700 font-semibold">{{ $product->category?->name ?? 'Umum' }}</span>
@@ -267,7 +284,9 @@
                                 <!-- Col 4: Modal -->
                                 @if(auth()->user()->can('cost_price.view'))
                                     <td class="py-3.5 px-4 text-right font-mono font-semibold text-xs whitespace-nowrap">
-                                        @if($product->cost_price > 0)
+                                        @if($product->product_type === 'LAYANAN')
+                                            <span class="font-bold text-teal-600 text-[11px]">Input saat transaksi</span>
+                                        @elseif($product->cost_price > 0)
                                             <span class="text-slate-700">Rp {{ number_format($product->cost_price, 0, ',', '.') }}</span>
                                         @else
                                             <span class="font-bold text-rose-500 text-[11px] whitespace-nowrap">*Harus dilengkapi</span>
@@ -277,7 +296,9 @@
 
                                 <!-- Col 5: Harga Jual -->
                                 <td class="py-3.5 px-4 text-right font-mono font-extrabold text-[#232E28] text-sm whitespace-nowrap">
-                                    @if($product->selling_price > 0)
+                                    @if($product->product_type === 'LAYANAN')
+                                        <span class="text-[11px] font-bold text-teal-600">Input saat transaksi</span>
+                                    @elseif($product->selling_price > 0)
                                         Rp {{ number_format($product->selling_price, 0, ',', '.') }}
                                     @else
                                         <span class="text-xs font-bold text-rose-600 whitespace-nowrap">*Harga jual belum diisi</span>
@@ -309,7 +330,7 @@
 
     <!-- Pagination Container -->
     <div class="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200/80 shadow-sm">
-        {{ $products->links() }}
+        {{ $products->links('components.emco-pagination') }}
     </div>
 
     <!-- Create / Edit Product Modal -->
@@ -327,7 +348,12 @@
                     <div class="grid grid-cols-2 gap-4">
                         <div>
                             <label class="block text-[#232E28] font-bold mb-1">Kode / Barcode *</label>
-                            <input type="text" wire:model="code" class="w-full p-3 border border-slate-300 rounded-2xl focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] font-mono font-bold" required />
+                            <div class="flex items-center gap-1.5">
+                                <input type="text" wire:model="code" class="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] font-mono font-extrabold uppercase text-xs" required />
+                                <button type="button" wire:click="generateAutoCode" title="Generate Otomatis Kode Barcode" class="px-2.5 py-2.5 bg-[#E3EEE8] hover:bg-[#3F7A5D] hover:text-white text-[#3F7A5D] border border-[#3F7A5D]/30 rounded-xl font-bold text-[10px] uppercase tracking-wider shrink-0 transition cursor-pointer active:scale-95">
+                                    Auto
+                                </button>
+                            </div>
                         </div>
                         <div>
                             <label class="block text-[#232E28] font-bold mb-1">Barcode Fisik (Scan)</label>
@@ -379,11 +405,43 @@
                     <div class="grid grid-cols-2 gap-4">
                         <div>
                             <label class="block text-[#232E28] font-bold mb-1">Modal *</label>
-                            <input type="number" wire:model="cost_price" placeholder="0" class="w-full p-3 border border-slate-300 rounded-2xl font-mono font-bold" required />
+                            <div class="relative">
+                                <span class="absolute left-3.5 top-3.5 text-xs font-bold text-[#718379]">Rp</span>
+                                <input
+                                    type="text"
+                                    x-data
+                                    x-on:input="
+                                        let val = $el.value.replace(/\D/g, '');
+                                        if (val && parseInt(val) > 1000000000) val = '1000000000';
+                                        $el.value = val ? parseInt(val).toLocaleString('id-ID') : '';
+                                        $wire.set('cost_price', val ? parseInt(val) : 0);
+                                    "
+                                    value="{{ $cost_price ? number_format($cost_price, 0, ',', '.') : '' }}"
+                                    placeholder="0"
+                                    class="w-full pl-10 pr-3 py-3 border border-slate-300 rounded-2xl font-mono font-bold text-right text-xs text-[#232E28] focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]"
+                                    required
+                                />
+                            </div>
                         </div>
                         <div>
                             <label class="block text-[#232E28] font-bold mb-1">Harga Jual *</label>
-                            <input type="number" wire:model="selling_price" placeholder="0" class="w-full p-3 border border-slate-300 rounded-2xl font-mono text-[#232E28] font-extrabold text-base" required />
+                            <div class="relative">
+                                <span class="absolute left-3.5 top-3.5 text-xs font-bold text-[#718379]">Rp</span>
+                                <input
+                                    type="text"
+                                    x-data
+                                    x-on:input="
+                                        let val = $el.value.replace(/\D/g, '');
+                                        if (val && parseInt(val) > 1000000000) val = '1000000000';
+                                        $el.value = val ? parseInt(val).toLocaleString('id-ID') : '';
+                                        $wire.set('selling_price', val ? parseInt(val) : 0);
+                                    "
+                                    value="{{ $selling_price ? number_format($selling_price, 0, ',', '.') : '' }}"
+                                    placeholder="0"
+                                    class="w-full pl-10 pr-3 py-3 border border-slate-300 rounded-2xl font-mono text-[#232E28] font-extrabold text-sm text-right focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]"
+                                    required
+                                />
+                            </div>
                         </div>
                     </div>
 
@@ -412,19 +470,19 @@
         <div class="fixed inset-0 bg-[#232E28]/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
             <div class="bg-white rounded-3xl p-7 max-w-md w-full shadow-2xl space-y-4 border border-slate-100">
                 <div class="flex items-center justify-between border-b pb-3.5">
-                    <h3 class="text-lg font-extrabold text-[#232E28]">Import Data Barang dari File Excel / CSV</h3>
+                    <h3 class="text-lg font-extrabold text-[#232E28]">Import Data Barang dari Excel</h3>
                     <button wire:click="$set('showImportModal', false)" class="text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
                 </div>
 
                 <form wire:submit.prevent="processImport" class="space-y-4 text-xs font-semibold">
                     <div>
-                        <label class="block text-[#232E28] font-bold mb-1">Pilih File CSV / Excel (.csv)</label>
+                        <label class="block text-[#232E28] font-bold mb-1">Pilih File Excel (.xlsx)</label>
                         <input type="file" wire:model="importFile" class="w-full p-3 border border-slate-300 rounded-2xl bg-[#F3F6F4] font-medium" required />
                     </div>
 
                     <div class="bg-[#E3EEE8] text-[#3F7A5D] p-4 rounded-2xl text-xs leading-relaxed font-medium space-y-1">
                         <div class="font-bold">Informasi Mapping Format Excel:</div>
-                        <div>&bull; <strong>Nama Barang/Layanan</strong>, <strong>Jenis Stok</strong> (Fisik/Digital/Layanan), <strong>Jenis</strong>, <strong>Kategori</strong>, dan <strong>Merk</strong>.</div>div>
+                        <div>&bull; <strong>Nama Barang/Layanan</strong>, <strong>Jenis Stok</strong> (Fisik/Digital/Layanan), <strong>Jenis</strong>, <strong>Kategori</strong>, dan <strong>Merk</strong>.</div>
                         <div>&bull; Kategori dan Merk otomatis dibuat jika belum ada di database.</div>
                         <div>&bull; Modal atau Harga Jual 0 otomatis ditandai butuh dilengkapi.</div>
                     </div>

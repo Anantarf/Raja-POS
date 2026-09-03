@@ -241,4 +241,57 @@ class PosCheckoutTest extends TestCase
         $response->assertSee('Raja Aksesoris');
         $response->assertSee($sale->invoice_number);
     }
+
+    public function test_pos_checkout_rejects_change_without_cash_payment(): void
+    {
+        $owner = User::where('username', 'superadmin')->first();
+        $location = Location::where('code', 'RAJA-BANGO')->first();
+        $product = Product::create([
+            'code' => 'ACC-NONCASH-CHANGE',
+            'name' => 'Kabel Uji Non Tunai',
+            'product_type' => 'PHYSICAL',
+            'cost_price' => 5000,
+            'selling_price' => 10000,
+        ]);
+        app(InventoryService::class)->adjustStock($product, $location, 1, 'ADJUSTMENT_IN', 'Stok uji', $owner);
+
+        $this->expectException(\InvalidArgumentException::class);
+        app(PosService::class)->processCheckout(
+            cashier: $owner,
+            cartItems: [['product' => $product, 'quantity' => 1]],
+            paymentsData: [[
+                'payment_method_id' => PaymentMethod::where('code', 'QRIS')->value('id'),
+                'balance_account_id' => BalanceAccount::where('code', 'QRIS')->value('id'),
+                'amount' => 15000,
+            ]]
+        );
+    }
+
+    public function test_pos_checkout_ignores_client_price_for_regular_products(): void
+    {
+        $cashier = User::where('username', 'superadmin')->first();
+        $location = $cashier->location;
+        $product = Product::create([
+            'code' => 'ACC-SERVER-PRICE',
+            'name' => 'Kabel Harga Server',
+            'product_type' => 'PHYSICAL',
+            'cost_price' => 10000,
+            'selling_price' => 25000,
+        ]);
+        app(InventoryService::class)->adjustStock($product, $location, 1, 'ADJUSTMENT_IN', 'Stok uji', $cashier);
+
+        $sale = app(PosService::class)->processCheckout(
+            cashier: $cashier,
+            cartItems: [['product' => $product, 'quantity' => 1, 'price' => 1, 'cost_price' => 1, 'name' => 'Manipulasi']],
+            paymentsData: [[
+                'payment_method_id' => PaymentMethod::where('code', 'CASH')->value('id'),
+                'balance_account_id' => BalanceAccount::where('code', 'CASH')->value('id'),
+                'amount' => 25000,
+            ]]
+        );
+
+        $this->assertEquals(25000, $sale->total_amount);
+        $this->assertEquals(10000, $sale->total_cost);
+        $this->assertEquals('Kabel Harga Server', $sale->items()->value('product_name_snapshot'));
+    }
 }
