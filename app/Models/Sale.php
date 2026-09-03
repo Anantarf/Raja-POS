@@ -64,4 +64,19 @@ class Sale extends Model
     {
         return $this->hasMany(Payment::class);
     }
+
+    public function getGrandTotalAttribute()
+    {
+        return $this->attributes['total_amount'] ?? 0;
+    }
+
+    public function getPaidAmountAttribute()
+    {
+        return $this->attributes['amount_paid'] ?? 0;
+    }
+
+    public function getLocationAttribute()
+    {
+        return Location::first();
+    }
 }

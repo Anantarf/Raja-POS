@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin;
 
+use App\Models\Location;
 use App\Models\Sale;
 use App\Services\SaleCancellationService;
 use Livewire\Component;
@@ -12,12 +13,31 @@ class Sales extends Component
     use WithPagination;
 
     public $search = '';
+    public $startDate = '';
+    public $endDate = '';
+    public $selectedLocationId = '';
+
     public $selectedSaleId = null;
     public $showDetailModal = false;
 
     protected $paginationTheme = 'tailwind';
 
     public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingStartDate()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingEndDate()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingSelectedLocationId()
     {
         $this->resetPage();
     }
@@ -46,8 +66,21 @@ class Sales extends Component
 
     public function render()
     {
-        $query = Sale::with(['cashier', 'user', 'payments.paymentMethod'])
-            ->where('status', 'COMPLETED');
+        $baseQuery = Sale::where('status', 'COMPLETED')
+            ->when($this->startDate, function ($q) {
+                $q->whereDate('created_at', '>=', $this->startDate);
+            })
+            ->when($this->endDate, function ($q) {
+                $q->whereDate('created_at', '<=', $this->endDate);
+            });
+
+        // KPI Summary Stats
+        $totalRevenue = (clone $baseQuery)->sum('total_amount');
+        $totalTransactions = (clone $baseQuery)->count();
+        $averageBasket = $totalTransactions > 0 ? $totalRevenue / $totalTransactions : 0;
+
+        // Sales Table Query
+        $query = (clone $baseQuery)->with(['cashier', 'user', 'payments.paymentMethod']);
 
         if ($this->search) {
             $query->where(function ($q) {
@@ -64,6 +97,10 @@ class Sales extends Component
         return view('livewire.admin.sales', [
             'sales' => $sales,
             'selectedSale' => $selectedSale,
+            'locations' => Location::all(),
+            'totalRevenue' => $totalRevenue,
+            'totalTransactions' => $totalTransactions,
+            'averageBasket' => $averageBasket,
         ])->layout('components.layouts.admin', ['title' => 'Riwayat Penjualan']);
     }
 }

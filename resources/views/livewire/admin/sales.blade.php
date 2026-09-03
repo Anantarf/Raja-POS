@@ -7,18 +7,69 @@
         </div>
     </div>
 
-    <!-- Search Toolbar -->
-    <div class="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between text-xs">
-        <div class="w-full sm:w-72 relative">
+    <!-- KPI Summary Stat Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm flex items-center gap-3.5">
+            <div class="w-10 h-10 rounded-xl bg-[#E3EEE8] flex items-center justify-center text-[#3F7A5D] shrink-0">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            </div>
+            <div>
+                <div class="text-[11px] font-bold text-[#718379] uppercase tracking-wider">Total Omzet Penjualan</div>
+                <div class="text-base font-extrabold font-mono text-[#232E28] mt-0.5">Rp {{ number_format($totalRevenue, 0, ',', '.') }}</div>
+            </div>
+        </div>
+
+        <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm flex items-center gap-3.5">
+            <div class="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600 shrink-0">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            </div>
+            <div>
+                <div class="text-[11px] font-bold text-[#718379] uppercase tracking-wider">Jumlah Transaksi (Lunas)</div>
+                <div class="text-base font-extrabold font-mono text-[#232E28] mt-0.5">{{ number_format($totalTransactions, 0, ',', '.') }} Nota</div>
+            </div>
+        </div>
+
+        <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm flex items-center gap-3.5">
+            <div class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-700 shrink-0">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+            </div>
+            <div>
+                <div class="text-[11px] font-bold text-[#718379] uppercase tracking-wider">Rata-rata Per Transaksi</div>
+                <div class="text-base font-extrabold font-mono text-[#232E28] mt-0.5">Rp {{ number_format($averageBasket, 0, ',', '.') }}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search & Filter Toolbar -->
+    <div class="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200/80 shadow-sm grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+        <div class="relative sm:col-span-1">
             <input
                 type="text"
                 wire:model.live.debounce.300ms="search"
-                placeholder="Cari No. Nota / Nama Kasir..."
-                class="w-full pl-9 pr-3 py-2 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] bg-[#F3F6F4] placeholder:text-[#718379]"
+                placeholder="Cari No. Nota / Kasir..."
+                class="w-full pl-9 pr-3 py-2.5 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] bg-[#F3F6F4] text-[#232E28] placeholder:text-[#718379]"
             />
-            <svg class="w-4 h-4 text-slate-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-4 h-4 text-slate-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
             </svg>
+        </div>
+
+        <div>
+            <input
+                type="date"
+                wire:model.live="startDate"
+                class="w-full py-2 px-3 border border-slate-200 rounded-xl text-xs font-semibold bg-[#F3F6F4] text-[#232E28] focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]"
+                placeholder="Dari Tanggal"
+            />
+        </div>
+
+        <div>
+            <input
+                type="date"
+                wire:model.live="endDate"
+                class="w-full py-2 px-3 border border-slate-200 rounded-xl text-xs font-semibold bg-[#F3F6F4] text-[#232E28] focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]"
+                placeholder="Sampai Tanggal"
+            />
         </div>
     </div>
 
@@ -103,7 +154,9 @@
                         <h3 class="text-base font-extrabold text-[#232E28]">Detail Transaksi Nota</h3>
                         <p class="text-xs font-mono text-[#3F7A5D] font-bold mt-0.5">{{ $selectedSale->invoice_number }}</p>
                     </div>
-                    <button wire:click="$set('showDetailModal', false)" class="text-slate-400 hover:text-slate-600 text-lg font-bold">&times;</button>
+                    <button type="button" wire:click="$set('showDetailModal', false)" class="text-slate-400 hover:text-slate-600 p-1">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
                 </div>
 
                 <div class="space-y-3 text-xs">
@@ -144,8 +197,12 @@
                     </div>
                 </div>
 
-                <div class="pt-2 flex justify-end">
-                    <button wire:click="$set('showDetailModal', false)" class="py-2.5 px-5 bg-slate-100 hover:bg-slate-200 text-[#232E28] font-bold rounded-xl text-xs">
+                <div class="pt-2 flex items-center justify-between border-t border-slate-100">
+                    <a href="/receipt/thermal/{{ $selectedSale->id }}" target="_blank" class="py-2 px-4 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-2xl text-xs flex items-center gap-1.5 transition">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+                        <span>Cetak Struk Thermal</span>
+                    </a>
+                    <button type="button" wire:click="$set('showDetailModal', false)" class="py-2 px-4 bg-slate-100 hover:bg-slate-200 text-[#232E28] font-bold rounded-2xl text-xs transition">
                         Tutup
                     </button>
                 </div>
