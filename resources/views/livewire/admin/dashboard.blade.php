@@ -15,10 +15,10 @@
             </div>
         </div>
 
-        <!-- Friendly 3D Claymation Mascot Waving Hello Element -->
+        <!-- Friendly 3D Waving Hand Element -->
         <div class="hidden md:block shrink-0 pr-2">
-            <div class="w-28 h-28 rounded-2xl bg-white border border-slate-200/80 p-1 flex items-center justify-center shadow-sm hover:scale-105 transition-transform duration-300 overflow-hidden">
-                <img src="/images/dashboard_welcome_character_3d.jpg" alt="Say Hi Mascot" class="w-full h-full object-cover rounded-xl">
+            <div class="w-28 h-28 rounded-2xl bg-white border border-slate-200/80 p-2 flex items-center justify-center shadow-sm hover:scale-105 transition-transform duration-300 overflow-hidden">
+                <img src="/images/waving_hand.png" alt="Say Hi Waving Hand" class="w-full h-full object-contain">
             </div>
         </div>
     </div>
