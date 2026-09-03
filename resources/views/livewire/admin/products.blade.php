@@ -116,13 +116,8 @@
                                 </h3>
                                 <div class="mt-1 flex items-center gap-1.5 flex-wrap">
                                     <span class="bg-indigo-50 text-indigo-600 border border-indigo-200/70 px-2 py-0.5 rounded-md font-mono font-bold text-[10px]">
-                                        SKU: {{ $product->code }}
+                                        Barcode: {{ $product->effective_barcode }}
                                     </span>
-                                    @if($product->effective_barcode)
-                                        <span class="text-[10px] font-mono text-[#718379] font-semibold">
-                                            BC: {{ $product->effective_barcode }}
-                                        </span>
-                                    @endif
                                 </div>
                             </div>
 
@@ -221,8 +216,7 @@
                                         <div>
                                             <div class="font-bold text-[#232E28] text-sm leading-snug tracking-tight">{{ $product->name }}</div>
                                             <div class="text-xs font-mono text-[#718379] mt-0.5">
-                                                <span class="bg-indigo-50 text-indigo-600 border border-indigo-200/70 px-2 py-0.5 rounded-md font-bold text-[11px]">SKU: {{ $product->code }}</span>
-                                                @if($product->effective_barcode) &bull; Barcode: {{ $product->effective_barcode }} @endif
+                                                <span class="bg-indigo-50 text-indigo-600 border border-indigo-200/70 px-2 py-0.5 rounded-md font-bold text-[11px]">Barcode: {{ $product->effective_barcode }}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -292,11 +286,11 @@
                 <form wire:submit.prevent="saveProduct" class="space-y-4 text-xs font-semibold">
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-[#232E28] font-bold mb-1">Kode SKU *</label>
+                            <label class="block text-[#232E28] font-bold mb-1">Kode / Barcode *</label>
                             <input type="text" wire:model="code" class="w-full p-3 border border-slate-300 rounded-2xl focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] font-mono font-bold" required />
                         </div>
                         <div>
-                            <label class="block text-[#232E28] font-bold mb-1">Barcode Scanner</label>
+                            <label class="block text-[#232E28] font-bold mb-1">Barcode Fisik (Scan)</label>
                             <input type="text" wire:model="barcode" placeholder="Opsional" class="w-full p-3 border border-slate-300 rounded-2xl focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] font-mono" />
                         </div>
                     </div>
