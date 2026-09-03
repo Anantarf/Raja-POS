@@ -32,7 +32,7 @@
     <div class="bg-white border border-slate-200/80 rounded-2xl shadow-sm overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-xs text-left">
-                <thead class="bg-[#F3F6F4] border-b border-slate-200/80 text-[#718379] uppercase text-[11px] font-extrabold tracking-wider">
+                <thead class="bg-[#F3F6F4] border-b border-slate-200/80 text-[#718379] uppercase text-[11px] font-extrabold tracking-wider whitespace-nowrap">
                     <tr>
                         <th class="py-3.5 px-4">Waktu</th>
                         <th class="py-3.5 px-4">Nama Barang & Lokasi</th>
@@ -56,16 +56,18 @@
                             };
                         @endphp
                         <tr class="hover:bg-[#F3F6F4]/60 transition">
-                            <td class="py-3.5 px-4 text-[#718379] font-semibold">{{ $movement->created_at->format('d M Y, H:i') }}</td>
+                            <td class="py-3.5 px-4 text-[#718379] font-semibold whitespace-nowrap">{{ $movement->created_at->format('d M Y, H:i') }}</td>
                             <td class="py-3.5 px-4">
                                 <div class="font-bold text-[#232E28] text-sm">{{ $movement->product?->name ?? '-' }}</div>
                                 <div class="text-xs text-[#718379] font-mono mt-0.5">Barcode: {{ $movement->product?->effective_barcode ?? '-' }} &bull; {{ $movement->location?->name ?? '-' }}</div>
                             </td>
-                            <td class="py-3.5 px-4"><span class="px-2.5 py-0.5 rounded-md bg-[#F3F6F4] text-[#3F7A5D] border border-slate-200/80 font-bold font-sans text-[11px]">{{ $typeLabel }}</span></td>
-                            <td class="py-3.5 px-4 text-center font-mono font-bold">{{ $movement->quantity_before }}</td>
-                            <td class="py-3.5 px-4 text-center font-mono font-extrabold {{ $movement->quantity_change < 0 ? 'text-rose-600' : 'text-emerald-600' }}">{{ $movement->quantity_change > 0 ? '+' : '' }}{{ $movement->quantity_change }}</td>
-                            <td class="py-3.5 px-4 text-center font-mono font-bold">{{ $movement->quantity_after }}</td>
-                            <td class="py-3.5 px-4 text-[#52645B]">{{ $movement->notes ?? '-' }}</td>
+                            <td class="py-3.5 px-4 whitespace-nowrap">
+                                <span class="px-2.5 py-0.5 rounded-md bg-[#E3EEE8] text-[#3F7A5D] border border-[#3F7A5D]/20 font-bold font-sans text-[11px] whitespace-nowrap inline-block">{{ $typeLabel }}</span>
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono font-bold whitespace-nowrap">{{ $movement->quantity_before }}</td>
+                            <td class="py-3.5 px-4 text-center font-mono font-extrabold whitespace-nowrap {{ $movement->quantity_change < 0 ? 'text-rose-600' : 'text-emerald-600' }}">{{ $movement->quantity_change > 0 ? '+' : '' }}{{ $movement->quantity_change }}</td>
+                            <td class="py-3.5 px-4 text-center font-mono font-bold whitespace-nowrap">{{ $movement->quantity_after }}</td>
+                            <td class="py-3.5 px-4 text-[#52645B] min-w-[200px]">{{ $movement->notes ?? '-' }}</td>
                         </tr>
                     @empty
                         <tr><td colspan="7" class="py-12 text-center text-slate-400 font-medium">Belum ada pergerakan stok.</td></tr>
