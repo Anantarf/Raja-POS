@@ -42,7 +42,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/trash', SampahTransaksi::class)->name('admin.trash');
     Route::get('/admin/inventories', Inventories::class)->name('admin.inventories');
     Route::get('/admin/inventory-movements', InventoryMovements::class)->name('admin.inventory-movements');
-    Route::get('/admin/stock-opname', StockOpname::class)->name('admin.stock-opname');
+    Route::get('/admin/stock-opname', Inventories::class)->name('admin.stock-opname');
     Route::get('/admin/products', Products::class)->name('admin.products');
     Route::get('/admin/categories', Categories::class)->name('admin.categories');
     Route::get('/admin/brands', Brands::class)->name('admin.brands');
@@ -55,7 +55,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/portal/trash', SampahTransaksi::class)->name('portal.trash');
     Route::get('/portal/inventories', Inventories::class)->name('portal.inventories');
     Route::get('/portal/inventory-movements', InventoryMovements::class)->name('portal.inventory-movements');
-    Route::get('/portal/stock-opname', StockOpname::class)->name('portal.stock-opname');
+    Route::get('/portal/stock-opname', Inventories::class)->name('portal.stock-opname');
     Route::get('/portal/products', Products::class)->name('portal.products');
     Route::get('/portal/categories', Categories::class)->name('portal.categories');
     Route::get('/portal/brands', Brands::class)->name('portal.brands');

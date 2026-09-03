@@ -137,17 +137,11 @@
                         </svg>
                         <span>Master Produk</span>
                     </a>
-                    <a href="/admin/inventories" class="flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-bold transition {{ request()->is('admin/inventories*') ? 'bg-[#3F7A5D] text-white shadow-emco-primary' : 'text-[#52645B] hover:bg-[#F3F6F4] hover:text-[#232E28]' }}">
+                    <a href="/admin/inventories" class="flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-bold transition {{ request()->is('admin/inventories*') || request()->is('admin/stock-opname*') ? 'bg-[#3F7A5D] text-white shadow-emco-primary' : 'text-[#52645B] hover:bg-[#F3F6F4] hover:text-[#232E28]' }}">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
                         </svg>
-                        <span>Stok Fisik</span>
-                    </a>
-                    <a href="/admin/stock-opname" class="flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-bold transition {{ request()->is('admin/stock-opname*') ? 'bg-[#3F7A5D] text-white shadow-emco-primary' : 'text-[#52645B] hover:bg-[#F3F6F4] hover:text-[#232E28]' }}">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                        <span>Stock Opname</span>
+                        <span>Stok & Opname</span>
                     </a>
                     <a href="/admin/inventory-movements" class="flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-bold transition {{ request()->is('admin/inventory-movements*') ? 'bg-[#3F7A5D] text-white shadow-emco-primary' : 'text-[#52645B] hover:bg-[#F3F6F4] hover:text-[#232E28]' }}">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

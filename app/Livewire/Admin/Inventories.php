@@ -2,8 +2,11 @@
 
 namespace App\Livewire\Admin;
 
+use App\Models\Category;
 use App\Models\Inventory;
 use App\Models\Location;
+use App\Models\Product;
+use App\Models\StockOpname as StockOpnameModel;
 use App\Services\InventoryService;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -12,28 +15,65 @@ class Inventories extends Component
 {
     use WithPagination;
 
-    public $search = '';
+    public $activeTab = 'stok'; // 'stok' or 'opname'
 
+    // Tab 1: Stok Fisik
+    public $search = '';
     public $selectedLocationId = null;
 
-    // Adjustment Modal
+    // Adjustment Modal (Tab 1)
     public $showAdjustmentModal = false;
-
     public $adjustInventoryId = null;
-
     public $adjustQuantity = 0;
-
     public $adjustType = 'SET'; // ADD, SUBTRACT, SET
-
     public $adjustReason = 'Penyesuaian manual stok admin';
+
+    // Tab 2: Stock Opname
+    public $opnameSearch = '';
+    public $showCreateModal = false;
+    public $showBulkModal = false;
+    public $showDetailModal = false;
+    public $selectedOpnameDetail = null;
+
+    // Single Opname Modal (Tab 2)
+    public $location_id = '';
+    public $product_id = '';
+    public $physical_qty = 0;
+    public $notes = '';
+
+    // Bulk Opname Sheet Modal (Tab 2)
+    public $bulk_location_id = '';
+    public $bulk_category_id = '';
+    public $bulk_search = '';
+    public $bulkItems = [];
 
     protected $paginationTheme = 'tailwind';
 
     public function mount()
     {
         $this->selectedLocationId = Location::first()?->id;
+        if (request()->query('tab') === 'opname') {
+            $this->activeTab = 'opname';
+        }
     }
 
+    public function setTab($tab)
+    {
+        $this->activeTab = $tab;
+        $this->resetPage();
+    }
+
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingOpnameSearch()
+    {
+        $this->resetPage();
+    }
+
+    // --- Tab 1: Stok Fisik Methods ---
     public function openAdjustmentModal($inventoryId)
     {
         $inv = Inventory::findOrFail($inventoryId);
@@ -80,27 +120,202 @@ class Inventories extends Component
         }
     }
 
-    public function render()
+    // --- Tab 2: Stock Opname Methods ---
+    public function openCreateModal()
     {
-        $query = Inventory::with(['product.category', 'location']);
+        $this->location_id = Location::first()?->id;
+        $this->product_id = Product::first()?->id;
+        $this->physical_qty = 0;
+        $this->notes = 'Stock Opname Rutin';
+        $this->showCreateModal = true;
+    }
 
-        if ($this->selectedLocationId) {
-            $query->where('location_id', $this->selectedLocationId);
+    public function createSession()
+    {
+        $this->validate([
+            'location_id' => 'required',
+            'product_id' => 'required',
+            'physical_qty' => 'required|integer|min:0',
+        ]);
+
+        $product = Product::findOrFail($this->product_id);
+        $systemQty = Inventory::where('product_id', $this->product_id)
+            ->where('location_id', $this->location_id)->value('quantity') ?? 0;
+
+        $opname = StockOpnameModel::create([
+            'opname_number' => 'OPN-'.date('YmdHis').'-'.random_int(100, 999),
+            'location_id' => $this->location_id,
+            'status' => 'DRAFT',
+            'created_by' => auth()->id(),
+            'started_at' => now(),
+        ]);
+
+        $opname->items()->create([
+            'product_id' => $product->id,
+            'system_quantity' => $systemQty,
+            'physical_quantity' => $this->physical_qty,
+            'difference' => $this->physical_qty - $systemQty,
+            'notes' => $this->notes,
+        ]);
+
+        $this->showCreateModal = false;
+        $this->dispatch('notify', message: 'Sesi Stock Opname 1 barang berhasil dibuat.', type: 'success');
+    }
+
+    public function openBulkModal()
+    {
+        $this->bulk_location_id = Location::first()?->id;
+        $this->bulk_category_id = '';
+        $this->bulk_search = '';
+        $this->loadBulkItems();
+        $this->showBulkModal = true;
+    }
+
+    public function loadBulkItems()
+    {
+        if (!$this->bulk_location_id) return;
+
+        $products = Product::where('product_type', 'PHYSICAL')
+            ->when($this->bulk_category_id, function ($q) {
+                $q->where('category_id', $this->bulk_category_id);
+            })
+            ->when($this->bulk_search, function ($q) {
+                $q->where(function ($sub) {
+                    $sub->where('name', 'like', '%'.$this->bulk_search.'%')
+                        ->orWhere('barcode', 'like', '%'.$this->bulk_search.'%')
+                        ->orWhere('sku_code', 'like', '%'.$this->bulk_search.'%');
+                });
+            })
+            ->orderBy('name')
+            ->get();
+
+        $inventoryMap = Inventory::where('location_id', $this->bulk_location_id)
+            ->whereIn('product_id', $products->pluck('id'))
+            ->pluck('quantity', 'product_id');
+
+        $this->bulkItems = [];
+        foreach ($products as $prod) {
+            $sysQty = (int) ($inventoryMap[$prod->id] ?? 0);
+            $this->bulkItems[$prod->id] = [
+                'product_name' => $prod->name,
+                'effective_barcode' => $prod->effective_barcode,
+                'system_qty' => $sysQty,
+                'physical_qty' => $sysQty,
+                'notes' => '',
+            ];
+        }
+    }
+
+    public function updatedBulkLocationId()
+    {
+        $this->loadBulkItems();
+    }
+
+    public function updatedBulkCategoryId()
+    {
+        $this->loadBulkItems();
+    }
+
+    public function updatedBulkSearch()
+    {
+        $this->loadBulkItems();
+    }
+
+    public function createBulkSession()
+    {
+        if (empty($this->bulkItems) || !$this->bulk_location_id) {
+            $this->dispatch('notify', message: 'Tidak ada data barang yang diaudit.', type: 'warning');
+            return;
         }
 
+        $opname = StockOpnameModel::create([
+            'opname_number' => 'OPN-BULK-'.date('YmdHis').'-'.random_int(100, 999),
+            'location_id' => $this->bulk_location_id,
+            'status' => 'DRAFT',
+            'created_by' => auth()->id(),
+            'started_at' => now(),
+        ]);
+
+        $itemCount = 0;
+        foreach ($this->bulkItems as $productId => $item) {
+            $physicalQty = max(0, (int) ($item['physical_qty'] ?? 0));
+            $systemQty = (int) ($item['system_qty'] ?? 0);
+            $diff = $physicalQty - $systemQty;
+
+            $opname->items()->create([
+                'product_id' => $productId,
+                'system_quantity' => $systemQty,
+                'physical_quantity' => $physicalQty,
+                'difference' => $diff,
+                'notes' => $item['notes'] ?? 'Audit Masal Toko',
+            ]);
+            $itemCount++;
+        }
+
+        $this->showBulkModal = false;
+        $this->dispatch('notify', message: "Sesi Stock Opname Masal ({$itemCount} barang) berhasil dibuat.", type: 'success');
+    }
+
+    public function openDetailModal($id)
+    {
+        $this->selectedOpnameDetail = StockOpnameModel::with(['location', 'items.product', 'creator', 'approver'])->find($id);
+        if ($this->selectedOpnameDetail) {
+            $this->showDetailModal = true;
+        }
+    }
+
+    public function approveSession($id, InventoryService $inventoryService)
+    {
+        try {
+            $opname = StockOpnameModel::findOrFail($id);
+            if ($opname->status !== 'DRAFT') {
+                return;
+            }
+
+            $inventoryService->approveStockOpname($opname, auth()->user());
+
+            $this->dispatch('notify', message: 'Sesi Stock Opname berhasil disetujui & stok fisik terupdate.', type: 'success');
+        } catch (\Exception $e) {
+            $this->dispatch('notify', message: $e->getMessage(), type: 'danger');
+        }
+    }
+
+    public function render()
+    {
+        // Query Tab 1: Inventories
+        $inventoryQuery = Inventory::with(['product.category', 'location']);
+        if ($this->selectedLocationId) {
+            $inventoryQuery->where('location_id', $this->selectedLocationId);
+        }
         if ($this->search) {
-            $query->whereHas('product', function ($q) {
+            $inventoryQuery->whereHas('product', function ($q) {
                 $q->where('name', 'like', '%'.$this->search.'%')
                     ->orWhere('code', 'like', '%'.$this->search.'%')
                     ->orWhere('barcode', 'like', '%'.$this->search.'%');
             });
         }
+        $inventories = $inventoryQuery->paginate(12);
 
-        $inventories = $query->paginate(12);
+        // Query Tab 2: Stock Opnames
+        $opnameQuery = StockOpnameModel::with(['location', 'items.product', 'creator', 'approver'])
+            ->withCount('items')
+            ->when($this->opnameSearch, function ($query) {
+                $query->where('opname_number', 'like', '%'.$this->opnameSearch.'%')
+                    ->orWhereHas('items.product', function ($q) {
+                        $q->where('name', 'like', '%'.$this->opnameSearch.'%')
+                            ->orWhere('barcode', 'like', '%'.$this->opnameSearch.'%')
+                            ->orWhere('sku_code', 'like', '%'.$this->opnameSearch.'%');
+                    });
+            })
+            ->orderBy('created_at', 'desc');
+        $opnames = $opnameQuery->paginate(10, ['*'], 'opnamePage');
 
         return view('livewire.admin.inventories', [
             'inventories' => $inventories,
+            'opnames' => $opnames,
             'locations' => Location::all(),
-        ])->layout('components.layouts.admin', ['title' => 'Stok Fisik']);
+            'categories' => Category::orderBy('name')->get(),
+            'products' => Product::where('product_type', 'PHYSICAL')->orderBy('name')->get(),
+        ])->layout('components.layouts.admin', ['title' => 'Stok & Opname']);
     }
 }
