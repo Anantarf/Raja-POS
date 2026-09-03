@@ -79,7 +79,8 @@ class ProductImportTest extends TestCase
         $importService = app(ProductImportService::class);
         $template = $importService->generateCsvTemplate();
 
-        $this->assertStringContainsString('Kode,Nama,Kategori,Brand,Tipe', $template);
-        $this->assertStringContainsString('Kabel Data Type-C Fast Charge 1m', $template);
+        $this->assertStringContainsString('Kode Produk', $template);
+        $this->assertStringContainsString('Nama Barang/Layanan', $template);
+        $this->assertStringContainsString('ACOME selfie stick SS07A black', $template);
     }
 }

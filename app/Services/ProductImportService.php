@@ -43,11 +43,12 @@ class ProductImportService
         $headers = array_map(fn ($h) => strtolower(trim(str_replace(['"', "'"], '', $h))), $rawHeaders);
 
         // Detect column indexes
-        $idxCode = $this->findHeaderIndex($headers, ['kode', 'sku', 'code']);
-        $idxName = $this->findHeaderIndex($headers, ['nama', 'name', 'nama produk']);
+        $idxCode = $this->findHeaderIndex($headers, ['kode produk', 'kode', 'sku', 'code']);
+        $idxName = $this->findHeaderIndex($headers, ['nama barang/layanan', 'nama layanan', 'nama barang', 'nama', 'name', 'nama produk']);
         $idxCategory = $this->findHeaderIndex($headers, ['kategori', 'category']);
-        $idxBrand = $this->findHeaderIndex($headers, ['brand', 'merk']);
-        $idxType = $this->findHeaderIndex($headers, ['tipe', 'type', 'tipe produk']);
+        $idxSubtype = $this->findHeaderIndex($headers, ['jenis', 'subtipe', 'subtype']);
+        $idxBrand = $this->findHeaderIndex($headers, ['merk', 'brand']);
+        $idxType = $this->findHeaderIndex($headers, ['jenis stok', 'tipe', 'type', 'tipe produk']);
         $idxCost = $this->findHeaderIndex($headers, ['harga modal', 'modal', 'cost_price']);
         $idxSelling = $this->findHeaderIndex($headers, ['harga jual', 'jual', 'selling_price']);
         $idxBarcode = $this->findHeaderIndex($headers, ['barcode']);
@@ -74,7 +75,7 @@ class ProductImportService
 
             $name = $idxName !== null ? trim($row[$idxName] ?? '') : '';
             if (empty($name)) {
-                $errors[] = "Baris {$rowNumber}: Nama produk wajib diisi.";
+                $errors[] = "Baris {$rowNumber}: Nama barang/layanan wajib diisi.";
                 continue;
             }
 
@@ -88,6 +89,7 @@ class ProductImportService
                 $catName = 'Umum';
             }
 
+            $subtypeName = $idxSubtype !== null ? trim($row[$idxSubtype] ?? '') : '';
             $brandName = $idxBrand !== null ? trim($row[$idxBrand] ?? '') : '';
             $typeInput = $idxType !== null ? strtoupper(trim($row[$idxType] ?? '')) : 'PHYSICAL';
 
@@ -109,6 +111,7 @@ class ProductImportService
                     $code,
                     $name,
                     $catName,
+                    $subtypeName,
                     $brandName,
                     $productType,
                     $costPrice,
@@ -156,6 +159,7 @@ class ProductImportService
                             'category_id' => $category->id,
                             'brand_id' => $brand?->id,
                             'product_type' => $productType,
+                            'product_subtype' => !empty($subtypeName) ? $subtypeName : null,
                             'cost_price' => $costPrice,
                             'selling_price' => $sellingPrice,
                             'barcode' => !empty($barcode) ? $barcode : null,
@@ -209,12 +213,13 @@ class ProductImportService
     public function generateCsvTemplate(): string
     {
         $headers = [
-            'Kode',
-            'Nama',
+            'Kode Produk',
+            'Nama Barang/Layanan',
             'Kategori',
-            'Brand',
-            'Tipe',
-            'Harga Modal',
+            'Jenis',
+            'Merk',
+            'Jenis Stok',
+            'Modal',
             'Harga Jual',
             'Barcode',
             'Stok Awal',
@@ -223,13 +228,14 @@ class ProductImportService
         ];
 
         $sample1 = [
-            'ACC-001',
-            'Kabel Data Type-C Fast Charge 1m',
-            'Kabel & Adaptor',
-            'Vivan',
-            'PHYSICAL',
-            '15000',
-            '35000',
+            'RJA-ACOM-0004',
+            'ACOME selfie stick SS07A black',
+            'AKSESORIS',
+            'TRIPOD',
+            'ACOME',
+            'FISIK',
+            '40000',
+            '80000',
             '8991234567890',
             '20',
             '5',
@@ -237,24 +243,26 @@ class ProductImportService
         ];
 
         $sample2 = [
-            'DIG-PLN-01',
-            'Pulsa Token PLN 50rb',
-            'Pulsa & Listrik',
-            'PLN',
+            'RJA-XL-0001',
+            'XL COMBO FLEX MAX - 7 GB 28 HARI',
+            'Pulsa',
+            'MULTI',
+            'Xl',
             'DIGITAL',
-            '50500',
-            '52500',
+            '32174',
+            '35000',
             '',
             '0',
             '0',
-            'DANA',
+            'MULTI',
         ];
 
         $sample3 = [
-            'SVC-JASA-01',
-            'Jasa Pasang Tempered Glass',
+            'SVC-TG-0001',
+            'Jasa Pasang Tempered Glass / Hydrogel',
             'Jasa Service',
-            '',
+            'SERVICE',
+            'RAJA',
             'SERVICE',
             '0',
             '10000',
