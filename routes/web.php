@@ -31,7 +31,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/pos', Checkout::class)->name('pos');
 
     // 100% Custom Livewire Admin Portal Routes
-    Route::get('/admin', Dashboard::class);
+    Route::get('/admin', Dashboard::class)->name('admin');
     Route::get('/admin/dashboard', Dashboard::class)->name('admin.dashboard');
     Route::get('/admin/sales', Sales::class)->name('admin.sales');
     Route::get('/admin/trash', SampahTransaksi::class)->name('admin.trash');
@@ -42,6 +42,17 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/brands', Brands::class)->name('admin.brands');
     Route::get('/admin/balances', Balances::class)->name('admin.balances');
     Route::get('/admin/settings', Settings::class)->name('admin.settings');
+
+    // Also support /portal/* route aliases
+    Route::get('/portal/sales', Sales::class)->name('portal.sales');
+    Route::get('/portal/trash', SampahTransaksi::class)->name('portal.trash');
+    Route::get('/portal/inventories', Inventories::class)->name('portal.inventories');
+    Route::get('/portal/stock-opname', StockOpname::class)->name('portal.stock-opname');
+    Route::get('/portal/products', Products::class)->name('portal.products');
+    Route::get('/portal/categories', Categories::class)->name('portal.categories');
+    Route::get('/portal/brands', Brands::class)->name('portal.brands');
+    Route::get('/portal/balances', Balances::class)->name('portal.balances');
+    Route::get('/portal/settings', Settings::class)->name('portal.settings');
 
     // Receipt Route
     Route::get('/receipt/thermal/{sale}', function (Sale $sale) {

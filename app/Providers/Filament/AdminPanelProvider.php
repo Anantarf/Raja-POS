@@ -25,7 +25,7 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('admin')
-            ->path('admin')
+            ->path('filament')
             ->login(\App\Filament\Pages\Auth\Login::class)
             ->brandName('RAJA POS')
             ->font('Poppins')

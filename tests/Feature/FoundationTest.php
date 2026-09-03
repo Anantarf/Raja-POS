@@ -75,13 +75,17 @@ class FoundationTest extends TestCase
         $this->assertEquals('Raja Aksesoris', Setting::get('store_name'));
     }
 
-    public function test_custom_admin_panel_renders_and_allows_login(): void
+    public function test_admin_panel_and_custom_dashboard_render_for_authenticated_user(): void
     {
         $superadmin = User::where('username', 'superadmin')->first();
         $this->actingAs($superadmin);
 
-        $adminResponse = $this->get('/admin');
-        $adminResponse->assertStatus(200);
-        $adminResponse->assertSee('Dashboard Overview');
+        $panelResponse = $this->get('/admin');
+        $panelResponse->assertStatus(200);
+        $panelResponse->assertSee('Dashboard');
+
+        $dashboardResponse = $this->get('/admin/dashboard');
+        $dashboardResponse->assertStatus(200);
+        $dashboardResponse->assertSee('Dashboard Overview');
     }
 }
