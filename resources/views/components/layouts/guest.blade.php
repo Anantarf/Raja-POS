@@ -19,6 +19,7 @@
                 }
             }
         }
+    </script>
     <style>
         html {
             font-size: 110%;

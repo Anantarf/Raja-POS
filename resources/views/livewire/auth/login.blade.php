@@ -46,7 +46,7 @@
                 <input type="checkbox" wire:model="remember" class="w-4 h-4 text-[#3F7A5D] rounded border-slate-300 focus:ring-[#3F7A5D]">
                 <span class="text-[#718379] font-medium">Ingat Saya</span>
             </label>
-            <span class="text-indigo-600 bg-indigo-50 border border-indigo-200/60 px-2 py-0.5 rounded-md font-mono text-[10px] font-bold">Raja Aksesoris 2.0</span>
+            <span class="bg-[#E3EEE8] text-[#3F7A5D] border border-[#3F7A5D]/20 px-2 py-0.5 rounded-md font-mono text-[10px] font-bold">Raja Aksesoris 2.0</span>
         </div>
 
         <button
