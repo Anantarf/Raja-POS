@@ -1,8 +1,8 @@
 <div class="w-full max-w-md bg-white/90 backdrop-blur-md rounded-3xl p-8 border border-[#E3EEE8] shadow-2xl space-y-6">
-    <!-- Brand Header & Mascot -->
+    <!-- Brand Header -->
     <div class="text-center space-y-3">
-        <div class="w-20 h-20 mx-auto rounded-3xl bg-white border border-[#E3EEE8] p-1 flex items-center justify-center shadow-md overflow-hidden">
-            <img src="/images/dashboard_welcome_character_3d.jpg" alt="Raja Aksesoris Mascot" class="w-full h-full object-cover rounded-2xl">
+        <div class="w-14 h-14 mx-auto rounded-2xl bg-[#3F7A5D] text-white font-extrabold flex items-center justify-center text-2xl shadow-md">
+            R
         </div>
         <div>
             <h1 class="text-2xl font-extrabold text-[#232E28] tracking-tight">RAJA AKSESORIS</h1>
