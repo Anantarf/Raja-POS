@@ -126,22 +126,13 @@
                         ['label' => 'Brand / Merek', 'href' => '/admin/brands', 'active' => request()->is('admin/brands'), 'icon' => 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5'],
                     ],
                     'Keuangan & Saldo' => [
-                        ['label' => 'Akun Saldo', 'href' => '/admin/balances', 'active' => request()->is('admin/balances'), 'icon' => 'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8V7m0 9v1M21 12a9 9 0 11-18 0 9 9 0 0118 0z'],
-                        ['label' => 'Mutasi Saldo', 'href' => '/admin/balances#mutasi-saldo', 'active' => request()->is('admin/balances'), 'icon' => 'M8 7h12m0 0l-4-4m4 4l-4 4M16 17H4m0 0l4 4m-4-4l4-4'],
+                        ['label' => 'Keuangan & Saldo', 'href' => '/admin/balances', 'active' => request()->is('admin/balances'), 'icon' => 'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8V7m0 9v1M21 12a9 9 0 11-18 0 9 9 0 0118 0z'],
                     ],
                     'Laporan' => [
-                        ['label' => 'Laporan Penjualan', 'href' => '/admin/reports/sales', 'active' => request()->is('admin/reports/sales'), 'icon' => 'M3 3v18h18M7 16l3-3 3 2 4-6'],
-                        ['label' => 'Laporan Inventory', 'href' => '/admin/reports/inventory', 'active' => request()->is('admin/reports/inventory'), 'icon' => 'M20 7l-8-4-8 4m16 0v10l-8 4-8-4V7'],
-                        ['label' => 'Laporan Pembayaran', 'href' => '/admin/reports/payment', 'active' => request()->is('admin/reports/payment'), 'icon' => 'M3 10h18M7 15h.01M11 15h2M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z'],
-                        ['label' => 'Laporan Saldo', 'href' => '/admin/reports/balance', 'active' => request()->is('admin/reports/balance'), 'icon' => 'M3 6h18M3 10h18M5 6v14h14V6'],
-                        ['label' => 'Laporan Produk', 'href' => '/admin/reports/product', 'active' => request()->is('admin/reports/product'), 'icon' => 'M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5'],
+                        ['label' => 'Laporan', 'href' => '/admin/reports/sales', 'active' => request()->is('admin/reports') || request()->is('admin/reports/*'), 'icon' => 'M3 3v18h18M7 16l3-3 3 2 4-6'],
                     ],
                     'Pengaturan Owner' => [
-                        ['label' => 'User', 'href' => '/admin/settings/users', 'active' => request()->is('admin/settings/users'), 'icon' => 'M17 20h5v-2a4 4 0 00-4-4h-1M9 20H4v-2a4 4 0 014-4h1m4-4a4 4 0 100-8 4 4 0 000 8z'],
-                        ['label' => 'Role & Permission', 'href' => '/admin/settings/roles', 'active' => request()->is('admin/settings/roles'), 'icon' => 'M9 12l2 2 4-4m5-4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-3 8 3z'],
-                        ['label' => 'Metode Pembayaran', 'href' => '/admin/settings/payment-methods', 'active' => request()->is('admin/settings/payment-methods'), 'icon' => 'M3 10h18M7 15h.01M11 15h2M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z'],
-                        ['label' => 'Lokasi Toko', 'href' => '/admin/settings/locations', 'active' => request()->is('admin/settings/locations'), 'icon' => 'M17.657 16.657L13.414 20.9a2 2 0 01-2.828 0l-4.243-4.243a8 8 0 1111.314 0z'],
-                        ['label' => 'Pengaturan Toko', 'href' => '/admin/settings/store-settings', 'active' => request()->is('admin/settings') || request()->is('admin/settings/store-settings'), 'icon' => 'M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066 1.724 1.724 0 012.37 2.37 1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573 1.724 1.724 0 01-2.37 2.37 1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066 1.724 1.724 0 01-2.37-2.37 1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573 1.724 1.724 0 012.37-2.37 1.724 1.724 0 002.572-1.065z'],
+                        ['label' => 'Pengaturan Owner', 'href' => '/admin/settings/store-settings', 'active' => request()->is('admin/settings') || request()->is('admin/settings/*'), 'icon' => 'M11.983 13.983a1.983 1.983 0 100-3.966 1.983 1.983 0 000 3.966z M18.85 12.48c.04-.31.04-.65 0-.96l1.95-1.52-1.85-3.2-2.3.93a7.23 7.23 0 00-.83-.48L15.48 4h-3.7l-.34 3.25c-.29.13-.57.29-.83.48l-2.3-.93-1.85 3.2 1.95 1.52a7.57 7.57 0 000 .96L6.46 14l1.85 3.2 2.3-.93c.26.19.54.35.83.48l.34 3.25h3.7l.34-3.25c.29-.13.57-.29.83-.48l2.3.93L20.8 14l-1.95-1.52z'],
                     ],
                 ];
             @endphp
@@ -250,5 +241,9 @@
     </script>
 </body>
 </html>
+
+
+
+
 
 

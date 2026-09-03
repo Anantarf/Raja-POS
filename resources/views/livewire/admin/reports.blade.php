@@ -1,11 +1,11 @@
 <div class="space-y-5">
     <div>
         <h1 class="text-xl font-extrabold text-[#232E28] tracking-tight">Laporan</h1>
-        <p class="text-xs text-[#718379] font-medium mt-0.5">Ringkasan laporan penjualan, inventory, pembayaran, saldo, dan produk sesuai MD utama.</p>
+        <p class="text-xs text-[#718379] font-medium mt-0.5">Ringkasan laporan penjualan, stok, pembayaran, saldo, dan produk sesuai MD utama.</p>
     </div>
 
     <div class="flex flex-wrap gap-2 border-b border-[#E3EEE8] pb-3 text-xs font-bold">
-        @foreach(['sales' => 'Penjualan', 'inventory' => 'Inventory', 'payment' => 'Pembayaran', 'balance' => 'Saldo', 'product' => 'Produk'] as $key => $label)
+        @foreach(['sales' => 'Penjualan', 'inventory' => 'Stok', 'payment' => 'Pembayaran', 'balance' => 'Saldo', 'product' => 'Produk'] as $key => $label)
             <a href="/admin/reports/{{ $key }}" class="px-4 py-2 rounded-xl transition {{ $type === $key ? 'bg-[#3F7A5D] text-white' : 'text-[#52645B] hover:bg-[#F3F6F4]' }}">{{ $label }}</a>
         @endforeach
     </div>
@@ -47,4 +47,5 @@
         </div>
     @endif
 </div>
+
 

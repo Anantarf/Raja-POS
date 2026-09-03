@@ -1,14 +1,14 @@
 <div class="space-y-5">
     <div>
         <h1 class="text-xl font-extrabold text-slate-900 tracking-tight">Pengaturan Owner</h1>
-        <p class="text-xs text-slate-500 font-medium mt-0.5">Pengaturan khusus Owner untuk user, role & permission, metode pembayaran, lokasi toko, dan pengaturan toko.</p>
+        <p class="text-xs text-slate-500 font-medium mt-0.5">Pengaturan khusus Owner untuk user, role & hak akses, metode pembayaran, lokasi toko, dan pengaturan toko.</p>
     </div>
 
     <div class="flex flex-wrap items-center gap-2 border-b border-slate-200 text-xs font-bold pb-2">
         @foreach([
             'STORE_SETTINGS' => ['Pengaturan Toko', '/admin/settings/store-settings'],
             'USERS' => ['User', '/admin/settings/users'],
-            'ROLES' => ['Role & Permission', '/admin/settings/roles'],
+            'ROLES' => ['Role & Hak Akses', '/admin/settings/roles'],
             'PAYMENT_METHODS' => ['Metode Pembayaran', '/admin/settings/payment-methods'],
             'LOCATIONS' => ['Lokasi Toko', '/admin/settings/locations'],
         ] as $tab => [$label, $href])
@@ -17,19 +17,50 @@
     </div>
 
     @if($activeTab === 'STORE_SETTINGS')
-        <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden">
-            <table class="w-full text-xs text-left">
-                <thead class="bg-slate-50 text-slate-500 uppercase text-[10px] font-extrabold border-b">
-                    <tr><th class="py-2.5 px-3">Kode Pengaturan</th><th class="py-2.5 px-3">Nilai</th></tr>
-                </thead>
-                <tbody class="divide-y font-medium">
-                    @foreach($settings as $setting)
-                        <tr><td class="py-2.5 px-3 font-mono font-bold">{{ $setting->key }}</td><td class="py-2.5 px-3 font-bold text-slate-900">{{ $setting->value }}</td></tr>
+        @php
+            $settingMap = $settings->pluck('value', 'key');
+            $storeSettings = [
+                ['label' => 'Nama Toko', 'value' => $settingMap->get('store_name'), 'hint' => 'Nama yang tampil di sistem dan struk kasir.'],
+                ['label' => 'Mata Uang', 'value' => $settingMap->get('currency'), 'hint' => 'Format nominal untuk transaksi dan laporan.'],
+                ['label' => 'Zona Waktu', 'value' => $settingMap->get('timezone'), 'hint' => 'Acuan waktu nota, laporan harian, dan audit.'],
+                ['label' => 'Lebar Kertas Struk', 'value' => $settingMap->get('receipt_paper_width'), 'hint' => 'Ukuran default cetak struk thermal.'],
+                ['label' => 'Batas Stok Minimum', 'value' => $settingMap->get('minimum_stock_default'), 'hint' => 'Patokan awal status stok menipis.'],
+            ];
+        @endphp
+
+        <div class="grid grid-cols-1 xl:grid-cols-3 gap-5">
+            <div class="xl:col-span-2 bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+                <div class="flex items-start justify-between gap-4 mb-5">
+                    <div>
+                        <h3 class="text-base font-extrabold text-slate-900">Profil & Preferensi Toko</h3>
+                        <p class="text-xs text-slate-500 font-medium mt-1">Ringkasan pengaturan dasar yang dipakai kasir, struk, laporan, dan stok.</p>
+                    </div>
+                    <span class="px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100 text-[10px] font-extrabold">Aktif</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    @foreach($storeSettings as $item)
+                        <div class="rounded-xl border border-slate-200 bg-slate-50/70 p-4">
+                            <div class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500">{{ $item['label'] }}</div>
+                            <div class="mt-1.5 text-sm font-extrabold text-slate-900">{{ filled($item['value']) ? $item['value'] : 'Belum diisi' }}</div>
+                            <div class="mt-1 text-xs text-slate-500 leading-relaxed">{{ $item['hint'] }}</div>
+                        </div>
                     @endforeach
-                </tbody>
-            </table>
-        </div>
-    @elseif($activeTab === 'USERS')
+                </div>
+            </div>
+
+            <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-4">
+                <div>
+                    <h3 class="text-base font-extrabold text-slate-900">Catatan Operasional</h3>
+                    <p class="text-xs text-slate-500 font-medium mt-1">Perubahan pengaturan toko sebaiknya dibatasi untuk Owner karena berdampak ke transaksi dan laporan.</p>
+                </div>
+                <div class="space-y-2 text-xs font-semibold text-slate-600">
+                    <div class="flex items-center justify-between gap-3 border-b border-slate-100 pb-2"><span>Struk kasir</span><span class="text-slate-900">{{ $settingMap->get('receipt_paper_width', '-') }}</span></div>
+                    <div class="flex items-center justify-between gap-3 border-b border-slate-100 pb-2"><span>Laporan waktu</span><span class="text-slate-900">{{ $settingMap->get('timezone', '-') }}</span></div>
+                    <div class="flex items-center justify-between gap-3"><span>Format nominal</span><span class="text-slate-900">{{ $settingMap->get('currency', '-') }}</span></div>
+                </div>
+            </div>
+        </div>    @elseif($activeTab === 'USERS')
         <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden">
             <table class="w-full text-xs text-left">
                 <thead class="bg-slate-50 text-slate-500 uppercase text-[10px] font-extrabold border-b">
@@ -115,3 +146,5 @@
         </div>
     @endif
 </div>
+
+

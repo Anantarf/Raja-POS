@@ -19,6 +19,7 @@ class Products extends Component
     public $search = '';
     public $selectedCategory = null;
     public $selectedType = 'ALL';
+    public $viewMode = 'card'; // 'card' or 'table'
 
     // Modal state
     public $showCreateModal = false;
@@ -32,6 +33,7 @@ class Products extends Component
     public $category_id = '';
     public $brand_id = '';
     public $product_type = 'PHYSICAL';
+    public $product_subtype = '';
     public $cost_price = 0;
     public $selling_price = 0;
     public $description = '';
@@ -45,6 +47,11 @@ class Products extends Component
     public function updatingSearch()
     {
         $this->resetPage();
+    }
+
+    public function setViewMode($mode)
+    {
+        $this->viewMode = $mode;
     }
 
     public function openCreateModal()
@@ -63,6 +70,7 @@ class Products extends Component
         $this->category_id = $product->category_id;
         $this->brand_id = $product->brand_id;
         $this->product_type = $product->product_type;
+        $this->product_subtype = $product->product_subtype;
         $this->cost_price = $product->cost_price;
         $this->selling_price = $product->selling_price;
         $this->description = $product->description;
@@ -79,6 +87,7 @@ class Products extends Component
             'code' => 'required|string|max:50|unique:products,code,' . $this->editingProductId,
             'name' => 'required|string|max:255',
             'product_type' => 'required|in:PHYSICAL,DIGITAL,SERVICE',
+            'product_subtype' => 'nullable|string|max:255',
             'selling_price' => 'required|numeric|min:0',
             'cost_price' => 'required|numeric|min:0',
         ]);
@@ -92,6 +101,7 @@ class Products extends Component
             'category_id' => $this->category_id ?: null,
             'brand_id' => $this->brand_id ?: null,
             'product_type' => $this->product_type,
+            'product_subtype' => $this->product_subtype ?: null,
             'cost_price' => $this->cost_price,
             'selling_price' => $this->selling_price,
             'price_status' => $priceStatus,
@@ -159,6 +169,7 @@ class Products extends Component
         $this->category_id = '';
         $this->brand_id = '';
         $this->product_type = 'PHYSICAL';
+        $this->product_subtype = '';
         $this->cost_price = 0;
         $this->selling_price = 0;
         $this->description = '';
@@ -194,3 +205,5 @@ class Products extends Component
         ])->layout('components.layouts.admin', ['title' => 'Master Produk - Raja POS']);
     }
 }
+
+
