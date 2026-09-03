@@ -12,10 +12,12 @@ use App\Livewire\Admin\Settings;
 use App\Livewire\Admin\StockOpname;
 use App\Livewire\Pos\Checkout;
 use App\Models\Sale;
+use App\Livewire\Auth\Login;
 use App\Services\ProductImportService;
 use Illuminate\Support\Facades\Route;
 
-Route::redirect('/login', '/admin/login')->name('login');
+Route::get('/login', Login::class)->name('login');
+Route::get('/admin/login', Login::class)->name('admin.login');
 Route::redirect('/', '/pos');
 
 Route::middleware(['auth'])->group(function () {
