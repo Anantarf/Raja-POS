@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <rect width="64" height="64" rx="16" fill="#3F7A5D"/>
+  <!-- Crown Top Accent -->
+  <path d="M16 23l6-7 10 5 10-5 6 7z" fill="#C2AC7C"/>
+  <circle cx="32" cy="20" r="2.5" fill="#FFFFFF"/>
+  <circle cx="18" cy="18" r="2" fill="#D9A21B"/>
+  <circle cx="46" cy="18" r="2" fill="#D9A21B"/>
+  <!-- Cash Register Body -->
+  <path d="M20 28h24v12H20z" fill="#FFFFFF" rx="2"/>
+  <path d="M24 32h16v2H24z" fill="#3F7A5D"/>
+  <path d="M24 36h10v2H24z" fill="#718379"/>
+  <!-- Base Drawer -->
+  <path d="M16 42h32v4H16z" fill="#E3EEE8" rx="1"/>
+</svg>
