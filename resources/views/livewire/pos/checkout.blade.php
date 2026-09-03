@@ -1,37 +1,35 @@
-<div class="h-screen flex flex-col overflow-hidden bg-[#F3F6F4] font-sans text-[#232E28]">
+<div class="min-h-screen lg:h-screen flex flex-col overflow-y-auto lg:overflow-hidden bg-[#F3F6F4] font-sans text-[#232E28]">
     <!-- Topbar Navigation Header -->
-    <header class="px-6 pt-4 pb-3 flex-shrink-0">
-        <div class="bg-white rounded-2xl border border-[#E3EEE8] px-6 py-3.5 flex items-center justify-between">
-            <div class="flex items-center gap-4">
-                <div class="flex items-center gap-3">
-                    <span class="bg-[#3F7A5D] text-white font-extrabold px-3.5 py-1.5 rounded-xl text-sm tracking-wider uppercase">RAJA POS</span>
-                    <span class="text-sm font-extrabold text-[#232E28] hidden sm:inline border-l border-[#E3EEE8] pl-4">
-                        {{ $location?->name ?? 'Raja Aksesoris Bango' }}
-                    </span>
-                </div>
+    <header class="px-3 sm:px-6 pt-3 sm:pt-4 pb-2 sm:pb-3 flex-shrink-0">
+        <div class="bg-white rounded-2xl border border-[#E3EEE8] px-4 sm:px-6 py-3 flex items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+                <span class="bg-[#3F7A5D] text-white font-extrabold px-3 sm:px-3.5 py-1.5 rounded-xl text-xs sm:text-sm tracking-wider uppercase shadow-sm">RAJA POS</span>
+                <span class="text-xs sm:text-sm font-extrabold text-[#232E28] hidden md:inline border-l border-[#E3EEE8] pl-4">
+                    {{ $location?->name ?? 'Raja Aksesoris Bango' }}
+                </span>
             </div>
 
-            <div class="flex items-center gap-4 text-sm font-semibold">
-                <div class="flex items-center gap-2.5 bg-[#F3F6F4] px-4 py-2 rounded-xl border border-[#E3EEE8]">
-                    <div class="w-7 h-7 rounded-full bg-[#3F7A5D] text-white font-bold flex items-center justify-center text-xs">
+            <div class="flex items-center gap-2 sm:gap-4 text-xs sm:text-sm font-semibold">
+                <div class="hidden sm:flex items-center gap-2.5 bg-[#F3F6F4] px-3.5 py-1.5 rounded-xl border border-[#E3EEE8]">
+                    <div class="w-6 h-6 rounded-full bg-[#3F7A5D] text-white font-bold flex items-center justify-center text-[10px]">
                         {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
                     </div>
-                    <span class="font-extrabold text-[#232E28] text-sm">{{ auth()->user()->name }}</span>
-                    <span class="text-[#718379] font-normal text-xs">({{ auth()->user()->role?->name ?? 'Kasir' }})</span>
+                    <span class="font-extrabold text-[#232E28] text-xs sm:text-sm">{{ auth()->user()->name }}</span>
+                    <span class="text-[#718379] font-normal text-[11px]">({{ auth()->user()->role?->name ?? 'Kasir' }})</span>
                 </div>
 
-                <a href="/admin" class="bg-[#3F7A5D] hover:bg-[#32634B] text-white px-5 py-2.5 rounded-xl font-bold text-sm transition flex items-center gap-2 active:scale-95">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <a href="/admin" class="bg-[#3F7A5D] hover:bg-[#32634B] text-white px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-xl font-bold text-xs sm:text-sm transition flex items-center gap-1.5 active:scale-95 shadow-sm">
+                    <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                     </svg>
-                    <span>Ke Panel Admin</span>
+                    <span>Panel Admin</span>
                 </a>
             </div>
         </div>
     </header>
 
-    <!-- Main Operational Split View (58% Katalog : 42% Keranjang) -->
-    <div class="flex-1 flex overflow-hidden px-6 pb-5 gap-5">
+    <!-- Main Operational Split View (Desktop: 58% Katalog : 42% Keranjang, Tablet/HP: Responsive Stack) -->
+    <div class="flex-1 flex flex-col lg:flex-row overflow-y-auto lg:overflow-hidden px-3 sm:px-6 pb-5 gap-4 lg:gap-5">
 
         <!-- LEFT COLUMN: Product Catalog (58%) -->
         <div class="w-full lg:w-[58%] xl:w-[60%] flex flex-col flex-shrink-0">
