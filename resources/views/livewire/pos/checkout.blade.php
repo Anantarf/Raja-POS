@@ -135,30 +135,15 @@
                                     </span>
                                 </div>
 
-                                @if($product->image_url && !str_contains($product->image_url, 'via.placeholder.com'))
+                                @if($product->image_url && !str_contains($product->image_url, 'via.placeholder.com') && !str_contains($product->image_url, 'placeholder.com'))
                                     <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                                     <div class="absolute inset-x-0 bottom-0 h-6 bg-gradient-to-t from-white via-white/40 to-transparent"></div>
                                 @else
-                                    <div class="flex flex-col items-center justify-center space-y-1.5 p-2 text-center pt-5">
-                                        @if($product->product_type === 'PHYSICAL')
-                                            <div class="w-10 h-10 rounded-2xl bg-white/80 text-[#3F7A5D] backdrop-blur-md border border-white/60 flex items-center justify-center shadow-sm">
-                                                <svg class="w-5.5 h-5.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
-                                                </svg>
-                                            </div>
-                                        @elseif($product->product_type === 'DIGITAL')
-                                            <div class="w-10 h-10 rounded-2xl bg-emerald-700 text-white flex items-center justify-center shadow-sm">
-                                                <svg class="w-5.5 h-5.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                                                </svg>
-                                            </div>
-                                        @else
-                                            <div class="w-10 h-10 rounded-2xl bg-[#C2AC7C] text-white flex items-center justify-center shadow-sm">
-                                                <svg class="w-5.5 h-5.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
-                                                </svg>
-                                            </div>
-                                        @endif
+                                    <!-- Compact Poppins Bold Initials Badge -->
+                                    <div class="flex items-center justify-center pt-4">
+                                        <div class="w-12 h-12 rounded-2xl bg-white/90 backdrop-blur-md border border-[#3F7A5D]/20 text-[#3F7A5D] font-mono font-extrabold text-base flex items-center justify-center shadow-sm tracking-wider">
+                                            {{ strtoupper(substr($product->code, 0, 2)) }}
+                                        </div>
                                     </div>
                                     <div class="absolute inset-x-0 bottom-0 h-6 bg-gradient-to-t from-white to-transparent"></div>
                                 @endif
