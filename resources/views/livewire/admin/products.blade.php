@@ -85,91 +85,93 @@
                     $stockStatus = $inv?->stock_status ?? 'AVAILABLE';
                 @endphp
 
-                <div class="bg-white rounded-3xl border border-[#E3EEE8] hover:border-[#3F7A5D]/40 transition-all duration-200 overflow-hidden flex flex-col justify-between shadow-emco hover:shadow-md group">
-                    <div>
-                        <!-- Top Header Badges -->
-                        <div class="p-3.5 pb-2 flex items-center justify-between gap-2 border-b border-slate-100 bg-[#F3F6F4]/40">
+                <div class="h-[360px] bg-white rounded-3xl border border-[#E3EEE8] hover:border-[#3F7A5D]/40 transition-all duration-200 overflow-hidden flex flex-col justify-between shadow-emco hover:shadow-md group">
+                    <div class="flex flex-col min-h-0 flex-1">
+                        <!-- Top Header Badges (Locked Height h-11) -->
+                        <div class="h-11 px-3.5 flex items-center justify-between gap-2 border-b border-slate-100 bg-[#F3F6F4]/40 shrink-0">
                             <span class="px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider {{ $product->product_type === 'PHYSICAL' ? 'bg-[#E3EEE8] text-[#3F7A5D]' : ($product->product_type === 'DIGITAL' ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-[#C2AC7C]/20 text-[#8F794B] border border-[#C2AC7C]/40') }}">
                                 {{ $product->product_type === 'PHYSICAL' ? 'STOK FISIK' : ($product->product_type === 'DIGITAL' ? 'DIGITAL' : 'SERVICE') }}
                             </span>
-                            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wider {{ $product->price_status === 'COMPLETE' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-rose-50 text-rose-700 border border-rose-200' }}">
-                                {{ $product->price_status === 'COMPLETE' ? 'Lengkap' : 'Harga Belum Lengkap' }}
+                            <span class="px-2 py-0.5 rounded-full text-[9px] font-bold tracking-wider {{ $product->price_status === 'COMPLETE' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-rose-50 text-rose-700 border border-rose-200' }}">
+                                {{ $product->price_status === 'COMPLETE' ? 'Lengkap' : 'Belum Lengkap' }}
                             </span>
                         </div>
 
-                        <!-- Product Thumbnail / Initials Banner -->
-                        <div class="h-28 bg-gradient-to-b from-[#F3F6F4] to-white relative flex items-center justify-center p-3 overflow-hidden">
+                        <!-- Product Thumbnail / Initials Banner (Locked Height h-20) -->
+                        <div class="h-20 bg-gradient-to-b from-[#F3F6F4] to-white relative flex items-center justify-center p-2 overflow-hidden shrink-0">
                             @if(!empty($product->image_path) && Illuminate\Support\Facades\Storage::disk('public')->exists($product->image_path))
-                                <img src="{{ Illuminate\Support\Facades\Storage::url($product->image_path) }}" alt="{{ $product->name }}" class="w-full h-full object-cover rounded-2xl group-hover:scale-105 transition-transform duration-300">
+                                <img src="{{ Illuminate\Support\Facades\Storage::url($product->image_path) }}" alt="{{ $product->name }}" class="w-full h-full object-cover rounded-xl group-hover:scale-105 transition-transform duration-300">
                             @else
-                                <span class="text-2xl font-mono font-extrabold text-[#3F7A5D]/80 tracking-wider">
+                                <span class="text-xl font-mono font-extrabold text-[#3F7A5D]/80 tracking-wider">
                                     {{ strtoupper(substr($product->code, 0, 2)) }}
                                 </span>
                             @endif
                         </div>
 
-                        <!-- Product Main Info -->
-                        <div class="p-4 space-y-2.5">
-                            <div>
-                                <h3 class="font-extrabold text-[#232E28] text-sm leading-snug tracking-tight line-clamp-2 overflow-hidden text-ellipsis group-hover:text-[#3F7A5D] transition-colors">
+                        <!-- Product Main Info (Title & Barcode) -->
+                        <div class="p-3.5 pt-2 pb-2 space-y-1.5 shrink-0">
+                            <div class="h-9 flex items-center">
+                                <h3 class="font-extrabold text-[#232E28] text-xs leading-tight tracking-tight line-clamp-2 overflow-hidden text-ellipsis group-hover:text-[#3F7A5D] transition-colors">
                                     {{ $product->name }}
                                 </h3>
-                                <div class="mt-1 flex items-center gap-1.5 flex-wrap">
-                                    <span class="bg-indigo-50 text-indigo-600 border border-indigo-200/70 px-2 py-0.5 rounded-md font-mono font-bold text-[10px]">
-                                        Barcode: {{ $product->effective_barcode }}
-                                    </span>
-                                </div>
                             </div>
+                            <div class="h-5 flex items-center">
+                                <span class="bg-indigo-50 text-indigo-600 border border-indigo-200/70 px-2 py-0.5 rounded-md font-mono font-bold text-[10px] truncate max-w-full">
+                                    Barcode: {{ $product->effective_barcode }}
+                                </span>
+                            </div>
+                        </div>
 
-                            <!-- Dimensions: Kategori, Jenis, Merk/Brand -->
-                            <div class="bg-[#F3F6F4]/60 p-2.5 rounded-2xl space-y-1 text-[11px] font-semibold text-[#232E28] border border-slate-100">
-                                <div class="flex items-center justify-between">
+                        <!-- Dimensions Box: Kategori, Jenis, Merk (Locked Height h-[72px]) -->
+                        <div class="px-3.5 shrink-0">
+                            <div class="h-[72px] bg-[#F3F6F4]/60 p-2.5 rounded-2xl space-y-0.5 text-[11px] font-semibold text-[#232E28] border border-slate-100 flex flex-col justify-center overflow-hidden">
+                                <div class="flex items-center justify-between text-[10px]">
                                     <span class="text-[#718379]">Kategori:</span>
-                                    <span class="font-bold text-[#232E28]">{{ $product->category?->name ?? '-' }}</span>
+                                    <span class="font-bold text-[#232E28] truncate ml-1">{{ $product->category?->name ?? '-' }}</span>
                                 </div>
-                                <div class="flex items-center justify-between">
+                                <div class="flex items-center justify-between text-[10px]">
                                     <span class="text-[#718379]">Jenis:</span>
-                                    <span class="font-bold text-indigo-600">{{ $product->product_subtype ?: '-' }}</span>
+                                    <span class="font-bold text-indigo-600 truncate ml-1">{{ $product->product_subtype ?: '-' }}</span>
                                 </div>
-                                <div class="flex items-center justify-between">
-                                    <span class="text-[#718379]">Merk / Brand:</span>
-                                    <span class="font-bold text-[#232E28]">{{ $product->brand?->name ?? '-' }}</span>
+                                <div class="flex items-center justify-between text-[10px]">
+                                    <span class="text-[#718379]">Merk:</span>
+                                    <span class="font-bold text-[#232E28] truncate ml-1">{{ $product->brand?->name ?? '-' }}</span>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Footer: Price, Stock & Actions -->
-                    <div class="border-t border-slate-100 p-4 pt-3 bg-white space-y-3">
+                    <!-- Card Footer: Price, Stock & Action Buttons (Locked Bottom) -->
+                    <div class="border-t border-slate-100 p-3.5 pt-2.5 bg-white space-y-2 shrink-0">
                         <div class="flex items-end justify-between gap-2">
                             <div>
                                 @if(auth()->user()->can('cost_price.view'))
-                                    <div class="text-[10px] font-semibold text-[#718379]">
+                                    <div class="text-[9px] font-semibold text-[#718379]">
                                         Modal: <span class="font-mono font-bold text-[#232E28]">Rp {{ number_format($product->cost_price ?? 0, 0, ',', '.') }}</span>
                                     </div>
                                 @endif
-                                <div class="text-base font-extrabold text-[#232E28] font-mono tracking-tight mt-0.5">
+                                <div class="text-sm font-extrabold text-[#232E28] font-mono tracking-tight">
                                     Rp {{ number_format($product->selling_price ?? 0, 0, ',', '.') }}
                                 </div>
                             </div>
 
                             @if($product->product_type === 'PHYSICAL')
-                                <span class="px-2.5 py-1 rounded-full font-bold text-[10px] shrink-0 {{ $stockStatus === 'OUT_OF_STOCK' ? 'bg-rose-50 text-rose-700 border border-rose-200' : ($stockStatus === 'LOW_STOCK' ? 'bg-amber-50 text-amber-700 border border-amber-200' : 'bg-[#E3EEE8] text-[#3F7A5D]') }}">
+                                <span class="px-2 py-0.5 rounded-full font-bold text-[9px] shrink-0 {{ $stockStatus === 'OUT_OF_STOCK' ? 'bg-rose-50 text-rose-700 border border-rose-200' : ($stockStatus === 'LOW_STOCK' ? 'bg-amber-50 text-amber-700 border border-amber-200' : 'bg-[#E3EEE8] text-[#3F7A5D]') }}">
                                     Stok: {{ $stockQty }}
                                 </span>
                             @else
-                                <span class="px-2.5 py-1 rounded-full font-bold text-[10px] shrink-0 bg-slate-100 text-[#718379]">
+                                <span class="px-2 py-0.5 rounded-full font-bold text-[9px] shrink-0 bg-slate-100 text-[#718379]">
                                     {{ $product->product_type === 'DIGITAL' ? 'DIGITAL' : 'SERVICE' }}
                                 </span>
                             @endif
                         </div>
 
-                        <!-- Card Action Buttons -->
-                        <div class="flex items-center gap-2 pt-1 border-t border-slate-100">
-                            <button wire:click="openEditModal({{ $product->id }})" class="flex-1 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 rounded-xl text-xs font-extrabold transition border border-indigo-200/80 text-center active:scale-95">
+                        <!-- Action Buttons -->
+                        <div class="flex items-center gap-1.5 pt-1 border-t border-slate-100">
+                            <button wire:click="openEditModal({{ $product->id }})" class="flex-1 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 rounded-xl text-[11px] font-extrabold transition border border-indigo-200/80 text-center active:scale-95">
                                 Edit
                             </button>
-                            <button wire:click="deleteProduct({{ $product->id }})" wire:confirm="Yakin ingin menghapus barang/layanan ini?" class="px-3.5 py-2 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-xl text-xs font-extrabold transition border border-rose-200/80 active:scale-95">
+                            <button wire:click="deleteProduct({{ $product->id }})" wire:confirm="Yakin ingin menghapus barang/layanan ini?" class="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-xl text-[11px] font-extrabold transition border border-rose-200/80 active:scale-95">
                                 Hapus
                             </button>
                         </div>
