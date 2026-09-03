@@ -70,7 +70,7 @@
                 <button type="button" @click="$wire.filterType('ALL')" wire:click="filterType('ALL')" class="px-3 py-1 rounded-lg font-bold text-xs transition cursor-pointer {{ $selectedType === 'ALL' ? 'bg-[#3F7A5D] text-white shadow-sm' : 'text-slate-600 hover:text-slate-900' }}">Semua</button>
                 <button type="button" @click="$wire.filterType('PHYSICAL')" wire:click="filterType('PHYSICAL')" class="px-3 py-1 rounded-lg font-bold text-xs transition cursor-pointer {{ $selectedType === 'PHYSICAL' ? 'bg-[#3F7A5D] text-white shadow-sm' : 'text-slate-600 hover:text-slate-900' }}">Fisik</button>
                 <button type="button" @click="$wire.filterType('DIGITAL')" wire:click="filterType('DIGITAL')" class="px-3 py-1 rounded-lg font-bold text-xs transition cursor-pointer {{ $selectedType === 'DIGITAL' ? 'bg-emerald-700 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900' }}">Digital</button>
-                <button type="button" @click="$wire.filterType('SERVICE')" wire:click="filterType('SERVICE')" class="px-3 py-1 rounded-lg font-bold text-xs transition cursor-pointer {{ $selectedType === 'SERVICE' ? 'bg-[#C2AC7C] text-white shadow-sm' : 'text-slate-600 hover:text-slate-900' }}">Service</button>
+                <button type="button" @click="$wire.filterType('LAYANAN')" wire:click="filterType('LAYANAN')" class="px-3 py-1 rounded-lg font-bold text-xs transition cursor-pointer {{ $selectedType === 'LAYANAN' || $selectedType === 'SERVICE' ? 'bg-[#C2AC7C] text-white shadow-sm' : 'text-slate-600 hover:text-slate-900' }}">Layanan</button>
             </div>
 
             <!-- View Mode Switcher (Card vs Table) -->
@@ -112,20 +112,18 @@
                     $stockStatus = $inv?->stock_status ?? 'AVAILABLE';
                 @endphp
 
-                <div class="bg-white rounded-2xl border {{ $isIncomplete ? 'border-rose-200 bg-rose-50/10' : 'border-slate-200/80' }} p-4 shadow-sm hover:shadow-md hover:border-[#3F7A5D]/50 transition-all duration-200 flex flex-col justify-between h-[350px] group">
+                <div class="bg-white rounded-2xl border border-slate-200/80 p-4 shadow-sm hover:shadow-md hover:border-[#3F7A5D]/50 transition-all duration-200 flex flex-col justify-between h-[350px] group">
                     <div class="space-y-2.5">
                         <!-- Top Metadata & Type Badge -->
                         <div class="flex items-center justify-between text-xs">
                             <span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold uppercase tracking-wider {{ $product->product_type === 'PHYSICAL' ? 'bg-[#E3EEE8] text-[#3F7A5D]' : ($product->product_type === 'DIGITAL' ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-800') }}">
-                                {{ $product->product_type === 'PHYSICAL' ? 'Fisik' : ($product->product_type === 'DIGITAL' ? 'Digital' : 'Service') }}
+                                {{ $product->product_type === 'PHYSICAL' ? 'Fisik' : ($product->product_type === 'DIGITAL' ? 'Digital' : 'Layanan') }}
                             </span>
 
                             @if($product->product_type === 'PHYSICAL')
                                 <span class="font-semibold text-slate-500 text-xs">
                                     Stok: <strong class="{{ $stockStatus === 'OUT_OF_STOCK' ? 'text-rose-600' : 'text-slate-800' }}">{{ $stockQty }}</strong>
                                 </span>
-                            @else
-                                <span class="font-mono text-[11px] text-slate-400">SKU: {{ $product->code }}</span>
                             @endif
                         </div>
 
@@ -164,12 +162,12 @@
                     <div class="pt-3 border-t border-slate-100 flex items-end justify-between gap-2">
                         <div>
                             @if(auth()->user()->can('cost_price.view'))
-                                <div class="text-[11px] text-slate-500 font-medium">
+                                <div class="text-[10px] text-slate-500 font-medium whitespace-nowrap">
                                     Modal: 
                                     @if($product->cost_price > 0)
                                         <span class="font-mono font-semibold text-slate-700">Rp {{ number_format($product->cost_price, 0, ',', '.') }}</span>
                                     @else
-                                        <span class="font-bold text-rose-500">*Harus dilengkapi</span>
+                                        <span class="text-[9.5px] font-bold text-rose-500 whitespace-nowrap">*Belum dilengkapi</span>
                                     @endif
                                 </div>
                             @endif
@@ -221,6 +219,7 @@
                     <tbody class="divide-y divide-slate-100 font-medium">
                         @forelse($products as $product)
                             <tr class="hover:bg-[#F3F6F4]/60 transition">
+                                <!-- Col 1: Nama Barang/Layanan & Barcode -->
                                 <td class="py-3.5 px-4">
                                     <div class="flex items-center gap-3">
                                         @if(!empty($product->image_path) && Illuminate\Support\Facades\Storage::disk('public')->exists($product->image_path))
@@ -238,40 +237,56 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td class="py-3.5 px-4">
+
+                                <!-- Col 2: Jenis Stok Badge -->
+                                <td class="py-3.5 px-4 whitespace-nowrap">
                                     <span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold uppercase tracking-wider {{ $product->product_type === 'PHYSICAL' ? 'bg-[#E3EEE8] text-[#3F7A5D]' : ($product->product_type === 'DIGITAL' ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-800') }}">
-                                        {{ $product->product_type === 'PHYSICAL' ? 'Fisik' : ($product->product_type === 'DIGITAL' ? 'Digital' : 'Service') }}
+                                        {{ $product->product_type === 'PHYSICAL' ? 'Fisik' : ($product->product_type === 'DIGITAL' ? 'Digital' : 'Layanan') }}
                                     </span>
                                 </td>
+
+                                <!-- Col 3: Kategori • Jenis • Merk -->
                                 <td class="py-3.5 px-4 text-slate-500 text-xs">
-                                    <span class="text-slate-700 font-semibold">{{ $product->category?->name ?? 'Umum' }}</span>
-                                    <span class="text-slate-300">&bull;</span>
-                                    <span class="text-indigo-600 font-bold">{{ $product->product_subtype ?: '-' }}</span>
-                                    <span class="text-slate-300">&bull;</span>
-                                    <span class="text-slate-600">{{ $product->brand?->name ?? '-' }}</span>
+                                    <div class="flex items-center gap-1.5 flex-wrap">
+                                        <span class="text-slate-700 font-semibold">{{ $product->category?->name ?? 'Umum' }}</span>
+                                        @if(!empty($product->product_subtype))
+                                            <span class="text-slate-300">&bull;</span>
+                                            <span class="text-indigo-600 font-bold">{{ $product->product_subtype }}</span>
+                                        @endif
+                                        @if(!empty($product->brand?->name))
+                                            <span class="text-slate-300">&bull;</span>
+                                            <span class="text-slate-600">{{ $product->brand->name }}</span>
+                                        @endif
+                                    </div>
                                 </td>
+
+                                <!-- Col 4: Modal -->
                                 @if(auth()->user()->can('cost_price.view'))
-                                    <td class="py-3.5 px-4 text-right font-mono font-semibold text-xs">
+                                    <td class="py-3.5 px-4 text-right font-mono font-semibold text-xs whitespace-nowrap">
                                         @if($product->cost_price > 0)
                                             <span class="text-slate-700">Rp {{ number_format($product->cost_price, 0, ',', '.') }}</span>
                                         @else
-                                            <span class="font-bold text-rose-500">*Harus dilengkapi</span>
+                                            <span class="font-bold text-rose-500 text-[11px] whitespace-nowrap">*Harus dilengkapi</span>
                                         @endif
                                     </td>
                                 @endif
-                                <td class="py-3.5 px-4 text-right font-mono font-extrabold text-[#232E28] text-sm">
+
+                                <!-- Col 5: Harga Jual -->
+                                <td class="py-3.5 px-4 text-right font-mono font-extrabold text-[#232E28] text-sm whitespace-nowrap">
                                     @if($product->selling_price > 0)
                                         Rp {{ number_format($product->selling_price, 0, ',', '.') }}
                                     @else
-                                        <span class="text-xs font-bold text-rose-600">*Harga jual belum diisi</span>
+                                        <span class="text-xs font-bold text-rose-600 whitespace-nowrap">*Harga jual belum diisi</span>
                                     @endif
                                 </td>
-                                <td class="py-3.5 px-4 text-center">
+
+                                <!-- Col 6: Aksi -->
+                                <td class="py-3.5 px-4 text-center whitespace-nowrap">
                                     <div class="flex items-center justify-center gap-1.5">
-                                        <button wire:click="openEditModal({{ $product->id }})" class="px-3 py-1.5 bg-slate-100 hover:bg-indigo-50 hover:text-indigo-600 text-slate-700 rounded-lg text-xs font-bold transition">
+                                        <button wire:click="openEditModal({{ $product->id }})" class="px-3 py-1.5 bg-slate-100 hover:bg-indigo-50 hover:text-indigo-600 text-slate-700 rounded-lg text-xs font-bold transition cursor-pointer">
                                             Edit
                                         </button>
-                                        <button wire:click="deleteProduct({{ $product->id }})" wire:confirm="Yakin ingin menghapus barang/layanan ini?" class="px-2.5 py-1.5 bg-slate-100 hover:bg-rose-50 hover:text-rose-600 text-slate-400 rounded-lg text-xs font-bold transition">
+                                        <button wire:click="deleteProduct({{ $product->id }})" wire:confirm="Yakin ingin menghapus barang/layanan ini?" class="px-2.5 py-1.5 bg-slate-100 hover:bg-rose-50 hover:text-rose-600 text-slate-400 rounded-lg text-xs font-bold transition cursor-pointer">
                                             Hapus
                                         </button>
                                     </div>
@@ -327,7 +342,7 @@
                             <select wire:model="product_type" class="w-full p-3 border border-slate-300 rounded-2xl bg-white font-bold">
                                 <option value="PHYSICAL">Fisik (Barang Stok)</option>
                                 <option value="DIGITAL">Digital (Pulsa/E-Wallet/Voucher)</option>
-                                <option value="SERVICE">Service (Jasa / Layanan)</option>
+                                <option value="LAYANAN">Layanan (Jasa)</option>
                             </select>
                         </div>
                         <div>
@@ -405,7 +420,7 @@
 
                     <div class="bg-[#E3EEE8] text-[#3F7A5D] p-4 rounded-2xl text-xs leading-relaxed font-medium space-y-1">
                         <div class="font-bold">Informasi Mapping Format Excel:</div>
-                        <div>&bull; <strong>Nama Barang/Layanan</strong>, <strong>Jenis Stok</strong> (Fisik/Digital/Service), <strong>Jenis</strong>, <strong>Kategori</strong>, dan <strong>Merk</strong>.</div>
+                        <div>&bull; <strong>Nama Barang/Layanan</strong>, <strong>Jenis Stok</strong> (Fisik/Digital/Layanan), <strong>Jenis</strong>, <strong>Kategori</strong>, dan <strong>Merk</strong>.</div>div>
                         <div>&bull; Kategori dan Merk otomatis dibuat jika belum ada di database.</div>
                         <div>&bull; Modal atau Harga Jual 0 otomatis ditandai butuh dilengkapi.</div>
                     </div>

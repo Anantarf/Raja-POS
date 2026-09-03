@@ -145,9 +145,18 @@ class Checkout extends Component
         }
     }
 
+    public function updatedPayments($value, $key)
+    {
+        foreach ($this->payments as $idx => $pay) {
+            if (isset($pay['amount']) && (float) $pay['amount'] > 1000000000) {
+                $this->payments[$idx]['amount'] = 1000000000;
+            }
+        }
+    }
+
     public function setExactPayment()
     {
-        $total = $this->grand_total;
+        $total = min(1000000000, $this->grand_total);
         if (isset($this->payments[0])) {
             $this->payments[0]['amount'] = $total;
         }
@@ -156,21 +165,22 @@ class Checkout extends Component
     public function setPaymentAmount(float $amount)
     {
         if (isset($this->payments[0])) {
-            $this->payments[0]['amount'] = $amount;
+            $this->payments[0]['amount'] = min(1000000000, max(0, $amount));
         }
     }
 
     public function addNominalToPayment(float $nominal)
     {
         if (isset($this->payments[0])) {
-            $this->payments[0]['amount'] = (float) ($this->payments[0]['amount'] ?? 0) + $nominal;
+            $current = (float) ($this->payments[0]['amount'] ?? 0);
+            $this->payments[0]['amount'] = min(1000000000, $current + $nominal);
         }
     }
 
     public function updateDefaultPaymentAmount()
     {
         if (count($this->payments) === 1) {
-            $this->payments[0]['amount'] = $this->grand_total;
+            $this->payments[0]['amount'] = min(1000000000, $this->grand_total);
         }
     }
 

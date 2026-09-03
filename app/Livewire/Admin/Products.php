@@ -102,7 +102,7 @@ class Products extends Component
         $this->validate([
             'code' => 'required|string|max:50|unique:products,code,' . $this->editingProductId,
             'name' => 'required|string|max:255',
-            'product_type' => 'required|in:PHYSICAL,DIGITAL,SERVICE',
+            'product_type' => 'required|in:PHYSICAL,DIGITAL,LAYANAN,SERVICE',
             'product_subtype' => 'nullable|string|max:255',
             'selling_price' => 'required|numeric|min:0',
             'cost_price' => 'required|numeric|min:0',

@@ -96,7 +96,7 @@ class ProductImportService
 
             $productType = match ($typeInput) {
                 'DIGITAL' => 'DIGITAL',
-                'SERVICE' => 'SERVICE',
+                'LAYANAN', 'SERVICE', 'JASA' => 'LAYANAN',
                 default => 'PHYSICAL',
             };
 
@@ -261,10 +261,10 @@ class ProductImportService
         $sample3 = [
             'SVC-TG-0001',
             'Jasa Pasang Tempered Glass / Hydrogel',
-            'Jasa Service',
-            'SERVICE',
+            'Jasa & Layanan',
+            'LAYANAN',
             'RAJA',
-            'SERVICE',
+            'LAYANAN',
             '0',
             '10000',
             '',

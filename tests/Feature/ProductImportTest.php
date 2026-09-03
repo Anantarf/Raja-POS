@@ -33,7 +33,7 @@ class ProductImportTest extends TestCase
             'Kode,Nama,Kategori,Brand,Tipe,Harga Modal,Harga Jual,Barcode,Stok Awal,Stok Minimum,Provider Akun',
             'IMP-001,Kabel Type-C 1m,Aksesoris Hp,Vivan,PHYSICAL,15000,35000,8991234567890,20,5,',
             'IMP-002,Pulsa PLN 50rb,Pulsa,PLN,DIGITAL,0,52500,,0,0,DANA',
-            'IMP-003,Jasa Pasang Tempered Glass,Jasa,,SERVICE,0,10000,,0,0,',
+            'IMP-003,Jasa Pasang Tempered Glass,Jasa,,LAYANAN,0,10000,,0,0,',
         ]);
 
         Storage::fake('local');
