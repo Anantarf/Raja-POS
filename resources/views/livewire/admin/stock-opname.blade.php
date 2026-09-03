@@ -30,7 +30,7 @@
                     @php($item = $opn->items->first())
                     <tr class="hover:bg-[#F3F6F4]/60 transition">
                         <td class="py-3.5 px-4 font-mono text-xs">
-                            <div class="font-bold text-indigo-600 bg-indigo-50 border border-indigo-200/70 px-2 py-0.5 rounded-md inline-block">{{ $opn->opname_number }}</div>
+                            <div class="font-bold text-[#3F7A5D] bg-[#F3F6F4] border border-slate-200/80 px-2.5 py-0.5 rounded-md inline-block">{{ $opn->opname_number }}</div>
                             <div class="text-[10px] text-[#718379] font-sans mt-1 font-semibold">{{ $opn->created_at->format('d M Y, H:i') }}</div>
                         </td>
                         <td class="py-3.5 px-4">
@@ -38,7 +38,7 @@
                             <div class="text-xs text-[#718379] font-semibold">{{ $opn->location?->name }}</div>
                         </td>
                         <td class="py-3.5 px-4 text-center font-mono font-bold text-[#232E28]">{{ $item?->system_quantity ?? 0 }}</td>
-                        <td class="py-3.5 px-4 text-center font-mono font-extrabold text-indigo-600 text-sm">{{ $item?->physical_quantity ?? 0 }}</td>
+                        <td class="py-3.5 px-4 text-center font-mono font-extrabold text-[#3F7A5D] text-sm">{{ $item?->physical_quantity ?? 0 }}</td>
                         <td class="py-3.5 px-4 text-center font-mono font-extrabold {{ ($item?->difference ?? 0) < 0 ? 'text-rose-600' : (($item?->difference ?? 0) > 0 ? 'text-emerald-600' : 'text-[#718379]') }}">
                             {{ ($item?->difference ?? 0) > 0 ? '+' : '' }}{{ $item?->difference ?? 0 }}
                         </td>

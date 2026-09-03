@@ -29,8 +29,8 @@
                 @forelse($categories as $cat)
                     <tr class="hover:bg-[#F3F6F4]/60 transition">
                         <td class="py-3.5 px-4 font-bold text-[#232E28] text-sm">{{ $cat->name }}</td>
-                        <td class="py-3.5 px-4 font-mono text-indigo-600">
-                            <span class="bg-indigo-50 border border-indigo-200/70 px-2 py-0.5 rounded-md font-bold text-[11px]">{{ $cat->slug }}</span>
+                        <td class="py-3.5 px-4 font-mono">
+                            <span class="bg-[#F3F6F4] border border-slate-200/80 text-[#3F7A5D] px-2.5 py-0.5 rounded-md font-mono font-bold text-[11px]">{{ $cat->slug }}</span>
                         </td>
                         <td class="py-3.5 px-4 text-center">
                             <div class="flex items-center justify-center gap-2">

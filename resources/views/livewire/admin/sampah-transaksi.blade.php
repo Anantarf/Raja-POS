@@ -39,7 +39,7 @@
                     @forelse($trashedSales as $sale)
                         <tr class="hover:bg-[#F3F6F4]/60 transition">
                             <td class="py-3.5 px-4">
-                                <div class="font-bold text-indigo-600 font-mono text-xs bg-indigo-50 border border-indigo-200/70 px-2 py-0.5 rounded-md inline-block">{{ $sale->invoice_number }}</div>
+                                <div class="font-bold text-[#3F7A5D] font-mono text-xs bg-[#F3F6F4] border border-slate-200/80 px-2.5 py-0.5 rounded-md inline-block">{{ $sale->invoice_number }}</div>
                                 <div class="text-xs text-[#718379] mt-1 font-semibold">Dibatalkan: {{ $sale->updated_at->format('d M Y, H:i') }}</div>
                             </td>
                             <td class="py-3.5 px-4 text-[#232E28]">

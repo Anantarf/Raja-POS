@@ -49,102 +49,101 @@
                 </div>
             </div>
 
-            <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-4">
+            <div class="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-sm space-y-4">
                 <div>
-                    <h3 class="text-base font-extrabold text-slate-900">Catatan Operasional</h3>
-                    <p class="text-xs text-slate-500 font-medium mt-1">Perubahan pengaturan toko sebaiknya dibatasi untuk Owner karena berdampak ke transaksi dan laporan.</p>
+                    <h3 class="text-base font-extrabold text-[#232E28]">Catatan Operasional</h3>
+                    <p class="text-xs text-[#718379] font-medium mt-1">Perubahan pengaturan toko sebaiknya dibatasi untuk Owner karena berdampak ke transaksi dan laporan.</p>
                 </div>
-                <div class="space-y-2 text-xs font-semibold text-slate-600">
-                    <div class="flex items-center justify-between gap-3 border-b border-slate-100 pb-2"><span>Struk kasir</span><span class="text-slate-900">{{ $settingMap->get('receipt_paper_width', '-') }}</span></div>
-                    <div class="flex items-center justify-between gap-3 border-b border-slate-100 pb-2"><span>Laporan waktu</span><span class="text-slate-900">{{ $settingMap->get('timezone', '-') }}</span></div>
-                    <div class="flex items-center justify-between gap-3"><span>Format nominal</span><span class="text-slate-900">{{ $settingMap->get('currency', '-') }}</span></div>
+                <div class="space-y-2 text-xs font-semibold text-[#52645B]">
+                    <div class="flex items-center justify-between gap-3 border-b border-slate-100 pb-2"><span>Struk kasir</span><span class="text-[#232E28] font-bold">{{ $settingMap->get('receipt_paper_width', '-') }}</span></div>
+                    <div class="flex items-center justify-between gap-3 border-b border-slate-100 pb-2"><span>Laporan waktu</span><span class="text-[#232E28] font-bold">{{ $settingMap->get('timezone', '-') }}</span></div>
+                    <div class="flex items-center justify-between gap-3"><span>Format nominal</span><span class="text-[#232E28] font-bold">{{ $settingMap->get('currency', '-') }}</span></div>
                 </div>
             </div>
-        </div>    @elseif($activeTab === 'USERS')
-        <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden">
+        </div>
+    @elseif($activeTab === 'USERS')
+        <div class="bg-white border border-slate-200/80 rounded-2xl shadow-sm overflow-hidden">
             <table class="w-full text-xs text-left">
-                <thead class="bg-slate-50 text-slate-500 uppercase text-[10px] font-extrabold border-b">
-                    <tr><th class="py-2.5 px-3">Username</th><th class="py-2.5 px-3">Nama</th><th class="py-2.5 px-3">Role</th><th class="py-2.5 px-3 text-center">Status</th></tr>
+                <thead class="bg-[#F3F6F4] border-b border-slate-200/80 text-[#718379] uppercase text-[11px] font-extrabold tracking-wider">
+                    <tr><th class="py-3 px-4">Username</th><th class="py-3 px-4">Nama</th><th class="py-3 px-4">Role</th><th class="py-3 px-4 text-center">Status</th></tr>
                 </thead>
-                <tbody class="divide-y font-medium">
+                <tbody class="divide-y divide-slate-100 font-medium">
                     @foreach($users as $user)
-                        <tr>
-                            <td class="py-2.5 px-3 font-mono font-bold">{{ $user->username }}</td>
-                            <td class="py-2.5 px-3 font-bold text-slate-900">{{ $user->name }}</td>
-                            <td class="py-2.5 px-3">{{ $user->role?->name ?? '-' }}</td>
-                            <td class="py-2.5 px-3 text-center"><span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-emerald-50 text-emerald-700 border">{{ $user->status }}</span></td>
+                        <tr class="hover:bg-[#F3F6F4]/60 transition">
+                            <td class="py-3 px-4 font-mono font-bold text-[#3F7A5D]">{{ $user->username }}</td>
+                            <td class="py-3 px-4 font-bold text-[#232E28]">{{ $user->name }}</td>
+                            <td class="py-3 px-4 text-[#52645B]">{{ $user->role?->name ?? '-' }}</td>
+                            <td class="py-3 px-4 text-center"><span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-[#E3EEE8] text-[#3F7A5D] border border-[#3F7A5D]/20">{{ $user->status }}</span></td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
         </div>
     @elseif($activeTab === 'ROLES')
-        <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden">
+        <div class="bg-white border border-slate-200/80 rounded-2xl shadow-sm overflow-hidden">
             <table class="w-full text-xs text-left">
-                <thead class="bg-slate-50 text-slate-500 uppercase text-[10px] font-extrabold border-b">
-                    <tr><th class="py-2.5 px-3">Role</th><th class="py-2.5 px-3 text-center">Jumlah User</th></tr>
+                <thead class="bg-[#F3F6F4] border-b border-slate-200/80 text-[#718379] uppercase text-[11px] font-extrabold tracking-wider">
+                    <tr><th class="py-3 px-4">Role</th><th class="py-3 px-4 text-center">Jumlah User</th></tr>
                 </thead>
-                <tbody class="divide-y font-medium">
+                <tbody class="divide-y divide-slate-100 font-medium">
                     @foreach($roles as $role)
-                        <tr><td class="py-2.5 px-3 font-mono font-bold">{{ $role->name }}</td><td class="py-2.5 px-3 text-center font-bold">{{ $role->users_count }}</td></tr>
+                        <tr class="hover:bg-[#F3F6F4]/60 transition"><td class="py-3 px-4 font-mono font-bold text-[#232E28]">{{ $role->name }}</td><td class="py-3 px-4 text-center font-extrabold text-[#3F7A5D] font-mono">{{ $role->users_count }}</td></tr>
                     @endforeach
                 </tbody>
             </table>
         </div>
     @elseif($activeTab === 'LOCATIONS')
         <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-            <div class="md:col-span-2 bg-white border border-slate-200 rounded-2xl p-4 shadow-sm">
-                <h3 class="text-sm font-extrabold text-slate-900 mb-3">Lokasi Toko</h3>
+            <div class="md:col-span-2 bg-white border border-slate-200/80 rounded-2xl shadow-sm overflow-hidden">
+                <div class="p-4 border-b border-slate-200/80 bg-white font-extrabold text-sm text-[#232E28]">Lokasi Toko</div>
                 <table class="w-full text-xs text-left">
-                    <thead class="bg-slate-50 text-slate-500 uppercase text-[10px] font-extrabold border-b">
-                        <tr><th class="py-2.5 px-3">Kode</th><th class="py-2.5 px-3">Nama</th><th class="py-2.5 px-3 text-center">Status</th></tr>
+                    <thead class="bg-[#F3F6F4] border-b border-slate-200/80 text-[#718379] uppercase text-[11px] font-extrabold tracking-wider">
+                        <tr><th class="py-3 px-4">Kode</th><th class="py-3 px-4">Nama</th><th class="py-3 px-4 text-center">Status</th></tr>
                     </thead>
-                    <tbody class="divide-y font-medium">
+                    <tbody class="divide-y divide-slate-100 font-medium">
                         @foreach($locations as $loc)
-                            <tr><td class="py-2.5 px-3 font-mono font-bold">{{ $loc->code }}</td><td class="py-2.5 px-3 font-bold text-slate-900">{{ $loc->name }}</td><td class="py-2.5 px-3 text-center"><span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-emerald-50 text-emerald-700 border">{{ $loc->status }}</span></td></tr>
+                            <tr class="hover:bg-[#F3F6F4]/60 transition"><td class="py-3 px-4 font-mono font-bold text-[#3F7A5D]">{{ $loc->code }}</td><td class="py-3 px-4 font-bold text-[#232E28]">{{ $loc->name }}</td><td class="py-3 px-4 text-center"><span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-[#E3EEE8] text-[#3F7A5D] border border-[#3F7A5D]/20">{{ $loc->status }}</span></td></tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
-            <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm space-y-3">
-                <h3 class="text-sm font-extrabold text-slate-900">Tambah Lokasi Toko</h3>
+            <div class="bg-white border border-slate-200/80 rounded-2xl p-4 shadow-sm space-y-3">
+                <h3 class="text-sm font-extrabold text-[#232E28]">Tambah Lokasi Toko</h3>
                 <form wire:submit.prevent="addLocation" class="space-y-3 text-xs">
-                    <input type="text" wire:model="locationCode" placeholder="RAJA-BANGO" class="w-full p-2.5 border rounded-xl font-mono uppercase" required />
-                    <input type="text" wire:model="locationName" placeholder="Raja Aksesoris Bango" class="w-full p-2.5 border rounded-xl" required />
-                    <button type="submit" class="w-full py-2.5 bg-[#3F7A5D] text-white font-bold rounded-xl">Tambah Lokasi Toko</button>
+                    <input type="text" wire:model="locationCode" placeholder="RAJA-BANGO" class="w-full p-2.5 border border-slate-200 rounded-xl font-mono uppercase focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]" required />
+                    <input type="text" wire:model="locationName" placeholder="Raja Aksesoris Bango" class="w-full p-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]" required />
+                    <button type="submit" class="w-full py-2.5 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-xl transition text-xs uppercase tracking-wider cursor-pointer">Tambah Lokasi Toko</button>
                 </form>
             </div>
         </div>
     @else
         <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-            <div class="md:col-span-2 bg-white border border-slate-200 rounded-2xl p-4 shadow-sm">
-                <h3 class="text-sm font-extrabold text-slate-900 mb-3">Metode Pembayaran</h3>
+            <div class="md:col-span-2 bg-white border border-slate-200/80 rounded-2xl shadow-sm overflow-hidden">
+                <div class="p-4 border-b border-slate-200/80 bg-white font-extrabold text-sm text-[#232E28]">Metode Pembayaran</div>
                 <table class="w-full text-xs text-left">
-                    <thead class="bg-slate-50 text-slate-500 uppercase text-[10px] font-extrabold border-b">
-                        <tr><th class="py-2.5 px-3">Nama</th><th class="py-2.5 px-3">Tipe</th><th class="py-2.5 px-3 text-center">Status</th></tr>
+                    <thead class="bg-[#F3F6F4] border-b border-slate-200/80 text-[#718379] uppercase text-[11px] font-extrabold tracking-wider">
+                        <tr><th class="py-3 px-4">Nama</th><th class="py-3 px-4">Tipe</th><th class="py-3 px-4 text-center">Status</th></tr>
                     </thead>
-                    <tbody class="divide-y font-medium">
+                    <tbody class="divide-y divide-slate-100 font-medium">
                         @foreach($paymentMethods as $pm)
-                            <tr><td class="py-2.5 px-3 font-bold text-slate-900">{{ $pm->name }}</td><td class="py-2.5 px-3 font-mono font-bold text-[#3F7A5D]">{{ $pm->type }}</td><td class="py-2.5 px-3 text-center"><span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-emerald-50 text-emerald-700 border">{{ $pm->status }}</span></td></tr>
+                            <tr class="hover:bg-[#F3F6F4]/60 transition"><td class="py-3 px-4 font-bold text-[#232E28]">{{ $pm->name }}</td><td class="py-3 px-4 font-mono font-extrabold text-[#3F7A5D]">{{ $pm->type }}</td><td class="py-3 px-4 text-center"><span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-[#E3EEE8] text-[#3F7A5D] border border-[#3F7A5D]/20">{{ $pm->status }}</span></td></tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
-            <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm space-y-3">
-                <h3 class="text-sm font-extrabold text-slate-900">Tambah Metode Pembayaran</h3>
+            <div class="bg-white border border-slate-200/80 rounded-2xl p-4 shadow-sm space-y-3">
+                <h3 class="text-sm font-extrabold text-[#232E28]">Tambah Metode Pembayaran</h3>
                 <form wire:submit.prevent="addPaymentMethod" class="space-y-3 text-xs">
-                    <input type="text" wire:model="pmName" placeholder="Transfer Bank" class="w-full p-2.5 border rounded-xl" required />
-                    <select wire:model="pmType" class="w-full p-2.5 border rounded-xl bg-white font-semibold">
+                    <input type="text" wire:model="pmName" placeholder="Transfer Bank" class="w-full p-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]" required />
+                    <select wire:model="pmType" class="w-full p-2.5 border border-slate-200 rounded-xl bg-white font-bold focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]">
                         <option value="CASH">CASH</option>
                         <option value="QRIS">QRIS</option>
                         <option value="TRANSFER">TRANSFER</option>
                         <option value="E_WALLET">E_WALLET</option>
                     </select>
-                    <button type="submit" class="w-full py-2.5 bg-[#3F7A5D] text-white font-bold rounded-xl">Tambah Metode Pembayaran</button>
+                    <button type="submit" class="w-full py-2.5 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-xl transition text-xs uppercase tracking-wider cursor-pointer">Tambah Metode Pembayaran</button>
                 </form>
             </div>
         </div>
     @endif
 </div>
-
-
