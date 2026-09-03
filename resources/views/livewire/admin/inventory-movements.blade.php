@@ -40,7 +40,7 @@
                         <th class="py-3.5 px-4 text-center">Sebelum</th>
                         <th class="py-3.5 px-4 text-center">Perubahan</th>
                         <th class="py-3.5 px-4 text-center">Sesudah</th>
-                        <th class="py-3.5 px-4">Catatan</th>
+                        <th class="py-3.5 px-4">No. Referensi / Catatan</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100 font-medium">
@@ -67,7 +67,15 @@
                             <td class="py-3.5 px-4 text-center font-mono font-bold whitespace-nowrap">{{ $movement->quantity_before }}</td>
                             <td class="py-3.5 px-4 text-center font-mono font-extrabold whitespace-nowrap {{ $movement->quantity_change < 0 ? 'text-rose-600' : 'text-emerald-600' }}">{{ $movement->quantity_change > 0 ? '+' : '' }}{{ $movement->quantity_change }}</td>
                             <td class="py-3.5 px-4 text-center font-mono font-bold whitespace-nowrap">{{ $movement->quantity_after }}</td>
-                            <td class="py-3.5 px-4 text-[#52645B] min-w-[200px]">{{ $movement->notes ?? '-' }}</td>
+                            <td class="py-3.5 px-4 whitespace-nowrap">
+                                @if($movement->notes)
+                                    <span class="px-2.5 py-1 rounded-md bg-[#F3F6F4] text-[#232E28] font-mono text-[11px] font-bold border border-slate-200/80 inline-block whitespace-nowrap">
+                                        {{ $movement->notes }}
+                                    </span>
+                                @else
+                                    <span class="text-slate-400 font-semibold">-</span>
+                                @endif
+                            </td>
                         </tr>
                     @empty
                         <tr><td colspan="7" class="py-12 text-center text-slate-400 font-medium">Belum ada pergerakan stok.</td></tr>
