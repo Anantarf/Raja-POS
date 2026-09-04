@@ -199,30 +199,30 @@
     <div class="flex-1 flex flex-col min-w-0 h-full overflow-hidden">
         <!-- Top Navbar -->
         <header class="min-h-[70px] py-3.5 bg-white border-b border-[#E3EEE8] px-4 sm:px-8 flex items-center justify-between shrink-0">
-            <div class="flex items-center gap-4">
-                <button @click="mobileMenuOpen = !mobileMenuOpen" class="lg:hidden p-2 text-slate-600 hover:text-slate-900 rounded-xl bg-slate-100">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="flex items-center gap-3">
+                <button @click="mobileMenuOpen = !mobileMenuOpen" class="lg:hidden p-2 text-slate-600 hover:text-slate-900 rounded-xl bg-slate-100 shrink-0" title="Buka Menu">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                     </svg>
                 </button>
-                <div class="hidden sm:block">
-                    <h2 class="font-extrabold text-base text-[#232E28] tracking-tight">{{ $title ?? 'Admin Portal' }}</h2>
-                    <p class="text-xs text-[#718379] font-medium">RAJA AKSESORIS BANGO</p>
+                <div class="min-w-0">
+                    <h2 class="font-extrabold text-xs sm:text-base text-[#232E28] tracking-tight truncate max-w-[130px] sm:max-w-none">{{ $title ?? 'Admin Portal' }}</h2>
+                    <p class="text-[10px] sm:text-xs text-[#718379] font-medium hidden sm:block">RAJA AKSESORIS BANGO</p>
                 </div>
             </div>
 
-            <div class="flex items-center gap-3">
-                <a href="/pos" class="px-3.5 py-2 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-bold rounded-xl text-xs shadow-sm transition flex items-center gap-1.5 shrink-0 cursor-pointer">
+            <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+                <a href="/pos" class="px-3 py-1.5 sm:px-3.5 sm:py-2 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-bold rounded-xl text-xs shadow-sm transition flex items-center gap-1.5 shrink-0 cursor-pointer">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 002 2v14a2 2 0 002 2z"></path>
                     </svg>
-                    <span>Buka Kasir</span>
+                    <span>Kasir</span>
                 </a>
             </div>
         </header>
 
         <!-- Main Page Content Body -->
-        <main class="flex-1 overflow-y-auto p-4 sm:p-8">
+        <main class="flex-1 overflow-y-auto p-3 sm:p-8">
             {{ $slot }}
         </main>
     </div>
@@ -239,7 +239,7 @@
                 if (!container) {
                     container = document.createElement('div');
                     container.id = 'toast-container';
-                    container.className = 'fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none';
+                    container.className = 'fixed bottom-4 left-4 right-4 sm:left-auto sm:right-5 z-50 flex flex-col items-center sm:items-end gap-2 pointer-events-none';
                     document.body.appendChild(container);
                 }
 
