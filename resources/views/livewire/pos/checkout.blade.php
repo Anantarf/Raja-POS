@@ -241,8 +241,8 @@
                                                 <span class="text-[10px] font-mono font-bold text-slate-500 bg-slate-100 px-1.5 py-0.2 rounded">
                                                     {{ $product->code }}
                                                 </span>
-                                                <span class="text-[9.5px] uppercase font-bold px-1.5 py-0.2 rounded border {{ $product->product_type === 'PHYSICAL' ? 'bg-[#3F7A5D]/10 text-[#3F7A5D] border-[#3F7A5D]/20' : ($product->product_type === 'DIGITAL' ? 'bg-emerald-100/90 text-emerald-800 border-emerald-300/60' : 'bg-[#C2AC7C]/15 text-[#8F794B] border-[#C2AC7C]/30') }}">
-                                                    {{ $product->product_type }}
+                                                <span class="text-[9.5px] uppercase font-extrabold px-1.5 py-0.5 rounded border {{ $product->product_type === 'PHYSICAL' ? 'bg-[#3F7A5D]/10 text-[#3F7A5D] border-[#3F7A5D]/20' : ($product->product_type === 'DIGITAL' ? 'bg-emerald-100/90 text-emerald-800 border-emerald-300/60' : 'bg-[#C2AC7C]/15 text-[#8F794B] border-[#C2AC7C]/30') }}">
+                                                    {{ $product->product_type === 'PHYSICAL' ? 'FISIK' : ($product->product_type === 'DIGITAL' ? 'DIGITAL' : 'LAYANAN') }}
                                                 </span>
                                             </div>
                                             <h4 class="text-xs font-bold text-[#232E28] group-hover:text-[#3F7A5D] transition-colors truncate">

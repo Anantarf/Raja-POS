@@ -141,8 +141,8 @@
                     <div class="space-y-2.5">
                         <!-- Top Metadata & Type Badge -->
                         <div class="flex items-center justify-between text-xs">
-                            <span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold uppercase tracking-wider {{ $product->product_type === 'PHYSICAL' ? 'bg-[#E3EEE8] text-[#3F7A5D]' : ($product->product_type === 'DIGITAL' ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-800') }}">
-                                {{ $product->product_type === 'PHYSICAL' ? 'Fisik' : ($product->product_type === 'DIGITAL' ? 'Digital' : 'Layanan') }}
+                            <span class="px-2.5 py-0.5 rounded-md text-[11px] font-extrabold uppercase tracking-wider border {{ $product->product_type === 'PHYSICAL' ? 'bg-[#3F7A5D]/10 text-[#3F7A5D] border-[#3F7A5D]/20' : ($product->product_type === 'DIGITAL' ? 'bg-emerald-100/90 text-emerald-800 border-emerald-300/60' : 'bg-[#C2AC7C]/15 text-[#8F794B] border-[#C2AC7C]/30') }}">
+                                {{ $product->product_type === 'PHYSICAL' ? 'FISIK' : ($product->product_type === 'DIGITAL' ? 'DIGITAL' : 'LAYANAN') }}
                             </span>
 
                             @if($product->product_type === 'PHYSICAL')
@@ -323,8 +323,8 @@
 
                                 <!-- Col 2: Jenis Stok Badge -->
                                 <td class="py-3.5 px-4 whitespace-nowrap">
-                                    <span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold uppercase tracking-wider {{ $product->product_type === 'PHYSICAL' ? 'bg-[#E3EEE8] text-[#3F7A5D]' : ($product->product_type === 'DIGITAL' ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-800') }}">
-                                        {{ $product->product_type === 'PHYSICAL' ? 'Fisik' : ($product->product_type === 'DIGITAL' ? 'Digital' : 'Layanan') }}
+                                    <span class="px-2.5 py-0.5 rounded-md text-[11px] font-extrabold uppercase tracking-wider border {{ $product->product_type === 'PHYSICAL' ? 'bg-[#3F7A5D]/10 text-[#3F7A5D] border-[#3F7A5D]/20' : ($product->product_type === 'DIGITAL' ? 'bg-emerald-100/90 text-emerald-800 border-emerald-300/60' : 'bg-[#C2AC7C]/15 text-[#8F794B] border-[#C2AC7C]/30') }}">
+                                        {{ $product->product_type === 'PHYSICAL' ? 'FISIK' : ($product->product_type === 'DIGITAL' ? 'DIGITAL' : 'LAYANAN') }}
                                     </span>
                                 </td>
 
