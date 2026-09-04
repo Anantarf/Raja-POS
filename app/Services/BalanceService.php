@@ -45,7 +45,7 @@ class BalanceService
             $to->update(['current_balance' => $toBefore + $amount]);
 
             return BalanceTransaction::create([
-                'transaction_number' => 'TRF-'.Str::uuid(),
+                'transaction_number' => BalanceTransaction::generateTransactionNumber('TRF'),
                 'transaction_type' => 'TRANSFER',
                 'source_account_id' => $from->id,
                 'destination_account_id' => $to->id,
@@ -109,7 +109,7 @@ class BalanceService
             $locked->update(['current_balance' => $newBalance]);
 
             return BalanceTransaction::create([
-                'transaction_number' => 'ADJ-'.Str::uuid(),
+                'transaction_number' => BalanceTransaction::generateTransactionNumber('ADJ'),
                 'transaction_type' => 'ADJUSTMENT',
                 'destination_account_id' => $locked->id,
                 'amount' => abs($newBalance - $before),
@@ -151,7 +151,7 @@ class BalanceService
             $locked->update(['current_balance' => $after]);
 
             return BalanceTransaction::create([
-                'transaction_number' => strtolower(substr($type, 0, 3)).'-'.Str::uuid(),
+                'transaction_number' => BalanceTransaction::generateTransactionNumber(strtoupper(substr($type, 0, 3))),
                 'transaction_type' => $type,
                 $accountColumn => $locked->id,
                 'amount' => abs($change),

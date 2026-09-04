@@ -73,7 +73,7 @@ class SaleCancellationService
                         $account->update(['current_balance' => $after]);
 
                         BalanceTransaction::create([
-                            'transaction_number' => 'TRX-'.Str::uuid(),
+                            'transaction_number' => BalanceTransaction::generateTransactionNumber('TRX'),
                             'transaction_type' => 'TRASH_REVERSAL',
                             'source_account_id' => $account->id,
                             'amount' => $payment->amount,
@@ -106,7 +106,7 @@ class SaleCancellationService
                 $cashAccount->update(['current_balance' => $afterCash]);
 
                 BalanceTransaction::create([
-                    'transaction_number' => 'TRX-'.Str::uuid(),
+                    'transaction_number' => BalanceTransaction::generateTransactionNumber('TRX'),
                     'transaction_type' => 'TRASH_REVERSAL',
                     'destination_account_id' => $cashAccount->id,
                     'amount' => $payment->change_amount,
@@ -217,7 +217,7 @@ class SaleCancellationService
                         $account->update(['current_balance' => $after]);
 
                         BalanceTransaction::create([
-                            'transaction_number' => 'TRX-'.Str::uuid(),
+                            'transaction_number' => BalanceTransaction::generateTransactionNumber('TRX'),
                             'transaction_type' => 'RESTORE_REVERSAL',
                             'destination_account_id' => $account->id,
                             'amount' => $payment->amount,
@@ -250,7 +250,7 @@ class SaleCancellationService
                 $cashAccount->update(['current_balance' => $afterCash]);
 
                 BalanceTransaction::create([
-                    'transaction_number' => 'TRX-'.Str::uuid(),
+                    'transaction_number' => BalanceTransaction::generateTransactionNumber('TRX'),
                     'transaction_type' => 'RESTORE_REVERSAL',
                     'source_account_id' => $cashAccount->id,
                     'amount' => $payment->change_amount,

@@ -194,7 +194,7 @@
                         <tr class="hover:bg-[#F3F6F4]/60 transition">
                             <!-- No Mutasi & Waktu -->
                             <td class="py-3.5 px-4 whitespace-nowrap">
-                                <div class="font-bold text-[#3F7A5D] font-mono text-xs bg-[#F3F6F4] border border-slate-200/80 px-2.5 py-0.5 rounded-md inline-block">{{ $trx->transaction_number }}</div>
+                                <div class="font-bold text-[#3F7A5D] font-mono text-xs bg-[#F3F6F4] border border-slate-200/80 px-2.5 py-0.5 rounded-md inline-block">{{ $trx->formatted_transaction_number }}</div>
                                 <div class="text-[10px] text-[#718379] mt-1 font-semibold whitespace-nowrap">{{ $trx->created_at->format('d M Y, H:i') }}</div>
                             </td>
 

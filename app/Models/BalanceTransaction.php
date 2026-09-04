@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Str;
 
 class BalanceTransaction extends Model
 {
@@ -75,5 +76,42 @@ class BalanceTransaction extends Model
                 $sq->forUserLocation($user);
             });
         });
+    }
+
+    /**
+     * Generate concise, unique transaction number for balance mutations.
+     * Example: TRX-260905-A8B9C or TRF-260905-K3N8P
+     */
+    public static function generateTransactionNumber(string $prefix = 'TRX'): string
+    {
+        $cleanPrefix = strtoupper(trim($prefix)) ?: 'TRX';
+        $dateStr = date('ymd');
+
+        do {
+            $number = $cleanPrefix . '-' . $dateStr . '-' . strtoupper(Str::random(5));
+        } while (static::where('transaction_number', $number)->exists());
+
+        return $number;
+    }
+
+    /**
+     * Format legacy or existing long transaction numbers cleanly.
+     */
+    public function getFormattedTransactionNumberAttribute(): string
+    {
+        $number = trim((string) ($this->transaction_number ?? ''));
+
+        if ($number === '') {
+            return '-';
+        }
+
+        if (strlen($number) > 20 && str_contains($number, '-')) {
+            $parts = array_values(array_filter(explode('-', $number)));
+            $prefix = strtoupper(!empty($parts[0]) ? $parts[0] : 'TRX');
+            $code = strtoupper(!empty($parts[1]) ? $parts[1] : substr($number, -8));
+            return $prefix . '-' . substr($code, 0, 8);
+        }
+
+        return strtoupper($number);
     }
 }

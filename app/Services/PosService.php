@@ -342,7 +342,7 @@ class PosService
                         $account->update(['current_balance' => $after]);
 
                         BalanceTransaction::create([
-                            'transaction_number' => 'TRX-'.Str::uuid(),
+                            'transaction_number' => BalanceTransaction::generateTransactionNumber('TRX'),
                             'transaction_type' => 'SALE_RECEIPT',
                             'destination_account_id' => $account->id,
                             'amount' => $pData['amount'],
@@ -375,7 +375,7 @@ class PosService
                 $cashAccount->update(['current_balance' => $afterCash]);
 
                 BalanceTransaction::create([
-                    'transaction_number' => 'TRX-'.Str::uuid(),
+                    'transaction_number' => BalanceTransaction::generateTransactionNumber('TRX'),
                     'transaction_type' => 'WITHDRAWAL',
                     'source_account_id' => $cashAccount->id,
                     'amount' => $pData['change_amount'],
