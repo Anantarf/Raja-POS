@@ -33,6 +33,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        if (app()->environment('production') || str_starts_with(config('app.url'), 'https://') || request()->header('X-Forwarded-Proto') === 'https') {
+            \Illuminate\Support\Facades\URL::forceScheme('https');
+        }
+
         \Illuminate\Support\Facades\Gate::before(function ($user, $ability) {
             if ($user->hasRole('OWNER') || $user->hasRole('SUPERADMIN') || $user->hasRole('ADMIN')) {
                 // Owner and Admin have full access to management
