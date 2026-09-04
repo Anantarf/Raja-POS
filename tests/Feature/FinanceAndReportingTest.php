@@ -28,6 +28,15 @@ class FinanceAndReportingTest extends TestCase
         $this->seed(DatabaseSeeder::class);
     }
 
+    public function test_formatted_transaction_number_attribute(): void
+    {
+        $trx = new \App\Models\BalanceTransaction([
+            'transaction_number' => 'TRX-30971e96-924c-45fa-b1a6-21234d4e4db3'
+        ]);
+
+        $this->assertEquals('TRX-30971E96', $trx->formatted_transaction_number);
+    }
+
     public function test_balance_service_transfer(): void
     {
         $owner = User::where('username', 'superadmin')->first();
