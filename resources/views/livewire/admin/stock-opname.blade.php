@@ -78,7 +78,7 @@
                         @endphp
                         <tr class="hover:bg-[#F3F6F4]/60 transition">
                             <td class="py-3.5 px-4 font-mono text-xs whitespace-nowrap">
-                                <div class="font-bold text-[#3F7A5D] bg-[#F3F6F4] border border-slate-200/80 px-2.5 py-0.5 rounded-md inline-block">{{ $opn->opname_number }}</div>
+                                <div class="font-bold text-[#3F7A5D] bg-[#F3F6F4] border border-slate-200/80 px-2.5 py-0.5 rounded-md inline-block">{{ $opn->formatted_opname_number }}</div>
                                 <div class="text-[10px] text-[#718379] font-sans mt-1 font-semibold whitespace-nowrap">{{ $opn->created_at->format('d M Y, H:i') }}</div>
                             </td>
                             <td class="py-3.5 px-4">
@@ -296,7 +296,7 @@
                 <div class="flex items-center justify-between border-b border-slate-100 pb-3 shrink-0">
                     <div>
                         <h3 class="text-base font-extrabold text-[#232E28]">Detail Sesi Stock Opname</h3>
-                        <div class="text-xs text-[#718379] font-mono mt-0.5">{{ $selectedOpnameDetail->opname_number }} &bull; {{ $selectedOpnameDetail->location?->name }}</div>
+                        <div class="text-xs text-[#718379] font-mono mt-0.5">{{ $selectedOpnameDetail->formatted_opname_number }} &bull; {{ $selectedOpnameDetail->location?->name }}</div>
                     </div>
                     <button type="button" wire:click="$set('showDetailModal', false)" class="text-slate-400 hover:text-slate-600 p-1">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>

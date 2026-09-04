@@ -84,7 +84,7 @@ class StockOpname extends Component
             ->where('location_id', $this->location_id)->value('quantity') ?? 0;
 
         $opname = StockOpnameModel::create([
-            'opname_number' => 'OPN-'.date('YmdHis').'-'.random_int(100, 999),
+            'opname_number' => StockOpnameModel::generateOpnameNumber('OPN'),
             'location_id' => $location->id,
             'status' => 'DRAFT',
             'created_by' => auth()->id(),
@@ -204,7 +204,7 @@ class StockOpname extends Component
         }
 
         $opname = StockOpnameModel::create([
-            'opname_number' => 'OPN-BULK-'.date('YmdHis').'-'.random_int(100, 999),
+            'opname_number' => StockOpnameModel::generateOpnameNumber('OPN-BULK'),
             'location_id' => $location->id,
             'status' => 'DRAFT',
             'created_by' => auth()->id(),
