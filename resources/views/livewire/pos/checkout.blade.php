@@ -29,11 +29,11 @@
         </div>
     </header>
 
-    <!-- Main Operational Split View (Desktop: 58% Katalog : 42% Keranjang, Tablet/HP: Responsive Stack) -->
-    <div class="flex-1 flex flex-col lg:flex-row overflow-y-auto lg:overflow-hidden px-3 sm:px-6 pb-5 gap-4 lg:gap-5">
+    <!-- Main Operational Split View (Desktop: 61.8% Katalog : 38.2% Keranjang, Tablet: 58% : 42%, Mobile: Responsive Stack) -->
+    <div class="flex-1 flex flex-col md:flex-row overflow-y-auto md:overflow-hidden px-2.5 sm:px-6 pb-5 gap-3.5 md:gap-5">
 
-        <!-- LEFT COLUMN: Product Catalog (61.8% Golden Ratio Proportion) -->
-        <div class="w-full lg:w-[61.8%] flex flex-col flex-shrink-0">
+        <!-- LEFT COLUMN: Product Catalog (Golden Ratio Proportion) -->
+        <div class="w-full md:w-[58%] lg:w-[61.8%] flex flex-col flex-shrink-0">
 
             <!-- Streamlined Toolbar -->
             <div class="p-3.5 sm:p-4 bg-white rounded-2xl border border-slate-200/80 shadow-sm space-y-3 mb-3">
@@ -114,8 +114,8 @@
             <!-- Product Display (Grid Cards or Aligned List Rows) -->
             <div class="flex-1 overflow-y-auto pr-1">
                 @if($viewMode === 'grid')
-                    <!-- Product Cards Grid (100% Equal Height Alignment) -->
-                    <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3.5">
+                    <!-- Product Cards Grid (Golden Ratio Proportional Sizing) -->
+                    <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2.5 sm:gap-3.5">
                         @forelse($products as $product)
                             @php
                                 $isIncomplete = $product->price_status === 'INCOMPLETE' && $product->product_type !== 'LAYANAN';
@@ -131,11 +131,11 @@
 
                             <div
                                 wire:click="addToCart({{ $product->id }})"
-                                class="bg-white border border-[#E3EEE8] hover:border-[#3F7A5D] rounded-3xl overflow-hidden flex flex-col justify-between h-[235px] cursor-pointer transition-all duration-200 relative group hover:shadow-sm {{ $isIncomplete ? 'opacity-65 bg-rose-50/20' : '' }}"
+                                class="bg-white border border-[#E3EEE8] hover:border-[#3F7A5D] rounded-2xl sm:rounded-3xl overflow-hidden flex flex-col justify-between h-[205px] sm:h-[235px] cursor-pointer transition-all duration-200 relative group hover:shadow-sm {{ $isIncomplete ? 'opacity-65 bg-rose-50/20' : '' }}"
                             >
                                 <div>
                                     <!-- Top Image/Banner Container -->
-                                    <div class="w-full h-28 relative overflow-hidden bg-gradient-to-br from-[#E3EEE8]/70 via-[#F3F6F4] to-[#E3EEE8]/40 flex items-center justify-center shrink-0">
+                                    <div class="w-full h-22 sm:h-28 relative overflow-hidden bg-gradient-to-br from-[#E3EEE8]/70 via-[#F3F6F4] to-[#E3EEE8]/40 flex items-center justify-center shrink-0">
                                         <!-- Overlay Badges -->
                                         <div class="absolute top-2 left-2 right-2 flex items-center justify-between z-10 opacity-90 group-hover:opacity-100 transition-opacity">
                                             <span class="text-[9px] font-mono text-[#3F7A5D] bg-white/80 backdrop-blur-sm px-1.5 py-0.5 rounded font-bold border border-[#3F7A5D]/15">
@@ -151,7 +151,7 @@
                                             <div class="absolute inset-x-0 bottom-0 h-6 bg-gradient-to-t from-white via-white/40 to-transparent"></div>
                                         @else
                                             <div class="flex items-center justify-center h-full pt-2">
-                                                <span class="text-2xl font-mono font-extrabold text-[#3F7A5D]/80 tracking-wider">
+                                                <span class="text-xl sm:text-2xl font-mono font-extrabold text-[#3F7A5D]/80 tracking-wider">
                                                     {{ $initials }}
                                                 </span>
                                             </div>
@@ -160,15 +160,15 @@
                                     </div>
 
                                     <!-- Card Title (Top-Aligned Baseline) -->
-                                    <div class="px-3 pt-2 pb-1 h-10 flex items-start">
-                                        <h4 class="text-xs font-bold text-[#232E28] leading-tight group-hover:text-[#3F7A5D] transition-colors line-clamp-2 overflow-hidden text-ellipsis">
+                                    <div class="px-2.5 sm:px-3 pt-1.5 sm:pt-2 pb-1 h-9 sm:h-10 flex items-start">
+                                        <h4 class="text-[11px] sm:text-xs font-bold text-[#232E28] leading-tight group-hover:text-[#3F7A5D] transition-colors line-clamp-2 overflow-hidden text-ellipsis">
                                             {{ $product->name }}
                                         </h4>
                                     </div>
                                 </div>
 
                                 <!-- Card Footer Price & Stock (Perfect Sejajar Alignment) -->
-                                <div class="px-3 pb-2.5 pt-2 border-t border-slate-100 flex items-center justify-between gap-1.5 shrink-0 bg-white min-h-[42px]">
+                                <div class="px-2.5 sm:px-3 pb-2 sm:pb-2.5 pt-1.5 sm:pt-2 border-t border-slate-100 flex items-center justify-between gap-1 shrink-0 bg-white min-h-[38px] sm:min-h-[42px]">
                                     <div class="min-w-0 flex-1">
                                         @if($product->product_type === 'LAYANAN')
                                             <span class="inline-flex items-center gap-0.5 text-[9.5px] font-bold text-teal-700 bg-teal-50 border border-teal-200/80 px-1.5 py-0.5 rounded whitespace-nowrap">
@@ -298,8 +298,8 @@
             </div>
         </div>
 
-        <!-- RIGHT COLUMN: Golden Ratio Cart Sidebar (38.2% Proportion) -->
-        <div id="cart-section" class="w-full lg:w-[38.2%] bg-white rounded-3xl border border-[#E3EEE8] flex flex-col flex-shrink-0 overflow-hidden h-full shadow-sm">
+        <!-- RIGHT COLUMN: Golden Ratio Cart Sidebar (38.2% Desktop / 42% Tablet) -->
+        <div id="cart-section" class="w-full md:w-[42%] lg:w-[38.2%] bg-white rounded-3xl border border-[#E3EEE8] flex flex-col flex-shrink-0 overflow-hidden h-full shadow-sm">
 
             <!-- 1. Cart Header -->
             <div class="px-5 py-3.5 bg-white border-b border-slate-200/80 flex items-center justify-between shrink-0">
@@ -654,9 +654,9 @@
         </div>
     @endif
 
-    <!-- MOBILE STICKY FLOATING CART BAR (lg:hidden) -->
+    <!-- MOBILE STICKY FLOATING CART BAR (md:hidden) -->
     @if(count($cart) > 0)
-        <div class="lg:hidden fixed bottom-4 left-4 right-4 z-40 bg-[#232E28]/95 backdrop-blur-md text-white px-4 py-3 rounded-2xl shadow-xl border border-emerald-500/30 flex items-center justify-between gap-3 animate-in fade-in slide-in-from-bottom-4 duration-300">
+        <div class="md:hidden fixed bottom-4 left-4 right-4 z-40 bg-[#232E28]/95 backdrop-blur-md text-white px-4 py-3 rounded-2xl shadow-xl border border-emerald-500/30 flex items-center justify-between gap-3 animate-in fade-in slide-in-from-bottom-4 duration-300">
             <div class="flex items-center gap-3 min-w-0">
                 <div class="w-9 h-9 rounded-xl bg-[#3F7A5D] text-white flex items-center justify-center font-mono font-extrabold text-xs shrink-0 shadow-inner">
                     {{ count($cart) }}
