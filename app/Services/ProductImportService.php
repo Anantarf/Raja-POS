@@ -105,8 +105,8 @@ class ProductImportService
                 default => 'PHYSICAL',
             };
 
-            $costPrice = $idxCost !== null ? (float) preg_replace('/[^0-9.]/', '', $row[$idxCost] ?? '0') : 0.0;
-            $sellingPrice = $idxSelling !== null ? (float) preg_replace('/[^0-9.]/', '', $row[$idxSelling] ?? '0') : 0.0;
+            $costPrice = $idxCost !== null ? $this->parseNominal($row[$idxCost] ?? '0') : 0.0;
+            $sellingPrice = $idxSelling !== null ? $this->parseNominal($row[$idxSelling] ?? '0') : 0.0;
             $barcode = $idxBarcode !== null ? trim($row[$idxBarcode] ?? '') : null;
             $initialStock = $idxStock !== null ? (int) preg_replace('/[^0-9]/', '', $row[$idxStock] ?? '0') : 0;
             $minStock = $idxMinStock !== null ? (int) preg_replace('/[^0-9]/', '', $row[$idxMinStock] ?? '3') : 3;
@@ -389,5 +389,40 @@ class ProductImportService
         }
 
         return null;
+    }
+
+    protected function parseNominal(mixed $raw): float
+    {
+        if (is_null($raw) || $raw === '') {
+            return 0.0;
+        }
+
+        if (is_numeric($raw)) {
+            return (float) $raw;
+        }
+
+        $str = trim((string) $raw);
+        $str = preg_replace('/[^\d.,]/', '', $str);
+
+        if (str_contains($str, '.') && str_contains($str, ',')) {
+            if (strrpos($str, ',') > strrpos($str, '.')) {
+                $str = str_replace('.', '', $str);
+                $str = str_replace(',', '.', $str);
+            } else {
+                $str = str_replace(',', '', $str);
+            }
+        } elseif (str_contains($str, '.')) {
+            if (preg_match('/^\d{1,3}(\.\d{3})+$/', $str)) {
+                $str = str_replace('.', '', $str);
+            }
+        } elseif (str_contains($str, ',')) {
+            if (preg_match('/^\d{1,3}(,\d{3})+$/', $str)) {
+                $str = str_replace(',', '', $str);
+            } else {
+                $str = str_replace(',', '.', $str);
+            }
+        }
+
+        return (float) $str;
     }
 }

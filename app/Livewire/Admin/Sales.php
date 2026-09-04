@@ -99,8 +99,11 @@ class Sales extends Component
             });
         }
 
-        $allowedSorts = ['invoice_number', 'grand_total', 'status', 'created_at'];
+        $allowedSorts = ['invoice_number', 'total_amount', 'grand_total', 'status', 'created_at'];
         $field = in_array($this->sortField, $allowedSorts) ? $this->sortField : 'created_at';
+        if ($field === 'grand_total') {
+            $field = 'total_amount';
+        }
         $direction = in_array($this->sortDirection, ['asc', 'desc']) ? $this->sortDirection : 'desc';
 
         $sales = $query->orderBy($field, $direction)->paginate(12);

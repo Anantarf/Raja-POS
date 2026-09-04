@@ -179,7 +179,7 @@ class Products extends Component
             $product = Product::create($data);
 
             if ($product->product_type === 'PHYSICAL') {
-                $location = Location::first();
+                $location = auth()->user()?->location ?? Location::first();
                 if ($location) {
                     if ($this->initial_stock > 0) {
                         $inventoryService->adjustStock(

@@ -39,7 +39,7 @@ return new class extends Migration
             $table->foreignId('category_id')->nullable()->constrained('categories')->nullOnDelete();
             $table->foreignId('brand_id')->nullable()->constrained('brands')->nullOnDelete();
 
-            $table->string('product_type')->default('PHYSICAL'); // PHYSICAL, DIGITAL, SERVICE
+            $table->string('product_type')->default('PHYSICAL'); // PHYSICAL, DIGITAL, LAYANAN
             $table->string('product_subtype')->nullable();
 
             $table->foreignId('default_balance_account_id')->nullable()->constrained('balance_accounts')->nullOnDelete();

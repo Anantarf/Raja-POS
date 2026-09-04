@@ -215,7 +215,7 @@ class Checkout extends Component
             return;
         }
 
-        $location = Location::where('code', 'RAJA-BANGO')->first() ?? Location::first();
+        $location = auth()->user()?->location ?? Location::where('code', 'RAJA-BANGO')->first() ?? Location::first();
         $currentStock = 999999;
 
         if ($product->product_type === 'PHYSICAL') {
@@ -447,7 +447,7 @@ class Checkout extends Component
 
     public function render()
     {
-        $location = Location::where('code', 'RAJA-BANGO')->first() ?? Location::first();
+        $location = auth()->user()?->location ?? Location::where('code', 'RAJA-BANGO')->first() ?? Location::first();
 
         $query = Product::query()
             ->with([
