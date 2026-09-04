@@ -35,8 +35,22 @@ Route::middleware(['auth'])->group(function () {
     // Livewire Kasir POS
     Route::get('/pos', Checkout::class)->middleware('can:sales.create')->name('pos');
 
-    // Custom Livewire Admin Routes
-    Route::get('/admin', Dashboard::class)->middleware('can:dashboard.view')->name('admin');
+    // Custom Livewire Operational Portal Routes (/portal/*)
+    Route::get('/portal', Dashboard::class)->middleware('can:dashboard.view')->name('portal.dashboard');
+    Route::get('/portal/dashboard', Dashboard::class)->middleware('can:dashboard.view')->name('portal.dashboard.alias');
+    Route::get('/portal/sales', Sales::class)->middleware('can:sales.view_all')->name('portal.sales');
+    Route::get('/portal/trash', SampahTransaksi::class)->middleware('can:sales.restore')->name('portal.trash');
+    Route::get('/portal/inventories', Inventories::class)->middleware('can:inventory.view')->name('portal.inventories');
+    Route::get('/portal/inventory-movements', InventoryMovements::class)->middleware('can:inventory.view')->name('portal.inventory-movements');
+    Route::get('/portal/stock-opname', StockOpname::class)->middleware('can:stock_opname.view')->name('portal.stock-opname');
+    Route::get('/portal/products', Products::class)->middleware('can:product.view')->name('portal.products');
+    Route::get('/portal/categories', Categories::class)->middleware('can:product.view')->name('portal.categories');
+    Route::get('/portal/brands', Brands::class)->middleware('can:product.view')->name('portal.brands');
+    Route::get('/portal/balances', Balances::class)->middleware('can:balance.view')->name('portal.balances');
+    Route::get('/portal/reports/{type?}', Reports::class)->middleware('can:report.sales.view')->name('portal.reports');
+    Route::get('/portal/settings/{section?}', Settings::class)->middleware('can:settings.manage')->name('portal.settings');
+
+    // Backward compatibility aliases for operational admin routes
     Route::get('/admin/dashboard', Dashboard::class)->middleware('can:dashboard.view')->name('admin.dashboard');
     Route::get('/admin/sales', Sales::class)->middleware('can:sales.view_all')->name('admin.sales');
     Route::get('/admin/trash', SampahTransaksi::class)->middleware('can:sales.restore')->name('admin.trash');
@@ -49,19 +63,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/balances', Balances::class)->middleware('can:balance.view')->name('admin.balances');
     Route::get('/admin/reports/{type?}', Reports::class)->middleware('can:report.sales.view')->name('admin.reports');
     Route::get('/admin/settings/{section?}', Settings::class)->middleware('can:settings.manage')->name('admin.settings');
-
-    // Also support /portal/* route aliases
-    Route::get('/portal/sales', Sales::class)->middleware('can:sales.view_all')->name('portal.sales');
-    Route::get('/portal/trash', SampahTransaksi::class)->middleware('can:sales.restore')->name('portal.trash');
-    Route::get('/portal/inventories', Inventories::class)->middleware('can:inventory.view')->name('portal.inventories');
-    Route::get('/portal/inventory-movements', InventoryMovements::class)->middleware('can:inventory.view')->name('portal.inventory-movements');
-    Route::get('/portal/stock-opname', StockOpname::class)->middleware('can:stock_opname.view')->name('portal.stock-opname');
-    Route::get('/portal/products', Products::class)->middleware('can:product.view')->name('portal.products');
-    Route::get('/portal/categories', Categories::class)->middleware('can:product.view')->name('portal.categories');
-    Route::get('/portal/brands', Brands::class)->middleware('can:product.view')->name('portal.brands');
-    Route::get('/portal/balances', Balances::class)->middleware('can:balance.view')->name('portal.balances');
-    Route::get('/portal/reports/{type?}', Reports::class)->middleware('can:report.sales.view')->name('portal.reports');
-    Route::get('/portal/settings/{section?}', Settings::class)->middleware('can:settings.manage')->name('portal.settings');
 
     // Receipt Route
     Route::get('/receipt/thermal/{sale}', function (Sale $sale) {

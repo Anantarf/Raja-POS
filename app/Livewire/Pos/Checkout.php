@@ -17,7 +17,7 @@ class Checkout extends Component
 
     public ?int $selectedCategory = null;
 
-    public string $selectedType = 'ALL'; // ALL, PHYSICAL, DIGITAL, SERVICE
+    public string $selectedType = 'ALL'; // ALL, PHYSICAL, DIGITAL, LAYANAN
 
     public string $viewMode = 'grid'; // 'grid' or 'list'
 
