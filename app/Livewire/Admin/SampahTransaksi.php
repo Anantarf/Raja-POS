@@ -24,7 +24,7 @@ class SampahTransaksi extends Component
         }
 
         try {
-            $sale = Sale::findOrFail($saleId);
+            $sale = Sale::forUserLocation()->findOrFail($saleId);
             $cancellationService->restoreFromTrash($sale, auth()->user());
             $this->dispatch('notify', message: 'Transaksi berhasil dipulihkan dari Sampah Transaksi.', type: 'success');
         } catch (\Exception $e) {
@@ -34,7 +34,8 @@ class SampahTransaksi extends Component
 
     public function render()
     {
-        $query = Sale::with(['user', 'payments.paymentMethod'])
+        $query = Sale::forUserLocation()
+            ->with(['user', 'payments.paymentMethod'])
             ->where('status', 'TRASHED');
 
         if ($this->search) {

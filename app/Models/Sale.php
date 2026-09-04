@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\ScopeLocation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,10 +11,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Sale extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, ScopeLocation, SoftDeletes;
 
     protected $fillable = [
         'invoice_number',
+        'idempotency_key',
         'cashier_id',
         'location_id',
         'transaction_date',

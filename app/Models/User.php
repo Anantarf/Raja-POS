@@ -62,4 +62,13 @@ class User extends Authenticatable
 
         return $this->role->permissions()->where('name', $permissionName)->exists();
     }
+
+    public function hasGlobalLocationAccess(): bool
+    {
+        if ($this->hasRole('OWNER')) {
+            return true;
+        }
+
+        return $this->hasPermission('location-global');
+    }
 }

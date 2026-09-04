@@ -32,6 +32,12 @@ class Balances extends Component
 
     public function openModal($type)
     {
+        abort_unless(auth()->user()->can('balance.adjust'), 403);
+
+        if (! in_array($type, ['TRANSFER', 'DEPOSIT', 'WITHDRAWAL', 'ADJUSTMENT'], true)) {
+            abort(404);
+        }
+
         $this->resetForm();
         $this->showModal = $type;
     }
@@ -40,26 +46,33 @@ class Balances extends Component
     {
         abort_unless(auth()->user()->can('balance.adjust'), 403);
         $this->validate([
+            'showModal' => 'required|in:TRANSFER,DEPOSIT,WITHDRAWAL,ADJUSTMENT',
             'amount' => 'required|numeric|min:1',
             'description' => 'required|string|max:255',
         ]);
 
         try {
+            $user = auth()->user();
             if ($this->showModal === 'TRANSFER') {
                 $this->validate(['sourceAccountId' => 'required', 'destinationAccountId' => 'required|different:sourceAccountId']);
-                $balanceService->transfer(BalanceAccount::findOrFail($this->sourceAccountId), BalanceAccount::findOrFail($this->destinationAccountId), $this->amount, $this->description, auth()->user());
+                $source = BalanceAccount::forUserLocation($user)->findOrFail($this->sourceAccountId);
+                $dest = BalanceAccount::forUserLocation($user)->findOrFail($this->destinationAccountId);
+                $balanceService->transfer($source, $dest, $this->amount, $this->description, $user);
                 $msg = 'Transfer saldo antar akun berhasil.';
             } elseif ($this->showModal === 'DEPOSIT') {
                 $this->validate(['destinationAccountId' => 'required']);
-                $balanceService->deposit(BalanceAccount::findOrFail($this->destinationAccountId), $this->amount, $this->description, auth()->user());
+                $dest = BalanceAccount::forUserLocation($user)->findOrFail($this->destinationAccountId);
+                $balanceService->deposit($dest, $this->amount, $this->description, $user);
                 $msg = 'Deposit saldo berhasil ditambahkan.';
             } elseif ($this->showModal === 'WITHDRAWAL') {
                 $this->validate(['sourceAccountId' => 'required']);
-                $balanceService->withdraw(BalanceAccount::findOrFail($this->sourceAccountId), $this->amount, $this->description, auth()->user());
+                $source = BalanceAccount::forUserLocation($user)->findOrFail($this->sourceAccountId);
+                $balanceService->withdraw($source, $this->amount, $this->description, $user);
                 $msg = 'Penarikan saldo berhasil dicatat.';
             } elseif ($this->showModal === 'ADJUSTMENT') {
                 $this->validate(['destinationAccountId' => 'required']);
-                $balanceService->adjustBalance(BalanceAccount::findOrFail($this->destinationAccountId), $this->amount, $this->description, auth()->user());
+                $dest = BalanceAccount::forUserLocation($user)->findOrFail($this->destinationAccountId);
+                $balanceService->adjustBalance($dest, $this->amount, $this->description, $user);
                 $msg = 'Penyesuaian saldo berhasil dilakukan.';
             }
 
@@ -72,7 +85,7 @@ class Balances extends Component
 
     private function resetForm()
     {
-        $accounts = BalanceAccount::where('status', 'ACTIVE')->where('account_type', '!=', 'PROVIDER')->get();
+        $accounts = BalanceAccount::forUserLocation()->where('status', 'ACTIVE')->where('account_type', '!=', 'PROVIDER')->get();
         $this->sourceAccountId = $accounts->first()?->id;
         $this->destinationAccountId = $accounts->skip(1)->first()?->id;
         $this->amount = 0;
@@ -90,8 +103,8 @@ class Balances extends Component
 
     public function render()
     {
-        $accounts = BalanceAccount::where('status', 'ACTIVE')->where('account_type', '!=', 'PROVIDER')->get();
-        $query = BalanceTransaction::with(['sourceAccount', 'destinationAccount', 'creator', 'user']);
+        $accounts = BalanceAccount::forUserLocation()->where('status', 'ACTIVE')->where('account_type', '!=', 'PROVIDER')->get();
+        $query = BalanceTransaction::forUserLocation()->with(['sourceAccount', 'destinationAccount', 'creator', 'user']);
 
         if ($this->filterType === 'IN') {
             $query->where(function ($q) {

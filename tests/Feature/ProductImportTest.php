@@ -105,6 +105,22 @@ class ProductImportTest extends TestCase
         @unlink($path);
     }
 
+    public function test_import_parses_indonesian_thousand_separators(): void
+    {
+        $superadmin = User::where('username', 'superadmin')->first();
+        $csv = "Kode,Nama,Jenis Stok,Harga Modal,Harga Jual,Stok Awal\nIMP-RP,Kabel Rupiah,PHYSICAL,15.000,35.000,3";
+
+        Storage::fake('local');
+        Storage::disk('local')->put('rupiah.csv', $csv);
+        $path = Storage::disk('local')->path('rupiah.csv');
+
+        $result = app(ProductImportService::class)->importFromCsv($path, $superadmin);
+        $product = Product::where('code', 'IMP-RP')->firstOrFail();
+
+        $this->assertEmpty($result['errors']);
+        $this->assertEquals(15000, $product->cost_price);
+        $this->assertEquals(35000, $product->selling_price);
+    }
     public function test_reimport_does_not_add_initial_stock_twice(): void
     {
         $superadmin = User::where('username', 'superadmin')->first();

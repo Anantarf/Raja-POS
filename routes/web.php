@@ -50,20 +50,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/reports/{type?}', Reports::class)->middleware('can:report.sales.view')->name('admin.reports');
     Route::get('/admin/settings/{section?}', Settings::class)->middleware('can:settings.manage')->name('admin.settings');
 
-    // /portal/* redirects to /admin/* to avoid rendering duplicate Livewire components
+    // /portal/* remains as a transition alias for the custom Livewire admin area.
     Route::redirect('/portal', '/admin');
-    Route::redirect('/portal/dashboard', '/admin/dashboard');
-    Route::redirect('/portal/sales', '/admin/sales');
-    Route::redirect('/portal/trash', '/admin/trash');
-    Route::redirect('/portal/inventories', '/admin/inventories');
-    Route::redirect('/portal/inventory-movements', '/admin/inventory-movements');
-    Route::redirect('/portal/stock-opname', '/admin/stock-opname');
-    Route::redirect('/portal/products', '/admin/products');
-    Route::redirect('/portal/categories', '/admin/categories');
-    Route::redirect('/portal/brands', '/admin/brands');
-    Route::redirect('/portal/balances', '/admin/balances');
-    Route::redirect('/portal/reports', '/admin/reports');
-    Route::redirect('/portal/settings', '/admin/settings');
+    Route::get('/portal/{path}', fn (string $path) => redirect('/admin/'.$path))
+        ->where('path', '.*');
 
     // Receipt Route
     Route::get('/receipt/thermal/{sale}', function (Sale $sale) {

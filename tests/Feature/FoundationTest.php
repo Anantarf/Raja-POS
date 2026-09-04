@@ -6,11 +6,13 @@ use App\Models\BalanceAccount;
 use App\Models\Location;
 use App\Models\PaymentMethod;
 use App\Models\Role;
+use App\Livewire\Admin\Settings as SettingsComponent;
 use App\Models\Setting;
 use App\Models\User;
 use Database\Seeders\DatabaseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Livewire;
 use Tests\TestCase;
 
 class FoundationTest extends TestCase
@@ -131,5 +133,48 @@ class FoundationTest extends TestCase
 
         $this->actingAs($cashier)->get('/admin/balances')->assertForbidden();
         $this->get('/admin/settings')->assertForbidden();
+    }
+
+    public function test_settings_actions_require_settings_manage_permission(): void
+    {
+        $cashier = User::create([
+            'name' => 'Kasir Settings Test',
+            'username' => 'cashier-settings',
+            'password' => bcrypt('password'),
+            'role_id' => Role::where('name', 'CASHIER')->value('id'),
+            'status' => 'ACTIVE',
+        ]);
+
+        Livewire::actingAs($cashier)
+            ->test(SettingsComponent::class)
+            ->set('locationName', 'Cabang Ilegal')
+            ->set('locationCode', 'ILLEGAL')
+            ->call('addLocation')
+            ->assertForbidden();
+    }
+    public function test_settings_can_create_payment_method_with_generated_code(): void
+    {
+        $owner = User::where('username', 'superadmin')->first();
+
+        Livewire::actingAs($owner)
+            ->test(SettingsComponent::class)
+            ->set('pmName', 'Transfer Bank Mandiri')
+            ->set('pmType', 'TRANSFER')
+            ->call('addPaymentMethod')
+            ->assertHasNoErrors();
+
+        $this->assertDatabaseHas('payment_methods', [
+            'name' => 'Transfer Bank Mandiri',
+            'code' => 'TRANSFER_BANK_MANDIRI',
+            'type' => 'TRANSFER',
+        ]);
+    }
+    public function test_portal_routes_redirect_to_custom_admin_routes(): void
+    {
+        $superadmin = User::where('username', 'superadmin')->first();
+
+        $this->actingAs($superadmin)->get('/portal')->assertRedirect('/admin');
+        $this->get('/portal/reports/sales')->assertRedirect('/admin/reports/sales');
+        $this->get('/portal/settings/users')->assertRedirect('/admin/settings/users');
     }
 }

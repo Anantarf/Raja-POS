@@ -55,4 +55,25 @@ class BalanceTransaction extends Model
     {
         return $this->belongsTo(User::class, 'created_by');
     }
+
+    public function scopeForUserLocation($query, ?User $user = null)
+    {
+        $user = $user ?? auth()->user();
+
+        if (! $user || $user->hasGlobalLocationAccess()) {
+            return $query;
+        }
+
+        if (! $user->location_id) {
+            return $query->whereRaw('1 = 0');
+        }
+
+        return $query->where(function ($q) use ($user) {
+            $q->whereHas('sourceAccount', function ($sq) use ($user) {
+                $sq->forUserLocation($user);
+            })->orWhereHas('destinationAccount', function ($sq) use ($user) {
+                $sq->forUserLocation($user);
+            });
+        });
+    }
 }

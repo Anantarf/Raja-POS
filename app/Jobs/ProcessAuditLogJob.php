@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Models\AuditLog;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -20,7 +21,8 @@ class ProcessAuditLogJob implements ShouldQueue
         public string $action,
         public string $description,
         public ?int $userId = null,
-        public array $context = []
+        public array $context = [],
+        public ?int $locationId = null
     ) {}
 
     /**
@@ -30,8 +32,21 @@ class ProcessAuditLogJob implements ShouldQueue
     {
         Log::channel('single')->info("[AUDIT LOG] {$this->action}: {$this->description}", [
             'user_id' => $this->userId,
+            'location_id' => $this->locationId,
             'context' => $this->context,
             'timestamp' => now()->toIso8601String(),
         ]);
+
+        try {
+            AuditLog::create([
+                'user_id' => $this->userId,
+                'location_id' => $this->locationId,
+                'action' => $this->action,
+                'description' => $this->description,
+                'context' => $this->context,
+            ]);
+        } catch (\Throwable $e) {
+            Log::error('Failed to create AuditLog record: '.$e->getMessage());
+        }
     }
 }

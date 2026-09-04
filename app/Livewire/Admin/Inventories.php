@@ -69,7 +69,8 @@ class Inventories extends Component
     {
         $this->sortField = 'quantity';
         $this->sortDirection = 'asc';
-        $this->selectedLocationId = Location::first()?->id;
+        $user = auth()->user();
+        $this->selectedLocationId = $user->hasGlobalLocationAccess() ? Location::first()?->id : $user->location_id;
         if (request()->query('tab') === 'opname') {
             $this->activeTab = 'opname';
         }
@@ -94,7 +95,7 @@ class Inventories extends Component
     // --- Tab 1: Stok Fisik Methods ---
     public function openAdjustmentModal($inventoryId)
     {
-        $inv = Inventory::findOrFail($inventoryId);
+        $inv = Inventory::forUserLocation()->findOrFail($inventoryId);
         $this->adjustInventoryId = $inv->id;
         $this->adjustQuantity = $inv->quantity;
         $this->adjustType = 'SET';
@@ -111,7 +112,7 @@ class Inventories extends Component
         ]);
 
         try {
-            $inv = Inventory::with(['product', 'location'])->findOrFail($this->adjustInventoryId);
+            $inv = Inventory::forUserLocation()->with(['product', 'location'])->findOrFail($this->adjustInventoryId);
             $quantityChange = $this->adjustQuantity - $inv->quantity;
             $movementType = $quantityChange >= 0 ? 'ADJUSTMENT_IN' : 'ADJUSTMENT_OUT';
 
@@ -153,18 +154,24 @@ class Inventories extends Component
     {
         abort_unless(auth()->user()->can('stock_opname.create'), 403);
         $this->validate([
-            'location_id' => 'required',
-            'product_id' => 'required',
+            'location_id' => 'required|exists:locations,id',
+            'product_id' => 'required|exists:products,id',
             'physical_qty' => 'required|integer|min:0',
         ]);
 
-        $product = Product::findOrFail($this->product_id);
+        $location = Location::whereKey($this->location_id)->where('status', 'ACTIVE')->first();
+        $product = Product::whereKey($this->product_id)->where('status', 'ACTIVE')->where('product_type', 'PHYSICAL')->first();
+        if (! $location || ! $product) {
+            $this->dispatch('notify', message: 'Lokasi atau produk fisik tidak valid untuk stock opname.', type: 'warning');
+
+            return;
+        }
         $systemQty = Inventory::where('product_id', $this->product_id)
             ->where('location_id', $this->location_id)->value('quantity') ?? 0;
 
         $opname = StockOpnameModel::create([
             'opname_number' => 'OPN-'.date('YmdHis').'-'.random_int(100, 999),
-            'location_id' => $this->location_id,
+            'location_id' => $location->id,
             'status' => 'DRAFT',
             'created_by' => auth()->id(),
             'started_at' => now(),
@@ -252,9 +259,28 @@ class Inventories extends Component
             return;
         }
 
+        $location = Location::whereKey($this->bulk_location_id)->where('status', 'ACTIVE')->first();
+        if (! $location) {
+            $this->dispatch('notify', message: 'Lokasi stock opname tidak valid atau tidak aktif.', type: 'warning');
+
+            return;
+        }
+        $validProducts = Product::whereIn('id', array_keys($this->bulkItems))
+            ->where('status', 'ACTIVE')
+            ->where('product_type', 'PHYSICAL')
+            ->pluck('id')
+            ->map(fn ($id) => (int) $id)
+            ->all();
+
+        if (empty($validProducts)) {
+            $this->dispatch('notify', message: 'Tidak ada produk fisik valid untuk stock opname.', type: 'warning');
+
+            return;
+        }
+
         $opname = StockOpnameModel::create([
             'opname_number' => 'OPN-BULK-'.date('YmdHis').'-'.random_int(100, 999),
-            'location_id' => $this->bulk_location_id,
+            'location_id' => $location->id,
             'status' => 'DRAFT',
             'created_by' => auth()->id(),
             'started_at' => now(),
@@ -262,6 +288,11 @@ class Inventories extends Component
 
         $itemCount = 0;
         foreach ($this->bulkItems as $productId => $item) {
+            $productId = (int) $productId;
+            if (! in_array($productId, $validProducts, true)) {
+                continue;
+            }
+
             $physicalQty = max(0, (int) ($item['physical_qty'] ?? 0));
             $systemQty = (int) ($item['system_qty'] ?? 0);
             $diff = $physicalQty - $systemQty;
@@ -282,7 +313,7 @@ class Inventories extends Component
 
     public function openDetailModal($id)
     {
-        $this->selectedOpnameDetail = StockOpnameModel::with(['location', 'items.product', 'creator', 'approver'])->find($id);
+        $this->selectedOpnameDetail = StockOpnameModel::forUserLocation()->with(['location', 'items.product', 'creator', 'approver'])->find($id);
         if ($this->selectedOpnameDetail) {
             $this->showDetailModal = true;
         }
@@ -292,7 +323,7 @@ class Inventories extends Component
     {
         abort_unless(auth()->user()->can('stock_opname.approve'), 403);
         try {
-            $opname = StockOpnameModel::findOrFail($id);
+            $opname = StockOpnameModel::forUserLocation()->findOrFail($id);
             if ($opname->status !== 'DRAFT') {
                 return;
             }
@@ -307,8 +338,13 @@ class Inventories extends Component
 
     public function render()
     {
+        $user = auth()->user();
+        if (! $user->hasGlobalLocationAccess()) {
+            $this->selectedLocationId = $user->location_id;
+        }
+
         // Query Tab 1: Inventories
-        $inventoryQuery = Inventory::query()
+        $inventoryQuery = Inventory::forUserLocation()
             ->select('inventories.*')
             ->with(['product.category', 'location']);
 
@@ -340,7 +376,8 @@ class Inventories extends Component
         $inventories = $inventoryQuery->paginate(12);
 
         // Query Tab 2: Stock Opnames
-        $opnameQuery = StockOpnameModel::with(['location', 'items.product', 'creator', 'approver'])
+        $opnameQuery = StockOpnameModel::forUserLocation()
+            ->with(['location', 'items.product', 'creator', 'approver'])
             ->withCount('items')
             ->when($this->opnameSearch, function ($query) {
                 $query->where('opname_number', 'like', '%'.$this->opnameSearch.'%')
@@ -353,10 +390,12 @@ class Inventories extends Component
             ->orderBy('created_at', 'desc');
         $opnames = $opnameQuery->paginate(10, ['*'], 'opnamePage');
 
+        $locations = $user->hasGlobalLocationAccess() ? Location::all() : Location::where('id', $user->location_id)->get();
+
         return view('livewire.admin.inventories', [
             'inventories' => $inventories,
             'opnames' => $opnames,
-            'locations' => Location::all(),
+            'locations' => $locations,
             'categories' => Category::orderBy('name')->get(),
             'products' => Product::where('product_type', 'PHYSICAL')->orderBy('name')->get(),
         ])->layout('components.layouts.admin', ['title' => 'Stok & Opname']);

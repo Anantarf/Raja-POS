@@ -51,7 +51,8 @@ class StockOpname extends Component
 
     public function openCreateModal()
     {
-        $this->location_id = Location::first()?->id;
+        $user = auth()->user();
+        $this->location_id = $user->hasGlobalLocationAccess() ? Location::first()?->id : $user->location_id;
         $this->product_id = Product::first()?->id;
         $this->physical_qty = 0;
         $this->notes = 'Stock Opname Rutin';
@@ -60,20 +61,31 @@ class StockOpname extends Component
 
     public function createSession()
     {
-        abort_unless(auth()->user()->can('stock_opname.create'), 403);
+        $user = auth()->user();
+        abort_unless($user->can('stock_opname.create'), 403);
+        if (! $user->hasGlobalLocationAccess()) {
+            $this->location_id = $user->location_id;
+        }
+
         $this->validate([
-            'location_id' => 'required',
-            'product_id' => 'required',
+            'location_id' => 'required|exists:locations,id',
+            'product_id' => 'required|exists:products,id',
             'physical_qty' => 'required|integer|min:0',
         ]);
 
-        $product = Product::findOrFail($this->product_id);
+        $location = Location::whereKey($this->location_id)->where('status', 'ACTIVE')->first();
+        $product = Product::whereKey($this->product_id)->where('status', 'ACTIVE')->where('product_type', 'PHYSICAL')->first();
+        if (! $location || ! $product) {
+            $this->dispatch('notify', message: 'Lokasi atau produk fisik tidak valid untuk stock opname.', type: 'warning');
+
+            return;
+        }
         $systemQty = Inventory::where('product_id', $this->product_id)
             ->where('location_id', $this->location_id)->value('quantity') ?? 0;
 
         $opname = StockOpnameModel::create([
             'opname_number' => 'OPN-'.date('YmdHis').'-'.random_int(100, 999),
-            'location_id' => $this->location_id,
+            'location_id' => $location->id,
             'status' => 'DRAFT',
             'created_by' => auth()->id(),
             'started_at' => now(),
@@ -93,7 +105,8 @@ class StockOpname extends Component
 
     public function openBulkModal()
     {
-        $this->bulk_location_id = Location::first()?->id;
+        $user = auth()->user();
+        $this->bulk_location_id = $user->hasGlobalLocationAccess() ? Location::first()?->id : $user->location_id;
         $this->bulk_category_id = '';
         $this->bulk_search = '';
         $this->loadBulkItems();
@@ -102,6 +115,11 @@ class StockOpname extends Component
 
     public function loadBulkItems()
     {
+        $user = auth()->user();
+        if (! $user->hasGlobalLocationAccess()) {
+            $this->bulk_location_id = $user->location_id;
+        }
+
         if (! $this->bulk_location_id) {
             return;
         }
@@ -154,16 +172,40 @@ class StockOpname extends Component
 
     public function createBulkSession()
     {
-        abort_unless(auth()->user()->can('stock_opname.create'), 403);
+        $user = auth()->user();
+        abort_unless($user->can('stock_opname.create'), 403);
+        if (! $user->hasGlobalLocationAccess()) {
+            $this->bulk_location_id = $user->location_id;
+        }
+
         if (empty($this->bulkItems) || ! $this->bulk_location_id) {
             $this->dispatch('notify', message: 'Tidak ada data barang yang diaudit.', type: 'warning');
 
             return;
         }
 
+        $location = Location::whereKey($this->bulk_location_id)->where('status', 'ACTIVE')->first();
+        if (! $location) {
+            $this->dispatch('notify', message: 'Lokasi stock opname tidak valid atau tidak aktif.', type: 'warning');
+
+            return;
+        }
+        $validProducts = Product::whereIn('id', array_keys($this->bulkItems))
+            ->where('status', 'ACTIVE')
+            ->where('product_type', 'PHYSICAL')
+            ->pluck('id')
+            ->map(fn ($id) => (int) $id)
+            ->all();
+
+        if (empty($validProducts)) {
+            $this->dispatch('notify', message: 'Tidak ada produk fisik valid untuk stock opname.', type: 'warning');
+
+            return;
+        }
+
         $opname = StockOpnameModel::create([
             'opname_number' => 'OPN-BULK-'.date('YmdHis').'-'.random_int(100, 999),
-            'location_id' => $this->bulk_location_id,
+            'location_id' => $location->id,
             'status' => 'DRAFT',
             'created_by' => auth()->id(),
             'started_at' => now(),
@@ -171,6 +213,11 @@ class StockOpname extends Component
 
         $itemCount = 0;
         foreach ($this->bulkItems as $productId => $item) {
+            $productId = (int) $productId;
+            if (! in_array($productId, $validProducts, true)) {
+                continue;
+            }
+
             $physicalQty = max(0, (int) ($item['physical_qty'] ?? 0));
             $systemQty = (int) ($item['system_qty'] ?? 0);
             $diff = $physicalQty - $systemQty;
@@ -191,7 +238,7 @@ class StockOpname extends Component
 
     public function openDetailModal($id)
     {
-        $this->selectedOpnameDetail = StockOpnameModel::with(['location', 'items.product', 'creator', 'approver'])->find($id);
+        $this->selectedOpnameDetail = StockOpnameModel::forUserLocation()->with(['location', 'items.product', 'creator', 'approver'])->find($id);
         if ($this->selectedOpnameDetail) {
             $this->showDetailModal = true;
         }
@@ -201,7 +248,7 @@ class StockOpname extends Component
     {
         abort_unless(auth()->user()->can('stock_opname.approve'), 403);
         try {
-            $opname = StockOpnameModel::findOrFail($id);
+            $opname = StockOpnameModel::forUserLocation()->findOrFail($id);
             if ($opname->status !== 'DRAFT') {
                 return;
             }
@@ -216,11 +263,13 @@ class StockOpname extends Component
 
     public function render()
     {
+        $user = auth()->user();
         $allowedSorts = ['opname_number', 'status', 'created_at'];
         $field = in_array($this->sortField, $allowedSorts) ? $this->sortField : 'created_at';
         $direction = in_array($this->sortDirection, ['asc', 'desc']) ? $this->sortDirection : 'desc';
 
-        $sessions = StockOpnameModel::with(['location', 'items.product', 'creator', 'approver'])
+        $sessions = StockOpnameModel::forUserLocation()
+            ->with(['location', 'items.product', 'creator', 'approver'])
             ->withCount('items')
             ->when($this->search, function ($query) {
                 $query->where('opname_number', 'like', '%'.$this->search.'%')
@@ -233,9 +282,11 @@ class StockOpname extends Component
             ->orderBy($field, $direction)
             ->paginate(10);
 
+        $locations = $user->hasGlobalLocationAccess() ? Location::all() : Location::where('id', $user->location_id)->get();
+
         return view('livewire.admin.stock-opname', [
             'sessions' => $sessions,
-            'locations' => Location::all(),
+            'locations' => $locations,
             'categories' => Category::orderBy('name')->get(),
             'products' => Product::where('product_type', 'PHYSICAL')->orderBy('name')->get(),
         ])->layout('components.layouts.admin', ['title' => 'Stock Opname']);

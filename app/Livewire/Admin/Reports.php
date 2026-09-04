@@ -44,13 +44,14 @@ class Reports extends Component
 
     public function render(FinanceReportService $reportService)
     {
-        $metrics = $reportService->getSummaryMetrics($this->startDate, $this->endDate);
-        $paymentDistribution = $reportService->getPaymentMethodDistribution($this->startDate, $this->endDate);
-        $topProducts = $reportService->getTopSellingProducts($this->startDate, $this->endDate, 5);
-        $cashierPerformance = $reportService->getCashierPerformance($this->startDate, $this->endDate);
-        $inventoryValuation = $reportService->getInventoryValuation();
-        $categoryBreakdown = $reportService->getCategoryBreakdown($this->startDate, $this->endDate);
-        $dailyTrend = $reportService->getDailySalesTrend(7);
+        $user = auth()->user();
+        $metrics = $reportService->getSummaryMetrics($this->startDate, $this->endDate, $user);
+        $paymentDistribution = $reportService->getPaymentMethodDistribution($this->startDate, $this->endDate, $user);
+        $topProducts = $reportService->getTopSellingProducts($this->startDate, $this->endDate, 5, $user);
+        $cashierPerformance = $reportService->getCashierPerformance($this->startDate, $this->endDate, $user);
+        $inventoryValuation = $reportService->getInventoryValuation($user);
+        $categoryBreakdown = $reportService->getCategoryBreakdown($this->startDate, $this->endDate, $user);
+        $dailyTrend = $reportService->getDailySalesTrend(7, $user);
 
         return view('livewire.admin.reports', [
             'metrics' => $metrics,
@@ -61,9 +62,9 @@ class Reports extends Component
             'categoryBreakdown' => $categoryBreakdown,
             'dailyTrend' => $dailyTrend,
             'salesCount' => $metrics['sales_count'] ?? 0,
-            'inventoryCount' => Inventory::count(),
-            'lowStockCount' => Inventory::with('product')->get()->filter(fn ($inventory) => $inventory->stock_status !== 'AVAILABLE')->count(),
-            'balanceAccounts' => BalanceAccount::where('status', 'ACTIVE')->orderBy('name')->get(),
+            'inventoryCount' => Inventory::forUserLocation($user)->count(),
+            'lowStockCount' => Inventory::forUserLocation($user)->with('product')->get()->filter(fn ($inventory) => $inventory->stock_status !== 'AVAILABLE')->count(),
+            'balanceAccounts' => BalanceAccount::forUserLocation($user)->where('status', 'ACTIVE')->orderBy('name')->get(),
             'productCount' => Product::count(),
             'incompleteProductCount' => Product::where('price_status', 'INCOMPLETE')->count(),
         ])->layout('components.layouts.admin', ['title' => 'Laporan']);

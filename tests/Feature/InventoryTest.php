@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Livewire\Admin\StockOpname as StockOpnameComponent;
 use App\Models\Inventory;
 use App\Models\Location;
 use App\Models\Product;
@@ -10,6 +11,7 @@ use App\Models\User;
 use App\Services\InventoryService;
 use Database\Seeders\DatabaseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Livewire\Livewire;
 use Tests\TestCase;
 
 class InventoryTest extends TestCase
@@ -232,5 +234,28 @@ class InventoryTest extends TestCase
             ->call('sortBy', 'stock_status')
             ->assertSet('sortDirection', 'desc')
             ->assertStatus(200);
+    }
+    public function test_stock_opname_rejects_non_physical_product(): void
+    {
+        $owner = User::where('username', 'superadmin')->first();
+        $digital = Product::create([
+            'code' => 'DIG-OPNAME',
+            'name' => 'Pulsa Opname Ilegal',
+            'product_type' => 'DIGITAL',
+            'cost_price' => 10000,
+            'selling_price' => 12000,
+        ]);
+
+        Livewire::actingAs($owner)
+            ->test(StockOpnameComponent::class)
+            ->set('location_id', Location::where('code', 'RAJA-BANGO')->value('id'))
+            ->set('product_id', $digital->id)
+            ->set('physical_qty', 1)
+            ->call('createSession')
+            ->assertHasNoErrors();
+
+        $this->assertDatabaseMissing('stock_opnames', [
+            'created_by' => $owner->id,
+        ]);
     }
 }

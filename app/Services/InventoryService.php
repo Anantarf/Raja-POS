@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Jobs\ProcessAuditLogJob;
 use App\Models\Inventory;
 use App\Models\InventoryMovement;
 use App\Models\Location;
@@ -34,7 +35,7 @@ class InventoryService
             return null;
         }
 
-        return DB::transaction(function () use ($product, $location, $quantityChange, $movementType, $notes, $user, $reference) {
+        $movement = DB::transaction(function () use ($product, $location, $quantityChange, $movementType, $notes, $user, $reference) {
             // Row lock inventory record
             $inventory = Inventory::where('product_id', $product->id)
                 ->where('location_id', $location->id)
@@ -80,6 +81,25 @@ class InventoryService
                 'created_by' => $user?->id ?? auth()->id(),
             ]);
         });
+
+        if ($movement && in_array($movementType, ['MANUAL_ADJUSTMENT', 'TRANSFER', 'STOCK_OPNAME', 'STOCK_IN', 'STOCK_OUT'], true)) {
+            ProcessAuditLogJob::dispatch(
+                action: 'STOCK_ADJUSTMENT',
+                description: "Penyesuaian stok '{$product->name}' di {$location->name} ({$movementType}: {$quantityChange})",
+                userId: $user?->id ?? auth()->id(),
+                context: [
+                    'product_id' => $product->id,
+                    'location_id' => $location->id,
+                    'quantity_change' => $quantityChange,
+                    'quantity_after' => $movement->quantity_after,
+                    'movement_type' => $movementType,
+                    'notes' => $notes,
+                ],
+                locationId: $location->id
+            );
+        }
+
+        return $movement;
     }
 
     /**
@@ -91,7 +111,14 @@ class InventoryService
             throw new InvalidArgumentException('Stock Opname sudah disetujui sebelumnya.');
         }
 
-        return DB::transaction(function () use ($stockOpname, $approver) {
+        foreach ($stockOpname->items as $item) {
+            if (! $item->product || $item->product->product_type !== 'PHYSICAL') {
+                $productName = $item->product?->name ?? "ID #{$item->product_id}";
+                throw new InvalidArgumentException("Stock Opname hanya berlaku untuk produk fisik. Produk '{$productName}' tidak valid atau bukan produk fisik.");
+            }
+        }
+
+        $result = DB::transaction(function () use ($stockOpname, $approver) {
             $location = $stockOpname->location;
 
             foreach ($stockOpname->items as $item) {
@@ -127,5 +154,21 @@ class InventoryService
 
             return true;
         });
+
+        if ($result) {
+            ProcessAuditLogJob::dispatch(
+                action: 'STOCK_OPNAME_APPROVED',
+                description: "Stock Opname #{$stockOpname->opname_number} telah disetujui oleh {$approver->name}",
+                userId: $approver->id,
+                context: [
+                    'opname_id' => $stockOpname->id,
+                    'opname_number' => $stockOpname->opname_number,
+                    'location_id' => $stockOpname->location_id,
+                ],
+                locationId: $stockOpname->location_id
+            );
+        }
+
+        return $result;
     }
 }

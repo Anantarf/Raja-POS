@@ -60,13 +60,14 @@ class Sales extends Component
 
     public function moveToTrash($saleId, SaleCancellationService $cancellationService)
     {
-        if (!auth()->user()->can('sales.trash')) {
+        if (! auth()->user()->can('sales.trash')) {
             $this->dispatch('notify', message: 'Anda tidak memiliki hak akses memindahkan transaksi ke sampah.', type: 'danger');
+
             return;
         }
 
         try {
-            $sale = Sale::findOrFail($saleId);
+            $sale = Sale::forUserLocation()->findOrFail($saleId);
             $cancellationService->moveToTrash($sale, auth()->user(), 'Pembatalan manual admin');
             $this->dispatch('notify', message: 'Transaksi berhasil dipindahkan ke Sampah Transaksi dan stok/saldo dikembalikan.', type: 'success');
         } catch (\Exception $e) {
@@ -76,7 +77,8 @@ class Sales extends Component
 
     public function render()
     {
-        $query = Sale::where('status', 'COMPLETED')
+        $query = Sale::forUserLocation()
+            ->where('status', 'COMPLETED')
             ->when($this->startDate, function ($q) {
                 $q->whereDate('created_at', '>=', $this->startDate);
             })
@@ -92,10 +94,10 @@ class Sales extends Component
 
         if ($this->search) {
             $query->where(function ($q) {
-                $q->where('invoice_number', 'like', '%' . $this->search . '%')
-                  ->orWhereHas('cashier', function ($uq) {
-                      $uq->where('name', 'like', '%' . $this->search . '%');
-                  });
+                $q->where('invoice_number', 'like', '%'.$this->search.'%')
+                    ->orWhereHas('cashier', function ($uq) {
+                        $uq->where('name', 'like', '%'.$this->search.'%');
+                    });
             });
         }
 
@@ -107,8 +109,8 @@ class Sales extends Component
         $direction = in_array($this->sortDirection, ['asc', 'desc']) ? $this->sortDirection : 'desc';
 
         $sales = $query->orderBy($field, $direction)->paginate(12);
-        $selectedSale = $this->selectedSaleId ? Sale::with(['items', 'payments.paymentMethod', 'cashier', 'user'])->find($this->selectedSaleId) : null;
-        $receiptSale = $this->receiptSaleId ? Sale::with(['items', 'payments.paymentMethod', 'cashier', 'user'])->find($this->receiptSaleId) : null;
+        $selectedSale = $this->selectedSaleId ? Sale::forUserLocation()->with(['items', 'payments.paymentMethod', 'cashier', 'user'])->find($this->selectedSaleId) : null;
+        $receiptSale = $this->receiptSaleId ? Sale::forUserLocation()->with(['items', 'payments.paymentMethod', 'cashier', 'user'])->find($this->receiptSaleId) : null;
 
         return view('livewire.admin.sales', [
             'sales' => $sales,

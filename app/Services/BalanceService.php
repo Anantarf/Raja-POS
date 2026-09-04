@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Jobs\ProcessAuditLogJob;
 use App\Models\BalanceAccount;
 use App\Models\BalanceTransaction;
 use App\Models\User;
@@ -21,8 +22,9 @@ class BalanceService
             throw new InvalidArgumentException('Akun asal dan akun tujuan transfer tidak boleh sama.');
         }
 
-        return DB::transaction(function () use ($fromAccount, $toAccount, $amount, $description, $user) {
-            $accounts = BalanceAccount::whereIn('id', [$fromAccount->id, $toAccount->id])
+        $trx = DB::transaction(function () use ($fromAccount, $toAccount, $amount, $description, $user) {
+            $accounts = BalanceAccount::forUserLocation($user)
+                ->whereIn('id', [$fromAccount->id, $toAccount->id])
                 ->orderBy('id')
                 ->lockForUpdate()
                 ->get()
@@ -31,7 +33,7 @@ class BalanceService
             $to = $accounts->get($toAccount->id);
 
             if (! $from || ! $to || $from->status !== 'ACTIVE' || $to->status !== 'ACTIVE') {
-                throw new InvalidArgumentException('Akun saldo tidak aktif atau tidak ditemukan.');
+                throw new InvalidArgumentException('Akun saldo tidak aktif, tidak ditemukan, atau di luar lokasi cabang Anda.');
             }
             if ((float) $from->current_balance < $amount) {
                 throw new InvalidArgumentException('Saldo akun asal tidak mencukupi untuk transfer.');
@@ -57,6 +59,20 @@ class BalanceService
                 'transaction_date' => now(),
             ]);
         });
+
+        ProcessAuditLogJob::dispatch(
+            action: 'BALANCE_TRANSFER',
+            description: "Transfer saldo Rp".number_format($amount, 0, ',', '.')." dari {$fromAccount->name} ke {$toAccount->name}",
+            userId: $user->id,
+            context: [
+                'from_account_id' => $fromAccount->id,
+                'to_account_id' => $toAccount->id,
+                'amount' => $amount,
+                'description' => $description,
+            ]
+        );
+
+        return $trx;
     }
 
     public function deposit(BalanceAccount $account, float $amount, string $description, User $user): BalanceTransaction
@@ -83,10 +99,10 @@ class BalanceService
             throw new InvalidArgumentException('Saldo hasil penyesuaian tidak boleh negatif.');
         }
 
-        return DB::transaction(function () use ($account, $newBalance, $reason, $user) {
-            $locked = BalanceAccount::whereKey($account->id)->lockForUpdate()->firstOrFail();
-            if ($locked->status !== 'ACTIVE') {
-                throw new InvalidArgumentException('Akun saldo tidak aktif.');
+        $trx = DB::transaction(function () use ($account, $newBalance, $reason, $user) {
+            $locked = BalanceAccount::forUserLocation($user)->whereKey($account->id)->lockForUpdate()->first();
+            if (! $locked || $locked->status !== 'ACTIVE') {
+                throw new InvalidArgumentException('Akun saldo tidak aktif atau di luar lokasi cabang Anda.');
             }
 
             $before = (float) $locked->current_balance;
@@ -104,14 +120,27 @@ class BalanceService
                 'transaction_date' => now(),
             ]);
         });
+
+        ProcessAuditLogJob::dispatch(
+            action: 'BALANCE_ADJUSTMENT',
+            description: "Penyesuaian saldo akun {$account->name} menjadi Rp".number_format($newBalance, 0, ',', '.').". Alasan: {$reason}",
+            userId: $user->id,
+            context: [
+                'account_id' => $account->id,
+                'new_balance' => $newBalance,
+                'reason' => $reason,
+            ]
+        );
+
+        return $trx;
     }
 
     private function updateSingleAccount(BalanceAccount $account, float $change, string $type, string $accountColumn, string $description, User $user): BalanceTransaction
     {
-        return DB::transaction(function () use ($account, $change, $type, $accountColumn, $description, $user) {
-            $locked = BalanceAccount::whereKey($account->id)->lockForUpdate()->firstOrFail();
-            if ($locked->status !== 'ACTIVE') {
-                throw new InvalidArgumentException('Akun saldo tidak aktif.');
+        $trx = DB::transaction(function () use ($account, $change, $type, $accountColumn, $description, $user) {
+            $locked = BalanceAccount::forUserLocation($user)->whereKey($account->id)->lockForUpdate()->first();
+            if (! $locked || $locked->status !== 'ACTIVE') {
+                throw new InvalidArgumentException('Akun saldo tidak aktif atau di luar lokasi cabang Anda.');
             }
 
             $before = (float) $locked->current_balance;
@@ -133,5 +162,19 @@ class BalanceService
                 'transaction_date' => now(),
             ]);
         });
+
+        ProcessAuditLogJob::dispatch(
+            action: 'BALANCE_'.$type,
+            description: "Transaksi {$type} sebesar Rp".number_format(abs($change), 0, ',', '.')." pada akun {$account->name}",
+            userId: $user->id,
+            context: [
+                'account_id' => $account->id,
+                'amount' => abs($change),
+                'type' => $type,
+                'description' => $description,
+            ]
+        );
+
+        return $trx;
     }
 }

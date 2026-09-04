@@ -115,22 +115,8 @@ class DatabaseSeeder extends Seeder
             PaymentMethod::firstOrCreate(['code' => $pm['code']], $pm);
         }
 
-        // 5. Balance Accounts
-        $balanceAccounts = [
-            ['name' => 'CASH', 'code' => 'CASH', 'account_type' => 'CASH', 'current_balance' => 0],
-            ['name' => 'QRIS', 'code' => 'QRIS', 'account_type' => 'QRIS', 'current_balance' => 0],
-            ['name' => 'BANK BCA', 'code' => 'BANK_BCA', 'account_type' => 'BANK', 'current_balance' => 0],
-            ['name' => 'BANK MAS', 'code' => 'BANK_MAS', 'account_type' => 'BANK', 'current_balance' => 0],
-            ['name' => 'DANA', 'code' => 'DANA', 'account_type' => 'E_WALLET', 'current_balance' => 0],
-            ['name' => 'MULTI', 'code' => 'MULTI', 'account_type' => 'PROVIDER', 'current_balance' => 0],
-            ['name' => 'WAHANA', 'code' => 'WAHANA', 'account_type' => 'PROVIDER', 'current_balance' => 0],
-        ];
-        foreach ($balanceAccounts as $ba) {
-            BalanceAccount::firstOrCreate(['code' => $ba['code']], $ba);
-        }
-
-        // 6. Location
-        Location::firstOrCreate(
+        // 5. Location
+        $defaultLocation = Location::firstOrCreate(
             ['code' => 'RAJA-BANGO'],
             [
                 'name' => 'Raja Aksesoris Bango',
@@ -139,8 +125,22 @@ class DatabaseSeeder extends Seeder
         );
 
         User::where('username', 'superadmin')->update([
-            'location_id' => Location::where('code', 'RAJA-BANGO')->value('id'),
+            'location_id' => $defaultLocation->id,
         ]);
+
+        // 6. Balance Accounts
+        $balanceAccounts = [
+            ['name' => 'CASH', 'code' => 'CASH', 'account_type' => 'CASH', 'current_balance' => 0, 'location_id' => $defaultLocation->id],
+            ['name' => 'QRIS', 'code' => 'QRIS', 'account_type' => 'QRIS', 'current_balance' => 0, 'location_id' => $defaultLocation->id],
+            ['name' => 'BANK BCA', 'code' => 'BANK_BCA', 'account_type' => 'BANK', 'current_balance' => 0, 'location_id' => $defaultLocation->id],
+            ['name' => 'BANK MAS', 'code' => 'BANK_MAS', 'account_type' => 'BANK', 'current_balance' => 0, 'location_id' => $defaultLocation->id],
+            ['name' => 'DANA', 'code' => 'DANA', 'account_type' => 'E_WALLET', 'current_balance' => 0, 'location_id' => $defaultLocation->id],
+            ['name' => 'MULTI', 'code' => 'MULTI', 'account_type' => 'PROVIDER', 'current_balance' => 0, 'location_id' => $defaultLocation->id],
+            ['name' => 'WAHANA', 'code' => 'WAHANA', 'account_type' => 'PROVIDER', 'current_balance' => 0, 'location_id' => $defaultLocation->id],
+        ];
+        foreach ($balanceAccounts as $ba) {
+            BalanceAccount::firstOrCreate(['code' => $ba['code']], $ba);
+        }
 
         // 7. Default Settings
         $defaultSettings = [

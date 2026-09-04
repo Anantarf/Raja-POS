@@ -7,6 +7,7 @@ use App\Models\Inventory;
 use App\Models\Payment;
 use App\Models\Sale;
 use App\Models\SaleItem;
+use App\Models\User;
 use Illuminate\Support\Carbon;
 
 class FinanceReportService
@@ -14,9 +15,10 @@ class FinanceReportService
     /**
      * Get aggregate financial metrics (Omset, COGS, Profit, Total Cash & Bank).
      */
-    public function getSummaryMetrics(?string $startDate = null, ?string $endDate = null): array
+    public function getSummaryMetrics(?string $startDate = null, ?string $endDate = null, ?User $user = null): array
     {
-        $query = Sale::where('status', 'COMPLETED');
+        $user = $user ?? auth()->user();
+        $query = Sale::forUserLocation($user)->where('status', 'COMPLETED');
 
         if ($startDate) {
             $query->whereDate('transaction_date', '>=', $startDate);
@@ -31,11 +33,11 @@ class FinanceReportService
         $grossProfit = $omset - $cogs;
         $salesCount = $query->count();
 
-        $totalBalance = (float) BalanceAccount::where('status', 'ACTIVE')->sum('current_balance');
+        $totalBalance = (float) BalanceAccount::forUserLocation($user)->where('status', 'ACTIVE')->sum('current_balance');
 
         // Calculate comparison with previous day for growth percentage
-        $todayOmset = (float) Sale::where('status', 'COMPLETED')->whereDate('transaction_date', Carbon::today())->sum('total_amount');
-        $yesterdayOmset = (float) Sale::where('status', 'COMPLETED')->whereDate('transaction_date', Carbon::yesterday())->sum('total_amount');
+        $todayOmset = (float) Sale::forUserLocation($user)->where('status', 'COMPLETED')->whereDate('transaction_date', Carbon::today())->sum('total_amount');
+        $yesterdayOmset = (float) Sale::forUserLocation($user)->where('status', 'COMPLETED')->whereDate('transaction_date', Carbon::yesterday())->sum('total_amount');
 
         $growth = 0.0;
         if ($yesterdayOmset > 0) {
@@ -59,20 +61,20 @@ class FinanceReportService
     /**
      * Get breakdown of payments by payment method name.
      */
-    public function getPaymentMethodDistribution(?string $startDate = null, ?string $endDate = null): array
+    public function getPaymentMethodDistribution(?string $startDate = null, ?string $endDate = null, ?User $user = null): array
     {
+        $user = $user ?? auth()->user();
         $query = Payment::query()
-            ->join('sales', 'payments.sale_id', '=', 'sales.id')
-            ->join('payment_methods', 'payments.payment_method_id', '=', 'payment_methods.id')
-            ->where('sales.status', 'COMPLETED');
-
-        if ($startDate) {
-            $query->whereDate('sales.transaction_date', '>=', $startDate);
-        }
-
-        if ($endDate) {
-            $query->whereDate('sales.transaction_date', '<=', $endDate);
-        }
+            ->whereHas('sale', function ($sq) use ($startDate, $endDate, $user) {
+                $sq->forUserLocation($user)->where('status', 'COMPLETED');
+                if ($startDate) {
+                    $sq->whereDate('transaction_date', '>=', $startDate);
+                }
+                if ($endDate) {
+                    $sq->whereDate('transaction_date', '<=', $endDate);
+                }
+            })
+            ->join('payment_methods', 'payments.payment_method_id', '=', 'payment_methods.id');
 
         return $query->selectRaw('payment_methods.name as method_name, SUM(payments.amount) as total_amount')
             ->groupBy('payment_methods.name')
@@ -83,8 +85,9 @@ class FinanceReportService
     /**
      * Get daily sales trend for the past N days.
      */
-    public function getDailySalesTrend(int $days = 7): array
+    public function getDailySalesTrend(int $days = 7, ?User $user = null): array
     {
+        $user = $user ?? auth()->user();
         $startDate = Carbon::today()->subDays($days - 1);
         $labels = [];
         $data = [];
@@ -94,7 +97,7 @@ class FinanceReportService
             $dateStr = $date->format('Y-m-d');
             $labels[] = $date->format('d M');
 
-            $dailyOmset = (float) Sale::where('status', 'COMPLETED')
+            $dailyOmset = (float) Sale::forUserLocation($user)->where('status', 'COMPLETED')
                 ->whereDate('transaction_date', $dateStr)
                 ->sum('total_amount');
 
@@ -110,11 +113,12 @@ class FinanceReportService
     /**
      * Get top selling products.
      */
-    public function getTopSellingProducts(?string $startDate = null, ?string $endDate = null, int $limit = 5)
+    public function getTopSellingProducts(?string $startDate = null, ?string $endDate = null, int $limit = 5, ?User $user = null)
     {
+        $user = $user ?? auth()->user();
         $query = SaleItem::with('product')
-            ->whereHas('sale', function ($q) use ($startDate, $endDate) {
-                $q->where('status', 'COMPLETED');
+            ->whereHas('sale', function ($q) use ($startDate, $endDate, $user) {
+                $q->forUserLocation($user)->where('status', 'COMPLETED');
                 if ($startDate) {
                     $q->whereDate('transaction_date', '>=', $startDate);
                 }
@@ -140,9 +144,10 @@ class FinanceReportService
     /**
      * Get cashier performance metrics.
      */
-    public function getCashierPerformance(?string $startDate = null, ?string $endDate = null)
+    public function getCashierPerformance(?string $startDate = null, ?string $endDate = null, ?User $user = null)
     {
-        $query = Sale::with('cashier')->where('status', 'COMPLETED');
+        $user = $user ?? auth()->user();
+        $query = Sale::forUserLocation($user)->with('cashier')->where('status', 'COMPLETED');
 
         if ($startDate) {
             $query->whereDate('transaction_date', '>=', $startDate);
@@ -169,9 +174,10 @@ class FinanceReportService
     /**
      * Get total inventory cost valuation.
      */
-    public function getInventoryValuation(): array
+    public function getInventoryValuation(?User $user = null): array
     {
-        $inventories = Inventory::with('product')->get();
+        $user = $user ?? auth()->user();
+        $inventories = Inventory::forUserLocation($user)->with('product')->get();
         $totalCostValuation = 0.0;
         $totalRetailValuation = 0.0;
         $totalStockUnits = 0;
@@ -196,11 +202,12 @@ class FinanceReportService
     /**
      * Get sales breakdown by product category.
      */
-    public function getCategoryBreakdown(?string $startDate = null, ?string $endDate = null)
+    public function getCategoryBreakdown(?string $startDate = null, ?string $endDate = null, ?User $user = null)
     {
+        $user = $user ?? auth()->user();
         $query = SaleItem::with(['product.category'])
-            ->whereHas('sale', function ($q) use ($startDate, $endDate) {
-                $q->where('status', 'COMPLETED');
+            ->whereHas('sale', function ($q) use ($startDate, $endDate, $user) {
+                $q->forUserLocation($user)->where('status', 'COMPLETED');
                 if ($startDate) {
                     $q->whereDate('transaction_date', '>=', $startDate);
                 }

@@ -10,6 +10,7 @@ use App\Models\Product;
 use App\Models\User;
 use App\Services\InventoryService;
 use App\Services\PosService;
+use App\Services\SaleCancellationService;
 use Database\Seeders\DatabaseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -293,5 +294,85 @@ class PosCheckoutTest extends TestCase
         $this->assertEquals(25000, $sale->total_amount);
         $this->assertEquals(10000, $sale->total_cost);
         $this->assertEquals('Kabel Harga Server', $sale->items()->value('product_name_snapshot'));
+    }
+    public function test_change_uses_selected_cash_account(): void
+    {
+        $cashier = User::where('username', 'superadmin')->first();
+        $location = $cashier->location;
+        $product = Product::create([
+            'code' => 'ACC-CASH-ACCOUNT',
+            'name' => 'Kabel Akun Kas',
+            'product_type' => 'PHYSICAL',
+            'cost_price' => 10000,
+            'selling_price' => 50000,
+        ]);
+        app(InventoryService::class)->adjustStock($product, $location, 1, 'ADJUSTMENT_IN', 'Stok uji', $cashier);
+
+        $mainCash = BalanceAccount::where('code', 'CASH')->first();
+        $drawerCash = BalanceAccount::create([
+            'name' => 'Cash Drawer 2',
+            'code' => 'CASH_DRAWER_2',
+            'account_type' => 'CASH',
+            'current_balance' => 0,
+            'status' => 'ACTIVE',
+            'location_id' => $location->id,
+        ]);
+
+        $sale = app(PosService::class)->processCheckout(
+            cashier: $cashier,
+            cartItems: [['product' => $product, 'quantity' => 1]],
+            paymentsData: [[
+                'payment_method_id' => PaymentMethod::where('code', 'CASH')->value('id'),
+                'balance_account_id' => $drawerCash->id,
+                'amount' => 60000,
+            ]]
+        );
+
+        $this->assertEquals(10000, $sale->payments()->where('balance_account_id', $drawerCash->id)->value('change_amount'));
+        $this->assertEquals(0, $mainCash->fresh()->current_balance);
+        $this->assertEquals(50000, $drawerCash->fresh()->current_balance);
+    }
+    public function test_trash_and_restore_use_per_payment_change_account(): void
+    {
+        $cashier = User::where('username', 'superadmin')->first();
+        $location = $cashier->location;
+        $product = Product::create([
+            'code' => 'ACC-CASH-REVERSAL',
+            'name' => 'Kabel Reversal Kas',
+            'product_type' => 'PHYSICAL',
+            'cost_price' => 10000,
+            'selling_price' => 50000,
+        ]);
+        app(InventoryService::class)->adjustStock($product, $location, 1, 'ADJUSTMENT_IN', 'Stok uji', $cashier);
+
+        $mainCash = BalanceAccount::where('code', 'CASH')->first();
+        $drawerCash = BalanceAccount::create([
+            'name' => 'Cash Drawer Reversal',
+            'code' => 'CASH_DRAWER_REVERSAL',
+            'account_type' => 'CASH',
+            'current_balance' => 0,
+            'status' => 'ACTIVE',
+            'location_id' => $location->id,
+        ]);
+
+        $sale = app(PosService::class)->processCheckout(
+            cashier: $cashier,
+            cartItems: [['product' => $product, 'quantity' => 1]],
+            paymentsData: [[
+                'payment_method_id' => PaymentMethod::where('code', 'CASH')->value('id'),
+                'balance_account_id' => $drawerCash->id,
+                'amount' => 60000,
+            ]]
+        );
+
+        app(SaleCancellationService::class)->moveToTrash($sale, $cashier, 'Uji reversal akun kas');
+        $this->assertEquals(0, $mainCash->fresh()->current_balance);
+        $this->assertEquals(0, $drawerCash->fresh()->current_balance);
+        $this->assertEquals(1, Inventory::where('product_id', $product->id)->value('quantity'));
+
+        app(SaleCancellationService::class)->restoreFromTrash($sale->fresh(), $cashier);
+        $this->assertEquals(0, $mainCash->fresh()->current_balance);
+        $this->assertEquals(50000, $drawerCash->fresh()->current_balance);
+        $this->assertEquals(0, Inventory::where('product_id', $product->id)->value('quantity'));
     }
 }

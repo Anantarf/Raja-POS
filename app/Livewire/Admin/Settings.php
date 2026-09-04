@@ -7,6 +7,7 @@ use App\Models\PaymentMethod;
 use App\Models\Role;
 use App\Models\Setting;
 use App\Models\User;
+use Illuminate\Support\Str;
 use Livewire\Component;
 
 class Settings extends Component
@@ -44,6 +45,8 @@ class Settings extends Component
 
     public function addUser()
     {
+        abort_unless(auth()->user()->can('settings.manage'), 403);
+
         $this->validate([
             'userName' => 'required|string|max:255',
             'userUsername' => 'required|string|max:255|unique:users,username',
@@ -72,6 +75,8 @@ class Settings extends Component
 
     public function addLocation()
     {
+        abort_unless(auth()->user()->can('settings.manage'), 403);
+
         $this->validate([
             'locationName' => 'required|string|max:255',
             'locationCode' => 'required|string|max:50|unique:locations,code',
@@ -90,13 +95,16 @@ class Settings extends Component
 
     public function addPaymentMethod()
     {
+        abort_unless(auth()->user()->can('settings.manage'), 403);
+
         $this->validate([
-            'pmName' => 'required|string|max:255',
+            'pmName' => 'required|string|max:255|unique:payment_methods,name',
             'pmType' => 'required|in:CASH,QRIS,TRANSFER,E_WALLET',
         ]);
 
         PaymentMethod::create([
             'name' => $this->pmName,
+            'code' => Str::upper(Str::slug($this->pmName, '_')),
             'type' => $this->pmType,
             'status' => 'ACTIVE',
         ]);

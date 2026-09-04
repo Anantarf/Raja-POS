@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Jobs\ProcessAuditLogJob;
 use App\Models\BalanceAccount;
 use App\Models\BalanceTransaction;
 use App\Models\Inventory;
@@ -11,6 +12,7 @@ use App\Models\Product;
 use App\Models\Sale;
 use App\Models\SaleItem;
 use App\Models\User;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
@@ -31,7 +33,41 @@ class PosService
         User $cashier,
         array $cartItems,
         array $paymentsData,
-        ?string $notes = null
+        ?string $notes = null,
+        ?string $idempotencyKey = null
+    ): Sale {
+        $lockKey = $idempotencyKey ? 'checkout_idempotency_'.$idempotencyKey : 'checkout_cashier_'.$cashier->id;
+        $lock = Cache::lock($lockKey, 10);
+        if (! $lock->get()) {
+            throw new InvalidArgumentException('Transaksi sedang diproses. Mohon tunggu sejenak.');
+        }
+
+        try {
+            if ($idempotencyKey) {
+                $existingSale = Sale::where('idempotency_key', $idempotencyKey)->first();
+                if ($existingSale) {
+                    return $existingSale;
+                }
+            }
+
+            return $this->executeCheckoutProcess(
+                $cashier,
+                $cartItems,
+                $paymentsData,
+                $notes,
+                $idempotencyKey
+            );
+        } finally {
+            $lock->release();
+        }
+    }
+
+    protected function executeCheckoutProcess(
+        User $cashier,
+        array $cartItems,
+        array $paymentsData,
+        ?string $notes = null,
+        ?string $idempotencyKey = null
     ): Sale {
         if (empty($cartItems)) {
             throw new InvalidArgumentException('Keranjang belanja kosong.');
@@ -137,18 +173,20 @@ class PosService
 
             $balanceAccountId = $paymentData['balance_account_id'] ?? null;
             if (! $balanceAccountId && $paymentMethod->type === 'CASH') {
-                $balanceAccountId = BalanceAccount::where('code', 'CASH')->where('status', 'ACTIVE')->value('id');
+                $balanceAccountId = BalanceAccount::forUserLocation($cashier)->where('code', 'CASH')->where('status', 'ACTIVE')->value('id')
+                    ?? BalanceAccount::forUserLocation($cashier)->where('account_type', 'CASH')->where('status', 'ACTIVE')->value('id');
             } elseif (! $balanceAccountId && $paymentMethod->type === 'QRIS') {
-                $balanceAccountId = BalanceAccount::where('code', 'QRIS')->where('status', 'ACTIVE')->value('id');
+                $balanceAccountId = BalanceAccount::forUserLocation($cashier)->where('code', 'QRIS')->where('status', 'ACTIVE')->value('id')
+                    ?? BalanceAccount::forUserLocation($cashier)->where('account_type', 'QRIS')->where('status', 'ACTIVE')->value('id');
             }
 
             if (! $balanceAccountId) {
                 throw new InvalidArgumentException("Akun tujuan pembayaran {$paymentMethod->name} wajib dipilih.");
             }
 
-            $balanceAccount = BalanceAccount::where('status', 'ACTIVE')->find($balanceAccountId);
+            $balanceAccount = BalanceAccount::forUserLocation($cashier)->where('status', 'ACTIVE')->find($balanceAccountId);
             if (! $balanceAccount) {
-                throw new InvalidArgumentException('Akun saldo pembayaran tidak valid atau tidak aktif.');
+                throw new InvalidArgumentException('Akun saldo pembayaran tidak valid, tidak aktif, atau di luar lokasi cabang Anda.');
             }
 
             $validAccountTypes = match ($paymentMethod->type) {
@@ -167,6 +205,7 @@ class PosService
                 'payment_method' => $paymentMethod,
                 'balance_account_id' => $balanceAccount->id,
                 'amount' => $amount,
+                'change_amount' => 0,
                 'reference_number' => $paymentData['reference_number'] ?? null,
             ];
             $totalPaid += $amount;
@@ -177,14 +216,31 @@ class PosService
         }
 
         $changeAmount = $totalPaid - $totalAmount;
-        $cashTendered = collect($validatedPayments)->filter(fn ($payment) => $payment['payment_method']->type === 'CASH')->sum('amount');
+        $cashPayments = collect($validatedPayments)->filter(fn ($payment) => $payment['payment_method']->type === 'CASH');
+        $cashTendered = $cashPayments->sum('amount');
         if ($changeAmount > 0 && $cashTendered < $changeAmount) {
             throw new InvalidArgumentException('Kembalian hanya dapat diberikan dari pembayaran tunai.');
+        }
+        if ($changeAmount > 0) {
+            $remainingChange = $changeAmount;
+            foreach ($validatedPayments as $index => $payment) {
+                if ($payment['payment_method']->type !== 'CASH' || $remainingChange <= 0) {
+                    continue;
+                }
+
+                $allocatedChange = min($payment['amount'], $remainingChange);
+                $validatedPayments[$index]['change_amount'] = $allocatedChange;
+                $remainingChange -= $allocatedChange;
+            }
+
+            if ($remainingChange > 0) {
+                throw new InvalidArgumentException('Akun kas untuk kembalian tidak tersedia.');
+            }
         }
         $grossProfit = $totalAmount - $totalCost;
 
         // 2. Perform Atomic Transaction
-        return DB::transaction(function () use (
+        $sale = DB::transaction(function () use (
             $cashier,
             $location,
             $validatedItems,
@@ -195,15 +251,22 @@ class PosService
             $changeAmount,
             $totalCost,
             $grossProfit,
-            $notes
+            $notes,
+            $idempotencyKey
         ) {
-            // Generate Transaction Number server-side (TRX-YYYYMMDD-XXXXXX)
-            $datePrefix = date('Ymd');
-            $invoiceNumber = 'TRX-'.$datePrefix.'-'.Str::upper(Str::random(6));
+            // Generate Transaction Number server-side with retry collision protection
+            $attempts = 0;
+            do {
+                $datePrefix = date('Ymd');
+                $invoiceNumber = 'TRX-'.$datePrefix.'-'.Str::upper(Str::random(6));
+                $exists = Sale::where('invoice_number', $invoiceNumber)->exists();
+                $attempts++;
+            } while ($exists && $attempts < 5);
 
             // Create Sale
             $sale = Sale::create([
                 'invoice_number' => $invoiceNumber,
+                'idempotency_key' => $idempotencyKey,
                 'cashier_id' => $cashier->id,
                 'location_id' => $location->id,
                 'transaction_date' => now(),
@@ -254,8 +317,6 @@ class PosService
             }
 
             // Create Payments & Balance Transactions
-            $cashAccount = BalanceAccount::where('code', 'CASH')->where('status', 'ACTIVE')->lockForUpdate()->first();
-
             foreach ($validatedPayments as $pData) {
                 $pm = $pData['payment_method'];
                 $balanceAccountId = $pData['balance_account_id'];
@@ -265,7 +326,7 @@ class PosService
                     'payment_method_id' => $pm->id,
                     'balance_account_id' => $balanceAccountId,
                     'amount' => $pData['amount'],
-                    'change_amount' => 0,
+                    'change_amount' => $pData['change_amount'],
                     'reference_number' => $pData['reference_number'] ?? null,
                     'status' => 'COMPLETED',
                     'paid_at' => now(),
@@ -297,11 +358,19 @@ class PosService
                 }
             }
 
-            // Handle Change Amount exit from CASH account (PRD Bab 72)
-            if ($changeAmount > 0 && $cashAccount) {
-                $cashAccount = $cashAccount->fresh();
+            // Handle change exits from the same CASH payment accounts recorded above.
+            foreach ($validatedPayments as $pData) {
+                if ($pData['change_amount'] <= 0) {
+                    continue;
+                }
+
+                $cashAccount = BalanceAccount::whereKey($pData['balance_account_id'])->where('status', 'ACTIVE')->lockForUpdate()->first();
+                if (! $cashAccount) {
+                    throw new InvalidArgumentException('Akun kas untuk kembalian tidak valid atau tidak aktif.');
+                }
+
                 $beforeCash = $cashAccount->current_balance;
-                $afterCash = $beforeCash - $changeAmount;
+                $afterCash = $beforeCash - $pData['change_amount'];
 
                 $cashAccount->update(['current_balance' => $afterCash]);
 
@@ -309,7 +378,7 @@ class PosService
                     'transaction_number' => 'TRX-'.Str::uuid(),
                     'transaction_type' => 'WITHDRAWAL',
                     'source_account_id' => $cashAccount->id,
-                    'amount' => $changeAmount,
+                    'amount' => $pData['change_amount'],
                     'balance_before' => $beforeCash,
                     'balance_after' => $afterCash,
                     'reference_type' => Sale::class,
@@ -322,5 +391,21 @@ class PosService
 
             return $sale;
         });
+
+        ProcessAuditLogJob::dispatch(
+            action: 'POS_CHECKOUT',
+            description: "Penjualan POS #{$sale->invoice_number} berhasil diproses (Total: Rp".number_format($sale->total_amount, 0, ',', '.').")",
+            userId: $cashier->id,
+            context: [
+                'sale_id' => $sale->id,
+                'invoice_number' => $sale->invoice_number,
+                'total_amount' => $sale->total_amount,
+                'location_id' => $location->id,
+                'idempotency_key' => $idempotencyKey,
+            ],
+            locationId: $location->id
+        );
+
+        return $sale;
     }
 }

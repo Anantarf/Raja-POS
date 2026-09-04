@@ -13,7 +13,9 @@ use App\Services\FinanceReportService;
 use App\Services\InventoryService;
 use App\Services\PosService;
 use Database\Seeders\DatabaseSeeder;
+use App\Livewire\Admin\Balances as BalancesComponent;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Livewire\Livewire;
 use Tests\TestCase;
 
 class FinanceAndReportingTest extends TestCase
@@ -136,6 +138,18 @@ class FinanceAndReportingTest extends TestCase
         $this->assertTrue($owner->hasPermission('report.profit.view'));
     }
 
+    public function test_balance_component_rejects_invalid_modal_type(): void
+    {
+        $owner = User::where('username', 'superadmin')->first();
+
+        Livewire::actingAs($owner)
+            ->test(BalancesComponent::class)
+            ->set('showModal', 'INVALID')
+            ->set('amount', 10000)
+            ->set('description', 'Invalid modal type')
+            ->call('processTransaction')
+            ->assertHasErrors(['showModal']);
+    }
     public function test_balance_service_blocks_overdraw(): void
     {
         $owner = User::where('username', 'superadmin')->first();

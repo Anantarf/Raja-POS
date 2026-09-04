@@ -54,6 +54,8 @@ class Checkout extends Component
 
     public ?string $notes = null;
 
+    public ?string $checkoutIdempotencyKey = null;
+
     public ?int $completedSaleId = null;
 
     public ?string $completedInvoiceNumber = null;
@@ -77,13 +79,16 @@ class Checkout extends Component
 
     public function mount()
     {
+        $this->checkoutIdempotencyKey = (string) \Illuminate\Support\Str::uuid();
         $this->initPaymentEntries();
     }
 
     public function initPaymentEntries()
     {
+        $user = auth()->user();
         $defaultCashPm = PaymentMethod::where('type', 'CASH')->first() ?? PaymentMethod::first();
-        $cashAccount = BalanceAccount::where('code', 'CASH')->first();
+        $cashAccount = BalanceAccount::forUserLocation($user)->where('code', 'CASH')->first()
+            ?? BalanceAccount::forUserLocation($user)->where('account_type', 'CASH')->first();
 
         $this->payments = [
             [
@@ -290,6 +295,7 @@ class Checkout extends Component
     public function clearCart()
     {
         $this->cart = [];
+        $this->checkoutIdempotencyKey = (string) \Illuminate\Support\Str::uuid();
         $this->initPaymentEntries();
     }
 
@@ -426,7 +432,8 @@ class Checkout extends Component
                 cashier: auth()->user(),
                 cartItems: $cartPayload,
                 paymentsData: $this->payments,
-                notes: $this->notes
+                notes: $this->notes,
+                idempotencyKey: $this->checkoutIdempotencyKey
             );
 
             $this->completedSaleId = $sale->id;
@@ -476,10 +483,13 @@ class Checkout extends Component
         $totalProductsCount = (clone $query)->count();
         $products = $query->orderBy('name')->take($this->perPage)->get();
 
+        $user = auth()->user();
         $categories = Category::where('status', 'ACTIVE')->orderBy('name')->get();
         $paymentMethods = PaymentMethod::where('status', 'ACTIVE')->get();
-        $balanceAccounts = BalanceAccount::where('status', 'ACTIVE')->get();
-        $cashBalance = (float) (BalanceAccount::where('code', 'CASH')->value('current_balance') ?? 0);
+        $balanceAccounts = BalanceAccount::forUserLocation($user)->where('status', 'ACTIVE')->get();
+        $cashAccount = BalanceAccount::forUserLocation($user)->where('code', 'CASH')->first()
+            ?? BalanceAccount::forUserLocation($user)->where('account_type', 'CASH')->first();
+        $cashBalance = (float) ($cashAccount?->current_balance ?? 0);
 
         return view('livewire.pos.checkout', [
             'products' => $products,

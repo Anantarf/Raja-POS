@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Jobs\ProcessAuditLogJob;
 use App\Models\BalanceAccount;
 use App\Models\Brand;
 use App\Models\Category;
@@ -112,6 +113,28 @@ class ProductImportService
             $minStock = $idxMinStock !== null ? (int) preg_replace('/[^0-9]/', '', $row[$idxMinStock] ?? '3') : 3;
             $accountName = $idxAccount !== null ? trim($row[$idxAccount] ?? '') : '';
 
+            // Strict Validation Checks per Row
+            if ($costPrice < 0 || $sellingPrice < 0) {
+                $errors[] = "Baris {$rowNumber}: Harga modal atau harga jual tidak boleh negatif.";
+
+                continue;
+            }
+
+            if ($initialStock < 0) {
+                $errors[] = "Baris {$rowNumber}: Stok awal tidak boleh negatif.";
+
+                continue;
+            }
+
+            if (! empty($barcode)) {
+                $existingBarcode = Product::where('barcode', $barcode)->where('code', '!=', $code)->exists();
+                if ($existingBarcode) {
+                    $errors[] = "Baris {$rowNumber}: Barcode '{$barcode}' sudah digunakan oleh produk lain.";
+
+                    continue;
+                }
+            }
+
             try {
                 DB::transaction(function () use (
                     $code,
@@ -150,8 +173,11 @@ class ProductImportService
                     // Resolve Balance Account for Provider if given
                     $balanceAccount = null;
                     if (! empty($accountName)) {
-                        $balanceAccount = BalanceAccount::where('name', 'like', "%{$accountName}%")
-                            ->orWhere('code', $accountName)
+                        $balanceAccount = BalanceAccount::forUserLocation($user)
+                            ->where(function ($q) use ($accountName) {
+                                $q->where('name', 'like', "%{$accountName}%")
+                                    ->orWhere('code', $accountName);
+                            })
                             ->first();
                     }
 
@@ -204,6 +230,19 @@ class ProductImportService
         }
 
         fclose($handle);
+
+        ProcessAuditLogJob::dispatch(
+            action: 'PRODUCT_IMPORT',
+            description: "Import produk selesai: {$importedCount} baru, {$updatedCount} diupdate, ".count($errors).' error.',
+            userId: $user->id,
+            context: [
+                'imported_count' => $importedCount,
+                'updated_count' => $updatedCount,
+                'incomplete_count' => $incompleteCount,
+                'error_count' => count($errors),
+            ],
+            locationId: $location->id
+        );
 
         return [
             'imported_count' => $importedCount,
@@ -379,6 +418,7 @@ class ProductImportService
         return $temporaryFile.'.xlsx';
     }
 
+
     protected function findHeaderIndex(array $headers, array $candidates): ?int
     {
         foreach ($candidates as $candidate) {
@@ -397,12 +437,16 @@ class ProductImportService
             return 0.0;
         }
 
-        if (is_numeric($raw)) {
+        if (is_int($raw) || is_float($raw)) {
             return (float) $raw;
         }
 
         $str = trim((string) $raw);
-        $str = preg_replace('/[^\d.,]/', '', $str);
+        $str = preg_replace('/[^\d.,]/', '', $str) ?? '';
+
+        if ($str === '') {
+            return 0.0;
+        }
 
         if (str_contains($str, '.') && str_contains($str, ',')) {
             if (strrpos($str, ',') > strrpos($str, '.')) {
@@ -412,7 +456,7 @@ class ProductImportService
                 $str = str_replace(',', '', $str);
             }
         } elseif (str_contains($str, '.')) {
-            if (preg_match('/^\d{1,3}(\.\d{3})+$/', $str)) {
+            if (preg_match('/^\d{1,3}(\.\d{3})+$/', $str) || preg_match('/\.\d{3}$/', $str)) {
                 $str = str_replace('.', '', $str);
             }
         } elseif (str_contains($str, ',')) {

@@ -1190,16 +1190,16 @@ Hover row           Blue 50
 Focus ring          Blue 500
 ```
 
-## Filament Theme Rule
+## Admin Theme Rule
 
-Admin panel Filament wajib mengikuti token warna yang sama:
+Admin panel custom Livewire wajib mengikuti token warna yang sama:
 
 - Sidebar memakai Navy 900.
 - Primary action memakai Blue 600.
 - Accent brand memakai Gold 500 secara hemat.
 - Badge status memakai mapping semantic, bukan warna default acak.
-- POS Livewire boleh lebih custom dan lebih padat daripada halaman Filament.
-- Halaman Filament tetap compact, table-first, dan tidak memakai tampilan marketing.
+- POS Livewire boleh lebih custom dan lebih padat untuk kebutuhan kasir.
+- Halaman admin tetap compact, table-first, dan tidak memakai tampilan marketing.
 
 ---
 
@@ -2620,19 +2620,19 @@ Layout halaman MVP dikunci sebagai berikut:
 ```text
 Dashboard       -> KPI compact + chart + table ringkas
 POS             -> Custom Livewire full-screen operational layout
-Transactions    -> Filament table + detail drawer/page
-Products        -> Filament CRUD table-first
-Inventory       -> Filament table + adjustment action
-Stock Opname    -> Filament wizard/action flow sederhana
-Balance         -> Filament account summary + transaction table
-Reports         -> Filament report pages dengan filter date range
-Users/Settings  -> Filament resource terbatas untuk Owner
+Transactions    -> Custom Livewire table + detail modal/page
+Products        -> Custom Livewire CRUD table-first
+Inventory       -> Custom Livewire table + adjustment action
+Stock Opname    -> Custom Livewire opname flow sederhana
+Balance         -> Custom Livewire account summary + transaction table
+Reports         -> Custom Livewire report pages dengan filter date range
+Users/Settings  -> Custom Livewire management pages terbatas untuk Owner
 Digital Tx      -> bukan menu terpisah; gunakan filter pada Sales
 ```
 
 Aturan layout:
 
-- POS tidak memakai layout CRUD Filament standar; POS dibuat custom supaya cepat untuk kasir.
+- POS dibuat custom supaya cepat untuk kasir.
 - Halaman admin memakai tabel sebagai pusat kerja, bukan card-grid besar.
 - Detail transaksi harus printable dan readable untuk audit.
 - Filter tanggal dan search selalu dekat dengan tabel utama.
@@ -2908,8 +2908,8 @@ Development dianggap sesuai MD jika skenario berikut lulus.
 ## UI & Design System
 
 - Visual direction mengikuti `docs/raja-pos-blueprint.png`.
-- POS dibuat custom Livewire, bukan CRUD Filament standar.
-- Admin panel Filament mengikuti token Navy, Blue, Gold, Neutral, dan Semantic.
+- POS dibuat custom Livewire untuk alur kasir.
+- Admin panel custom Livewire mengikuti token Navy, Blue, Gold, Neutral, dan Semantic.
 - Layout admin table-first, compact, dan tidak bergaya landing page.
 - Action destruktif memakai confirmation dialog.
 - Loading data memakai skeleton pada area konten.
@@ -3081,7 +3081,7 @@ Done jika:
 - Auth username/password berjalan.
 - Role dan permission seed tersedia.
 - Superadmin seed tersedia.
-- Filament panel aktif dengan theme dasar Raja POS.
+- Custom Livewire admin panel aktif dengan theme dasar Raja POS.
 
 ## Milestone 2 - Master Data
 
