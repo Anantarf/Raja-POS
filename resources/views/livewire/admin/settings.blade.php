@@ -151,7 +151,7 @@
                     </div>
                     <div>
                         <label class="block text-[#718379] font-extrabold uppercase tracking-wider text-[10px] mb-1">Password *</label>
-                        <input type="password" wire:model="userPassword" placeholder="Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢" class="w-full p-2.5 border border-slate-200 rounded-xl bg-[#F3F6F4] text-[#232E28] font-semibold focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]" required />
+                        <input type="password" wire:model="userPassword" placeholder="••••••••" class="w-full p-2.5 border border-slate-200 rounded-xl bg-[#F3F6F4] text-[#232E28] font-semibold focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]" required />
                     </div>
                     <div>
                         <label class="block text-[#718379] font-extrabold uppercase tracking-wider text-[10px] mb-1">Role / Wewenang *</label>

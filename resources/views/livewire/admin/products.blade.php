@@ -173,7 +173,7 @@
                             </div>
                         </div>
 
-                        <!-- Dimensions: Kategori ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ Subtipe (jika ada) ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ Merk -->
+                        <!-- Dimensions: Kategori • Subtipe (jika ada) • Merk -->
                         <div class="text-xs text-slate-500 flex items-center gap-1.5 flex-wrap font-medium">
                             <span class="text-slate-700 font-semibold">{{ $product->category?->name ?? 'Umum' }}</span>
                             @if(!empty($product->product_subtype) && trim($product->product_subtype) !== '-')
@@ -328,7 +328,7 @@
                                     </span>
                                 </td>
 
-                                <!-- Col 3: Kategori ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ Subtipe (jika ada) ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ Merk -->
+                                <!-- Col 3: Kategori • Subtipe (jika ada) • Merk -->
                                 <td class="py-3.5 px-4 text-slate-500 text-xs">
                                     <div class="flex items-center gap-1.5 flex-wrap">
                                         <span class="text-slate-700 font-semibold">{{ $product->category?->name ?? 'Umum' }}</span>

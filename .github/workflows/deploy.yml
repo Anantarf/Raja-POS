@@ -1,0 +1,41 @@
+name: Deploy to cPanel
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy Laravel to cPanel
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            echo "🚀 Starting Deployment on cPanel..."
+            cd ${{ secrets.TARGET_DIR }}
+            
+            echo "📥 Pulling latest code from main..."
+            git pull origin main
+            
+            echo "📦 Installing/Updating Composer Dependencies..."
+            composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
+            
+            echo "🗄️ Running Database Migrations..."
+            php artisan migrate --force
+            
+            echo "⚡ Clearing and Caching Configurations..."
+            php artisan config:cache
+            php artisan route:cache
+            php artisan view:cache
+            
+            echo "🔗 Verifying Storage Link..."
+            php artisan storage:link || true
+            
+            echo "✅ Deployment Finished Successfully!"
