@@ -8,36 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['"Public Sans"', 'Poppins', '-apple-system', 'sans-serif'],
-                        mono: ['Poppins', 'Courier New', 'monospace'],
-                    },
-                    colors: {
-                        emco: {
-                            primary: '#3F7A5D',       // EMCO 49/70 Deep Jade Emerald
-                            'primary-hover': '#32634B',
-                            'primary-light': '#E3EEE8', // EMCO 120 Light Sage
-                            sand: '#C2AC7C',          // EMCO 79 Warm Sand Ochre
-                            mint: '#A9D1A0',          // EMCO 46 Fresh Mint
-                            dark: '#232E28',          // Deep Forest Dark
-                            body: '#F3F6F4',          // Soft Tinted Cream/Sage BG
-                            muted: '#718379',
-                        }
-                    },
-                    boxShadow: {
-                        'emco': 'none',
-                        'emco-hover': 'none',
-                        'emco-primary': 'none',
-                    }
-                }
-            }
-        }
-    </script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         html {
             font-size: 110%;
