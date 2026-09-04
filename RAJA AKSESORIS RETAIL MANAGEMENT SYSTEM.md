@@ -2,9 +2,9 @@
 ## Product Requirements Document, Design System & Database Architecture
 **Version:** 1.0  
 **Platform:** Web Application  
-**Final Stack:** Laravel 12 + Livewire + MySQL 8 + Tailwind CSS + Filament
+**Final Stack:** Laravel 12 + Livewire 3 + MySQL 8 + Tailwind CSS
 
-**Implementation Decision:** Custom Livewire digunakan untuk layar POS. Filament digunakan untuk admin panel, CRUD master data, inventory, user, dan laporan operasional.
+**Implementation Decision:** Custom Livewire digunakan untuk seluruh aplikasi: layar Kasir POS, Admin Panel operasional, CRUD master data, inventory, balance monitoring, dan laporan.
 
 ---
 

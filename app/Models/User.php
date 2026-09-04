@@ -7,10 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-use Filament\Models\Contracts\FilamentUser;
-use Filament\Panel;
-
-class User extends Authenticatable implements FilamentUser
+class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
@@ -64,10 +61,5 @@ class User extends Authenticatable implements FilamentUser
         }
 
         return $this->role->permissions()->where('name', $permissionName)->exists();
-    }
-
-    public function canAccessPanel(Panel $panel): bool
-    {
-        return $this->status === 'ACTIVE' && ($this->hasRole('OWNER') || $this->hasRole('ADMIN'));
     }
 }

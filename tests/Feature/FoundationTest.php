@@ -130,6 +130,6 @@ class FoundationTest extends TestCase
         ]);
 
         $this->actingAs($cashier)->get('/admin/balances')->assertForbidden();
-        $this->get('/portal/settings')->assertForbidden();
+        $this->get('/admin/settings')->assertForbidden();
     }
 }
