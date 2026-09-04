@@ -11,7 +11,19 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind('path.public', function () {
+            $cpanelSubfolder = base_path('../public_html/raja-pos.my.id');
+            if (is_dir($cpanelSubfolder)) {
+                return $cpanelSubfolder;
+            }
+
+            $cpanelRoot = base_path('../public_html');
+            if (is_dir($cpanelRoot)) {
+                return $cpanelRoot;
+            }
+
+            return base_path('public');
+        });
     }
 
     /**
