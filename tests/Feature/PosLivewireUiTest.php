@@ -360,16 +360,18 @@ class PosLivewireUiTest extends TestCase
         // Branch Cashier (Bango) metrics only sum Bango sale (25,000)
         $cashierMetrics = $reportService->getSummaryMetrics(user: $this->cashier);
         $this->assertEquals(25000, $cashierMetrics['omset']);
+        $this->assertEquals(25000, $cashierMetrics['omzet']);
 
         // Owner metrics sum all sales (125,000)
         $ownerMetrics = $reportService->getSummaryMetrics(user: $this->owner);
         $this->assertEquals(125000, $ownerMetrics['omset']);
+        $this->assertEquals(125000, $ownerMetrics['omzet']);
 
-        // Reports Livewire component for Cashier sees 25,000 omset
+        // Reports Livewire component for Cashier sees 25,000 omzet
         $this->actingAs($this->cashier);
         Livewire::test(\App\Livewire\Admin\Reports::class)
             ->assertViewHas('metrics', function ($m) {
-                return $m['omset'] == 25000;
+                return $m['omzet'] == 25000 && $m['omset'] == 25000;
             });
     }
 

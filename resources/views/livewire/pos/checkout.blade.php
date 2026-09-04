@@ -166,7 +166,7 @@
 
                             <div
                                 wire:click="addToCart({{ $product->id }})"
-                                class="bg-white border border-[#E3EEE8] hover:border-[#3F7A5D] rounded-2xl sm:rounded-3xl overflow-hidden flex flex-col justify-between h-[205px] sm:h-[235px] cursor-pointer transition-all duration-200 relative group hover:shadow-sm {{ $isIncomplete ? 'opacity-65 bg-rose-50/20' : '' }}"
+                                class="bg-white border border-[#E3EEE8] hover:border-[#3F7A5D] rounded-xl sm:rounded-2xl overflow-hidden flex flex-col justify-between h-[205px] sm:h-[235px] cursor-pointer transition-all duration-200 relative group hover:shadow-sm {{ $isIncomplete ? 'opacity-65 bg-rose-50/20' : '' }}"
                             >
                                 <div>
                                     <!-- Top Image/Banner Container -->
@@ -368,7 +368,7 @@
         <div
             id="cart-section"
             :class="{ 'hidden md:flex': activeTab === 'catalog', 'flex': activeTab === 'cart' }"
-            class="w-full md:w-[42%] lg:w-[38.2%] bg-white rounded-3xl border border-[#E3EEE8] flex-col flex-shrink-0 overflow-hidden h-full shadow-sm"
+            class="w-full md:w-[42%] lg:w-[38.2%] bg-white rounded-2xl border border-[#E3EEE8] flex-col flex-shrink-0 overflow-hidden h-full shadow-sm"
         >
 
             <!-- 1. Cart Header -->
@@ -575,7 +575,7 @@
     <!-- Success Modal -->
     @if($showSuccessModal)
         <div class="fixed inset-0 bg-[#232E28]/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-            <div class="bg-white rounded-3xl p-7 max-w-sm w-full shadow-2xl text-center space-y-5 border border-slate-100">
+            <div class="bg-white rounded-2xl p-7 max-w-sm w-full shadow-2xl text-center space-y-5 border border-slate-100">
                 <div class="w-16 h-16 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center mx-auto shadow-inner">
                     <svg class="w-8 h-8 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
@@ -615,7 +615,7 @@
     <!-- PPOB Open-Nominal Bill Modal -->
     @if($showPpobModal)
         <div class="fixed inset-0 bg-[#232E28]/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-            <div class="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl space-y-4 border border-slate-100">
+            <div class="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl space-y-4 border border-slate-100">
                     <!-- PPOB Open-Nominal Bill Modal -->
                     <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                         <div>

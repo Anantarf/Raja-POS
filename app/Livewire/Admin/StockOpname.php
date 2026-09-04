@@ -227,13 +227,13 @@ class StockOpname extends Component
                 'system_quantity' => $systemQty,
                 'physical_quantity' => $physicalQty,
                 'difference' => $diff,
-                'notes' => $item['notes'] ?? 'Audit Masal Toko',
+                'notes' => $item['notes'] ?? 'Audit Massal Toko',
             ]);
             $itemCount++;
         }
 
         $this->showBulkModal = false;
-        $this->dispatch('notify', message: "Sesi Stock Opname Masal ({$itemCount} barang) berhasil dibuat.", type: 'success');
+        $this->dispatch('notify', message: "Sesi Stock Opname Massal ({$itemCount} barang) berhasil dibuat.", type: 'success');
     }
 
     public function openDetailModal($id)

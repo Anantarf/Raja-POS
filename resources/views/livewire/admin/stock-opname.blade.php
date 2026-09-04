@@ -2,14 +2,14 @@
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
             <h1 class="text-2xl font-extrabold text-[#232E28] tracking-tight">Sesi Stock Opname</h1>
-            <p class="text-xs text-[#718379] font-medium mt-0.5">Penyesuaian stok fisik berkala (Cepat 1 Barang / Opname Masal Seluruh Toko).</p>
+            <p class="text-xs text-[#718379] font-medium mt-0.5">Penyesuaian stok fisik berkala (Cepat 1 Barang / Opname Massal Seluruh Toko).</p>
         </div>
         <div class="flex flex-wrap items-center gap-2">
             <button wire:click="openBulkModal" class="px-4 py-2.5 bg-slate-100 hover:bg-[#E3EEE8] text-[#232E28] hover:text-[#3F7A5D] border border-slate-200/80 font-extrabold rounded-2xl text-xs transition flex items-center gap-2 shadow-sm active:scale-95 cursor-pointer uppercase tracking-wider shrink-0">
                 <svg class="w-4 h-4 text-[#3F7A5D]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
                 </svg>
-                <span>Opname Masal (Banyak Barang)</span>
+                <span>Opname Massal (Banyak Barang)</span>
             </button>
             <button wire:click="openCreateModal" class="px-4 py-2.5 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-2xl text-xs transition flex items-center gap-2 shadow-sm active:scale-95 cursor-pointer uppercase tracking-wider shrink-0">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -84,7 +84,7 @@
                             <td class="py-3.5 px-4">
                                 @if($itemsCount > 1)
                                     <div class="font-bold text-[#232E28] text-sm flex items-center gap-1.5">
-                                        <span>Audit Opname Masal</span>
+                                        <span>Audit Opname Massal</span>
                                         <span class="bg-[#E3EEE8] text-[#3F7A5D] text-[10px] font-extrabold px-2 py-0.5 rounded-md">{{ $itemsCount }} Barang</span>
                                     </div>
                                     <div class="text-xs text-[#718379] font-semibold">{{ $opn->location?->name }} &bull; {{ $firstItem?->product?->name }} & dll.</div>
@@ -184,7 +184,7 @@
             <div class="bg-white rounded-2xl p-5 sm:p-6 max-w-5xl w-full shadow-2xl space-y-4 border border-slate-100 max-h-[90vh] flex flex-col">
                 <div class="flex items-center justify-between border-b border-slate-100 pb-3 shrink-0">
                     <div>
-                        <h3 class="text-lg font-extrabold text-[#232E28]">Lembar Hitung Stock Opname Masal</h3>
+                        <h3 class="text-lg font-extrabold text-[#232E28]">Lembar Hitung Stock Opname Massal</h3>
                         <p class="text-xs text-[#718379] font-medium mt-0.5">Audit seluruh barang toko sekaligus. Masukkan hasil hitung fisik pada kolom yang tersedia.</p>
                     </div>
                     <button type="button" wire:click="$set('showBulkModal', false)" class="text-slate-400 hover:text-slate-600 p-1">
@@ -281,7 +281,7 @@
                     <div class="flex items-center gap-2">
                         <button type="button" wire:click="$set('showBulkModal', false)" class="py-2.5 px-4 bg-slate-100 hover:bg-slate-200 text-[#232E28] font-bold rounded-2xl text-xs transition cursor-pointer">Batal</button>
                         <button type="button" wire:click="createBulkSession" class="py-2.5 px-5 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-2xl text-xs uppercase tracking-wider transition active:scale-95 shadow-sm cursor-pointer">
-                            Simpan & Ajukan Opname Masal
+                            Simpan & Ajukan Opname Massal
                         </button>
                     </div>
                 </div>

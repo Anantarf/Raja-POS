@@ -51,7 +51,7 @@
             <div class="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-sm space-y-1">
                 <div class="text-[11px] text-[#718379] font-extrabold uppercase tracking-wider">Omzet Penjualan</div>
                 <div class="text-2xl font-black font-mono tracking-tight text-[#232E28]">
-                    Rp {{ number_format($metrics['omset'], 0, ',', '.') }}
+                    Rp {{ number_format($metrics['omzet'], 0, ',', '.') }}
                 </div>
                 <div class="text-[11px] text-[#718379] font-medium">Total penerimaan penjualan</div>
             </div>
@@ -67,7 +67,7 @@
 
             <!-- 3. Margin -->
             @php
-                $marginRatio = $metrics['omset'] > 0 ? ($metrics['gross_profit'] / $metrics['omset']) * 100 : 0;
+                $marginRatio = $metrics['omzet'] > 0 ? ($metrics['gross_profit'] / $metrics['omzet']) * 100 : 0;
             @endphp
             <div class="bg-white rounded-2xl p-4 border border-[#3F7A5D]/40 bg-gradient-to-b from-[#E3EEE8]/40 to-white shadow-sm space-y-1">
                 <div class="text-[11px] text-[#3F7A5D] font-extrabold uppercase tracking-wider flex items-center justify-between">
@@ -91,7 +91,7 @@
 
             <!-- 5. Rata-rata Transaksi -->
             @php
-                $avgTicket = $salesCount > 0 ? $metrics['omset'] / $salesCount : 0;
+                $avgTicket = $salesCount > 0 ? $metrics['omzet'] / $salesCount : 0;
             @endphp
             <div class="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-sm space-y-1">
                 <div class="text-[11px] text-[#718379] font-extrabold uppercase tracking-wider">Rata-rata Transaksi</div>
@@ -174,7 +174,7 @@
                                             {{ number_format($prod->total_qty, 0, ',', '.') }}
                                         </td>
                                         <td class="py-3 px-4 text-right font-mono font-black text-[#3F7A5D]">
-                                            Rp {{ number_format($prod->total_omset, 0, ',', '.') }}
+                                            Rp {{ number_format($prod->total_omzet, 0, ',', '.') }}
                                         </td>
                                     </tr>
                                 @empty
@@ -194,12 +194,12 @@
                     <div class="space-y-3 text-xs">
                         @forelse($categoryBreakdown as $cat)
                             @php
-                                $catPct = $metrics['omset'] > 0 ? ($cat->total_omset / $metrics['omset']) * 100 : 0;
+                                $catPct = $metrics['omzet'] > 0 ? ($cat->total_omzet / $metrics['omzet']) * 100 : 0;
                             @endphp
                             <div class="space-y-1">
                                 <div class="flex justify-between items-center font-semibold">
                                     <span class="text-[#232E28] font-bold">{{ $cat->category_name }} ({{ $cat->total_qty }} Unit)</span>
-                                    <span class="font-mono font-extrabold text-[#3F7A5D]">Rp {{ number_format($cat->total_omset, 0, ',', '.') }} ({{ number_format($catPct, 1) }}%)</span>
+                                    <span class="font-mono font-extrabold text-[#3F7A5D]">Rp {{ number_format($cat->total_omzet, 0, ',', '.') }} ({{ number_format($catPct, 1) }}%)</span>
                                 </div>
                                 <div class="w-full bg-[#F3F6F4] h-2 rounded-full overflow-hidden">
                                     <div class="bg-[#3F7A5D] h-full rounded-full transition-all duration-300" style="width: {{ min($catPct, 100) }}%;"></div>
@@ -240,7 +240,7 @@
                                     {{ number_format($cashier->total_sales, 0, ',', '.') }} Trx
                                 </td>
                                 <td class="py-3.5 px-4 text-right font-mono font-extrabold text-[#232E28]">
-                                    Rp {{ number_format($cashier->total_omset, 0, ',', '.') }}
+                                    Rp {{ number_format($cashier->total_omzet, 0, ',', '.') }}
                                 </td>
                                 <td class="py-3.5 px-4 text-right font-mono font-black text-[#3F7A5D]">
                                     Rp {{ number_format($cashier->total_margin, 0, ',', '.') }}

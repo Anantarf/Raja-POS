@@ -13,7 +13,7 @@ use Illuminate\Support\Carbon;
 class FinanceReportService
 {
     /**
-     * Get aggregate financial metrics (Omset, COGS, Profit, Total Cash & Bank).
+     * Get aggregate financial metrics (Omzet, COGS, Profit, Total Cash & Bank).
      */
     public function getSummaryMetrics(?string $startDate = null, ?string $endDate = null, ?User $user = null): array
     {
@@ -36,13 +36,13 @@ class FinanceReportService
         $totalBalance = (float) BalanceAccount::forUserLocation($user)->where('status', 'ACTIVE')->sum('current_balance');
 
         // Calculate comparison with previous day for growth percentage
-        $todayOmset = (float) Sale::forUserLocation($user)->where('status', 'COMPLETED')->whereDate('transaction_date', Carbon::today())->sum('total_amount');
-        $yesterdayOmset = (float) Sale::forUserLocation($user)->where('status', 'COMPLETED')->whereDate('transaction_date', Carbon::yesterday())->sum('total_amount');
+        $todayOmzet = (float) Sale::forUserLocation($user)->where('status', 'COMPLETED')->whereDate('transaction_date', Carbon::today())->sum('total_amount');
+        $yesterdayOmzet = (float) Sale::forUserLocation($user)->where('status', 'COMPLETED')->whereDate('transaction_date', Carbon::yesterday())->sum('total_amount');
 
         $growth = 0.0;
-        if ($yesterdayOmset > 0) {
-            $growth = (($todayOmset - $yesterdayOmset) / $yesterdayOmset) * 100;
-        } elseif ($todayOmset > 0) {
+        if ($yesterdayOmzet > 0) {
+            $growth = (($todayOmzet - $yesterdayOmzet) / $yesterdayOmzet) * 100;
+        } elseif ($todayOmzet > 0) {
             $growth = 100.0;
         } else {
             $growth = 0.0;
@@ -50,11 +50,13 @@ class FinanceReportService
 
         return [
             'omset' => $omset,
+            'omzet' => $omset,
             'cogs' => $cogs,
             'gross_profit' => $grossProfit,
             'total_balance' => $totalBalance,
             'sales_count' => $salesCount,
             'omset_growth' => round($growth, 1),
+            'omzet_growth' => round($growth, 1),
         ];
     }
 
@@ -97,11 +99,11 @@ class FinanceReportService
             $dateStr = $date->format('Y-m-d');
             $labels[] = $date->format('d M');
 
-            $dailyOmset = (float) Sale::forUserLocation($user)->where('status', 'COMPLETED')
+            $dailyOmzet = (float) Sale::forUserLocation($user)->where('status', 'COMPLETED')
                 ->whereDate('transaction_date', $dateStr)
                 ->sum('total_amount');
 
-            $data[] = $dailyOmset;
+            $data[] = $dailyOmzet;
         }
 
         return [
@@ -137,6 +139,7 @@ class FinanceReportService
                 'code' => $product?->code ?? '-',
                 'total_qty' => (int) $group->sum('quantity'),
                 'total_omset' => (float) $group->sum('subtotal'),
+                'total_omzet' => (float) $group->sum('subtotal'),
             ];
         })->sortByDesc('total_qty')->take($limit)->values();
     }
@@ -166,9 +169,10 @@ class FinanceReportService
                 'cashier_name' => $cashierName,
                 'total_sales' => $group->count(),
                 'total_omset' => (float) $group->sum('total_amount'),
+                'total_omzet' => (float) $group->sum('total_amount'),
                 'total_margin' => (float) $group->sum('gross_profit'),
             ];
-        })->sortByDesc('total_omset')->values();
+        })->sortByDesc('total_omzet')->values();
     }
 
     /**
@@ -224,7 +228,8 @@ class FinanceReportService
                     'category_name' => $categoryName,
                     'total_qty' => (int) $group->sum('quantity'),
                     'total_omset' => (float) $group->sum('subtotal'),
+                    'total_omzet' => (float) $group->sum('subtotal'),
                 ];
-            })->sortByDesc('total_omset')->values();
+            })->sortByDesc('total_omzet')->values();
     }
 }

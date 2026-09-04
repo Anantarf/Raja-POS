@@ -56,7 +56,7 @@
                             </td>
                             <td class="py-3.5 px-4 text-center whitespace-nowrap">
                                 @if(auth()->user()->can('sales.restore'))
-                                    <button wire:click="restoreSale({{ $sale->id }})" wire:confirm="Pulihkan transaksi ini dari Sampah Transaksi? Stok dan saldo akan dipotongan ulang." class="px-3.5 py-1.5 bg-[#3F7A5D] hover:bg-[#32634B] text-white rounded-xl font-extrabold text-xs transition uppercase tracking-wider shadow-sm cursor-pointer whitespace-nowrap">
+                                    <button wire:click="restoreSale({{ $sale->id }})" wire:confirm="Pulihkan transaksi ini dari Sampah Transaksi? Stok akan dikurangi kembali dan saldo pembayaran akan dicatat ulang." class="px-3.5 py-1.5 bg-[#3F7A5D] hover:bg-[#32634B] text-white rounded-xl font-extrabold text-xs transition uppercase tracking-wider shadow-sm cursor-pointer whitespace-nowrap">
                                         Pulihkan Transaksi
                                     </button>
                                 @endif

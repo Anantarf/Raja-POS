@@ -55,10 +55,30 @@
             const bgClass = isDanger ? 'bg-rose-600 text-white' : (isWarning ? 'bg-amber-600 text-white' : 'bg-[#232E28] text-white');
 
             toast.className = `${bgClass} px-5 py-3.5 rounded-2xl text-sm font-bold flex items-center gap-2.5 transform transition-all duration-200 translate-y-[-8px] opacity-0 pointer-events-auto border border-white/10 font-sans tracking-wide`;
-            toast.innerHTML = `
-                <span>${isDanger ? '⚠️' : (isWarning ? '⚠️' : '✓')}</span>
-                <span>${data.message}</span>
-            `;
+
+            const iconSpan = document.createElement('span');
+            iconSpan.className = 'inline-flex items-center justify-center shrink-0';
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.setAttribute('class', 'w-4 h-4');
+            svg.setAttribute('fill', 'none');
+            svg.setAttribute('stroke', 'currentColor');
+            svg.setAttribute('viewBox', '0 0 24 24');
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            path.setAttribute('stroke-linecap', 'round');
+            path.setAttribute('stroke-linejoin', 'round');
+            path.setAttribute('stroke-width', '2.5');
+            if (isDanger || isWarning) {
+                path.setAttribute('d', 'M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z');
+            } else {
+                path.setAttribute('d', 'M5 13l4 4L19 7');
+            }
+            svg.appendChild(path);
+            iconSpan.appendChild(svg);
+            const msgSpan = document.createElement('span');
+            msgSpan.textContent = data.message || '';
+
+            toast.appendChild(iconSpan);
+            toast.appendChild(msgSpan);
 
             container.appendChild(toast);
 

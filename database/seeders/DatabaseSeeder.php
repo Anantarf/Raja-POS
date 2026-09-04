@@ -147,7 +147,7 @@ class DatabaseSeeder extends Seeder
             'store_name' => 'Raja Aksesoris',
             'receipt_paper_width' => '58mm',
             'minimum_stock_default' => '3',
-            'currency' => 'Rp.',
+            'currency' => 'Rp',
             'timezone' => 'Asia/Jakarta',
         ];
         foreach ($defaultSettings as $key => $value) {

@@ -81,7 +81,7 @@ class SaleCancellationService
                             'balance_after' => $after,
                             'reference_type' => Sale::class,
                             'reference_id' => $sale->id,
-                            'description' => "Pembalian saldo akibat pembatalan POS #{$sale->invoice_number}",
+                            'description' => "Pengembalian saldo akibat pembatalan POS #{$sale->invoice_number}",
                             'created_by' => $user->id,
                             'transaction_date' => now(),
                         ]);

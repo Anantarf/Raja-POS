@@ -31,7 +31,7 @@
             $settingMap = $settings->pluck('value', 'key');
             $storeSettings = [
                 ['label' => 'Nama Toko', 'value' => $settingMap->get('store_name', 'Raja Aksesoris'), 'hint' => 'Nama resmi toko yang tampil di sistem dan struk belanja.'],
-                ['label' => 'Mata Uang', 'value' => $settingMap->get('currency', 'Rupiah (Rp.)'), 'hint' => 'Format simbol mata uang untuk transaksi & laporan.'],
+                ['label' => 'Mata Uang', 'value' => $settingMap->get('currency', 'Rupiah (Rp)'), 'hint' => 'Format simbol mata uang untuk transaksi & laporan.'],
                 ['label' => 'Zona Waktu', 'value' => $settingMap->get('timezone', 'Asia/Jakarta (WIB)'), 'hint' => 'Acuan waktu tanggal transaksi, laporan harian, dan audit.'],
                 ['label' => 'Mode Transaksi', 'value' => 'Multi-Payment & Split Account', 'hint' => 'Mendukung Tunai, Bank, QRIS, & E-Wallet dalam 1 transaksi.'],
                 ['label' => 'Validasi Stok', 'value' => 'Server-Side Strict Guard', 'hint' => 'Mencegah transaksi jika stok barang fisik di toko kosong.'],

@@ -97,7 +97,7 @@ class FinanceAndReportingTest extends TestCase
         $cashPm = PaymentMethod::where('code', 'CASH')->first();
         $cashAccount = BalanceAccount::where('code', 'CASH')->first();
 
-        // Checkout 2 units (Total Omset 100,000, Total Cost 40,000, Profit 60,000)
+        // Checkout 2 units (Total Omzet 100,000, Total Cost 40,000, Profit 60,000)
         $posService->processCheckout(
             cashier: $owner,
             cartItems: [['product' => $product, 'quantity' => 2]],
@@ -107,6 +107,7 @@ class FinanceAndReportingTest extends TestCase
         $metrics = $reportService->getSummaryMetrics();
 
         $this->assertEquals(100000, $metrics['omset']);
+        $this->assertEquals(100000, $metrics['omzet']);
         $this->assertEquals(40000, $metrics['cogs']);
         $this->assertEquals(60000, $metrics['gross_profit']);
         $this->assertEquals(1, $metrics['sales_count']);

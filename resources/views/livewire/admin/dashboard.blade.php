@@ -18,17 +18,17 @@
 
     <!-- Executive Stat Cards Grid (Golden Ratio Clean Cards) -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
-        <!-- 1. Total Omset -->
+        <!-- 1. Total Omzet -->
         <div class="bg-white rounded-2xl p-5 border border-slate-200/80 hover:border-[#3F7A5D]/50 shadow-sm hover:shadow-md transition-all duration-200">
             <div class="flex items-center justify-between mb-3">
-                <span class="text-xs text-[#718379] font-extrabold uppercase tracking-wider">Total Omset</span>
-                @if(($metrics['omset_growth'] ?? 0) > 0)
+                <span class="text-xs text-[#718379] font-extrabold uppercase tracking-wider">Total Omzet</span>
+                @if(($metrics['omzet_growth'] ?? 0) > 0)
                     <span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold text-[#3F7A5D] bg-[#E3EEE8] border border-[#3F7A5D]/20">
-                        ↑ +{{ $metrics['omset_growth'] }}%
+                        ↑ +{{ $metrics['omzet_growth'] }}%
                     </span>
-                @elseif(($metrics['omset_growth'] ?? 0) < 0)
+                @elseif(($metrics['omzet_growth'] ?? 0) < 0)
                     <span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold text-rose-600 bg-rose-50 border border-rose-200">
-                        ↓ {{ $metrics['omset_growth'] }}%
+                        ↓ {{ $metrics['omzet_growth'] }}%
                     </span>
                 @else
                     <span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold text-slate-600 bg-slate-100 border border-slate-200">
@@ -37,7 +37,7 @@
                 @endif
             </div>
             <div class="text-2xl font-extrabold text-[#232E28] font-mono tracking-tight mt-1">
-                Rp {{ number_format($metrics['omset'], 0, ',', '.') }}
+                Rp {{ number_format($metrics['omzet'], 0, ',', '.') }}
             </div>
             <div class="text-xs text-[#718379] mt-1.5 font-medium">Transaksi Selesai</div>
         </div>
@@ -97,8 +97,8 @@
         <div class="lg:col-span-2 bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm space-y-4">
             <div class="flex items-center justify-between">
                 <div>
-                    <h2 class="text-base font-extrabold text-[#232E28] tracking-tight">Grafik Omset Penjualan Harian</h2>
-                    <p class="text-xs text-[#718379] font-medium mt-0.5">Visualisasi tren omset ritel toko 7 hari terakhir.</p>
+                    <h2 class="text-base font-extrabold text-[#232E28] tracking-tight">Grafik Omzet Penjualan Harian</h2>
+                    <p class="text-xs text-[#718379] font-medium mt-0.5">Visualisasi tren omzet ritel toko 7 hari terakhir.</p>
                 </div>
                 <span class="px-3 py-1 rounded-lg text-xs font-bold bg-[#E3EEE8] text-[#3F7A5D]">
                     7 Hari Terakhir
@@ -113,7 +113,7 @@
         <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm space-y-4 flex flex-col justify-between">
             <div>
                 <div class="flex items-center justify-between mb-3">
-                    <h2 class="text-base font-extrabold text-[#232E28] tracking-tight">Rincian Omset</h2>
+                    <h2 class="text-base font-extrabold text-[#232E28] tracking-tight">Rincian Omzet</h2>
                     <a href="/admin/sales" class="text-xs font-bold text-[#3F7A5D] hover:underline">
                         Riwayat &rarr;
                     </a>
@@ -124,7 +124,7 @@
                         <thead class="bg-[#F3F6F4] text-[#718379] uppercase text-[11px] font-extrabold tracking-wider border-b border-slate-200/80">
                             <tr>
                                 <th class="py-3 px-3.5">Tanggal</th>
-                                <th class="py-3 px-3.5 text-right">Omset (Rp)</th>
+                                <th class="py-3 px-3.5 text-right">Omzet (Rp)</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100 font-medium">
@@ -174,7 +174,7 @@
             dataLabels: { enabled: false },
             stroke: { show: true, width: 2, colors: ['transparent'] },
             series: [{
-                name: 'Total Omset',
+                name: 'Total Omzet',
                 data: data
             }],
             xaxis: {

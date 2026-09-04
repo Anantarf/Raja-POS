@@ -195,7 +195,7 @@
                                 <td class="py-3.5 px-4">
                                     @if($itemsCount > 1)
                                         <div class="font-bold text-[#232E28] text-sm flex items-center gap-1.5">
-                                            <span>Audit Opname Masal</span>
+                                            <span>Audit Opname Massal</span>
                                             <span class="bg-[#E3EEE8] text-[#3F7A5D] text-[10px] font-extrabold px-2 py-0.5 rounded-md">{{ $itemsCount }} Barang</span>
                                         </div>
                                         <div class="text-xs text-[#718379] font-semibold">{{ $opn->location?->name }} &bull; {{ $firstItem?->product?->name }} & dll.</div>
@@ -340,7 +340,7 @@
             <div class="bg-white rounded-2xl p-5 sm:p-6 max-w-5xl w-full shadow-2xl space-y-4 border border-slate-100 max-h-[90vh] flex flex-col">
                 <div class="flex items-center justify-between border-b border-slate-100 pb-3 shrink-0">
                     <div>
-                        <h3 class="text-lg font-extrabold text-[#232E28]">Lembar Hitung Stock Opname Masal</h3>
+                        <h3 class="text-lg font-extrabold text-[#232E28]">Lembar Hitung Stock Opname Massal</h3>
                         <p class="text-xs text-[#718379] font-medium mt-0.5">Audit seluruh barang toko sekaligus. Masukkan hasil hitung fisik pada kolom yang tersedia.</p>
                     </div>
                     <button type="button" wire:click="$set('showBulkModal', false)" class="text-slate-400 hover:text-slate-600 p-1">
@@ -437,7 +437,7 @@
                     <div class="flex items-center gap-2">
                         <button type="button" wire:click="$set('showBulkModal', false)" class="py-2.5 px-4 bg-slate-100 hover:bg-slate-200 text-[#232E28] font-bold rounded-2xl text-xs transition cursor-pointer">Batal</button>
                         <button type="button" wire:click="createBulkSession" class="py-2.5 px-5 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-2xl text-xs uppercase tracking-wider transition active:scale-95 shadow-sm cursor-pointer">
-                            Simpan & Ajukan Opname Masal
+                            Simpan & Ajukan Opname Massal
                         </button>
                     </div>
                 </div>
