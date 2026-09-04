@@ -196,7 +196,7 @@
                                     @if($product->product_type === 'LAYANAN')
                                         <span class="text-[9.5px] font-bold text-teal-600">Input saat transaksi</span>
                                     @elseif($product->cost_price > 0)
-                                        <span class="font-mono font-semibold text-slate-700">Rp {{ number_format($product->cost_price, 0, ',', '.') }}</span>
+                                        <span class="font-mono font-semibold text-slate-700">Rp {{ number_format((float) $product->cost_price, 0, ',', '.') }}</span>
                                     @else
                                         <span class="text-[9.5px] font-bold text-rose-500">*Belum dilengkapi</span>
                                     @endif
@@ -209,7 +209,7 @@
                                         Input saat transaksi
                                     </span>
                                 @elseif($product->selling_price > 0)
-                                    <span class="text-base">Rp {{ number_format($product->selling_price, 0, ',', '.') }}</span>
+                                    <span class="text-base">Rp {{ number_format((float) $product->selling_price, 0, ',', '.') }}</span>
                                 @else
                                     <span class="inline-flex items-center gap-1 text-[10px] font-bold text-rose-600 bg-rose-50 border border-rose-200 rounded-md px-1.5 py-0.5 whitespace-nowrap">
                                         Harga jual belum diisi
@@ -361,7 +361,7 @@
                                         @if($product->product_type === 'LAYANAN')
                                             <span class="font-bold text-teal-600 text-[11px]">Input saat transaksi</span>
                                         @elseif($product->cost_price > 0)
-                                            <span class="text-slate-700">Rp {{ number_format($product->cost_price, 0, ',', '.') }}</span>
+                                            <span class="text-slate-700">Rp {{ number_format((float) $product->cost_price, 0, ',', '.') }}</span>
                                         @else
                                             <span class="font-bold text-rose-500 text-[11px] whitespace-nowrap">*Harus dilengkapi</span>
                                         @endif
@@ -373,7 +373,7 @@
                                     @if($product->product_type === 'LAYANAN')
                                         <span class="text-[11px] font-bold text-teal-600">Input saat transaksi</span>
                                     @elseif($product->selling_price > 0)
-                                        Rp {{ number_format($product->selling_price, 0, ',', '.') }}
+                                        Rp {{ number_format((float) $product->selling_price, 0, ',', '.') }}
                                     @else
                                         <span class="text-xs font-bold text-rose-600 whitespace-nowrap">*Harga jual belum diisi</span>
                                     @endif
@@ -419,7 +419,7 @@
                 </div>
 
                 <form wire:submit.prevent="saveProduct" class="space-y-4 text-xs font-semibold">
-                    <div class="grid grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-[#232E28] font-bold mb-1">Kode / Barcode *</label>
                             <div class="flex items-center gap-1.5">
@@ -455,7 +455,7 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-[#232E28] font-bold mb-1">Kategori</label>
                             <select wire:model="category_id" class="w-full p-3 border border-slate-300 rounded-2xl bg-white font-bold">
@@ -476,7 +476,7 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-[#232E28] font-bold mb-1">Modal *</label>
                             <div class="relative">
@@ -490,7 +490,7 @@
                                         $el.value = val ? parseInt(val).toLocaleString('id-ID') : '';
                                         $wire.set('cost_price', val ? parseInt(val) : 0);
                                     "
-                                    value="{{ $cost_price ? number_format($cost_price, 0, ',', '.') : '' }}"
+                                    value="{{ $cost_price ? number_format((float) $cost_price, 0, ',', '.') : '' }}"
                                     placeholder="0"
                                     class="w-full pl-10 pr-3 py-3 border border-slate-300 rounded-2xl font-mono font-bold text-right text-xs text-[#232E28] focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]"
                                     required
@@ -510,7 +510,7 @@
                                         $el.value = val ? parseInt(val).toLocaleString('id-ID') : '';
                                         $wire.set('selling_price', val ? parseInt(val) : 0);
                                     "
-                                    value="{{ $selling_price ? number_format($selling_price, 0, ',', '.') : '' }}"
+                                    value="{{ $selling_price ? number_format((float) $selling_price, 0, ',', '.') : '' }}"
                                     placeholder="0"
                                     class="w-full pl-10 pr-3 py-3 border border-slate-300 rounded-2xl font-mono text-[#232E28] font-extrabold text-sm text-right focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]"
                                     required

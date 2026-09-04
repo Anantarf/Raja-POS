@@ -178,7 +178,7 @@
                                             </span>
                                         @else
                                             <div class="text-sm font-extrabold text-[#232E28] font-mono tracking-tight whitespace-nowrap">
-                                                Rp {{ number_format($product->selling_price, 0, ',', '.') }}
+                                                Rp {{ number_format((float) $product->selling_price, 0, ',', '.') }}
                                             </div>
                                         @endif
                                     </div>
@@ -262,7 +262,7 @@
                                                 </span>
                                             @else
                                                 <div class="text-xs font-extrabold text-[#232E28] font-mono">
-                                                    Rp {{ number_format($product->selling_price, 0, ',', '.') }}
+                                                    Rp {{ number_format((float) $product->selling_price, 0, ',', '.') }}
                                                 </div>
                                             @endif
                                         </div>
@@ -297,7 +297,7 @@
         </div>
 
         <!-- RIGHT COLUMN: Golden Ratio Cart Sidebar (38.2% Proportion) -->
-        <div class="w-full lg:w-[38.2%] bg-white rounded-3xl border border-[#E3EEE8] flex flex-col flex-shrink-0 overflow-hidden h-full shadow-sm">
+        <div id="cart-section" class="w-full lg:w-[38.2%] bg-white rounded-3xl border border-[#E3EEE8] flex flex-col flex-shrink-0 overflow-hidden h-full shadow-sm">
 
             <!-- 1. Cart Header -->
             <div class="px-5 py-3.5 bg-white border-b border-slate-200/80 flex items-center justify-between shrink-0">
@@ -403,36 +403,38 @@
                             $selectedPm = $paymentMethods->firstWhere('id', $pay['payment_method_id']);
                         @endphp
                         <div class="bg-white p-3 rounded-2xl border border-slate-200/80 space-y-2 text-xs shadow-xs">
-                            <div class="flex items-center gap-2">
-                                <select wire:model.live="payments.{{ $index }}.payment_method_id" class="w-1/2 p-2 border border-slate-200 rounded-xl bg-white text-xs font-bold text-[#232E28] focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]">
+                            <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+                                <select wire:model.live="payments.{{ $index }}.payment_method_id" class="w-full sm:w-1/2 p-2 border border-slate-200 rounded-xl bg-white text-xs font-bold text-[#232E28] focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]">
                                     @foreach($paymentMethods as $pm)
                                         <option value="{{ $pm->id }}">{{ $pm->name }} ({{ $pm->type }})</option>
                                     @endforeach
                                 </select>
 
-                                <div class="relative flex-1">
-                                    <span class="absolute left-3 top-2 text-xs font-bold text-[#718379]">Rp</span>
-                                    <input
-                                        type="text"
-                                        maxlength="13"
-                                        x-data
-                                        x-on:input="
-                                            let val = $el.value.replace(/\D/g, '');
-                                            if (val && parseInt(val) > 1000000000) val = '1000000000';
-                                            $el.value = val ? parseInt(val).toLocaleString('id-ID') : '';
-                                            $wire.set('payments.{{ $index }}.amount', val ? parseInt(val) : 0);
-                                        "
-                                        value="{{ $pay['amount'] ? number_format($pay['amount'], 0, ',', '.') : '' }}"
-                                        placeholder="0"
-                                        class="w-full pl-8 pr-3 py-2 border border-slate-200 rounded-xl font-mono font-extrabold text-right text-xs text-[#232E28] focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]"
-                                    />
-                                </div>
+                                <div class="flex items-center gap-1.5 flex-1 w-full sm:w-auto">
+                                    <div class="relative flex-1">
+                                        <span class="absolute left-3 top-2 text-xs font-bold text-[#718379]">Rp</span>
+                                        <input
+                                            type="text"
+                                            maxlength="13"
+                                            x-data
+                                            x-on:input="
+                                                let val = $el.value.replace(/\D/g, '');
+                                                if (val && parseInt(val) > 1000000000) val = '1000000000';
+                                                $el.value = val ? parseInt(val).toLocaleString('id-ID') : '';
+                                                $wire.set('payments.{{ $index }}.amount', val ? parseInt(val) : 0);
+                                            "
+                                            value="{{ $pay['amount'] ? number_format((float) $pay['amount'], 0, ',', '.') : '' }}"
+                                            placeholder="0"
+                                            class="w-full pl-8 pr-3 py-2 border border-slate-200 rounded-xl font-mono font-extrabold text-right text-xs text-[#232E28] focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]"
+                                        />
+                                    </div>
 
-                                @if(count($payments) > 1)
-                                    <button wire:click="removePaymentRow({{ $index }})" class="text-rose-500 hover:text-rose-700 font-bold px-1 text-base cursor-pointer">
-                                        &times;
-                                    </button>
-                                @endif
+                                    @if(count($payments) > 1)
+                                        <button wire:click="removePaymentRow({{ $index }})" class="text-rose-500 hover:text-rose-700 font-bold px-2 py-1 bg-rose-50 rounded-lg text-base cursor-pointer shrink-0" title="Hapus metode pembayaran">
+                                            &times;
+                                        </button>
+                                    @endif
+                                </div>
                             </div>
 
                             <!-- Quick Cash Nominal Shortcuts for Cash Payment -->
@@ -647,6 +649,35 @@
                     </button>
                 </div>
             </div>
+        </div>
+    @endif
+
+    <!-- MOBILE STICKY FLOATING CART BAR (lg:hidden) -->
+    @if(count($cart) > 0)
+        <div class="lg:hidden fixed bottom-4 left-4 right-4 z-40 bg-[#232E28]/95 backdrop-blur-md text-white px-4 py-3 rounded-2xl shadow-xl border border-emerald-500/30 flex items-center justify-between gap-3 animate-in fade-in slide-in-from-bottom-4 duration-300">
+            <div class="flex items-center gap-3 min-w-0">
+                <div class="w-9 h-9 rounded-xl bg-[#3F7A5D] text-white flex items-center justify-center font-mono font-extrabold text-xs shrink-0 shadow-inner">
+                    {{ count($cart) }}
+                </div>
+                <div class="min-w-0">
+                    <div class="text-[10px] text-emerald-300 uppercase font-bold tracking-wider">Total Belanja</div>
+                    <div class="text-sm font-extrabold font-mono text-white truncate">
+                        Rp {{ number_format((float) $this->grand_total, 0, ',', '.') }}
+                    </div>
+                </div>
+            </div>
+
+            <button
+                type="button"
+                x-data
+                x-on:click="document.getElementById('cart-section')?.scrollIntoView({ behavior: 'smooth' })"
+                class="bg-[#3F7A5D] hover:bg-[#32634B] text-white px-3.5 py-2 rounded-xl text-xs font-extrabold flex items-center gap-1.5 shadow-md active:scale-95 transition shrink-0 cursor-pointer"
+            >
+                <span>Lihat & Bayar</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path>
+                </svg>
+            </button>
         </div>
     @endif
 </div>
