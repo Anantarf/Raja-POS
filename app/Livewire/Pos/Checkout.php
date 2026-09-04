@@ -26,6 +26,28 @@ class Checkout extends Component
         $this->viewMode = in_array($mode, ['grid', 'list']) ? $mode : 'grid';
     }
 
+    public int $perPage = 36;
+
+    public function updatedSearch(): void
+    {
+        $this->perPage = 36;
+    }
+
+    public function updatedSelectedCategory(): void
+    {
+        $this->perPage = 36;
+    }
+
+    public function updatedSelectedType(): void
+    {
+        $this->perPage = 36;
+    }
+
+    public function loadMore(): void
+    {
+        $this->perPage += 36;
+    }
+
     public array $cart = []; // [product_id => ['product_id' => int, 'name' => string, 'code' => string, 'price' => float, 'cost_price' => float, 'quantity' => int, 'stock' => int, 'price_status' => string, 'type' => string]]
 
     public array $payments = []; // [['payment_method_id' => int, 'balance_account_id' => ?int, 'amount' => float, 'reference_number' => ?string]]
@@ -451,7 +473,9 @@ class Checkout extends Component
             $query->where('product_type', $this->selectedType);
         }
 
-        $products = $query->orderBy('name')->get();
+        $totalProductsCount = (clone $query)->count();
+        $products = $query->orderBy('name')->take($this->perPage)->get();
+
         $categories = Category::where('status', 'ACTIVE')->orderBy('name')->get();
         $paymentMethods = PaymentMethod::where('status', 'ACTIVE')->get();
         $balanceAccounts = BalanceAccount::where('status', 'ACTIVE')->get();
@@ -459,6 +483,7 @@ class Checkout extends Component
 
         return view('livewire.pos.checkout', [
             'products' => $products,
+            'totalProductsCount' => $totalProductsCount,
             'categories' => $categories,
             'paymentMethods' => $paymentMethods,
             'balanceAccounts' => $balanceAccounts,

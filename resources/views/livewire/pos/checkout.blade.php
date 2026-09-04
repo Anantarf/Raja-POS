@@ -104,7 +104,7 @@
                         </select>
 
                         <span class="px-2.5 py-1.5 rounded-xl bg-[#E3EEE8] text-[#3F7A5D] border border-[#3F7A5D]/20 font-mono font-extrabold text-[11px] sm:text-xs whitespace-nowrap" title="Jumlah Katalog Produk Siap Di-Scroll">
-                            {{ number_format(count($products), 0, ',', '.') }} Item
+                            {{ number_format($totalProductsCount, 0, ',', '.') }} Item
                         </span>
 
                         <!-- View Mode Toggle (Grid Cards vs List Rows) -->
@@ -243,6 +243,21 @@
                                 <div class="text-xs text-[#718379]">Gunakan kata kunci pencarian lain atau pilih kategori lain.</div>
                             </div>
                         @endforelse
+
+                        @if($totalProductsCount > count($products))
+                            <div class="col-span-full py-4 text-center">
+                                <button
+                                    type="button"
+                                    wire:click="loadMore"
+                                    class="px-6 py-2.5 bg-white hover:bg-[#E3EEE8] border border-[#3F7A5D]/30 text-[#3F7A5D] font-extrabold text-xs rounded-2xl shadow-2xs transition active:scale-95 cursor-pointer inline-flex items-center gap-2"
+                                >
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                    <span>Tampilkan Lebih Banyak (Tersisa {{ number_format($totalProductsCount - count($products), 0, ',', '.') }} produk)</span>
+                                </button>
+                            </div>
+                        @endif
                     </div>
                 @else
                     <!-- Product List View (Aligned Table Rows) -->
@@ -329,7 +344,23 @@
                                 </div>
                             @endforelse
                         </div>
+
+                        @if($totalProductsCount > count($products))
+                            <div class="p-4 text-center border-t border-slate-100 bg-[#F3F6F4]/50">
+                                <button
+                                    type="button"
+                                    wire:click="loadMore"
+                                    class="px-6 py-2.5 bg-white hover:bg-[#E3EEE8] border border-[#3F7A5D]/30 text-[#3F7A5D] font-extrabold text-xs rounded-2xl shadow-2xs transition active:scale-95 cursor-pointer inline-flex items-center gap-2"
+                                >
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                    <span>Tampilkan Lebih Banyak (Tersisa {{ number_format($totalProductsCount - count($products), 0, ',', '.') }} produk)</span>
+                                </button>
+                            </div>
+                        @endif
                     </div>
+                @endif
                 @endif
             </div>
         </div>
