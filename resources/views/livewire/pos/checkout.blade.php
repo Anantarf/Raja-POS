@@ -30,7 +30,7 @@
     </header>
 
     <!-- Mobile View Tab Switcher (md:hidden) -->
-    <div class="md:hidden px-2.5 sm:px-6 mb-2 shrink-0">
+    <div class="md:hidden px-2.5 sm:px-6 mb-2 shrink-0 sticky top-0 z-30 bg-[#F3F6F4]/90 backdrop-blur-md pt-1 pb-1">
         <div class="bg-white p-1 rounded-2xl border border-[#E3EEE8] flex items-center shadow-xs">
             <button
                 type="button"
@@ -695,20 +695,20 @@
     @endif
 
     <!-- MOBILE STICKY FLOATING CART BAR (md:hidden) -->
-    <div class="md:hidden fixed bottom-3 left-3 right-3 z-40 bg-[#232E28]/95 backdrop-blur-md text-white px-4 py-3 rounded-2xl shadow-xl border border-emerald-500/30 flex items-center justify-between gap-3 transition-all duration-300">
-        <div class="flex items-center gap-3 min-w-0">
+    <div class="md:hidden fixed bottom-3 left-3 right-3 z-40 bg-[#232E28]/95 backdrop-blur-md text-white px-3.5 py-2.5 rounded-2xl shadow-xl border border-emerald-500/30 flex items-center justify-between gap-2.5 transition-all duration-300">
+        <div class="flex items-center gap-2.5 min-w-0 flex-1">
             <div class="w-9 h-9 rounded-xl bg-[#3F7A5D] text-white flex items-center justify-center font-mono font-extrabold text-xs shrink-0 shadow-inner">
                 {{ count($cart) }}
             </div>
-            <div class="min-w-0">
-                <div class="text-[10px] text-emerald-300 uppercase font-bold tracking-wider">
+            <div class="min-w-0 flex-1">
+                <div class="text-[9.5px] text-emerald-300 uppercase font-bold tracking-wider truncate">
                     {{ count($cart) > 0 ? 'Total Belanja' : 'Keranjang Belanja' }}
                 </div>
-                <div class="text-sm font-extrabold font-mono text-white truncate">
+                <div class="text-xs sm:text-sm font-extrabold font-mono text-white truncate">
                     @if(count($cart) > 0)
                         Rp {{ number_format((float) $this->grand_total, 0, ',', '.') }}
                     @else
-                        Kosong (0 Item)
+                        Belum Ada Produk
                     @endif
                 </div>
             </div>
@@ -717,10 +717,10 @@
         <button
             type="button"
             @click="activeTab = (activeTab === 'cart' ? 'catalog' : 'cart'); document.getElementById('cart-section')?.scrollIntoView({ behavior: 'smooth' })"
-            class="bg-[#3F7A5D] hover:bg-[#32634B] text-white px-3.5 py-2 rounded-xl text-xs font-extrabold flex items-center gap-1.5 shadow-md active:scale-95 transition shrink-0 cursor-pointer"
+            class="bg-[#3F7A5D] hover:bg-[#32634B] text-white px-3 py-2 rounded-xl text-xs font-extrabold flex items-center gap-1 shadow-md active:scale-95 transition shrink-0 cursor-pointer whitespace-nowrap"
         >
-            <span x-text="activeTab === 'cart' ? '← Kembali Ke Katalog' : 'Lihat & Bayar'"></span>
-            <svg x-show="activeTab !== 'cart'" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <span x-text="activeTab === 'cart' ? '← Katalog' : 'Lihat & Bayar'"></span>
+            <svg x-show="activeTab !== 'cart'" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7-7 7"></path>
             </svg>
         </button>
