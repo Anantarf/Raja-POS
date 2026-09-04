@@ -1,16 +1,16 @@
-<div class="min-h-screen lg:h-screen flex flex-col overflow-y-auto lg:overflow-hidden bg-[#F3F6F4] font-sans text-[#232E28]">
+<div x-data="{ activeTab: 'catalog' }" class="min-h-screen lg:h-screen flex flex-col overflow-y-auto lg:overflow-hidden bg-[#F3F6F4] font-sans text-[#232E28]">
     <!-- Topbar Navigation Header -->
     <header class="px-3 sm:px-6 pt-3 sm:pt-4 pb-2 sm:pb-3 flex-shrink-0">
-        <div class="bg-white rounded-2xl border border-[#E3EEE8] px-4 sm:px-6 py-3 flex items-center justify-between gap-3">
-            <div class="flex items-center gap-2.5">
-                <img src="{{ asset('favicon.svg') }}" alt="Raja POS" class="w-8 h-8 rounded-xl shrink-0">
-                <span class="bg-[#3F7A5D] text-white font-extrabold px-3 sm:px-3.5 py-1.5 rounded-xl text-xs sm:text-sm tracking-wider uppercase shadow-sm">RAJA AKSESORIS</span>
-                <span class="text-xs sm:text-sm font-extrabold text-[#232E28] hidden md:inline border-l border-[#E3EEE8] pl-4">
+        <div class="bg-white rounded-2xl border border-[#E3EEE8] px-3.5 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between gap-2 sm:gap-3">
+            <div class="flex items-center gap-2 sm:gap-2.5 min-w-0">
+                <img src="{{ asset('favicon.svg') }}" alt="Raja POS" class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl shrink-0">
+                <span class="bg-[#3F7A5D] text-white font-extrabold px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-xl text-[11px] sm:text-sm tracking-wider uppercase shadow-sm whitespace-nowrap shrink-0">RAJA AKSESORIS</span>
+                <span class="text-xs sm:text-sm font-extrabold text-[#232E28] hidden md:inline border-l border-[#E3EEE8] pl-4 truncate">
                     {{ $location?->name ?? 'Raja Aksesoris Bango' }}
                 </span>
             </div>
 
-            <div class="flex items-center gap-2 sm:gap-4 text-xs sm:text-sm font-semibold">
+            <div class="flex items-center gap-2 sm:gap-4 text-xs sm:text-sm font-semibold shrink-0">
                 <div class="hidden sm:flex items-center gap-2.5 bg-[#F3F6F4] px-3.5 py-1.5 rounded-xl border border-[#E3EEE8]">
                     <div class="w-6 h-6 rounded-full bg-[#3F7A5D] text-white font-bold flex items-center justify-center text-[10px]">
                         {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
@@ -19,7 +19,7 @@
                     <span class="text-[#718379] font-normal text-[11px]">({{ auth()->user()->role?->name ?? 'Kasir' }})</span>
                 </div>
 
-                <a href="/admin" class="bg-[#3F7A5D] hover:bg-[#32634B] text-white px-3 py-1.5 rounded-xl font-bold text-xs transition flex items-center gap-1.5 active:scale-95 shadow-xs">
+                <a href="/admin" class="bg-[#3F7A5D] hover:bg-[#32634B] text-white px-2.5 sm:px-3 py-1.5 rounded-xl font-bold text-xs transition flex items-center gap-1.5 active:scale-95 shadow-xs whitespace-nowrap">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                     </svg>
@@ -29,11 +29,46 @@
         </div>
     </header>
 
-    <!-- Main Operational Split View (Desktop: 61.8% Katalog : 38.2% Keranjang, Tablet: 58% : 42%, Mobile: Responsive Stack) -->
-    <div class="flex-1 flex flex-col md:flex-row overflow-y-auto md:overflow-hidden px-2.5 sm:px-6 pb-5 gap-3.5 md:gap-5">
+    <!-- Mobile View Tab Switcher (md:hidden) -->
+    <div class="md:hidden px-2.5 sm:px-6 mb-2 shrink-0">
+        <div class="bg-white p-1 rounded-2xl border border-[#E3EEE8] flex items-center shadow-xs">
+            <button
+                type="button"
+                @click="activeTab = 'catalog'"
+                :class="activeTab === 'catalog' ? 'bg-[#3F7A5D] text-white shadow-xs' : 'text-[#718379] hover:text-[#232E28]'"
+                class="flex-1 py-2 rounded-xl text-xs font-extrabold transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+            >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6z"></path>
+                </svg>
+                <span>Katalog Produk</span>
+            </button>
+
+            <button
+                type="button"
+                @click="activeTab = 'cart'"
+                :class="activeTab === 'cart' ? 'bg-[#3F7A5D] text-white shadow-xs' : 'text-[#718379] hover:text-[#232E28]'"
+                class="flex-1 py-2 rounded-xl text-xs font-extrabold transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+            >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                </svg>
+                <span>Keranjang</span>
+                <span class="bg-amber-400 text-[#232E28] text-[10px] font-black px-1.5 py-0.2 rounded-full font-mono">
+                    {{ count($cart) }}
+                </span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Operational Split View (Desktop: 61.8% Katalog : 38.2% Keranjang, Tablet: 58% : 42%, Mobile: Responsive Tab) -->
+    <div class="flex-1 flex flex-col md:flex-row overflow-y-auto md:overflow-hidden px-2.5 sm:px-6 pb-20 md:pb-5 gap-3.5 md:gap-5">
 
         <!-- LEFT COLUMN: Product Catalog (Golden Ratio Proportion) -->
-        <div class="w-full md:w-[58%] lg:w-[61.8%] flex flex-col flex-shrink-0">
+        <div
+            :class="{ 'hidden md:flex': activeTab === 'cart', 'flex': activeTab === 'catalog' }"
+            class="w-full md:w-[58%] lg:w-[61.8%] flex-col flex-shrink-0"
+        >
 
             <!-- Streamlined Toolbar -->
             <div class="p-3.5 sm:p-4 bg-white rounded-2xl border border-slate-200/80 shadow-sm space-y-3 mb-3">
@@ -228,58 +263,59 @@
 
                                 <div
                                     wire:click="addToCart({{ $product->id }})"
-                                    class="p-3 hover:bg-[#F3F6F4] cursor-pointer transition-colors flex items-center justify-between gap-3 group {{ $isIncomplete ? 'opacity-60 bg-rose-50/20' : '' }}"
+                                    class="p-2.5 sm:p-3 hover:bg-[#F3F6F4] cursor-pointer transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-3 group border-b border-slate-100/80 {{ $isIncomplete ? 'opacity-60 bg-rose-50/20' : '' }}"
                                 >
-                                    <div class="flex items-center gap-3 min-w-0 flex-1">
-                                        <!-- Code & Initials Badge -->
-                                        <div class="w-10 h-10 rounded-xl bg-[#E3EEE8]/70 border border-[#3F7A5D]/20 flex items-center justify-center font-mono font-extrabold text-sm text-[#3F7A5D] shrink-0 group-hover:bg-[#3F7A5D] group-hover:text-white transition-colors">
+                                    <!-- Top Row (Mobile) / Left Column (Desktop) -->
+                                    <div class="flex items-start sm:items-center gap-2.5 sm:gap-3 min-w-0 flex-1">
+                                        <!-- Code & Initials Avatar -->
+                                        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#E3EEE8]/70 border border-[#3F7A5D]/20 flex items-center justify-center font-mono font-extrabold text-xs sm:text-sm text-[#3F7A5D] shrink-0 group-hover:bg-[#3F7A5D] group-hover:text-white transition-colors mt-0.5 sm:mt-0">
                                             {{ $initials }}
                                         </div>
 
                                         <div class="min-w-0 flex-1">
-                                            <div class="flex items-center gap-2 mb-0.5">
-                                                <span class="text-[10px] font-mono font-bold text-slate-500 bg-slate-100 px-1.5 py-0.2 rounded">
+                                            <div class="flex items-center gap-1.5 flex-wrap mb-1">
+                                                <span class="text-[9.5px] sm:text-[10px] font-mono font-bold text-slate-600 bg-slate-100 px-1.5 py-0.5 rounded border border-slate-200/60 whitespace-nowrap">
                                                     {{ $product->code }}
                                                 </span>
-                                                <span class="text-[9.5px] uppercase font-extrabold px-1.5 py-0.5 rounded border {{ $product->product_type === 'PHYSICAL' ? 'bg-[#3F7A5D]/10 text-[#3F7A5D] border-[#3F7A5D]/20' : ($product->product_type === 'DIGITAL' ? 'bg-emerald-100/90 text-emerald-800 border-emerald-300/60' : 'bg-[#C2AC7C]/15 text-[#8F794B] border-[#C2AC7C]/30') }}">
+                                                <span class="text-[9px] sm:text-[9.5px] uppercase font-extrabold px-1.5 py-0.5 rounded border whitespace-nowrap {{ $product->product_type === 'PHYSICAL' ? 'bg-[#3F7A5D]/10 text-[#3F7A5D] border-[#3F7A5D]/20' : ($product->product_type === 'DIGITAL' ? 'bg-emerald-100/90 text-emerald-800 border-emerald-300/60' : 'bg-[#C2AC7C]/15 text-[#8F794B] border-[#C2AC7C]/30') }}">
                                                     {{ $product->product_type === 'PHYSICAL' ? 'FISIK' : ($product->product_type === 'DIGITAL' ? 'DIGITAL' : 'LAYANAN') }}
                                                 </span>
                                             </div>
-                                            <h4 class="text-xs font-bold text-[#232E28] group-hover:text-[#3F7A5D] transition-colors truncate">
+                                            <h4 class="text-xs font-bold text-[#232E28] group-hover:text-[#3F7A5D] transition-colors leading-snug line-clamp-2">
                                                 {{ $product->name }}
                                             </h4>
                                         </div>
                                     </div>
 
-                                    <!-- Price & Stock Alignment Column -->
-                                    <div class="flex items-center gap-3 shrink-0 text-right">
-                                        <div class="min-w-[100px] text-right">
+                                    <!-- Bottom Row (Mobile) / Right Column (Desktop) -->
+                                    <div class="flex items-center justify-between sm:justify-end gap-2.5 sm:gap-3 shrink-0 pt-1 sm:pt-0 border-t sm:border-t-0 border-slate-100/80 text-right pl-11 sm:pl-0">
+                                        <div class="sm:min-w-[100px] text-left sm:text-right">
                                             @if($product->product_type === 'LAYANAN')
-                                                <span class="inline-flex items-center gap-0.5 text-[10px] font-bold text-teal-700 bg-teal-50 border border-teal-200/80 px-2 py-0.5 rounded whitespace-nowrap">
+                                                <span class="inline-flex items-center gap-0.5 text-[9.5px] sm:text-[10px] font-bold text-teal-700 bg-teal-50 border border-teal-200/80 px-2 py-0.5 rounded whitespace-nowrap">
                                                     Input Nominal
                                                 </span>
                                             @elseif($isIncomplete)
-                                                <span class="text-[9px] uppercase font-extrabold text-rose-700 bg-rose-50 border border-rose-200 px-1.5 py-0.5 rounded">
+                                                <span class="text-[9px] uppercase font-extrabold text-rose-700 bg-rose-50 border border-rose-200 px-1.5 py-0.5 rounded whitespace-nowrap">
                                                     INCOMPLETE
                                                 </span>
                                             @else
-                                                <div class="text-xs font-extrabold text-[#232E28] font-mono">
+                                                <div class="text-xs sm:text-xs font-extrabold text-[#232E28] font-mono whitespace-nowrap">
                                                     Rp {{ number_format((float) $product->selling_price, 0, ',', '.') }}
                                                 </div>
                                             @endif
                                         </div>
 
-                                        <div class="w-20 text-right">
+                                        <div class="sm:w-20 text-right">
                                             @if($product->product_type === 'PHYSICAL')
-                                                <span class="px-2 py-0.5 rounded-full font-bold text-[10px] inline-block {{ $stockStatus === 'OUT_OF_STOCK' ? 'bg-rose-50 text-rose-700' : ($stockStatus === 'LOW_STOCK' ? 'bg-amber-50 text-amber-700' : 'bg-[#E3EEE8] text-[#3F7A5D]') }}">
+                                                <span class="px-2 py-0.5 rounded-full font-bold text-[9.5px] sm:text-[10px] inline-block whitespace-nowrap {{ $stockStatus === 'OUT_OF_STOCK' ? 'bg-rose-50 text-rose-700' : ($stockStatus === 'LOW_STOCK' ? 'bg-amber-50 text-amber-700' : 'bg-[#E3EEE8] text-[#3F7A5D]') }}">
                                                     Stok: {{ $stockQty }}
                                                 </span>
                                             @elseif($product->product_type === 'DIGITAL')
-                                                <span class="px-2 py-0.5 rounded-full font-bold text-[9.5px] bg-emerald-50 text-emerald-700 border border-emerald-200/60 inline-block">
+                                                <span class="px-2 py-0.5 rounded-full font-bold text-[9.5px] bg-emerald-50 text-emerald-700 border border-emerald-200/60 inline-block whitespace-nowrap">
                                                     Digital
                                                 </span>
                                             @else
-                                                <span class="px-2 py-0.5 rounded-full font-bold text-[9.5px] bg-amber-50 text-amber-700 border border-amber-200/60 inline-block">
+                                                <span class="px-2 py-0.5 rounded-full font-bold text-[9.5px] bg-amber-50 text-amber-700 border border-amber-200/60 inline-block whitespace-nowrap">
                                                     Layanan
                                                 </span>
                                             @endif
@@ -299,7 +335,11 @@
         </div>
 
         <!-- RIGHT COLUMN: Golden Ratio Cart Sidebar (38.2% Desktop / 42% Tablet) -->
-        <div id="cart-section" class="w-full md:w-[42%] lg:w-[38.2%] bg-white rounded-3xl border border-[#E3EEE8] flex flex-col flex-shrink-0 overflow-hidden h-full shadow-sm">
+        <div
+            id="cart-section"
+            :class="{ 'hidden md:flex': activeTab === 'catalog', 'flex': activeTab === 'cart' }"
+            class="w-full md:w-[42%] lg:w-[38.2%] bg-white rounded-3xl border border-[#E3EEE8] flex-col flex-shrink-0 overflow-hidden h-full shadow-sm"
+        >
 
             <!-- 1. Cart Header -->
             <div class="px-5 py-3.5 bg-white border-b border-slate-200/80 flex items-center justify-between shrink-0">
@@ -655,31 +695,34 @@
     @endif
 
     <!-- MOBILE STICKY FLOATING CART BAR (md:hidden) -->
-    @if(count($cart) > 0)
-        <div class="md:hidden fixed bottom-4 left-4 right-4 z-40 bg-[#232E28]/95 backdrop-blur-md text-white px-4 py-3 rounded-2xl shadow-xl border border-emerald-500/30 flex items-center justify-between gap-3 animate-in fade-in slide-in-from-bottom-4 duration-300">
-            <div class="flex items-center gap-3 min-w-0">
-                <div class="w-9 h-9 rounded-xl bg-[#3F7A5D] text-white flex items-center justify-center font-mono font-extrabold text-xs shrink-0 shadow-inner">
-                    {{ count($cart) }}
+    <div class="md:hidden fixed bottom-3 left-3 right-3 z-40 bg-[#232E28]/95 backdrop-blur-md text-white px-4 py-3 rounded-2xl shadow-xl border border-emerald-500/30 flex items-center justify-between gap-3 transition-all duration-300">
+        <div class="flex items-center gap-3 min-w-0">
+            <div class="w-9 h-9 rounded-xl bg-[#3F7A5D] text-white flex items-center justify-center font-mono font-extrabold text-xs shrink-0 shadow-inner">
+                {{ count($cart) }}
+            </div>
+            <div class="min-w-0">
+                <div class="text-[10px] text-emerald-300 uppercase font-bold tracking-wider">
+                    {{ count($cart) > 0 ? 'Total Belanja' : 'Keranjang Belanja' }}
                 </div>
-                <div class="min-w-0">
-                    <div class="text-[10px] text-emerald-300 uppercase font-bold tracking-wider">Total Belanja</div>
-                    <div class="text-sm font-extrabold font-mono text-white truncate">
+                <div class="text-sm font-extrabold font-mono text-white truncate">
+                    @if(count($cart) > 0)
                         Rp {{ number_format((float) $this->grand_total, 0, ',', '.') }}
-                    </div>
+                    @else
+                        Kosong (0 Item)
+                    @endif
                 </div>
             </div>
-
-            <button
-                type="button"
-                x-data
-                x-on:click="document.getElementById('cart-section')?.scrollIntoView({ behavior: 'smooth' })"
-                class="bg-[#3F7A5D] hover:bg-[#32634B] text-white px-3.5 py-2 rounded-xl text-xs font-extrabold flex items-center gap-1.5 shadow-md active:scale-95 transition shrink-0 cursor-pointer"
-            >
-                <span>Lihat & Bayar</span>
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path>
-                </svg>
-            </button>
         </div>
-    @endif
+
+        <button
+            type="button"
+            @click="activeTab = (activeTab === 'cart' ? 'catalog' : 'cart'); document.getElementById('cart-section')?.scrollIntoView({ behavior: 'smooth' })"
+            class="bg-[#3F7A5D] hover:bg-[#32634B] text-white px-3.5 py-2 rounded-xl text-xs font-extrabold flex items-center gap-1.5 shadow-md active:scale-95 transition shrink-0 cursor-pointer"
+        >
+            <span x-text="activeTab === 'cart' ? '← Kembali Ke Katalog' : 'Lihat & Bayar'"></span>
+            <svg x-show="activeTab !== 'cart'" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7-7 7"></path>
+            </svg>
+        </button>
+    </div>
 </div>
