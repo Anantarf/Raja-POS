@@ -97,9 +97,9 @@ class BalanceTransaction extends Model
     /**
      * Format legacy or existing long transaction numbers cleanly.
      */
-    public function getFormattedTransactionNumberAttribute(): string
+    public function getTransactionNumberAttribute($value): string
     {
-        $number = trim((string) ($this->transaction_number ?? ''));
+        $number = trim((string) ($value ?? ''));
 
         if ($number === '') {
             return '-';
@@ -113,5 +113,21 @@ class BalanceTransaction extends Model
         }
 
         return strtoupper($number);
+    }
+
+    public function getFormattedTransactionNumberAttribute(): string
+    {
+        return $this->transaction_number;
+    }
+
+    public function getDescriptionAttribute($value): string
+    {
+        if (empty($value)) {
+            return '';
+        }
+
+        return preg_replace_callback('/(TRX)-([a-f0-9]{8})-[a-f0-9-]{20,}/i', function ($m) {
+            return strtoupper($m[1] . '-' . substr($m[2], 0, 8));
+        }, (string) $value);
     }
 }
