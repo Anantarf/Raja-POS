@@ -126,7 +126,7 @@ class BalanceTransaction extends Model
             return '';
         }
 
-        return preg_replace_callback('/(TRX)-([a-f0-9]{8})-[a-f0-9-]{20,}/i', function ($m) {
+        return preg_replace_callback('/(TRX)-([a-zA-Z0-9]{8})-[a-zA-Z0-9-]{10,}/i', function ($m) {
             return strtoupper($m[1] . '-' . substr($m[2], 0, 8));
         }, (string) $value);
     }

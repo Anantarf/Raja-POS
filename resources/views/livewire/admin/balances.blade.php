@@ -194,7 +194,17 @@
                         <tr class="hover:bg-[#F3F6F4]/60 transition">
                             <!-- No Mutasi & Waktu -->
                             <td class="py-3.5 px-4 whitespace-nowrap">
-                                <div class="font-bold text-[#3F7A5D] font-mono text-xs bg-[#F3F6F4] border border-slate-200/80 px-2.5 py-0.5 rounded-md inline-block">{{ $trx->formatted_transaction_number }}</div>
+                                @php
+                                    $trxNum = (string) ($trx->formatted_transaction_number ?? $trx->transaction_number ?? '');
+                                    $trxNum = preg_replace_callback('/(TRX)-([a-zA-Z0-9]{8})-[a-zA-Z0-9-]{10,}/i', function ($m) {
+                                        return strtoupper($m[1] . '-' . substr($m[2], 0, 8));
+                                    }, $trxNum);
+                                    if (strlen($trxNum) > 20 && str_contains($trxNum, '-')) {
+                                        $p = array_values(array_filter(explode('-', $trxNum)));
+                                        $trxNum = strtoupper(($p[0] ?? 'TRX') . '-' . substr($p[1] ?? '', 0, 8));
+                                    }
+                                @endphp
+                                <div class="font-bold text-[#3F7A5D] font-mono text-xs bg-[#F3F6F4] border border-slate-200/80 px-2.5 py-0.5 rounded-md inline-block">{{ $trxNum }}</div>
                                 <div class="text-[10px] text-[#718379] mt-1 font-semibold whitespace-nowrap">{{ $trx->created_at->format('d M Y, H:i') }}</div>
                             </td>
 
@@ -250,7 +260,7 @@
                                 <div class="text-[#232E28] font-semibold leading-snug">
                                     @php
                                         $desc = e($trx->description);
-                                        $desc = preg_replace_callback('/(TRX)-([a-f0-9]{8})-[a-f0-9-]{20,}/i', function ($m) {
+                                        $desc = preg_replace_callback('/(TRX)-([a-zA-Z0-9]{8})-[a-zA-Z0-9-]{10,}/i', function ($m) {
                                             return strtoupper($m[1] . '-' . substr($m[2], 0, 8));
                                         }, $desc);
                                         $desc = preg_replace('/(#(?:INV|TRX|POS)-[\w-]+)/i', '<span class="px-1.5 py-0.5 bg-indigo-50 text-indigo-700 font-mono font-bold rounded border border-indigo-200/80 text-[11px] inline-block mb-0.5">$1</span>', $desc);
