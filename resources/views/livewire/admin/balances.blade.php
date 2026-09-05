@@ -250,7 +250,10 @@
                                 <div class="text-[#232E28] font-semibold leading-snug">
                                     @php
                                         $desc = e($trx->description);
-                                        $desc = preg_replace('/(#INV-[\w-]+)/', '<span class="px-1.5 py-0.5 bg-indigo-50 text-indigo-700 font-mono font-bold rounded border border-indigo-200/80 text-[11px] inline-block mb-0.5">$1</span>', $desc);
+                                        $desc = preg_replace_callback('/(TRX)-([a-f0-9]{8})-[a-f0-9-]{20,}/i', function ($m) {
+                                            return strtoupper($m[1] . '-' . substr($m[2], 0, 8));
+                                        }, $desc);
+                                        $desc = preg_replace('/(#(?:INV|TRX|POS)-[\w-]+)/i', '<span class="px-1.5 py-0.5 bg-indigo-50 text-indigo-700 font-mono font-bold rounded border border-indigo-200/80 text-[11px] inline-block mb-0.5">$1</span>', $desc);
                                     @endphp
                                     {!! $desc !!}
                                 </div>

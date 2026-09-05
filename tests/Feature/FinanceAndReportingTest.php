@@ -37,6 +37,44 @@ class FinanceAndReportingTest extends TestCase
         $this->assertEquals('TRX-30971E96', $trx->formatted_transaction_number);
     }
 
+    public function test_migration_normalizes_sale_invoices_and_descriptions(): void
+    {
+        \Illuminate\Support\Facades\DB::table('sales')->insert([
+            'invoice_number' => 'TRX-30971e96-924c-45fa-b1a6-21234d4e4db3',
+            'cashier_id' => 1,
+            'location_id' => 1,
+            'transaction_date' => now(),
+            'subtotal' => 10000,
+            'total_amount' => 10000,
+            'amount_paid' => 10000,
+            'status' => 'COMPLETED',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        \Illuminate\Support\Facades\DB::table('balance_transactions')->insert([
+            'transaction_number' => 'TRX-30971E96',
+            'transaction_type' => 'SALE_RECEIPT',
+            'amount' => 10000,
+            'balance_before' => 0,
+            'balance_after' => 10000,
+            'description' => 'Penerimaan pembayaran QRIS untuk POS #TRX-30971e96-924c-45fa-b1a6-21234d4e4db3',
+            'created_by' => 1,
+            'transaction_date' => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        $migration = require database_path('migrations/2026_09_05_000012_normalize_legacy_sale_invoices_and_descriptions.php');
+        $migration->up();
+
+        $sale = \Illuminate\Support\Facades\DB::table('sales')->first();
+        $trx = \Illuminate\Support\Facades\DB::table('balance_transactions')->first();
+
+        $this->assertEquals('TRX-30971E96', $sale->invoice_number);
+        $this->assertStringContainsString('POS #TRX-30971E96', $trx->description);
+    }
+
     public function test_balance_service_transfer(): void
     {
         $owner = User::where('username', 'superadmin')->first();
