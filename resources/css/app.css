@@ -5,15 +5,19 @@
 @source '../**/*.blade.php';
 @source '../**/*.js';
 
-html {
+:root, html {
     font-size: 20px !important;
 }
 
-@media (max-width: 640px) {
-    html {
-        font-size: 18px !important;
-    }
-}
+/* Extra Large Scale Font Utility Overrides */
+.text-xs { font-size: 0.875rem !important; line-height: 1.25rem !important; }
+.text-sm { font-size: 1rem !important; line-height: 1.5rem !important; }
+.text-base { font-size: 1.125rem !important; line-height: 1.75rem !important; }
+.text-lg { font-size: 1.25rem !important; line-height: 1.75rem !important; }
+.text-xl { font-size: 1.5rem !important; line-height: 2rem !important; }
+.text-2xl { font-size: 1.875rem !important; line-height: 2.25rem !important; }
+.text-3xl { font-size: 2.25rem !important; line-height: 2.5rem !important; }
+.text-4xl { font-size: 2.75rem !important; line-height: 3rem !important; }
 
 @theme {
     --font-sans: 'Public Sans', 'Poppins', -apple-system, sans-serif;

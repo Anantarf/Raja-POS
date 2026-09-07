@@ -10,15 +10,23 @@
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
-        html {
-            font-size: 17px;
+        :root, html {
+            font-size: 20px !important;
         }
         body {
             font-family: 'Public Sans', 'Poppins', sans-serif;
             background-color: #F3F6F4;
-            font-size: 1.05rem;
+            font-size: 1.125rem !important;
             line-height: 1.5;
         }
+        .text-xs { font-size: 0.875rem !important; line-height: 1.25rem !important; }
+        .text-sm { font-size: 1rem !important; line-height: 1.5rem !important; }
+        .text-base { font-size: 1.125rem !important; line-height: 1.75rem !important; }
+        .text-lg { font-size: 1.25rem !important; line-height: 1.75rem !important; }
+        .text-xl { font-size: 1.5rem !important; line-height: 2rem !important; }
+        .text-2xl { font-size: 1.875rem !important; line-height: 2.25rem !important; }
+        .text-3xl { font-size: 2.25rem !important; line-height: 2.5rem !important; }
+        .text-4xl { font-size: 2.75rem !important; line-height: 3rem !important; }
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
