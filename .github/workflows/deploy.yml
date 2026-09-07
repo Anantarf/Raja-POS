@@ -41,6 +41,14 @@ jobs:
             cd "$APP_DIR"
             echo "Laravel app directory: $(pwd)"
             
+            echo "Preparing Git repository..."
+            if [ ! -d .git ]; then
+              git init
+              git remote add origin https://github.com/Anantarf/Raja-POS.git
+            elif ! git remote get-url origin > /dev/null 2>&1; then
+              git remote add origin https://github.com/Anantarf/Raja-POS.git
+            fi
+
             echo "Fetching and forcing hard reset to origin/main..."
             git fetch origin main
             git reset --hard origin/main
