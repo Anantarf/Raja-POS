@@ -21,15 +21,22 @@ jobs:
           script: |
             echo "Starting deployment on cPanel..."
             DEPLOY_ROOT="${{ secrets.TARGET_DIR }}"
+            PUBLIC_DIR="$DEPLOY_ROOT"
             cd "$DEPLOY_ROOT"
-            if [ ! -f artisan ] && [ -f raja-pos/artisan ]; then
-              cd raja-pos
-            fi
-            if [ ! -f artisan ]; then
+            if [ -f artisan ]; then
+              APP_DIR="$(pwd)"
+            elif [ -f raja-pos/artisan ]; then
+              APP_DIR="$(pwd)/raja-pos"
+            elif [ -f ../raja-pos/artisan ]; then
+              APP_DIR="$(pwd)/../raja-pos"
+            elif [ -f ../../raja-pos/artisan ]; then
+              APP_DIR="$(pwd)/../../raja-pos"
+            else
               echo "Laravel app not found. Current directory: $(pwd)"
               ls -la
               exit 1
             fi
+            cd "$APP_DIR"
             
             echo "Fetching and forcing hard reset to origin/main..."
             git fetch origin main
@@ -57,7 +64,6 @@ jobs:
             fi
 
             echo "Syncing frontend build to public web root..."
-            PUBLIC_DIR="../public_html/raja-pos.my.id"
             if [ -d "$PUBLIC_DIR" ]; then
               mkdir -p "$PUBLIC_DIR/build"
               cp -R public/build/. "$PUBLIC_DIR/build/"
