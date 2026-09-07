@@ -21,11 +21,11 @@
 }
 @layer base {
     html {
-        font-size: 17px;
+        font-size: 18px;
     }
 
     body {
         font-size: 1rem;
-        line-height: 1.55;
+        line-height: 1.6;
     }
 }
