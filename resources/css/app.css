@@ -5,6 +5,16 @@
 @source '../**/*.blade.php';
 @source '../**/*.js';
 
+html {
+    font-size: 20px !important;
+}
+
+@media (max-width: 640px) {
+    html {
+        font-size: 18px !important;
+    }
+}
+
 @theme {
     --font-sans: 'Public Sans', 'Poppins', -apple-system, sans-serif;
     --font-mono: 'Poppins', 'Courier New', monospace;
@@ -19,3 +29,4 @@
     --color-emco-body: #F3F6F4;
     --color-emco-muted: #718379;
 }
+
