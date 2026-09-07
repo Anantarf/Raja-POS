@@ -31,7 +31,8 @@ jobs:
             echo "🗄️ Running Database Migrations..."
             php artisan migrate --force
             
-            echo "⚡ Clearing Old Caches..."
+            echo "⚡ Clearing All Caches & Compiled Views..."
+            php artisan optimize:clear
             php artisan view:clear
             php artisan cache:clear
             php artisan config:clear
@@ -43,10 +44,9 @@ jobs:
               npm run build || true
             fi
             
-            echo "⚡ Re-caching Configurations & Views..."
+            echo "⚡ Caching Configurations..."
             php artisan config:cache
             php artisan route:cache
-            php artisan view:cache
             
             echo "🔗 Verifying Storage Link..."
             php artisan storage:link || true

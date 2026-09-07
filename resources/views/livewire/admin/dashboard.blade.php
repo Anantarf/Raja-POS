@@ -1,4 +1,22 @@
 <div class="space-y-6">
+    <style>
+        :root, html {
+            font-size: 22px !important;
+        }
+        body {
+            font-size: 1.25rem !important;
+        }
+        /* Direct utility overrides */
+        .text-xs { font-size: 1rem !important; line-height: 1.5rem !important; }
+        .text-sm { font-size: 1.15rem !important; line-height: 1.6rem !important; }
+        .text-base { font-size: 1.3rem !important; line-height: 1.8rem !important; }
+        .text-lg { font-size: 1.5rem !important; line-height: 2rem !important; }
+        .text-xl { font-size: 1.75rem !important; line-height: 2.25rem !important; }
+        .text-2xl { font-size: 2.2rem !important; line-height: 2.6rem !important; }
+        .text-3xl { font-size: 2.8rem !important; line-height: 3.2rem !important; }
+        .text-4xl { font-size: 3.5rem !important; line-height: 4rem !important; }
+    </style>
+
     <!-- Welcome Banner Card (Flat Crisp Border) -->
     <div class="bg-gradient-to-r from-[#3F7A5D]/10 via-[#3F7A5D]/5 to-white border border-slate-200/80 rounded-2xl p-6 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-5 shadow-sm">
         <div class="space-y-2.5">
