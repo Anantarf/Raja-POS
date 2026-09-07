@@ -4,8 +4,8 @@
         <div class="bg-white rounded-2xl border border-[#E3EEE8] px-3.5 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between gap-2 sm:gap-3">
             <div class="flex items-center gap-2 sm:gap-2.5 min-w-0">
                 <img src="{{ asset('favicon.svg') }}" alt="Raja POS" class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl shrink-0">
-                <span class="bg-[#3F7A5D] text-white font-extrabold px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-xl text-xs sm:text-base tracking-wider uppercase shadow-sm whitespace-nowrap shrink-0">RAJA AKSESORIS</span>
-                <span class="text-sm font-extrabold text-[#232E28] hidden md:inline border-l border-[#E3EEE8] pl-4 truncate">
+                <span class="bg-[#3F7A5D] text-white font-extrabold px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-xl text-sm sm:text-lg tracking-wide uppercase shadow-sm whitespace-nowrap shrink-0">RAJA AKSESORIS</span>
+                <span class="text-base font-extrabold text-[#232E28] hidden md:inline border-l border-[#E3EEE8] pl-4 truncate">
                     {{ $location?->name ?? 'Raja Aksesoris Bango' }}
                 </span>
             </div>
@@ -16,10 +16,10 @@
                         {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
                     </div>
                     <span class="font-extrabold text-[#232E28] text-sm">{{ auth()->user()->name }}</span>
-                    <span class="text-[#718379] font-medium text-xs">({{ auth()->user()->role?->name ?? 'Kasir' }})</span>
+                    <span class="text-[#5F7167] font-semibold text-sm">({{ auth()->user()->role?->name ?? 'Kasir' }})</span>
                 </div>
 
-                <a href="/admin" class="bg-[#3F7A5D] hover:bg-[#32634B] text-white h-10 px-3.5 py-2 rounded-xl font-bold text-sm transition flex items-center gap-1.5 active:scale-95 shadow-xs whitespace-nowrap">
+                <a href="/admin" class="bg-[#3F7A5D] hover:bg-[#32634B] text-white h-11 px-4 py-2.5 rounded-xl font-bold text-base transition flex items-center gap-1.5 active:scale-95 shadow-xs whitespace-nowrap">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                     </svg>
@@ -36,7 +36,7 @@
                 type="button"
                 @click="activeTab = 'catalog'"
                 :class="activeTab === 'catalog' ? 'bg-[#3F7A5D] text-white shadow-xs' : 'text-[#718379] hover:text-[#232E28]'"
-                class="flex-1 py-2.5 rounded-xl text-sm font-extrabold transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                class="flex-1 py-3 rounded-xl text-base font-extrabold transition-all flex items-center justify-center gap-1.5 cursor-pointer"
             >
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6z"></path>
@@ -48,7 +48,7 @@
                 type="button"
                 @click="activeTab = 'cart'"
                 :class="activeTab === 'cart' ? 'bg-[#3F7A5D] text-white shadow-xs' : 'text-[#718379] hover:text-[#232E28]'"
-                class="flex-1 py-2.5 rounded-xl text-sm font-extrabold transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                class="flex-1 py-3 rounded-xl text-base font-extrabold transition-all flex items-center justify-center gap-1.5 cursor-pointer"
             >
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
@@ -79,7 +79,7 @@
                             type="text"
                             wire:model.live.debounce.300ms="search"
                             placeholder="Cari nama produk / scan barcode..."
-                            class="w-full h-11 pl-10 pr-9 py-2.5 text-sm font-semibold border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] bg-[#F3F6F4] placeholder:text-[#718379] transition-all"
+                            class="w-full h-12 pl-10 pr-9 py-2.5 text-base font-semibold border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] bg-[#F3F6F4] placeholder:text-[#718379] transition-all"
                             autofocus
                         />
                         <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -95,7 +95,7 @@
                     <div class="flex items-center justify-between sm:justify-end gap-2 w-full sm:w-auto shrink-0">
                         <select
                             wire:model.live="selectedType"
-                            class="flex-1 sm:flex-initial h-11 px-3 py-2.5 border border-slate-200 rounded-xl bg-white text-sm font-bold text-[#232E28] focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] shrink-0 cursor-pointer shadow-xs"
+                            class="flex-1 sm:flex-initial h-12 px-3.5 py-2.5 border border-slate-200 rounded-xl bg-white text-base font-bold text-[#232E28] focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] shrink-0 cursor-pointer shadow-xs"
                         >
                             <option value="ALL">Semua Jenis</option>
                             <option value="PHYSICAL">Fisik</option>
@@ -103,7 +103,7 @@
                             <option value="LAYANAN">Layanan</option>
                         </select>
 
-                        <span class="h-11 px-3 flex items-center justify-center rounded-xl bg-[#E3EEE8] text-[#3F7A5D] border border-[#3F7A5D]/20 font-mono font-extrabold text-xs sm:text-sm whitespace-nowrap" title="Jumlah Katalog Produk Siap Di-Scroll">
+                        <span class="h-12 px-3.5 flex items-center justify-center rounded-xl bg-[#E3EEE8] text-[#3F7A5D] border border-[#3F7A5D]/20 font-mono font-extrabold text-xs sm:text-sm whitespace-nowrap" title="Jumlah Katalog Produk Siap Di-Scroll">
                             {{ number_format($totalProductsCount, 0, ',', '.') }} Item
                         </span>
 
@@ -131,14 +131,14 @@
                 <div class="flex items-center gap-2 overflow-x-auto py-1 px-0.5 w-full shrink-0 text-sm font-bold no-scrollbar">
                     <button
                         wire:click="$set('selectedCategory', null)"
-                        class="h-10 px-4 py-2 rounded-xl text-sm font-bold transition-all shrink-0 border cursor-pointer {{ $selectedCategory === null ? 'bg-[#3F7A5D] text-white border-[#3F7A5D] shadow-xs' : 'bg-[#F3F6F4] text-[#232E28] border-slate-200 hover:bg-slate-200' }}"
+                        class="h-11 px-4 py-2.5 rounded-xl text-base font-bold transition-all shrink-0 border cursor-pointer {{ $selectedCategory === null ? 'bg-[#3F7A5D] text-white border-[#3F7A5D] shadow-xs' : 'bg-[#F3F6F4] text-[#232E28] border-slate-200 hover:bg-slate-200' }}"
                     >
                         Semua Kategori
                     </button>
                     @foreach($categories as $cat)
                         <button
                             wire:click="$set('selectedCategory', {{ $cat->id }})"
-                            class="h-10 px-4 py-2 rounded-xl text-sm font-bold transition-all shrink-0 border cursor-pointer {{ $selectedCategory === $cat->id ? 'bg-[#3F7A5D] text-white border-[#3F7A5D] shadow-xs' : 'bg-[#F3F6F4] text-[#232E28] border-slate-200 hover:bg-slate-200' }}"
+                            class="h-11 px-4 py-2.5 rounded-xl text-base font-bold transition-all shrink-0 border cursor-pointer {{ $selectedCategory === $cat->id ? 'bg-[#3F7A5D] text-white border-[#3F7A5D] shadow-xs' : 'bg-[#F3F6F4] text-[#232E28] border-slate-200 hover:bg-slate-200' }}"
                         >
                             {{ $cat->name }}
                         </button>
@@ -166,11 +166,11 @@
 
                             <div
                                 wire:click="addToCart({{ $product->id }})"
-                                class="bg-white border border-[#E3EEE8] hover:border-[#3F7A5D] rounded-xl sm:rounded-2xl overflow-hidden flex flex-col justify-between h-[205px] sm:h-[235px] cursor-pointer transition-all duration-200 relative group hover:shadow-sm {{ $isIncomplete ? 'opacity-65 bg-rose-50/20' : '' }}"
+                                class="bg-white border border-[#E3EEE8] hover:border-[#3F7A5D] rounded-xl sm:rounded-2xl overflow-hidden flex flex-col justify-between h-[220px] sm:h-[255px] cursor-pointer transition-all duration-200 relative group hover:shadow-sm {{ $isIncomplete ? 'opacity-65 bg-rose-50/20' : '' }}"
                             >
                                 <div>
                                     <!-- Top Image/Banner Container -->
-                                    <div class="w-full h-22 sm:h-28 relative overflow-hidden bg-gradient-to-br from-[#E3EEE8]/70 via-[#F3F6F4] to-[#E3EEE8]/40 flex items-center justify-center shrink-0">
+                                    <div class="w-full h-24 sm:h-32 relative overflow-hidden bg-gradient-to-br from-[#E3EEE8]/70 via-[#F3F6F4] to-[#E3EEE8]/40 flex items-center justify-center shrink-0">
                                         <!-- Overlay Badges -->
                                         <div class="absolute top-2 left-2 right-2 flex items-center justify-between z-10 opacity-90 group-hover:opacity-100 transition-opacity">
                                             <span class="text-xs font-mono text-[#3F7A5D] bg-white/90 backdrop-blur-sm px-1.5 py-0.5 rounded font-bold border border-[#3F7A5D]/20 shadow-2xs">
@@ -196,7 +196,7 @@
 
                                     <!-- Card Title (Top-Aligned Baseline) -->
                                     <div class="px-2.5 sm:px-3 pt-2 pb-1 h-10 sm:h-12 flex items-start">
-                                        <h4 class="text-sm sm:text-base font-bold text-[#232E28] leading-tight group-hover:text-[#3F7A5D] transition-colors line-clamp-2 overflow-hidden text-ellipsis">
+                                        <h4 class="text-base sm:text-lg font-bold text-[#232E28] leading-tight group-hover:text-[#3F7A5D] transition-colors line-clamp-2 overflow-hidden text-ellipsis">
                                             {{ $product->name }}
                                         </h4>
                                     </div>
@@ -214,7 +214,7 @@
                                                 INCOMPLETE
                                             </span>
                                         @else
-                                            <div class="text-base sm:text-lg font-black text-[#232E28] font-mono tracking-tight whitespace-nowrap">
+                                            <div class="text-lg sm:text-2xl font-black text-[#232E28] font-mono tracking-tight whitespace-nowrap">
                                                 Rp {{ number_format((float) $product->selling_price, 0, ',', '.') }}
                                             </div>
                                         @endif
@@ -239,8 +239,8 @@
                             </div>
                         @empty
                             <div class="col-span-full py-24 text-center text-slate-400 text-sm">
-                                <div class="font-bold text-[#232E28] text-base mb-1">Tidak ada produk ditemukan.</div>
-                                <div class="text-sm text-[#718379]">Gunakan kata kunci pencarian lain atau pilih kategori lain.</div>
+                                <div class="font-bold text-[#232E28] text-lg mb-1">Tidak ada produk ditemukan.</div>
+                                <div class="text-base text-[#5F7167]">Gunakan kata kunci pencarian lain atau pilih kategori lain.</div>
                             </div>
                         @endforelse
 
@@ -296,7 +296,7 @@
                                                     {{ $product->product_type === 'PHYSICAL' ? 'FISIK' : ($product->product_type === 'DIGITAL' ? 'DIGITAL' : 'LAYANAN') }}
                                                 </span>
                                             </div>
-                                            <h4 class="text-sm sm:text-base font-bold text-[#232E28] group-hover:text-[#3F7A5D] transition-colors leading-snug line-clamp-2">
+                                            <h4 class="text-base sm:text-lg font-bold text-[#232E28] group-hover:text-[#3F7A5D] transition-colors leading-snug line-clamp-2">
                                                 {{ $product->name }}
                                             </h4>
                                         </div>
@@ -339,8 +339,8 @@
                                 </div>
                             @empty
                                 <div class="py-16 text-center text-slate-400 text-sm">
-                                    <div class="font-bold text-[#232E28] text-base mb-1">Tidak ada produk ditemukan.</div>
-                                    <div class="text-sm text-[#718379]">Gunakan kata kunci pencarian lain atau pilih kategori lain.</div>
+                                    <div class="font-bold text-[#232E28] text-lg mb-1">Tidak ada produk ditemukan.</div>
+                                    <div class="text-base text-[#5F7167]">Gunakan kata kunci pencarian lain atau pilih kategori lain.</div>
                                 </div>
                             @endforelse
                         </div>
@@ -373,7 +373,7 @@
 
             <!-- 1. Cart Header -->
             <div class="px-5 py-3.5 bg-white border-b border-slate-200/80 flex items-center justify-between shrink-0">
-                <div class="font-extrabold text-sm sm:text-base text-[#232E28] uppercase tracking-wider flex items-center gap-2">
+                <div class="font-extrabold text-base sm:text-lg text-[#232E28] uppercase tracking-wider flex items-center gap-2">
                     <svg class="w-4 h-4 text-[#3F7A5D]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
                     </svg>
@@ -395,10 +395,10 @@
                     <div class="py-3 flex items-center justify-between gap-3 group">
                         <!-- Product Name & Unit Price -->
                         <div class="flex-1 min-w-0">
-                            <div class="text-sm font-bold text-[#232E28] truncate leading-snug group-hover:text-[#3F7A5D] transition-colors" title="{{ $item['name'] }}">
+                            <div class="text-base font-bold text-[#232E28] truncate leading-snug group-hover:text-[#3F7A5D] transition-colors" title="{{ $item['name'] }}">
                                 {{ $item['name'] }}
                             </div>
-                            <div class="text-xs text-[#718379] font-mono font-semibold mt-0.5">
+                            <div class="text-sm text-[#5F7167] font-mono font-semibold mt-0.5">
                                 @ Rp {{ number_format($item['price'], 0, ',', '.') }}
                             </div>
                         </div>
@@ -441,8 +441,8 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
                             </svg>
                         </div>
-                        <div class="font-bold text-[#232E28] text-base">Keranjang Kosong</div>
-                        <div class="text-xs text-[#718379] max-w-xs">Pilih barang di katalog untuk menambahkan ke transaksi.</div>
+                        <div class="font-bold text-[#232E28] text-lg">Keranjang Kosong</div>
+                        <div class="text-sm text-[#5F7167] max-w-xs">Pilih barang di katalog untuk menambahkan ke transaksi.</div>
                     </div>
                 @endforelse
             </div>
@@ -453,10 +453,10 @@
                 <!-- Grand Total Billing Card -->
                 <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs flex items-baseline justify-between">
                     <div>
-                        <div class="text-sm font-extrabold uppercase text-[#718379] tracking-wider">Total Belanja</div>
+                        <div class="text-base font-extrabold uppercase text-[#5F7167] tracking-wider">Total Belanja</div>
                         <div class="text-sm text-slate-500 font-semibold mt-0.5">Subtotal: Rp {{ number_format($this->subtotal, 0, ',', '.') }}</div>
                     </div>
-                    <div class="text-2xl sm:text-3xl font-black text-[#232E28] font-mono tracking-tight">
+                    <div class="text-3xl sm:text-4xl font-black text-[#232E28] font-mono tracking-tight">
                         Rp {{ number_format($this->grand_total, 0, ',', '.') }}
                     </div>
                 </div>
@@ -474,9 +474,9 @@
                         @php
                             $selectedPm = $paymentMethods->firstWhere('id', $pay['payment_method_id']);
                         @endphp
-                        <div class="bg-white p-3.5 rounded-2xl border border-slate-200/80 space-y-2.5 text-sm shadow-xs">
+                        <div class="bg-white p-3.5 rounded-2xl border border-slate-200/80 space-y-2.5 text-base shadow-xs">
                             <div class="flex flex-col sm:flex-row sm:items-center gap-2">
-                                <select wire:model.live="payments.{{ $index }}.payment_method_id" class="w-full sm:w-1/2 h-11 px-3 py-2.5 border border-slate-200 rounded-xl bg-white text-sm font-bold text-[#232E28] focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]">
+                                <select wire:model.live="payments.{{ $index }}.payment_method_id" class="w-full sm:w-1/2 h-12 px-3.5 py-2.5 border border-slate-200 rounded-xl bg-white text-base font-bold text-[#232E28] focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]">
                                     @foreach($paymentMethods as $pm)
                                         <option value="{{ $pm->id }}">{{ $pm->name }} ({{ $pm->type }})</option>
                                     @endforeach
@@ -497,7 +497,7 @@
                                             "
                                             value="{{ $pay['amount'] ? number_format((float) $pay['amount'], 0, ',', '.') : '' }}"
                                             placeholder="0"
-                                            class="w-full h-11 pl-9 pr-3 py-2.5 border border-slate-200 rounded-xl font-mono font-extrabold text-right text-sm sm:text-base text-[#232E28] focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]"
+                                            class="w-full h-11 pl-9 pr-3 py-2.5 border border-slate-200 rounded-xl font-mono font-extrabold text-right text-base sm:text-lg text-[#232E28] focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]"
                                         />
                                     </div>
 
@@ -562,7 +562,7 @@
                 <button
                     wire:click="processCheckout"
                     @if(count($cart) === 0 || $this->total_paid < $this->grand_total) disabled @endif
-                    class="w-full h-12 py-3 rounded-2xl font-black text-sm sm:text-base uppercase tracking-wider transition-all {{ count($cart) > 0 && $this->total_paid >= $this->grand_total ? 'bg-[#3F7A5D] hover:bg-[#32634B] text-white shadow-sm cursor-pointer active:scale-[0.99]' : 'bg-slate-100 text-slate-400 border border-slate-200/80 cursor-not-allowed' }}"
+                    class="w-full h-14 py-3.5 rounded-2xl font-black text-base sm:text-lg uppercase tracking-wider transition-all {{ count($cart) > 0 && $this->total_paid >= $this->grand_total ? 'bg-[#3F7A5D] hover:bg-[#32634B] text-white shadow-sm cursor-pointer active:scale-[0.99]' : 'bg-slate-100 text-slate-400 border border-slate-200/80 cursor-not-allowed' }}"
                 >
                     SELESAIKAN TRANSAKSI & CETAK STRUK
                 </button>
@@ -582,12 +582,12 @@
                     </svg>
                 </div>
                 <div>
-                    <h3 class="text-xl font-black text-[#232E28]">Transaksi Berhasil!</h3>
+                    <h3 class="text-2xl font-black text-[#232E28]">Transaksi Berhasil!</h3>
                     <p class="text-sm text-[#3F7A5D] font-mono mt-1 font-bold">{{ $completedInvoiceNumber }}</p>
                 </div>
 
                 <div class="bg-[#F3F6F4] p-5 rounded-2xl border border-slate-200">
-                    <div class="text-sm text-[#718379] font-medium">Kembali</div>
+                    <div class="text-base text-[#5F7167] font-medium">Kembali</div>
                     <div class="text-3xl sm:text-4xl font-black text-emerald-700 font-mono mt-1">
                         Rp {{ number_format($completedChangeAmount, 0, ',', '.') }}
                     </div>
@@ -597,13 +597,13 @@
                     <a
                         href="/receipt/thermal/{{ $completedSaleId }}"
                         target="_blank"
-                        class="w-full h-12 py-3 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-bold rounded-2xl text-sm transition uppercase tracking-wider text-center flex items-center justify-center"
+                        class="w-full h-14 py-3.5 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-bold rounded-2xl text-sm transition uppercase tracking-wider text-center flex items-center justify-center"
                     >
                         CETAK STRUK THERMAL
                     </a>
                     <button
                         wire:click="closeSuccessModal"
-                        class="w-full h-12 py-3 bg-slate-100 hover:bg-slate-200 text-[#232E28] font-bold rounded-2xl text-sm transition cursor-pointer"
+                        class="w-full h-14 py-3.5 bg-slate-100 hover:bg-slate-200 text-[#232E28] font-bold rounded-2xl text-sm transition cursor-pointer"
                     >
                         Selesai / Transaksi Baru
                     </button>
@@ -680,7 +680,7 @@
                                     "
                                     value="{{ $ppobVendorAdminFee ? number_format($ppobVendorAdminFee, 0, ',', '.') : '' }}"
                                     placeholder="1.500"
-                                    class="w-full h-11 pl-9 pr-2.5 py-2 border border-slate-200 rounded-xl font-mono font-bold text-right text-sm text-[#718379] focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]"
+                                    class="w-full h-11 pl-9 pr-2.5 py-2 border border-slate-200 rounded-xl font-mono font-bold text-right text-base text-[#5F7167] focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]"
                                 />
                             </div>
                         </div>
@@ -693,11 +693,11 @@
                         $calcMargin = $calcTotalPay - $calcTotalCost;
                     @endphp
                     <div class="bg-[#F3F6F4] p-4 rounded-2xl border border-slate-200/80 space-y-2">
-                        <div class="flex items-center justify-between text-sm font-bold text-[#232E28]">
+                        <div class="flex items-center justify-between text-base font-bold text-[#232E28]">
                             <span>Total Ditagihkan Ke Pelanggan:</span>
                             <span class="font-mono text-base text-[#3F7A5D] font-black">Rp {{ number_format($calcTotalPay, 0, ',', '.') }}</span>
                         </div>
-                        <div class="flex items-center justify-between text-sm text-[#718379]">
+                        <div class="flex items-center justify-between text-base text-[#5F7167]">
                             <span>Estimasi Modal Toko:</span>
                             <span class="font-mono">Rp {{ number_format($calcTotalCost, 0, ',', '.') }}</span>
                         </div>

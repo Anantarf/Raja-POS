@@ -66,7 +66,7 @@
             </div>
             <!-- Close Button for Mobile -->
             <button @click="mobileMenuOpen = false" class="lg:hidden text-slate-400 hover:text-slate-600 p-1">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-6.5 h-6.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
             </button>
@@ -79,13 +79,13 @@
                 <div class="px-3.5 text-[0.88rem] font-extrabold text-[#5F7167] uppercase tracking-wide mb-2.5">Operasional Kasir</div>
                 <nav class="space-y-1.5">
                     <a href="/admin/dashboard" class="flex items-center gap-3.5 px-4 py-3 rounded-xl text-[1.12rem] font-bold transition {{ request()->is('admin', 'admin/dashboard') ? 'bg-[#3F7A5D] text-white shadow-emco-primary' : 'text-[#52645B] hover:bg-[#F3F6F4] hover:text-[#232E28]' }}">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-5.5 h-5.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
                         </svg>
                         <span>Dashboard</span>
                     </a>
                     <a href="/pos" class="flex items-center gap-3.5 px-4 py-3 rounded-xl text-[1.12rem] font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 transition border border-emerald-200/80">
-                        <svg class="w-5 h-5 text-emerald-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-5.5 h-5.5 text-emerald-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 002 2v14a2 2 0 002 2z"></path>
                         </svg>
                         <span>Kasir</span>
@@ -98,19 +98,19 @@
                 <div class="px-3.5 text-[0.88rem] font-extrabold text-[#5F7167] uppercase tracking-wide mb-2.5">Katalog &amp; Stok Barang</div>
                 <nav class="space-y-1.5">
                     <a href="/admin/products" class="flex items-center gap-3.5 px-4 py-3 rounded-xl text-[1.12rem] font-bold transition {{ request()->is('admin/products*') ? 'bg-[#3F7A5D] text-white shadow-emco-primary' : 'text-[#52645B] hover:bg-[#F3F6F4] hover:text-[#232E28]' }}">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-5.5 h-5.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
                         </svg>
                         <span>Daftar Produk</span>
                     </a>
                     <a href="/admin/inventories" class="flex items-center gap-3.5 px-4 py-3 rounded-xl text-[1.12rem] font-bold transition {{ request()->is('admin/inventories*') || request()->is('admin/stock-opname*') ? 'bg-[#3F7A5D] text-white shadow-emco-primary' : 'text-[#52645B] hover:bg-[#F3F6F4] hover:text-[#232E28]' }}">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-5.5 h-5.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
                         </svg>
                         <span>Stok & Opname</span>
                     </a>
                     <a href="/admin/inventory-movements" class="flex items-center gap-3.5 px-4 py-3 rounded-xl text-[1.12rem] font-bold transition {{ request()->is('admin/inventory-movements*') ? 'bg-[#3F7A5D] text-white shadow-emco-primary' : 'text-[#52645B] hover:bg-[#F3F6F4] hover:text-[#232E28]' }}">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-5.5 h-5.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
                         </svg>
                         <span>Stok Masuk / Keluar</span>
@@ -123,19 +123,19 @@
                 <div class="px-3.5 text-[0.88rem] font-extrabold text-[#5F7167] uppercase tracking-wide mb-2.5">Transaksi &amp; Saldo</div>
                 <nav class="space-y-1.5">
                     <a href="/admin/sales" class="flex items-center gap-3.5 px-4 py-3 rounded-xl text-[1.12rem] font-bold transition {{ request()->is('admin/sales*') ? 'bg-[#3F7A5D] text-white shadow-emco-primary' : 'text-[#52645B] hover:bg-[#F3F6F4] hover:text-[#232E28]' }}">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-5.5 h-5.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
                         </svg>
                         <span>Riwayat Transaksi</span>
                     </a>
                     <a href="/admin/balances" class="flex items-center gap-3.5 px-4 py-3 rounded-xl text-[1.12rem] font-bold transition {{ request()->is('admin/balances*') ? 'bg-[#3F7A5D] text-white shadow-emco-primary' : 'text-[#52645B] hover:bg-[#F3F6F4] hover:text-[#232E28]' }}">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-5.5 h-5.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
                         <span>Monitoring Saldo</span>
                     </a>
                     <a href="/admin/trash" class="flex items-center gap-3.5 px-4 py-3 rounded-xl text-[1.12rem] font-bold text-rose-700 bg-rose-50 hover:bg-rose-100 transition border border-rose-200/60">
-                        <svg class="w-5 h-5 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-5.5 h-5.5 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                         </svg>
                         <span>Transaksi Dibatalkan</span>
@@ -148,7 +148,7 @@
                 <div class="px-3.5 text-[0.88rem] font-extrabold text-[#5F7167] uppercase tracking-wide mb-2.5">Laporan Toko</div>
                 <nav class="space-y-1.5">
                     <a href="/admin/reports" class="flex items-center gap-3.5 px-4 py-3 rounded-xl text-[1.12rem] font-bold transition {{ request()->is('admin/reports*') ? 'bg-[#3F7A5D] text-white shadow-emco-primary' : 'text-[#52645B] hover:bg-[#F3F6F4] hover:text-[#232E28]' }}">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-5.5 h-5.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
                         </svg>
                         <span>Laporan Toko</span>
@@ -161,7 +161,7 @@
                 <div class="px-3.5 text-[0.88rem] font-extrabold text-[#5F7167] uppercase tracking-wide mb-2.5">Pengaturan Toko &amp; Sistem</div>
                 <nav class="space-y-1.5">
                     <a href="/admin/settings" class="flex items-center gap-3.5 px-4 py-3 rounded-2xl text-[1.12rem] font-bold transition {{ request()->is('admin/settings*') ? 'bg-[#3F7A5D] text-white shadow-emco-primary' : 'text-[#52645B] hover:bg-[#F3F6F4] hover:text-[#232E28]' }}">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-5.5 h-5.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                         </svg>
@@ -186,7 +186,7 @@
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit" title="Logout" class="p-2.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-5.5 h-5.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
                         </svg>
                     </button>
@@ -201,7 +201,7 @@
         <header class="min-h-[80px] py-4 bg-white border-b border-[#E3EEE8] px-5 sm:px-8 flex items-center justify-between shrink-0">
             <div class="flex items-center gap-4">
                 <button @click="mobileMenuOpen = !mobileMenuOpen" class="lg:hidden p-2.5 text-slate-600 hover:text-slate-900 rounded-xl bg-slate-100 shrink-0" title="Buka Menu">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-6.5 h-6.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                     </svg>
                 </button>
@@ -212,8 +212,8 @@
             </div>
 
             <div class="flex items-center gap-3 shrink-0">
-                <a href="/pos" class="h-13 px-6 text-lg bg-[#3F7A5D] hover:bg-[#32634B] text-white font-bold rounded-2xl shadow-sm transition flex items-center gap-2 shrink-0 cursor-pointer">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <a href="/pos" class="h-[3.25rem] px-6 text-lg bg-[#3F7A5D] hover:bg-[#32634B] text-white font-bold rounded-2xl shadow-sm transition flex items-center gap-2 shrink-0 cursor-pointer">
+                    <svg class="w-5.5 h-5.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 002 2v14a2 2 0 002 2z"></path>
                     </svg>
                     <span>Kasir</span>

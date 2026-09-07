@@ -17,7 +17,26 @@
     --color-emco-mint: #A9D1A0;
     --color-emco-dark: #232E28;
     --color-emco-body: #F3F6F4;
-    --color-emco-muted: #718379;
+    --color-emco-muted: #5F7167;
+
+    --text-xs: 0.82rem;
+    --text-xs--line-height: 1.25rem;
+    --text-sm: 0.95rem;
+    --text-sm--line-height: 1.45rem;
+    --text-base: 1.075rem;
+    --text-base--line-height: 1.7rem;
+    --text-lg: 1.22rem;
+    --text-lg--line-height: 1.9rem;
+    --text-xl: 1.42rem;
+    --text-xl--line-height: 2.05rem;
+    --text-2xl: 1.72rem;
+    --text-2xl--line-height: 2.25rem;
+    --text-3xl: 2.1rem;
+    --text-3xl--line-height: 2.55rem;
+    --text-4xl: 2.55rem;
+    --text-4xl--line-height: 3rem;
+    --text-5xl: 3.1rem;
+    --text-5xl--line-height: 3.55rem;
 }
 @layer base {
     html {
