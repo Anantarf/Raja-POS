@@ -43,8 +43,8 @@ jobs:
 
             echo "📦 Building Frontend Assets (if Node/NPM available)..."
             if command -v npm &> /dev/null; then
-              npm install --no-audit --no-fund || true
-              npm run build || true
+              npm ci --no-audit --no-fund
+              npm run build
             fi
 
             echo "🔄 Touch public/index.php for OPcache refresh..."
