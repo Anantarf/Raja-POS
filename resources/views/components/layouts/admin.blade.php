@@ -78,10 +78,10 @@
             <div class="flex items-center gap-3.5">
                 <img src="{{ asset('favicon.svg') }}" alt="Raja POS" class="w-11 h-11 rounded-2xl shadow-sm shrink-0">
                 <div>
-                    <div class="font-black text-xl sm:text-2xl text-[#232E28] tracking-tight">
+                    <div class="font-black text-xl sm:text-2xl text-[#232E28] tracking-tight" style="font-size: 26px !important;">
                         RAJA AKSESORIS
                     </div>
-                    <div class="text-xs sm:text-sm text-[#718379] font-bold mt-0.5">Retail Management System</div>
+                    <div class="text-xs sm:text-sm text-[#718379] font-bold mt-0.5" style="font-size: 16px !important;">Retail Management System <span class="text-emerald-700 font-extrabold">(v2.5 XL Active)</span></div>
                 </div>
             </div>
             <!-- Close Button for Mobile -->
