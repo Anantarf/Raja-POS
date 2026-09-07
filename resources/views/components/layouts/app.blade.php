@@ -11,32 +11,32 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         :root, html {
-            font-size: 20px !important;
-            --text-xs: 1.1rem !important;
-            --text-sm: 1.25rem !important;
-            --text-base: 1.4rem !important;
-            --text-lg: 1.65rem !important;
-            --text-xl: 2rem !important;
-            --text-2xl: 2.5rem !important;
-            --text-3xl: 3rem !important;
-            --text-4xl: 3.75rem !important;
+            font-size: 24px !important;
+            --text-xs: 1.15rem !important;
+            --text-sm: 1.3rem !important;
+            --text-base: 1.5rem !important;
+            --text-lg: 1.75rem !important;
+            --text-xl: 2.1rem !important;
+            --text-2xl: 2.7rem !important;
+            --text-3xl: 3.3rem !important;
+            --text-4xl: 4rem !important;
         }
         body {
             font-family: 'Public Sans', 'Poppins', sans-serif;
             background-color: #F3F6F4;
-            font-size: 1.4rem !important;
+            font-size: 1.5rem !important;
             line-height: 1.5;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
-        html body .text-xs { font-size: 1.1rem !important; line-height: 1.5rem !important; }
-        html body .text-sm { font-size: 1.25rem !important; line-height: 1.75rem !important; }
-        html body .text-base { font-size: 1.4rem !important; line-height: 2rem !important; }
-        html body .text-lg { font-size: 1.65rem !important; line-height: 2.25rem !important; }
-        html body .text-xl { font-size: 2rem !important; line-height: 2.5rem !important; }
-        html body .text-2xl { font-size: 2.5rem !important; line-height: 3rem !important; }
-        html body .text-3xl { font-size: 3rem !important; line-height: 3.5rem !important; }
-        html body .text-4xl { font-size: 3.75rem !important; line-height: 4.25rem !important; }
+        html body .text-xs { font-size: 1.15rem !important; line-height: 1.6rem !important; }
+        html body .text-sm { font-size: 1.3rem !important; line-height: 1.8rem !important; }
+        html body .text-base { font-size: 1.5rem !important; line-height: 2.1rem !important; }
+        html body .text-lg { font-size: 1.75rem !important; line-height: 2.4rem !important; }
+        html body .text-xl { font-size: 2.1rem !important; line-height: 2.7rem !important; }
+        html body .text-2xl { font-size: 2.7rem !important; line-height: 3.3rem !important; }
+        html body .text-3xl { font-size: 3.3rem !important; line-height: 3.9rem !important; }
+        html body .text-4xl { font-size: 4rem !important; line-height: 4.6rem !important; }
         ::-webkit-scrollbar {
             width: 7px;
             height: 7px;

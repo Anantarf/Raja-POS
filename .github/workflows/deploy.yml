@@ -22,8 +22,10 @@ jobs:
             echo "🚀 Starting Deployment on cPanel..."
             cd ${{ secrets.TARGET_DIR }}
             
-            echo "📥 Pulling latest code from main..."
-            git pull origin main
+            echo "📥 Fetching and forcing hard reset to origin/main..."
+            git fetch origin main
+            git reset --hard origin/main
+            git clean -fd
             
             echo "📦 Installing/Updating Composer Dependencies..."
             composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
@@ -37,12 +39,16 @@ jobs:
             php artisan cache:clear
             php artisan config:clear
             php artisan route:clear
+            php artisan event:clear
 
             echo "📦 Building Frontend Assets (if Node/NPM available)..."
             if command -v npm &> /dev/null; then
               npm install --no-audit --no-fund || true
               npm run build || true
             fi
+
+            echo "🔄 Touch public/index.php for OPcache refresh..."
+            touch public/index.php
             
             echo "⚡ Caching Configurations..."
             php artisan config:cache
