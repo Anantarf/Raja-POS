@@ -2,27 +2,27 @@
     <!-- Header -->
     <div class="flex items-center justify-between">
         <div>
-            <h1 class="text-2xl font-extrabold text-[#232E28] tracking-tight">Riwayat Transaksi</h1>
-            <p class="text-xs text-[#718379] font-medium mt-0.5">Daftar seluruh transaksi penjualan toko, rincian pembayaran, dan cetak ulang struk kasir.</p>
+            <h1 class="text-xl sm:text-2xl font-extrabold text-[#232E28] tracking-tight">Riwayat Transaksi</h1>
+            <p class="text-xs sm:text-sm text-[#718379] font-medium mt-0.5">Daftar seluruh transaksi penjualan toko, rincian pembayaran, dan cetak ulang struk kasir.</p>
         </div>
     </div>
 
     <!-- Search & Filter Toolbar -->
-    <div class="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200/80 shadow-sm grid grid-cols-1 sm:grid-cols-4 gap-3 text-xs">
+    <div class="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200/80 shadow-sm grid grid-cols-1 sm:grid-cols-4 gap-3 text-sm">
         <div class="relative sm:col-span-1">
             <input
                 type="text"
                 wire:model.live.debounce.300ms="search"
                 placeholder="Cari No. TRX / Kasir..."
-                class="w-full pl-9 pr-3 py-2.5 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] bg-[#F3F6F4] text-[#232E28] placeholder:text-[#718379]"
+                class="w-full h-11 pl-9 pr-3 py-2.5 border border-slate-200 rounded-xl text-sm font-semibold focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] bg-[#F3F6F4] text-[#232E28] placeholder:text-[#718379]"
             />
-            <svg class="w-4 h-4 text-slate-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-4 h-4 text-slate-400 absolute left-3 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
             </svg>
         </div>
 
         <div>
-            <select wire:model.live="paymentMethodId" class="w-full py-2.5 px-3 border border-slate-200 rounded-xl text-xs font-semibold bg-[#F3F6F4] text-[#232E28] focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]">
+            <select wire:model.live="paymentMethodId" class="w-full h-11 py-2.5 px-3 border border-slate-200 rounded-xl text-sm font-semibold bg-[#F3F6F4] text-[#232E28] focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]">
                 <option value="">-- Semua Metode Pembayaran --</option>
                 @foreach($paymentMethods as $pm)
                     <option value="{{ $pm->id }}">{{ $pm->name }} ({{ $pm->type }})</option>
@@ -34,7 +34,7 @@
             <input
                 type="date"
                 wire:model.live="startDate"
-                class="w-full py-2.5 px-3 border border-slate-200 rounded-xl text-xs font-semibold bg-[#F3F6F4] text-[#232E28] focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]"
+                class="w-full h-11 py-2.5 px-3 border border-slate-200 rounded-xl text-sm font-semibold bg-[#F3F6F4] text-[#232E28] focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]"
                 placeholder="Dari Tanggal"
             />
         </div>
@@ -43,7 +43,7 @@
             <input
                 type="date"
                 wire:model.live="endDate"
-                class="w-full py-2.5 px-3 border border-slate-200 rounded-xl text-xs font-semibold bg-[#F3F6F4] text-[#232E28] focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]"
+                class="w-full h-11 py-2.5 px-3 border border-slate-200 rounded-xl text-sm font-semibold bg-[#F3F6F4] text-[#232E28] focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]"
                 placeholder="Sampai Tanggal"
             />
         </div>
@@ -52,8 +52,8 @@
     <!-- Sales Table -->
     <div class="bg-white border border-slate-200/80 rounded-2xl shadow-sm overflow-hidden">
         <div class="overflow-x-auto">
-            <table class="w-full text-xs text-left">
-                <thead class="bg-[#F3F6F4] border-b border-slate-200/80 text-[#718379] uppercase text-[11px] font-extrabold tracking-wider whitespace-nowrap">
+            <table class="w-full text-sm text-left">
+                <thead class="bg-[#F3F6F4] border-b border-slate-200/80 text-[#718379] uppercase text-xs font-extrabold tracking-wider whitespace-nowrap">
                     <tr>
                         <th wire:click="sortBy('invoice_number')" class="py-3.5 px-4 cursor-pointer hover:text-[#3F7A5D] transition select-none">
                             <div class="flex items-center gap-1">

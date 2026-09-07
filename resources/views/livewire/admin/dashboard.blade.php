@@ -2,14 +2,14 @@
     <!-- Welcome Banner Card (Flat Crisp Border) -->
     <div class="bg-gradient-to-r from-[#3F7A5D]/10 via-[#3F7A5D]/5 to-white border border-slate-200/80 rounded-2xl p-6 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-5 shadow-sm">
         <div class="space-y-2">
-            <h1 class="text-2xl font-extrabold text-[#232E28] tracking-tight">
+            <h1 class="text-xl sm:text-2xl font-extrabold text-[#232E28] tracking-tight">
                 Selamat Datang, {{ auth()->user()->name }}!
             </h1>
-            <p class="text-xs text-[#52645B] max-w-2xl leading-relaxed">
+            <p class="text-xs sm:text-sm text-[#52645B] max-w-2xl leading-relaxed">
                 <span class="font-bold text-[#232E28]">Ringkasan Operasional:</span> Anda memiliki akses penuh sebagai <span class="font-bold text-[#3F7A5D]">{{ auth()->user()->role?->name ?? 'Kasir' }}</span> pada sistem kasir &amp; manajemen ritel Raja Aksesoris.
             </p>
             <div class="pt-2">
-                <a href="/pos" class="px-4 py-2.5 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-bold rounded-xl text-xs inline-flex items-center gap-2 transition active:scale-95 shadow-sm">
+                <a href="/pos" class="h-10 px-4 py-2 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-bold rounded-xl text-sm inline-flex items-center gap-2 transition active:scale-95 shadow-sm">
                     <span>Buka Layar Kasir</span> &rarr;
                 </a>
             </div>

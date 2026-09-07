@@ -2,23 +2,23 @@
     <!-- Header -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-            <h1 class="text-2xl font-extrabold text-[#232E28] tracking-tight">Monitoring Saldo</h1>
-            <p class="text-xs text-[#718379] font-medium mt-0.5">Kelola saldo toko, rekening bank, mutasi transfer, dan penyesuaian saldo.</p>
+            <h1 class="text-xl sm:text-2xl font-extrabold text-[#232E28] tracking-tight">Monitoring Saldo</h1>
+            <p class="text-xs sm:text-sm text-[#718379] font-medium mt-0.5">Kelola saldo toko, rekening bank, mutasi transfer, dan penyesuaian saldo.</p>
         </div>
         <div class="flex items-center gap-2 overflow-x-auto py-1">
-            <button wire:click="openModal('TRANSFER')" class="px-3.5 py-2 bg-[#F3F6F4] hover:bg-[#E3EEE8] text-[#3F7A5D] border border-slate-200/80 font-extrabold rounded-2xl text-xs transition active:scale-95 flex items-center gap-1.5 shrink-0 cursor-pointer shadow-sm">
+            <button wire:click="openModal('TRANSFER')" class="h-10 px-4 py-2 bg-[#F3F6F4] hover:bg-[#E3EEE8] text-[#3F7A5D] border border-slate-200/80 font-extrabold rounded-2xl text-sm transition active:scale-95 flex items-center gap-1.5 shrink-0 cursor-pointer shadow-sm">
                 <svg class="w-4 h-4 text-[#3F7A5D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
                 <span>Transfer Saldo</span>
             </button>
-            <button wire:click="openModal('DEPOSIT')" class="px-3.5 py-2 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-2xl text-xs transition active:scale-95 flex items-center gap-1.5 shrink-0 cursor-pointer shadow-sm">
+            <button wire:click="openModal('DEPOSIT')" class="h-10 px-4 py-2 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-2xl text-sm transition active:scale-95 flex items-center gap-1.5 shrink-0 cursor-pointer shadow-sm">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                 <span>Deposit / Setor</span>
             </button>
-            <button wire:click="openModal('WITHDRAWAL')" class="px-3.5 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200/80 font-extrabold rounded-2xl text-xs transition active:scale-95 flex items-center gap-1.5 shrink-0 cursor-pointer shadow-sm">
+            <button wire:click="openModal('WITHDRAWAL')" class="h-10 px-4 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200/80 font-extrabold rounded-2xl text-sm transition active:scale-95 flex items-center gap-1.5 shrink-0 cursor-pointer shadow-sm">
                 <svg class="w-4 h-4 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path></svg>
                 <span>Penarikan Saldo</span>
             </button>
-            <button wire:click="openModal('ADJUSTMENT')" class="px-3.5 py-2 bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200/80 font-extrabold rounded-2xl text-xs transition active:scale-95 flex items-center gap-1.5 shrink-0 cursor-pointer shadow-sm">
+            <button wire:click="openModal('ADJUSTMENT')" class="h-10 px-4 py-2 bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200/80 font-extrabold rounded-2xl text-sm transition active:scale-95 flex items-center gap-1.5 shrink-0 cursor-pointer shadow-sm">
                 <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
                 <span>Koreksi Saldo</span>
             </button>
@@ -28,11 +28,11 @@
     <!-- Summary KPI Banner (EMCO Palette Touch) -->
     <div class="bg-white rounded-2xl p-5 border border-slate-200/80 border-l-4 border-l-[#3F7A5D] shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-5">
         <div class="space-y-1">
-            <div class="text-[11px] text-[#718379] font-extrabold uppercase tracking-wider">Total Saldo Operasional Toko</div>
-            <div class="text-3xl font-black text-[#3F7A5D] font-mono tracking-tight">
+            <div class="text-xs text-[#718379] font-extrabold uppercase tracking-wider">Total Saldo Operasional Toko</div>
+            <div class="text-3xl sm:text-4xl font-black text-[#3F7A5D] font-mono tracking-tight">
                 Rp {{ number_format($totalBalance, 0, ',', '.') }}
             </div>
-            <p class="text-xs text-[#718379] font-medium">Gabungan saldo uang cash, rekening bank, QRIS, dan e-wallet toko.</p>
+            <p class="text-xs sm:text-sm text-[#718379] font-medium">Gabungan saldo uang cash, rekening bank, QRIS, dan e-wallet toko.</p>
         </div>
 
         <div class="flex items-center gap-3 flex-wrap">
@@ -41,7 +41,7 @@
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
                 </div>
                 <div>
-                    <div class="text-[10px] text-[#3F7A5D] uppercase font-extrabold tracking-wider">Uang Cash</div>
+                    <div class="text-xs text-[#3F7A5D] uppercase font-extrabold tracking-wider">Uang Cash</div>
                     <div class="text-sm font-mono font-black text-[#232E28]">Rp {{ number_format($totalCash, 0, ',', '.') }}</div>
                 </div>
             </div>
@@ -51,7 +51,7 @@
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5m0 0h4m-4 0V11m0 4h4m-4-8h4m-4-4h4"></path></svg>
                 </div>
                 <div>
-                    <div class="text-[10px] text-[#718379] uppercase font-extrabold tracking-wider">Bank &amp; QRIS</div>
+                    <div class="text-xs text-[#718379] uppercase font-extrabold tracking-wider">Bank &amp; QRIS</div>
                     <div class="text-sm font-mono font-extrabold text-[#232E28]">Rp {{ number_format($totalBank, 0, ',', '.') }}</div>
                 </div>
             </div>
@@ -61,7 +61,7 @@
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
                 </div>
                 <div>
-                    <div class="text-[10px] text-[#718379] uppercase font-extrabold tracking-wider">E-Wallet</div>
+                    <div class="text-xs text-[#718379] uppercase font-extrabold tracking-wider">E-Wallet</div>
                     <div class="text-sm font-mono font-extrabold text-[#232E28]">Rp {{ number_format($totalEwallet, 0, ',', '.') }}</div>
                 </div>
             </div>

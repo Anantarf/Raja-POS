@@ -2,13 +2,13 @@
     <!-- Page Header & Period Filter Toolbar -->
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
         <div>
-            <h1 class="text-2xl font-extrabold text-[#232E28] tracking-tight">Laporan Toko</h1>
-            <p class="text-xs text-[#718379] font-medium mt-0.5">Analisis lengkap performa penjualan, margin, kasir, stok barang, dan saldo toko.</p>
+            <h1 class="text-xl sm:text-2xl font-extrabold text-[#232E28] tracking-tight">Laporan Toko</h1>
+            <p class="text-xs sm:text-sm text-[#718379] font-medium mt-0.5">Analisis lengkap performa penjualan, margin, kasir, stok barang, dan saldo toko.</p>
         </div>
 
         <!-- Filter Period & Print Control -->
-        <div class="flex items-center gap-2 flex-wrap text-xs">
-            <select wire:model.live="period" class="p-2 border border-slate-200 rounded-xl bg-[#F3F6F4] text-[#232E28] font-bold focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]">
+        <div class="flex items-center gap-2 flex-wrap text-sm">
+            <select wire:model.live="period" class="h-11 px-3 py-2.5 border border-slate-200 rounded-xl bg-[#F3F6F4] text-[#232E28] font-bold focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]">
                 <option value="all_time">Semua Waktu</option>
                 <option value="today">Hari Ini</option>
                 <option value="7_days">7 Hari Terakhir</option>
@@ -18,13 +18,13 @@
 
             @if($period === 'custom')
                 <div class="flex items-center gap-1">
-                    <input type="date" wire:model.live="startDate" class="p-2 border border-slate-200 rounded-xl text-xs font-semibold bg-[#F3F6F4]" />
+                    <input type="date" wire:model.live="startDate" class="h-11 px-3 py-2.5 border border-slate-200 rounded-xl text-sm font-semibold bg-[#F3F6F4]" />
                     <span class="text-slate-400 font-bold">&rarr;</span>
-                    <input type="date" wire:model.live="endDate" class="p-2 border border-slate-200 rounded-xl text-xs font-semibold bg-[#F3F6F4]" />
+                    <input type="date" wire:model.live="endDate" class="h-11 px-3 py-2.5 border border-slate-200 rounded-xl text-sm font-semibold bg-[#F3F6F4]" />
                 </div>
             @endif
 
-            <button onclick="window.print()" class="px-3 py-2 bg-[#F3F6F4] hover:bg-[#E3EEE8] text-[#3F7A5D] border border-slate-200 font-extrabold rounded-xl transition flex items-center gap-1.5 cursor-pointer">
+            <button onclick="window.print()" class="h-11 px-4 py-2 bg-[#F3F6F4] hover:bg-[#E3EEE8] text-[#3F7A5D] border border-slate-200 font-extrabold rounded-xl transition flex items-center gap-1.5 cursor-pointer">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
                 <span>Cetak / Export</span>
             </button>
@@ -32,7 +32,7 @@
     </div>
 
     <!-- Navigation Sub-Tabs -->
-    <div class="flex flex-wrap gap-2 border-b border-slate-200/80 pb-3 text-xs font-bold print:hidden">
+    <div class="flex flex-wrap gap-2 border-b border-slate-200/80 pb-3 text-sm font-bold print:hidden">
         @foreach([
             'sales' => 'Penjualan & Produk Terlaris',
             'cashier' => 'Performa Kasir',
@@ -40,7 +40,7 @@
             'payment' => 'Metode Pembayaran',
             'balance' => 'Saldo Toko'
         ] as $key => $label)
-            <a href="/admin/reports/{{ $key }}" class="px-3.5 py-2 rounded-xl transition {{ $type === $key ? 'bg-[#3F7A5D] text-white shadow-sm' : 'text-[#52645B] hover:bg-[#F3F6F4] hover:text-[#232E28]' }}">{{ $label }}</a>
+            <a href="/admin/reports/{{ $key }}" class="px-3.5 py-2.5 rounded-xl transition {{ $type === $key ? 'bg-[#3F7A5D] text-white shadow-sm' : 'text-[#52645B] hover:bg-[#F3F6F4] hover:text-[#232E28]' }}">{{ $label }}</a>
         @endforeach
     </div>
 

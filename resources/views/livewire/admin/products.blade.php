@@ -2,13 +2,13 @@
     <!-- Header Controls (Clean Single-Row Enterprise Alignment) -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-1">
         <div>
-            <h1 class="text-2xl font-extrabold text-[#232E28] tracking-tight">Katalog &amp; Daftar Produk</h1>
-            <p class="text-xs text-[#718379] font-medium mt-0.5">Kelola data barang fisik, produk digital, dan daftar harga jual toko.</p>
+            <h1 class="text-xl sm:text-2xl font-extrabold text-[#232E28] tracking-tight">Katalog &amp; Daftar Produk</h1>
+            <p class="text-xs sm:text-sm text-[#718379] font-medium mt-0.5">Kelola data barang fisik, produk digital, dan daftar harga jual toko.</p>
         </div>
 
         <div class="flex items-center gap-2 flex-wrap sm:flex-nowrap">
             <!-- Unduh Template Excel -->
-            <a href="/admin/products/template-excel" title="Unduh Template Excel" class="px-3 py-2 bg-white hover:bg-slate-50 text-[#232E28] font-bold border border-slate-200 rounded-xl text-xs shadow-sm transition flex items-center gap-1.5 active:scale-95 shrink-0">
+            <a href="/admin/products/template-excel" title="Unduh Template Excel" class="h-10 px-3.5 py-2 bg-white hover:bg-slate-50 text-[#232E28] font-bold border border-slate-200 rounded-xl text-sm shadow-sm transition flex items-center gap-1.5 active:scale-95 shrink-0">
                 <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                 </svg>
@@ -16,7 +16,7 @@
             </a>
 
             <!-- Export Data Excel -->
-            <a href="/admin/products/export-excel?category_id={{ $selectedCategory }}&type={{ $selectedType }}" title="Export Data Produk" class="px-3 py-2 bg-white hover:bg-slate-50 text-[#232E28] font-bold border border-slate-200 rounded-xl text-xs shadow-sm transition flex items-center gap-1.5 active:scale-95 shrink-0">
+            <a href="/admin/products/export-excel?category_id={{ $selectedCategory }}&type={{ $selectedType }}" title="Export Data Produk" class="h-10 px-3.5 py-2 bg-white hover:bg-slate-50 text-[#232E28] font-bold border border-slate-200 rounded-xl text-sm shadow-sm transition flex items-center gap-1.5 active:scale-95 shrink-0">
                 <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                 </svg>
@@ -24,7 +24,7 @@
             </a>
 
             <!-- Import CSV / Excel -->
-            <button wire:click="$set('showImportModal', true)" title="Impor File Excel" class="px-3 py-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-xl text-xs shadow-sm transition flex items-center gap-1.5 active:scale-95 shrink-0">
+            <button wire:click="$set('showImportModal', true)" title="Impor File Excel" class="h-10 px-3.5 py-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-xl text-sm shadow-sm transition flex items-center gap-1.5 active:scale-95 shrink-0 cursor-pointer">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
                 </svg>
@@ -32,7 +32,7 @@
             </button>
 
             <!-- Tambah Produk Baru -->
-            <button wire:click="openCreateModal" class="px-3.5 py-2 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-bold rounded-xl text-xs shadow-sm transition flex items-center gap-1.5 active:scale-95 shrink-0 cursor-pointer">
+            <button wire:click="openCreateModal" class="h-10 px-4 py-2 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-bold rounded-xl text-sm shadow-sm transition flex items-center gap-1.5 active:scale-95 shrink-0 cursor-pointer">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                 </svg>
@@ -42,23 +42,23 @@
     </div>
 
     <!-- Filter & View Mode Toolbar (Clean Balanced Flex Layout) -->
-    <div class="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col md:flex-row items-center justify-between gap-3 text-xs">
+    <div class="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col md:flex-row items-center justify-between gap-3 text-sm">
         <!-- Search Input -->
         <div class="w-full md:w-72 relative shrink-0">
             <input
                 type="text"
                 wire:model.live.debounce.300ms="search"
                 placeholder="Cari nama barang, barcode..."
-                class="w-full pl-9 pr-3 py-2 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] bg-[#F3F6F4] placeholder:text-[#718379]"
+                class="w-full h-11 pl-9 pr-3 py-2.5 border border-slate-200 rounded-xl text-sm font-semibold focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] bg-[#F3F6F4] placeholder:text-[#718379]"
             />
-            <svg class="w-4 h-4 text-slate-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-4 h-4 text-slate-400 absolute left-3 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
             </svg>
         </div>
 
         <div class="w-full md:w-auto flex flex-wrap items-center justify-between md:justify-end gap-2.5">
             <!-- Category Filter Dropdown -->
-            <select wire:model.live="selectedCategory" class="px-3 py-2 border border-slate-200 rounded-xl text-xs font-semibold bg-white text-[#232E28] focus:ring-2 focus:ring-[#3F7A5D]/20 shrink-0">
+            <select wire:model.live="selectedCategory" class="h-11 px-3 py-2.5 border border-slate-200 rounded-xl text-sm font-semibold bg-white text-[#232E28] focus:ring-2 focus:ring-[#3F7A5D]/20 shrink-0">
                 <option value="">Semua Kategori</option>
                 @foreach($categories as $cat)
                     <option value="{{ $cat->id }}">{{ $cat->name }}</option>
@@ -67,7 +67,7 @@
 
             <!-- Sort Dropdown & Direction Toggle -->
             <div class="flex items-center gap-1.5 shrink-0">
-                <select wire:model.live="sortField" class="px-3 py-2 border border-slate-200 rounded-xl text-xs font-semibold bg-white text-[#232E28] focus:ring-2 focus:ring-[#3F7A5D]/20">
+                <select wire:model.live="sortField" class="h-11 px-3 py-2.5 border border-slate-200 rounded-xl text-sm font-semibold bg-white text-[#232E28] focus:ring-2 focus:ring-[#3F7A5D]/20">
                     <option value="created_at">Urutkan: Terbaru</option>
                     <option value="name">Urutkan: Nama Barang</option>
                     <option value="stock">Urutkan: Jumlah Stok</option>
@@ -76,31 +76,31 @@
                         <option value="cost_price">Urutkan: Modal (COGS)</option>
                     @endif
                 </select>
-                <button type="button" wire:click="$set('sortDirection', '{{ $sortDirection === 'asc' ? 'desc' : 'asc' }}')" class="px-2.5 py-2 border border-slate-200 rounded-xl bg-white hover:bg-[#F3F6F4] font-extrabold text-xs text-[#3F7A5D] transition shrink-0 cursor-pointer shadow-sm select-none" title="Ubah Arah Urutan (Ascending / Descending)">
+                <button type="button" wire:click="$set('sortDirection', '{{ $sortDirection === 'asc' ? 'desc' : 'asc' }}')" class="h-11 px-3 py-2 border border-slate-200 rounded-xl bg-white hover:bg-[#F3F6F4] font-extrabold text-sm text-[#3F7A5D] transition shrink-0 cursor-pointer shadow-sm select-none" title="Ubah Arah Urutan (Ascending / Descending)">
                     {{ $sortDirection === 'asc' ? '↑ ASC' : '↓ DESC' }}
                 </button>
             </div>
 
             <!-- Jenis Stok Filter Pills -->
-            <div class="flex items-center gap-1 bg-slate-100 p-1 rounded-xl shrink-0 flex-wrap">
-                <button type="button" @click="$wire.filterType('ALL')" wire:click="filterType('ALL')" class="px-3 py-1 rounded-lg font-bold text-xs transition cursor-pointer {{ $selectedType === 'ALL' ? 'bg-[#3F7A5D] text-white shadow-sm' : 'text-slate-600 hover:text-slate-900' }}">Semua</button>
-                <button type="button" @click="$wire.filterType('PHYSICAL')" wire:click="filterType('PHYSICAL')" class="px-3 py-1 rounded-lg font-bold text-xs transition cursor-pointer {{ $selectedType === 'PHYSICAL' ? 'bg-[#3F7A5D] text-white shadow-sm' : 'text-slate-600 hover:text-slate-900' }}">Fisik</button>
-                <button type="button" @click="$wire.filterType('DIGITAL')" wire:click="filterType('DIGITAL')" class="px-3 py-1 rounded-lg font-bold text-xs transition cursor-pointer {{ $selectedType === 'DIGITAL' ? 'bg-emerald-700 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900' }}">Digital</button>
-                <button type="button" @click="$wire.filterType('LAYANAN')" wire:click="filterType('LAYANAN')" class="px-3 py-1 rounded-lg font-bold text-xs transition cursor-pointer {{ $selectedType === 'LAYANAN' || $selectedType === 'SERVICE' ? 'bg-[#C2AC7C] text-white shadow-sm' : 'text-slate-600 hover:text-slate-900' }}">Layanan</button>
-                <button type="button" @click="$wire.filterType('INCOMPLETE')" wire:click="filterType('INCOMPLETE')" class="px-3 py-1 rounded-lg font-bold text-xs transition cursor-pointer flex items-center gap-1 {{ $selectedType === 'INCOMPLETE' ? 'bg-rose-600 text-white shadow-sm font-extrabold' : 'bg-rose-50 text-rose-700 hover:bg-rose-100 font-extrabold border border-rose-200/80' }}" title="Filter Khusus Produk yang Harganya Belum Lengkap">
+            <div class="flex items-center gap-1 bg-slate-100 p-1 h-11 rounded-xl shrink-0 flex-wrap">
+                <button type="button" @click="$wire.filterType('ALL')" wire:click="filterType('ALL')" class="px-3 py-1.5 rounded-lg font-bold text-sm transition cursor-pointer {{ $selectedType === 'ALL' ? 'bg-[#3F7A5D] text-white shadow-sm' : 'text-slate-600 hover:text-slate-900' }}">Semua</button>
+                <button type="button" @click="$wire.filterType('PHYSICAL')" wire:click="filterType('PHYSICAL')" class="px-3 py-1.5 rounded-lg font-bold text-sm transition cursor-pointer {{ $selectedType === 'PHYSICAL' ? 'bg-[#3F7A5D] text-white shadow-sm' : 'text-slate-600 hover:text-slate-900' }}">Fisik</button>
+                <button type="button" @click="$wire.filterType('DIGITAL')" wire:click="filterType('DIGITAL')" class="px-3 py-1.5 rounded-lg font-bold text-sm transition cursor-pointer {{ $selectedType === 'DIGITAL' ? 'bg-emerald-700 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900' }}">Digital</button>
+                <button type="button" @click="$wire.filterType('LAYANAN')" wire:click="filterType('LAYANAN')" class="px-3 py-1.5 rounded-lg font-bold text-sm transition cursor-pointer {{ $selectedType === 'LAYANAN' || $selectedType === 'SERVICE' ? 'bg-[#C2AC7C] text-white shadow-sm' : 'text-slate-600 hover:text-slate-900' }}">Layanan</button>
+                <button type="button" @click="$wire.filterType('INCOMPLETE')" wire:click="filterType('INCOMPLETE')" class="px-3 py-1.5 rounded-lg font-bold text-sm transition cursor-pointer flex items-center gap-1 {{ $selectedType === 'INCOMPLETE' ? 'bg-rose-600 text-white shadow-sm font-extrabold' : 'bg-rose-50 text-rose-700 hover:bg-rose-100 font-extrabold border border-rose-200/80' }}" title="Filter Khusus Produk yang Harganya Belum Lengkap">
                     <span>Belum Lengkap</span>
-                    <span class="px-1.5 py-0.2 rounded-full text-[10px] font-mono font-black {{ $selectedType === 'INCOMPLETE' ? 'bg-white/20 text-white' : 'bg-rose-200/60 text-rose-800' }}">{{ $incompleteCount }}</span>
+                    <span class="px-1.5 py-0.2 rounded-full text-xs font-mono font-black {{ $selectedType === 'INCOMPLETE' ? 'bg-white/20 text-white' : 'bg-rose-200/60 text-rose-800' }}">{{ $incompleteCount }}</span>
                 </button>
             </div>
 
             <!-- View Mode Switcher (Card vs Table) -->
-            <div class="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200/60 shrink-0">
+            <div class="flex items-center gap-1 bg-slate-100 p-1 h-11 rounded-xl border border-slate-200/60 shrink-0">
                 <button
                     type="button"
                     @click="$wire.setViewMode('card')"
                     wire:click="setViewMode('card')"
                     title="Tampilan Kartu Grid"
-                    class="p-1.5 rounded-lg transition cursor-pointer {{ $viewMode === 'card' ? 'bg-[#3F7A5D] text-white shadow-sm' : 'text-slate-400 hover:text-slate-700' }}"
+                    class="h-9 px-2.5 rounded-lg transition cursor-pointer {{ $viewMode === 'card' ? 'bg-[#3F7A5D] text-white shadow-sm' : 'text-slate-400 hover:text-slate-700' }}"
                 >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
@@ -111,7 +111,7 @@
                     @click="$wire.setViewMode('table')"
                     wire:click="setViewMode('table')"
                     title="Tampilan Tabel List"
-                    class="p-1.5 rounded-lg transition cursor-pointer {{ $viewMode === 'table' ? 'bg-[#3F7A5D] text-white shadow-sm' : 'text-slate-400 hover:text-slate-700' }}"
+                    class="h-9 px-2.5 rounded-lg transition cursor-pointer {{ $viewMode === 'table' ? 'bg-[#3F7A5D] text-white shadow-sm' : 'text-slate-400 hover:text-slate-700' }}"
                 >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
@@ -240,8 +240,8 @@
     @else
         <div class="bg-white border border-slate-200/80 rounded-2xl shadow-sm overflow-hidden">
             <div class="overflow-x-auto">
-                <table class="w-full text-xs text-left">
-                    <thead class="bg-[#F3F6F4] border-b border-slate-200/80 text-[#718379] uppercase text-[11px] font-extrabold tracking-wider">
+                <table class="w-full text-sm text-left">
+                    <thead class="bg-[#F3F6F4] border-b border-slate-200/80 text-[#718379] uppercase text-xs font-extrabold tracking-wider">
                         <tr>
                             <th wire:click="sortBy('name')" class="py-3.5 px-4 cursor-pointer hover:text-[#3F7A5D] transition select-none">
                                 <div class="flex items-center gap-1">
