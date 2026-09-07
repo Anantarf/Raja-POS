@@ -12,29 +12,29 @@
     <style>
         :root, html {
             font-size: 20px !important;
-            --text-xs: 0.95rem !important;
-            --text-sm: 1.1rem !important;
-            --text-base: 1.25rem !important;
-            --text-lg: 1.4rem !important;
-            --text-xl: 1.65rem !important;
-            --text-2xl: 2rem !important;
-            --text-3xl: 2.5rem !important;
-            --text-4xl: 3rem !important;
+            --text-xs: 1.1rem !important;
+            --text-sm: 1.25rem !important;
+            --text-base: 1.4rem !important;
+            --text-lg: 1.65rem !important;
+            --text-xl: 2rem !important;
+            --text-2xl: 2.5rem !important;
+            --text-3xl: 3rem !important;
+            --text-4xl: 3.75rem !important;
         }
         body {
             font-family: 'Public Sans', 'Poppins', sans-serif;
             background-color: #F3F6F4;
-            font-size: 1.25rem !important;
+            font-size: 1.4rem !important;
             line-height: 1.5;
         }
-        .text-xs { font-size: 0.95rem !important; }
-        .text-sm { font-size: 1.1rem !important; }
-        .text-base { font-size: 1.25rem !important; }
-        .text-lg { font-size: 1.4rem !important; }
-        .text-xl { font-size: 1.65rem !important; }
-        .text-2xl { font-size: 2rem !important; }
-        .text-3xl { font-size: 2.5rem !important; }
-        .text-4xl { font-size: 3rem !important; }
+        html body .text-xs { font-size: 1.1rem !important; line-height: 1.5rem !important; }
+        html body .text-sm { font-size: 1.25rem !important; line-height: 1.75rem !important; }
+        html body .text-base { font-size: 1.4rem !important; line-height: 2rem !important; }
+        html body .text-lg { font-size: 1.65rem !important; line-height: 2.25rem !important; }
+        html body .text-xl { font-size: 2rem !important; line-height: 2.5rem !important; }
+        html body .text-2xl { font-size: 2.5rem !important; line-height: 3rem !important; }
+        html body .text-3xl { font-size: 3rem !important; line-height: 3.5rem !important; }
+        html body .text-4xl { font-size: 3.75rem !important; line-height: 4.25rem !important; }
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
