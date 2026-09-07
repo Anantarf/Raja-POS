@@ -7,17 +7,29 @@
 
 :root, html {
     font-size: 20px !important;
+    --text-xs: 0.95rem !important;     /* ~19px */
+    --text-sm: 1.1rem !important;      /* ~22px */
+    --text-base: 1.25rem !important;   /* 25px */
+    --text-lg: 1.4rem !important;      /* 28px */
+    --text-xl: 1.65rem !important;     /* ~33px */
+    --text-2xl: 2rem !important;       /* 40px */
+    --text-3xl: 2.5rem !important;     /* 50px */
+    --text-4xl: 3rem !important;       /* 60px */
 }
 
-/* Extra Large Scale Font Utility Overrides */
-.text-xs { font-size: 0.875rem !important; line-height: 1.25rem !important; }
-.text-sm { font-size: 1rem !important; line-height: 1.5rem !important; }
-.text-base { font-size: 1.125rem !important; line-height: 1.75rem !important; }
-.text-lg { font-size: 1.25rem !important; line-height: 1.75rem !important; }
-.text-xl { font-size: 1.5rem !important; line-height: 2rem !important; }
-.text-2xl { font-size: 1.875rem !important; line-height: 2.25rem !important; }
-.text-3xl { font-size: 2.25rem !important; line-height: 2.5rem !important; }
-.text-4xl { font-size: 2.75rem !important; line-height: 3rem !important; }
+body {
+    font-size: 1.25rem !important;
+}
+
+/* Force direct utility overrides */
+.text-xs { font-size: 0.95rem !important; }
+.text-sm { font-size: 1.1rem !important; }
+.text-base { font-size: 1.25rem !important; }
+.text-lg { font-size: 1.4rem !important; }
+.text-xl { font-size: 1.65rem !important; }
+.text-2xl { font-size: 2rem !important; }
+.text-3xl { font-size: 2.5rem !important; }
+.text-4xl { font-size: 3rem !important; }
 
 @theme {
     --font-sans: 'Public Sans', 'Poppins', -apple-system, sans-serif;
