@@ -19,21 +19,21 @@ jobs:
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            echo "🚀 Starting Deployment on cPanel..."
+            echo "Starting deployment on cPanel..."
             cd ${{ secrets.TARGET_DIR }}
             
-            echo "📥 Fetching and forcing hard reset to origin/main..."
+            echo "Fetching and forcing hard reset to origin/main..."
             git fetch origin main
             git reset --hard origin/main
             git clean -fd
             
-            echo "📦 Installing/Updating Composer Dependencies..."
+            echo "Installing/updating Composer dependencies..."
             composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
             
-            echo "🗄️ Running Database Migrations..."
+            echo "Running database migrations..."
             php artisan migrate --force
             
-            echo "⚡ Clearing All Caches & Compiled Views..."
+            echo "Clearing all caches and compiled views..."
             php artisan optimize:clear
             php artisan view:clear
             php artisan cache:clear
@@ -41,20 +41,31 @@ jobs:
             php artisan route:clear
             php artisan event:clear
 
-            echo "📦 Building Frontend Assets (if Node/NPM available)..."
+            echo "Building frontend assets..."
             if command -v npm &> /dev/null; then
               npm ci --no-audit --no-fund
               npm run build
             fi
 
-            echo "🔄 Touch public/index.php for OPcache refresh..."
+            echo "Syncing frontend build to public web root..."
+            PUBLIC_DIR="../public_html/raja-pos.my.id"
+            if [ -d "$PUBLIC_DIR" ]; then
+              rm -rf "$PUBLIC_DIR/build"
+              cp -R public/build "$PUBLIC_DIR/build"
+              touch "$PUBLIC_DIR/index.php"
+            else
+              echo "Public web root not found: $PUBLIC_DIR"
+              exit 1
+            fi
+
+            echo "Touch public/index.php for OPcache refresh..."
             touch public/index.php
             
-            echo "⚡ Caching Configurations..."
+            echo "Caching configurations..."
             php artisan config:cache
             php artisan route:cache
             
-            echo "🔗 Verifying Storage Link..."
+            echo "Verifying storage link..."
             php artisan storage:link || true
             
-            echo "✅ Deployment Finished Successfully!"
+            echo "Deployment finished successfully!"
