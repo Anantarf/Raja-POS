@@ -31,7 +31,19 @@ jobs:
             echo "🗄️ Running Database Migrations..."
             php artisan migrate --force
             
-            echo "⚡ Clearing and Caching Configurations..."
+            echo "⚡ Clearing Old Caches..."
+            php artisan view:clear
+            php artisan cache:clear
+            php artisan config:clear
+            php artisan route:clear
+
+            echo "📦 Building Frontend Assets (if Node/NPM available)..."
+            if command -v npm &> /dev/null; then
+              npm install --no-audit --no-fund || true
+              npm run build || true
+            fi
+            
+            echo "⚡ Re-caching Configurations & Views..."
             php artisan config:cache
             php artisan route:cache
             php artisan view:cache
