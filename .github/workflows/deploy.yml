@@ -20,7 +20,16 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             echo "Starting deployment on cPanel..."
-            cd ${{ secrets.TARGET_DIR }}
+            DEPLOY_ROOT="${{ secrets.TARGET_DIR }}"
+            cd "$DEPLOY_ROOT"
+            if [ ! -f artisan ] && [ -f raja-pos/artisan ]; then
+              cd raja-pos
+            fi
+            if [ ! -f artisan ]; then
+              echo "Laravel app not found. Current directory: $(pwd)"
+              ls -la
+              exit 1
+            fi
             
             echo "Fetching and forcing hard reset to origin/main..."
             git fetch origin main
@@ -50,8 +59,8 @@ jobs:
             echo "Syncing frontend build to public web root..."
             PUBLIC_DIR="../public_html/raja-pos.my.id"
             if [ -d "$PUBLIC_DIR" ]; then
-              rm -rf "$PUBLIC_DIR/build"
-              cp -R public/build "$PUBLIC_DIR/build"
+              mkdir -p "$PUBLIC_DIR/build"
+              cp -R public/build/. "$PUBLIC_DIR/build/"
               touch "$PUBLIC_DIR/index.php"
             else
               echo "Public web root not found: $PUBLIC_DIR"
