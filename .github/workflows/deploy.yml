@@ -56,7 +56,14 @@ jobs:
             echo "Deployed commit: $(git rev-parse --short HEAD)"
             
             echo "Installing/updating Composer dependencies..."
-            composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
+            if command -v composer > /dev/null 2>&1; then
+              composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
+            elif [ -f vendor/autoload.php ]; then
+              echo "Composer not found; using existing vendor directory."
+            else
+              echo "Composer not found and vendor/autoload.php is missing."
+              exit 1
+            fi
             
             echo "Running database migrations..."
             php artisan migrate --force
@@ -70,12 +77,16 @@ jobs:
             php artisan event:clear
 
             echo "Building frontend assets..."
-            if ! command -v npm > /dev/null 2>&1; then
-              echo "npm is required to build frontend assets"
+            if command -v npm > /dev/null 2>&1; then
+              npm ci --no-audit --no-fund
+              npm run build
+            else
+              echo "npm not found; using committed public/build assets."
+            fi
+            if [ ! -f public/build/manifest.json ]; then
+              echo "public/build/manifest.json is missing."
               exit 1
             fi
-            npm ci --no-audit --no-fund
-            npm run build
             echo "Built manifest:"
             cat public/build/manifest.json
 
