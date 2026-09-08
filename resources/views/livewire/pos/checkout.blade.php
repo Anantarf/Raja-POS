@@ -157,7 +157,7 @@
             </div>
 
             <!-- Product Display (Grid Cards or Aligned List Rows) -->
-            <div class="flex-1 overflow-y-auto pr-1">
+            <div class="flex-1 overflow-y-auto pr-1 pb-6">
                 @if($viewMode === 'grid')
                     <!-- Product Cards Grid (Spacious 3-Column Layout with Comfortable Touch Targets & Zero Clipping) -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-3.5">
@@ -196,8 +196,8 @@
                                             <div class="absolute inset-x-0 bottom-0 h-4 bg-gradient-to-t from-white via-white/40 to-transparent"></div>
                                         @else
                                             <div class="flex items-center justify-center h-full pt-2">
-                                                <div class="w-12 h-12 rounded-2xl bg-white/90 shadow-2xs border border-[#3F7A5D]/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
-                                                    <span class="text-base sm:text-lg font-mono font-black text-[#3F7A5D]">
+                                                <div class="w-11 h-11 rounded-2xl bg-[#E3EEE8] border border-[#3F7A5D]/25 shadow-2xs flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+                                                    <span class="text-base font-mono font-black text-[#3F7A5D] tracking-wide">
                                                         {{ $initials }}
                                                     </span>
                                                 </div>
