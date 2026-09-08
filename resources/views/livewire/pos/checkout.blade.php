@@ -88,7 +88,7 @@
                             wire:model.live.debounce.300ms="search"
                             placeholder="Cari nama produk / scan barcode..."
                             aria-label="Cari nama produk atau scan barcode"
-                            class="w-full h-11 pl-10 pr-10 py-2 text-base font-semibold border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/30 focus:border-[#3F7A5D] bg-[#F3F6F4] placeholder:text-[#718379] transition-all"
+                            class="w-full h-11 pl-10 pr-10 py-2 text-sm font-semibold border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/30 focus:border-[#3F7A5D] bg-[#F3F6F4] placeholder:text-[#718379] transition-all"
                             autofocus
                         />
                         <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -149,13 +149,13 @@
                 </div>
 
                 <!-- Category Tabs Row (Pure Full Width Pill Scrollbar-Free Container) -->
-                <div role="tablist" aria-label="Kategori Produk" class="flex items-center gap-2 overflow-x-auto py-1 px-0.5 w-full shrink-0 no-scrollbar">
+                <div role="tablist" aria-label="Kategori Produk" class="flex items-center gap-2 overflow-x-auto py-0.5 px-0.5 w-full shrink-0 no-scrollbar">
                     <button
                         type="button"
                         role="tab"
                         aria-selected="{{ $selectedCategory === null ? 'true' : 'false' }}"
                         wire:click="$set('selectedCategory', null)"
-                        class="h-9 px-4 py-1.5 rounded-xl text-sm font-extrabold transition-all shrink-0 border cursor-pointer {{ $selectedCategory === null ? 'bg-[#3F7A5D] text-white border-[#3F7A5D] shadow-xs' : 'bg-[#F3F6F4] text-[#232E28] border-slate-200 hover:bg-slate-200' }}"
+                        class="h-9 px-3.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all shrink-0 border cursor-pointer {{ $selectedCategory === null ? 'bg-[#3F7A5D] text-white border-[#3F7A5D] shadow-xs' : 'bg-white text-[#5F7167] border-slate-200 hover:bg-[#F3F6F4] hover:text-[#232E28]' }}"
                     >
                         Semua Kategori
                     </button>
@@ -165,7 +165,7 @@
                             role="tab"
                             aria-selected="{{ $selectedCategory === $cat->id ? 'true' : 'false' }}"
                             wire:click="$set('selectedCategory', {{ $cat->id }})"
-                            class="h-9 px-4 py-1.5 rounded-xl text-sm font-extrabold transition-all shrink-0 border cursor-pointer {{ $selectedCategory === $cat->id ? 'bg-[#3F7A5D] text-white border-[#3F7A5D] shadow-xs' : 'bg-[#F3F6F4] text-[#232E28] border-slate-200 hover:bg-slate-200' }}"
+                            class="h-9 px-3.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all shrink-0 border cursor-pointer {{ $selectedCategory === $cat->id ? 'bg-[#3F7A5D] text-white border-[#3F7A5D] shadow-xs' : 'bg-white text-[#5F7167] border-slate-200 hover:bg-[#F3F6F4] hover:text-[#232E28]' }}"
                         >
                             {{ $cat->name }}
                         </button>
@@ -230,8 +230,8 @@
 
                                     <!-- Card Title (Top-Aligned Baseline) -->
                                     <div class="px-3 pt-2 pb-0.5 h-10 sm:h-12 flex items-start">
-                                        <h4 class="text-sm sm:text-base font-bold text-[#2C3E35] leading-snug group-hover:text-[#3F7A5D] transition-colors line-clamp-2 overflow-hidden text-ellipsis">
-                                            {{ ucwords(strtolower($product->name)) }}
+                                        <h4 class="text-xs sm:text-sm font-bold text-[#2C3E35] leading-snug group-hover:text-[#3F7A5D] transition-colors line-clamp-2 overflow-hidden text-ellipsis">
+                                            {{ $product->name }}
                                         </h4>
                                     </div>
                                 </div>
@@ -248,7 +248,7 @@
                                                 INCOMPLETE
                                             </span>
                                         @else
-                                            <div class="text-base sm:text-lg font-extrabold text-[#2C3E35] font-mono tracking-tight whitespace-nowrap">
+                                            <div class="text-sm sm:text-base font-extrabold text-[#2C3E35] font-mono tracking-tight whitespace-nowrap">
                                                 Rp {{ number_format((float) $product->selling_price, 0, ',', '.') }}
                                             </div>
                                         @endif
@@ -256,15 +256,15 @@
 
                                     <div class="shrink-0">
                                         @if($product->product_type === 'PHYSICAL')
-                                            <span class="px-2 py-0.5 rounded-full font-bold text-[0.72rem] whitespace-nowrap {{ $stockStatus === 'OUT_OF_STOCK' ? 'bg-rose-50 text-rose-700 border border-rose-200/60' : ($stockStatus === 'LOW_STOCK' ? 'bg-amber-50 text-amber-700 border border-amber-200/60' : 'bg-[#E3EEE8] text-[#3F7A5D] border border-[#3F7A5D]/20') }}">
+                                            <span class="px-2 py-0.5 rounded-full font-bold text-[0.7rem] whitespace-nowrap {{ $stockStatus === 'OUT_OF_STOCK' ? 'bg-rose-50 text-rose-700 border border-rose-200/60' : ($stockStatus === 'LOW_STOCK' ? 'bg-amber-50 text-amber-700 border border-amber-200/60' : 'bg-[#E3EEE8] text-[#3F7A5D] border border-[#3F7A5D]/20') }}">
                                                 Stok: {{ $stockQty }}
                                             </span>
                                         @elseif($product->product_type === 'DIGITAL')
-                                            <span class="px-2 py-0.5 rounded-full font-bold text-[0.72rem] bg-emerald-50 text-emerald-700 border border-emerald-200/60 whitespace-nowrap">
+                                            <span class="px-2 py-0.5 rounded-full font-bold text-[0.7rem] bg-emerald-50 text-emerald-700 border border-emerald-200/60 whitespace-nowrap">
                                                 Digital
                                             </span>
                                         @else
-                                            <span class="px-2 py-0.5 rounded-full font-bold text-[0.72rem] bg-amber-50 text-amber-700 border border-amber-200/60 whitespace-nowrap">
+                                            <span class="px-2 py-0.5 rounded-full font-bold text-[0.7rem] bg-amber-50 text-amber-700 border border-amber-200/60 whitespace-nowrap">
                                                 Layanan
                                             </span>
                                         @endif
@@ -336,8 +336,8 @@
 
                                         <!-- Product Title First, Badges Second -->
                                         <div class="min-w-0 flex-1">
-                                            <h4 class="text-base font-bold text-[#2C3E35] group-hover:text-[#3F7A5D] transition-colors leading-snug truncate">
-                                                {{ ucwords(strtolower($product->name)) }}
+                                            <h4 class="text-sm sm:text-base font-bold text-[#2C3E35] group-hover:text-[#3F7A5D] transition-colors leading-snug truncate">
+                                                {{ $product->name }}
                                             </h4>
                                             <div class="flex items-center gap-2 flex-wrap mt-0.5">
                                                 <span class="text-[0.72rem] font-mono font-bold text-slate-600 bg-slate-100 px-2 py-0.5 rounded-md border border-slate-200/70 whitespace-nowrap">
@@ -459,8 +459,8 @@
                     <div class="py-3 flex items-center justify-between gap-3 group">
                         <!-- Product Name & Unit Price -->
                         <div class="flex-1 min-w-0">
-                            <div class="text-base font-bold text-[#2C3E35] truncate leading-snug group-hover:text-[#3F7A5D] transition-colors" title="{{ $item['name'] }}">
-                                {{ ucwords(strtolower($item['name'])) }}
+                            <div class="text-sm font-bold text-[#2C3E35] truncate leading-snug group-hover:text-[#3F7A5D] transition-colors" title="{{ $item['name'] }}">
+                                {{ $item['name'] }}
                             </div>
                             <div class="text-[0.78rem] text-[#718379] font-mono font-semibold mt-0.5">
                                 @ Rp {{ number_format($item['price'], 0, ',', '.') }}
