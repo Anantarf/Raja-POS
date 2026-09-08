@@ -462,7 +462,7 @@
                             <div class="text-base font-bold text-[#232E28] truncate leading-snug group-hover:text-[#3F7A5D] transition-colors" title="{{ $item['name'] }}">
                                 {{ $item['name'] }}
                             </div>
-                            <div class="text-xs sm:text-sm text-[#5F7167] font-mono font-semibold mt-0.5">
+                            <div class="text-[0.78rem] text-[#718379] font-mono font-semibold mt-0.5">
                                 @ Rp {{ number_format($item['price'], 0, ',', '.') }}
                             </div>
                         </div>
@@ -489,17 +489,17 @@
                         </div>
 
                         <!-- Fixed-Width Subtotal & Delete Action with Trash Icon Button -->
-                        <div class="shrink-0 w-[105px] text-right flex flex-col items-end justify-center">
+                        <div class="shrink-0 w-[105px] text-right flex flex-col items-end justify-between min-h-[42px] py-0.5">
                             <div class="text-sm font-extrabold text-[#232E28] font-mono tracking-tight">
                                 Rp {{ number_format($item['price'] * $item['quantity'], 0, ',', '.') }}
                             </div>
                             <button
                                 type="button"
                                 wire:click="removeFromCart({{ $id }})"
-                                class="inline-flex items-center gap-1 text-[0.7rem] uppercase font-bold text-rose-500 hover:text-rose-700 hover:bg-rose-50 px-1.5 py-0.5 rounded-lg transition cursor-pointer mt-0.5 active-press"
+                                class="inline-flex items-center gap-1 text-[0.68rem] uppercase font-extrabold text-rose-500 hover:text-rose-700 hover:bg-rose-50 px-1.5 py-0.5 rounded-md transition cursor-pointer mt-1 active-press"
                                 title="Hapus dari keranjang"
                             >
-                                <svg class="w-3.5 h-3.5 text-rose-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-3 h-3 text-rose-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                 </svg>
                                 <span>HAPUS</span>
