@@ -591,20 +591,16 @@
                             </div>
 
                             @if($selectedPm && in_array($selectedPm->type, ['TRANSFER', 'E_WALLET']))
+                                @php
+                                    $targetAccountType = $selectedPm->type === 'TRANSFER' ? 'BANK' : 'E_WALLET';
+                                    $filteredAccounts = $balanceAccounts->where('account_type', $targetAccountType);
+                                    $placeholderText = $selectedPm->type === 'TRANSFER' ? 'Pilih Rekening Bank Tujuan' : 'Pilih Akun E-Wallet Tujuan';
+                                @endphp
                                 <div>
-                                    <select wire:model="payments.{{ $index }}.balance_account_id" class="w-full h-11 px-3 py-2 border border-slate-200 rounded-xl bg-indigo-50/50 text-sm font-extrabold text-indigo-900 focus:ring-2 focus:ring-indigo-500/20 shadow-2xs cursor-pointer">
-                                        <option value="">Pilih Rekening / Akun Tujuan</option>
-                                        @foreach($balanceAccounts as $ba)
-                                            @php
-                                                $baCategory = match($ba->account_type) {
-                                                    'BANK' => 'Bank',
-                                                    'E_WALLET' => 'E-Wallet',
-                                                    'PROVIDER' => 'Provider',
-                                                    'CASH' => 'Kas',
-                                                    default => ''
-                                                };
-                                            @endphp
-                                            <option value="{{ $ba->id }}">{{ $ba->name }}{{ $baCategory ? " ($baCategory)" : '' }}</option>
+                                    <select wire:model="payments.{{ $index }}.balance_account_id" class="w-full h-11 px-3.5 py-2 border border-slate-200 rounded-xl bg-indigo-50/50 text-sm font-extrabold text-indigo-900 focus:ring-2 focus:ring-indigo-500/20 shadow-2xs cursor-pointer">
+                                        <option value="">{{ $placeholderText }}</option>
+                                        @foreach($filteredAccounts as $ba)
+                                            <option value="{{ $ba->id }}">{{ $ba->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
