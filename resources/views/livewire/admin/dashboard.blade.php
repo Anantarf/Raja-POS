@@ -9,7 +9,7 @@
                 <span class="font-bold text-[#232E28]">Ringkasan Operasional:</span> Anda memiliki akses penuh sebagai <span class="font-extrabold text-[#3F7A5D]">{{ auth()->user()->role?->name ?? 'Kasir' }}</span> pada sistem kasir &amp; manajemen ritel Raja Aksesoris.
             </p>
             <div class="pt-2">
-                <a href="/pos" class="h-12 px-6 text-lg bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-2xl inline-flex items-center gap-2 transition active:scale-95 shadow-sm">
+                <a href="/pos" class="h-12 px-6 text-lg bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-2xl inline-flex items-center gap-2 transition shadow-sm btn-glow active-press hover-lift">
                     <span>Buka Layar Kasir</span> &rarr;
                 </a>
             </div>
@@ -19,7 +19,7 @@
     <!-- Executive Stat Cards Grid (Golden Ratio Clean Cards) -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
         <!-- 1. Total Omzet -->
-        <div class="bg-white rounded-2xl p-6 border border-slate-200/80 hover:border-[#3F7A5D]/50 shadow-sm hover:shadow-md transition-all duration-200">
+        <div class="bg-white rounded-2xl p-6 border border-slate-200/80 hover:border-[#3F7A5D]/50 shadow-sm hover-lift cursor-default">
             <div class="flex items-center justify-between mb-3">
                 <span class="text-base text-[#5F7167] font-black uppercase tracking-wide">Total Omzet</span>
                 @if(($metrics['omzet_growth'] ?? 0) > 0)
@@ -43,7 +43,7 @@
         </div>
 
         <!-- 2. Margin -->
-        <div class="bg-white rounded-2xl p-6 border border-slate-200/80 hover:border-[#C2AC7C]/50 shadow-sm hover:shadow-md transition-all duration-200">
+        <div class="bg-white rounded-2xl p-6 border border-slate-200/80 hover:border-[#C2AC7C]/50 shadow-sm hover-lift cursor-default">
             <div class="flex items-center justify-between mb-3">
                 <span class="text-base text-[#5F7167] font-black uppercase tracking-wide">Margin Toko</span>
                 <span class="px-3 py-1 rounded-lg text-xs font-bold text-[#8F794B] bg-[#C2AC7C]/20 border border-[#C2AC7C]/40">
@@ -63,7 +63,7 @@
         </div>
 
         <!-- 3. Total Saldo Toko -->
-        <div class="bg-white rounded-2xl p-6 border border-slate-200/80 hover:border-[#3F7A5D]/50 shadow-sm hover:shadow-md transition-all duration-200">
+        <div class="bg-white rounded-2xl p-6 border border-slate-200/80 hover:border-[#3F7A5D]/50 shadow-sm hover-lift cursor-default">
             <div class="flex items-center justify-between mb-3">
                 <span class="text-base text-[#5F7167] font-black uppercase tracking-wide">Total Saldo Toko</span>
                 <span class="px-3 py-1 rounded-lg text-xs font-bold text-[#3F7A5D] bg-[#E3EEE8]">
@@ -77,7 +77,7 @@
         </div>
 
         <!-- 4. Total Transaksi -->
-        <div class="bg-white rounded-2xl p-6 border border-slate-200/80 hover:border-[#3F7A5D]/50 shadow-sm hover:shadow-md transition-all duration-200">
+        <div class="bg-white rounded-2xl p-6 border border-slate-200/80 hover:border-[#3F7A5D]/50 shadow-sm hover-lift cursor-default">
             <div class="flex items-center justify-between mb-3">
                 <span class="text-base text-[#5F7167] font-black uppercase tracking-wide">Total Transaksi</span>
                 <span class="px-3 py-1 rounded-lg text-xs font-bold text-[#3F7A5D] bg-[#E3EEE8]">

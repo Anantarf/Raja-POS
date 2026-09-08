@@ -58,4 +58,29 @@
     .text-emco-muted { color: var(--color-emco-muted) !important; }
     .bg-emco-body { background-color: var(--color-emco-body) !important; }
     .bg-emco-light { background-color: var(--color-emco-primary-light) !important; }
+
+    /* Ultra-Premium Micro-Interaction Utilities */
+    .hover-lift {
+        transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .hover-lift:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px -4px rgba(35, 46, 40, 0.08);
+    }
+    .glass-card {
+        background: rgba(255, 255, 255, 0.88);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+    }
+    .btn-glow {
+        box-shadow: 0 4px 14px 0 rgba(63, 122, 93, 0.3);
+        transition: all 0.2s ease-in-out;
+    }
+    .btn-glow:hover {
+        box-shadow: 0 6px 20px 0 rgba(63, 122, 93, 0.42);
+        transform: translateY(-1px);
+    }
+    .active-press:active {
+        transform: scale(0.97);
+    }
 }
