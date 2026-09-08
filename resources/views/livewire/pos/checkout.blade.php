@@ -71,15 +71,15 @@
         >
 
             <!-- Streamlined Toolbar -->
-            <div class="p-3.5 sm:p-4 bg-white rounded-2xl border border-slate-200/80 shadow-sm space-y-3 mb-3">
+            <div class="p-3 sm:p-4 bg-white rounded-2xl border border-slate-200/80 shadow-sm space-y-3 mb-3">
                 <!-- Search & Jenis Dropdown Row -->
                 <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
-                    <div class="relative w-full sm:flex-1">
+                    <div class="relative flex-1">
                         <input
                             type="text"
                             wire:model.live.debounce.300ms="search"
                             placeholder="Cari nama produk / scan barcode..."
-                            class="w-full h-12 pl-10 pr-9 py-2.5 text-base font-semibold border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] bg-[#F3F6F4] placeholder:text-[#718379] transition-all"
+                            class="w-full h-11 pl-10 pr-9 py-2 text-base font-semibold border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] bg-[#F3F6F4] placeholder:text-[#718379] transition-all"
                             autofocus
                         />
                         <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -92,20 +92,16 @@
                         @endif
                     </div>
 
-                    <div class="flex items-center justify-between sm:justify-end gap-2 w-full sm:w-auto shrink-0">
+                    <div class="flex items-center justify-between sm:justify-end gap-2 shrink-0">
                         <select
                             wire:model.live="selectedType"
-                            class="flex-1 sm:flex-initial h-12 px-3.5 py-2.5 border border-slate-200 rounded-xl bg-white text-base font-bold text-[#232E28] focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] shrink-0 cursor-pointer shadow-xs"
+                            class="h-11 px-3 py-2 border border-slate-200 rounded-xl bg-white text-sm font-bold text-[#232E28] focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] shrink-0 cursor-pointer shadow-xs"
                         >
                             <option value="ALL">Semua Jenis</option>
                             <option value="PHYSICAL">Fisik</option>
                             <option value="DIGITAL">Digital</option>
                             <option value="LAYANAN">Layanan</option>
                         </select>
-
-                        <span class="h-12 px-3.5 flex items-center justify-center rounded-xl bg-[#E3EEE8] text-[#3F7A5D] border border-[#3F7A5D]/20 font-mono font-extrabold text-xs sm:text-sm whitespace-nowrap" title="Jumlah Katalog Produk Siap Di-Scroll">
-                            {{ number_format($totalProductsCount, 0, ',', '.') }} Item
-                        </span>
 
                         <!-- View Mode Toggle (Grid Cards vs List Rows) -->
                         <div class="flex items-center bg-[#F3F6F4] p-1 h-11 rounded-xl border border-slate-200 shrink-0">
@@ -133,24 +129,30 @@
                     </div>
                 </div>
 
-                <!-- Category Tabs (Full Width Pill Toolbar) -->
-                <div class="flex items-center gap-2 overflow-x-auto py-1 px-0.5 w-full shrink-0 text-sm font-bold no-scrollbar">
-                    <button
-                        type="button"
-                        wire:click="$set('selectedCategory', null)"
-                        class="h-11 px-4 py-2.5 rounded-xl text-base font-bold transition-all shrink-0 border cursor-pointer {{ $selectedCategory === null ? 'bg-[#3F7A5D] text-white border-[#3F7A5D] shadow-xs' : 'bg-[#F3F6F4] text-[#232E28] border-slate-200 hover:bg-slate-200' }}"
-                    >
-                        Semua Kategori
-                    </button>
-                    @foreach($categories as $cat)
+                <!-- Category Tabs Row + Total Item Count Badge -->
+                <div class="flex items-center justify-between gap-3 shrink-0 pt-0.5">
+                    <div class="flex items-center gap-1.5 overflow-x-auto py-0.5 px-0.5 flex-1 min-w-0 no-scrollbar">
                         <button
                             type="button"
-                            wire:click="$set('selectedCategory', {{ $cat->id }})"
-                            class="h-11 px-4 py-2.5 rounded-xl text-base font-bold transition-all shrink-0 border cursor-pointer {{ $selectedCategory === $cat->id ? 'bg-[#3F7A5D] text-white border-[#3F7A5D] shadow-xs' : 'bg-[#F3F6F4] text-[#232E28] border-slate-200 hover:bg-slate-200' }}"
+                            wire:click="$set('selectedCategory', null)"
+                            class="h-9 px-3.5 py-1.5 rounded-xl text-sm font-extrabold transition-all shrink-0 border cursor-pointer {{ $selectedCategory === null ? 'bg-[#3F7A5D] text-white border-[#3F7A5D] shadow-xs' : 'bg-[#F3F6F4] text-[#232E28] border-slate-200 hover:bg-slate-200' }}"
                         >
-                            {{ $cat->name }}
+                            Semua Kategori
                         </button>
-                    @endforeach
+                        @foreach($categories as $cat)
+                            <button
+                                type="button"
+                                wire:click="$set('selectedCategory', {{ $cat->id }})"
+                                class="h-9 px-3.5 py-1.5 rounded-xl text-sm font-extrabold transition-all shrink-0 border cursor-pointer {{ $selectedCategory === $cat->id ? 'bg-[#3F7A5D] text-white border-[#3F7A5D] shadow-xs' : 'bg-[#F3F6F4] text-[#232E28] border-slate-200 hover:bg-slate-200' }}"
+                            >
+                                {{ $cat->name }}
+                            </button>
+                        @endforeach
+                    </div>
+
+                    <span class="h-9 px-3 flex items-center justify-center rounded-xl bg-[#E3EEE8] text-[#3F7A5D] border border-[#3F7A5D]/20 font-mono font-extrabold text-xs whitespace-nowrap shrink-0" title="Jumlah Katalog Produk">
+                        {{ number_format($totalProductsCount, 0, ',', '.') }} Item
+                    </span>
                 </div>
             </div>
 
