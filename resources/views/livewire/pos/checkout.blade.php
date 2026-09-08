@@ -439,8 +439,16 @@
                     </span>
                 </div>
                 @if(count($cart) > 0)
-                    <button type="button" wire:click="clearCart" class="text-sm text-rose-600 hover:underline font-bold transition cursor-pointer">
-                        Kosongkan
+                    <button
+                        type="button"
+                        wire:click="clearCart"
+                        class="text-xs font-extrabold text-rose-600 hover:text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200 px-2.5 py-1 rounded-xl transition cursor-pointer flex items-center gap-1.5 active-press"
+                        title="Kosongkan Keranjang"
+                    >
+                        <svg class="w-3.5 h-3.5 text-rose-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                        <span>Kosongkan</span>
                     </button>
                 @endif
             </div>
@@ -454,17 +462,17 @@
                             <div class="text-base font-bold text-[#232E28] truncate leading-snug group-hover:text-[#3F7A5D] transition-colors" title="{{ $item['name'] }}">
                                 {{ $item['name'] }}
                             </div>
-                            <div class="text-sm text-[#5F7167] font-mono font-semibold mt-0.5">
+                            <div class="text-xs sm:text-sm text-[#5F7167] font-mono font-semibold mt-0.5">
                                 @ Rp {{ number_format($item['price'], 0, ',', '.') }}
                             </div>
                         </div>
 
                         <!-- Fixed-Width Perfectly Aligned Quantity +/- Stepper -->
-                        <div class="shrink-0 w-[110px] flex items-center justify-between bg-[#F3F6F4] p-1 rounded-2xl border border-slate-200/80 shadow-2xs">
+                        <div class="shrink-0 w-[100px] sm:w-[110px] flex items-center justify-between bg-[#F3F6F4] p-1 rounded-2xl border border-slate-200/80 shadow-2xs">
                             <button
                                 type="button"
                                 wire:click="updateQuantity({{ $id }}, {{ $item['quantity'] - 1 }})"
-                                class="w-8 h-8 bg-white hover:bg-rose-50 hover:text-rose-600 hover:border-rose-300 font-extrabold text-sm rounded-xl flex items-center justify-center text-[#232E28] transition active:scale-95 border border-slate-200 shadow-2xs cursor-pointer"
+                                class="w-7 sm:w-8 h-7 sm:h-8 bg-white hover:bg-rose-50 hover:text-rose-600 hover:border-rose-300 font-extrabold text-sm rounded-xl flex items-center justify-center text-[#232E28] transition active:scale-95 border border-slate-200 shadow-2xs cursor-pointer"
                                 title="Kurangi 1"
                             >-</button>
 
@@ -475,18 +483,26 @@
                             <button
                                 type="button"
                                 wire:click="updateQuantity({{ $id }}, {{ $item['quantity'] + 1 }})"
-                                class="w-8 h-8 bg-white hover:bg-[#E3EEE8] hover:text-[#3F7A5D] hover:border-[#3F7A5D]/30 font-extrabold text-sm rounded-xl flex items-center justify-center text-[#232E28] transition active:scale-95 border border-slate-200 shadow-2xs cursor-pointer"
+                                class="w-7 sm:w-8 h-7 sm:h-8 bg-white hover:bg-[#E3EEE8] hover:text-[#3F7A5D] hover:border-[#3F7A5D]/30 font-extrabold text-sm rounded-xl flex items-center justify-center text-[#232E28] transition active:scale-95 border border-slate-200 shadow-2xs cursor-pointer"
                                 title="Tambah 1"
                             >+</button>
                         </div>
 
-                        <!-- Fixed-Width Subtotal & Delete Action -->
-                        <div class="shrink-0 w-[105px] text-right">
+                        <!-- Fixed-Width Subtotal & Delete Action with Trash Icon Button -->
+                        <div class="shrink-0 w-[105px] text-right flex flex-col items-end justify-center">
                             <div class="text-sm font-extrabold text-[#232E28] font-mono tracking-tight">
                                 Rp {{ number_format($item['price'] * $item['quantity'], 0, ',', '.') }}
                             </div>
-                            <button type="button" wire:click="removeFromCart({{ $id }})" class="text-xs uppercase font-bold text-rose-500 hover:text-rose-700 transition cursor-pointer mt-0.5">
-                                Hapus
+                            <button
+                                type="button"
+                                wire:click="removeFromCart({{ $id }})"
+                                class="inline-flex items-center gap-1 text-[0.7rem] uppercase font-bold text-rose-500 hover:text-rose-700 hover:bg-rose-50 px-1.5 py-0.5 rounded-lg transition cursor-pointer mt-0.5 active-press"
+                                title="Hapus dari keranjang"
+                            >
+                                <svg class="w-3.5 h-3.5 text-rose-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                </svg>
+                                <span>HAPUS</span>
                             </button>
                         </div>
                     </div>
@@ -565,30 +581,45 @@
                                 </div>
                             </div>
 
-                            <!-- Quick Cash Nominal Shortcuts for Cash Payment (Touchscreen Friendly 44px Min Target) -->
+                            <!-- Dynamic Smart Quick Cash Nominal Shortcuts for Cash Payment (Touchscreen Friendly 44px Min Target) -->
                             @if($selectedPm && $selectedPm->type === 'CASH' && $this->grand_total > 0)
-                                <div class="flex items-center gap-2 pt-1">
+                                @php
+                                    $gt = $this->grand_total;
+                                    $preset1 = (int) (ceil($gt / 50000) * 50000);
+                                    if ($preset1 <= $gt) {
+                                        $preset1 += 50000;
+                                    }
+                                    $preset2 = $preset1 + 50000;
+                                    if ($gt >= 100000 && $preset1 < 200000 && $preset2 < 200000) {
+                                        $preset2 = 200000;
+                                    }
+                                @endphp
+                                <div class="flex items-center gap-2 pt-1 overflow-x-auto no-scrollbar">
                                     <button
                                         type="button"
                                         wire:click="$set('payments.{{ $index }}.amount', {{ min(1000000000, $this->grand_total) }})"
-                                        class="h-11 min-h-[44px] px-3.5 py-2 bg-emerald-50 hover:bg-emerald-100 text-[#3F7A5D] border border-emerald-200/80 rounded-xl text-sm font-extrabold transition shrink-0 cursor-pointer shadow-2xs"
+                                        class="h-11 min-h-[44px] px-3.5 py-2 bg-emerald-50 hover:bg-emerald-100 text-[#3F7A5D] border border-emerald-200/80 rounded-xl text-sm font-extrabold transition shrink-0 cursor-pointer shadow-2xs active-press"
                                     >
                                         Uang Pas
                                     </button>
-                                    <button
-                                        type="button"
-                                        wire:click="$set('payments.{{ $index }}.amount', 50000)"
-                                        class="h-11 min-h-[44px] px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-200/80 rounded-xl text-sm font-extrabold transition shrink-0 cursor-pointer shadow-2xs"
-                                    >
-                                        50k
-                                    </button>
-                                    <button
-                                        type="button"
-                                        wire:click="$set('payments.{{ $index }}.amount', 100000)"
-                                        class="h-11 min-h-[44px] px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-200/80 rounded-xl text-sm font-extrabold transition shrink-0 cursor-pointer shadow-2xs"
-                                    >
-                                        100k
-                                    </button>
+                                    @if($preset1 > $gt)
+                                        <button
+                                            type="button"
+                                            wire:click="$set('payments.{{ $index }}.amount', {{ $preset1 }})"
+                                            class="h-11 min-h-[44px] px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-200/80 rounded-xl text-sm font-extrabold transition shrink-0 cursor-pointer shadow-2xs active-press font-mono"
+                                        >
+                                            {{ number_format($preset1 / 1000, 0, ',', '.') }}k
+                                        </button>
+                                    @endif
+                                    @if($preset2 > $preset1)
+                                        <button
+                                            type="button"
+                                            wire:click="$set('payments.{{ $index }}.amount', {{ $preset2 }})"
+                                            class="h-11 min-h-[44px] px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-200/80 rounded-xl text-sm font-extrabold transition shrink-0 cursor-pointer shadow-2xs active-press font-mono"
+                                        >
+                                            {{ number_format($preset2 / 1000, 0, ',', '.') }}k
+                                        </button>
+                                    @endif
                                 </div>
                             @endif
 
@@ -619,9 +650,12 @@
                     type="button"
                     wire:click="processCheckout"
                     @if(count($cart) === 0 || $this->total_paid < $this->grand_total) disabled @endif
-                    class="w-full h-14 py-3.5 rounded-2xl font-black text-base sm:text-lg uppercase tracking-wider transition-all {{ count($cart) > 0 && $this->total_paid >= $this->grand_total ? 'bg-[#3F7A5D] hover:bg-[#32634B] text-white shadow-sm cursor-pointer active:scale-[0.99]' : 'bg-slate-100 text-slate-400 border border-slate-200/80 cursor-not-allowed' }}"
+                    class="w-full h-14 py-3.5 rounded-2xl font-black text-base sm:text-lg uppercase tracking-wider transition-all flex items-center justify-center gap-2.5 {{ count($cart) > 0 && $this->total_paid >= $this->grand_total ? 'bg-[#3F7A5D] hover:bg-[#32634B] text-white shadow-md cursor-pointer active-press hover-lift btn-glow' : 'bg-slate-100 text-slate-400 border border-slate-200/80 cursor-not-allowed' }}"
                 >
-                    SELESAIKAN TRANSAKSI & CETAK STRUK
+                    <svg class="w-5 h-5 text-white shrink-0 {{ count($cart) > 0 && $this->total_paid >= $this->grand_total ? 'opacity-100' : 'opacity-40' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                    </svg>
+                    <span>SELESAIKAN TRANSAKSI & CETAK STRUK</span>
                 </button>
             </div>
 
