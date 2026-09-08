@@ -2,13 +2,13 @@
     <!-- Header Controls (Clean Single-Row Enterprise Alignment) -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-1">
         <div>
-            <h1 class="text-xl sm:text-2xl font-extrabold text-[#232E28] tracking-tight">Katalog &amp; Daftar Produk</h1>
+            <h1 class="text-xl sm:text-2xl font-extrabold text-[#2C3E35] tracking-tight">Katalog &amp; Daftar Produk</h1>
             <p class="text-xs sm:text-sm text-[#718379] font-medium mt-0.5">Kelola data barang fisik, produk digital, dan daftar harga jual toko.</p>
         </div>
 
         <div class="flex items-center gap-2 flex-wrap sm:flex-nowrap">
             <!-- Unduh Template Excel -->
-            <a href="/admin/products/template-excel" title="Unduh Template Excel" class="h-10 px-3.5 py-2 bg-white hover:bg-slate-50 text-[#232E28] font-bold border border-slate-200 rounded-xl text-sm shadow-sm transition flex items-center gap-1.5 active:scale-95 shrink-0">
+            <a href="/admin/products/template-excel" title="Unduh Template Excel" class="h-10 px-3.5 py-2 bg-white hover:bg-slate-50 text-[#2C3E35] font-bold border border-slate-200 rounded-xl text-sm shadow-sm transition flex items-center gap-1.5 active:scale-95 shrink-0">
                 <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                 </svg>
@@ -16,7 +16,7 @@
             </a>
 
             <!-- Export Data Excel -->
-            <a href="/admin/products/export-excel?category_id={{ $selectedCategory }}&type={{ $selectedType }}" title="Export Data Produk" class="h-10 px-3.5 py-2 bg-white hover:bg-slate-50 text-[#232E28] font-bold border border-slate-200 rounded-xl text-sm shadow-sm transition flex items-center gap-1.5 active:scale-95 shrink-0">
+            <a href="/admin/products/export-excel?category_id={{ $selectedCategory }}&type={{ $selectedType }}" title="Export Data Produk" class="h-10 px-3.5 py-2 bg-white hover:bg-slate-50 text-[#2C3E35] font-bold border border-slate-200 rounded-xl text-sm shadow-sm transition flex items-center gap-1.5 active:scale-95 shrink-0">
                 <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                 </svg>
@@ -58,7 +58,7 @@
 
         <div class="w-full md:w-auto flex flex-wrap items-center justify-between md:justify-end gap-2.5">
             <!-- Category Filter Dropdown -->
-            <select wire:model.live="selectedCategory" class="h-11 px-3 py-2.5 border border-slate-200 rounded-xl text-sm font-semibold bg-white text-[#232E28] focus:ring-2 focus:ring-[#3F7A5D]/20 shrink-0">
+            <select wire:model.live="selectedCategory" class="h-11 px-3 py-2.5 border border-slate-200 rounded-xl text-sm font-semibold bg-white text-[#2C3E35] focus:ring-2 focus:ring-[#3F7A5D]/20 shrink-0">
                 <option value="">Semua Kategori</option>
                 @foreach($categories as $cat)
                     <option value="{{ $cat->id }}">{{ $cat->name }}</option>
@@ -67,7 +67,7 @@
 
             <!-- Sort Dropdown & Direction Toggle -->
             <div class="flex items-center gap-1.5 shrink-0">
-                <select wire:model.live="sortField" class="h-11 px-3 py-2.5 border border-slate-200 rounded-xl text-sm font-semibold bg-white text-[#232E28] focus:ring-2 focus:ring-[#3F7A5D]/20">
+                <select wire:model.live="sortField" class="h-11 px-3 py-2.5 border border-slate-200 rounded-xl text-sm font-semibold bg-white text-[#2C3E35] focus:ring-2 focus:ring-[#3F7A5D]/20">
                     <option value="created_at">Urutkan: Terbaru</option>
                     <option value="name">Urutkan: Nama Barang</option>
                     <option value="stock">Urutkan: Jumlah Stok</option>
@@ -89,7 +89,7 @@
                 <button type="button" @click="$wire.filterType('LAYANAN')" wire:click="filterType('LAYANAN')" class="px-3 py-1.5 rounded-lg font-bold text-sm transition cursor-pointer {{ $selectedType === 'LAYANAN' || $selectedType === 'SERVICE' ? 'bg-[#C2AC7C] text-white shadow-sm' : 'text-slate-600 hover:text-slate-900' }}">Layanan</button>
                 <button type="button" @click="$wire.filterType('INCOMPLETE')" wire:click="filterType('INCOMPLETE')" class="px-3 py-1.5 rounded-lg font-bold text-sm transition cursor-pointer flex items-center gap-1 {{ $selectedType === 'INCOMPLETE' ? 'bg-rose-600 text-white shadow-sm font-extrabold' : 'bg-rose-50 text-rose-700 hover:bg-rose-100 font-extrabold border border-rose-200/80' }}" title="Filter Khusus Produk yang Harganya Belum Lengkap">
                     <span>Belum Lengkap</span>
-                    <span class="px-1.5 py-0.2 rounded-full text-xs font-mono font-black {{ $selectedType === 'INCOMPLETE' ? 'bg-white/20 text-white' : 'bg-rose-200/60 text-rose-800' }}">{{ $incompleteCount }}</span>
+                    <span class="px-1.5 py-0.2 rounded-full text-xs font-mono font-extrabold {{ $selectedType === 'INCOMPLETE' ? 'bg-white/20 text-white' : 'bg-rose-200/60 text-rose-800' }}">{{ $incompleteCount }}</span>
                 </button>
             </div>
 
@@ -165,7 +165,7 @@
 
                         <!-- Product Title & Barcode -->
                         <div>
-                            <h3 class="font-bold text-[#232E28] text-sm leading-snug line-clamp-2 group-hover:text-[#3F7A5D] transition-colors">
+                            <h3 class="font-bold text-[#2C3E35] text-sm leading-snug line-clamp-2 group-hover:text-[#3F7A5D] transition-colors">
                                 {{ $product->name }}
                             </h3>
                             <div class="text-xs font-mono text-slate-400 mt-0.5">
@@ -203,7 +203,7 @@
                                 </div>
                             @endif
 
-                            <div class="font-extrabold text-[#232E28] font-mono tracking-tight leading-tight">
+                            <div class="font-extrabold text-[#2C3E35] font-mono tracking-tight leading-tight">
                                 @if($product->product_type === 'LAYANAN')
                                     <span class="inline-flex items-center gap-1 text-[10px] font-bold text-teal-700 bg-teal-50 border border-teal-200 rounded-md px-1.5 py-0.5 whitespace-nowrap">
                                         Input saat transaksi
@@ -230,7 +230,7 @@
                 </div>
             @empty
                 <div class="col-span-full py-16 text-center text-slate-400 bg-white rounded-2xl border border-slate-200">
-                    <div class="font-bold text-[#232E28] text-base mb-1">Tidak ada barang/layanan ditemukan.</div>
+                    <div class="font-bold text-[#2C3E35] text-base mb-1">Tidak ada barang/layanan ditemukan.</div>
                     <div class="text-xs text-[#718379]">Gunakan kata kunci pencarian lain atau tambah data barang baru.</div>
                 </div>
             @endforelse
@@ -313,7 +313,7 @@
                                             </div>
                                         @endif
                                         <div>
-                                            <div class="font-bold text-[#232E28] text-sm leading-snug tracking-tight">{{ $product->name }}</div>
+                                            <div class="font-bold text-[#2C3E35] text-sm leading-snug tracking-tight">{{ $product->name }}</div>
                                             <div class="text-xs font-mono text-slate-400 mt-0.5">
                                                 Barcode: {{ $product->effective_barcode }}
                                             </div>
@@ -369,7 +369,7 @@
                                 @endif
 
                                 <!-- Col 5: Harga Jual -->
-                                <td class="py-3.5 px-4 text-right font-mono font-extrabold text-[#232E28] text-sm whitespace-nowrap">
+                                <td class="py-3.5 px-4 text-right font-mono font-extrabold text-[#2C3E35] text-sm whitespace-nowrap">
                                     @if($product->product_type === 'LAYANAN')
                                         <span class="text-[11px] font-bold text-teal-600">Input saat transaksi</span>
                                     @elseif($product->selling_price > 0)
@@ -409,10 +409,10 @@
 
     <!-- Create / Edit Product Modal -->
     @if($showCreateModal)
-        <div class="fixed inset-0 bg-[#232E28]/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+        <div class="fixed inset-0 bg-[#2C3E35]/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
             <div class="bg-white rounded-2xl p-6 max-w-xl w-full shadow-xl space-y-4 border border-slate-100 overflow-y-auto max-h-[90vh]">
                 <div class="flex items-center justify-between border-b pb-3.5">
-                    <h3 class="text-lg font-extrabold text-[#232E28]">
+                    <h3 class="text-lg font-extrabold text-[#2C3E35]">
                         {{ $editingProductId ? 'Edit Barang / Layanan' : 'Tambah Barang / Layanan Baru' }}
                     </h3>
                     <button wire:click="$set('showCreateModal', false)" class="text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
@@ -421,7 +421,7 @@
                 <form wire:submit.prevent="saveProduct" class="space-y-4 text-xs font-semibold">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-[#232E28] font-bold mb-1">Kode / Barcode *</label>
+                            <label class="block text-[#2C3E35] font-bold mb-1">Kode / Barcode *</label>
                             <div class="flex items-center gap-1.5">
                                 <input type="text" wire:model="code" class="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] font-mono font-extrabold uppercase text-xs" required />
                                 <button type="button" wire:click="generateAutoCode" title="Generate Otomatis Kode Barcode" class="px-2.5 py-2.5 bg-[#E3EEE8] hover:bg-[#3F7A5D] hover:text-white text-[#3F7A5D] border border-[#3F7A5D]/30 rounded-xl font-bold text-[10px] uppercase tracking-wider shrink-0 transition cursor-pointer active:scale-95">
@@ -430,19 +430,19 @@
                             </div>
                         </div>
                         <div>
-                            <label class="block text-[#232E28] font-bold mb-1">Barcode Fisik (Scan)</label>
+                            <label class="block text-[#2C3E35] font-bold mb-1">Barcode Fisik (Scan)</label>
                             <input type="text" wire:model="barcode" placeholder="Opsional" class="w-full p-3 border border-slate-300 rounded-2xl focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] font-mono" />
                         </div>
                     </div>
 
                     <div>
-                        <label class="block text-[#232E28] font-bold mb-1">Nama Barang/Layanan *</label>
+                        <label class="block text-[#2C3E35] font-bold mb-1">Nama Barang/Layanan *</label>
                         <input type="text" wire:model="name" placeholder="Contoh: Casing Premium Softcase / Top Up Saldo DANA" class="w-full p-3 border border-slate-300 rounded-2xl focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] font-bold" required />
                     </div>
 
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-[#232E28] font-bold mb-1">Jenis Stok *</label>
+                            <label class="block text-[#2C3E35] font-bold mb-1">Jenis Stok *</label>
                             <select wire:model="product_type" class="w-full p-3 border border-slate-300 rounded-2xl bg-white font-bold">
                                 <option value="PHYSICAL">Fisik (Barang Stok)</option>
                                 <option value="DIGITAL">Digital (Pulsa/E-Wallet/Voucher)</option>
@@ -450,14 +450,14 @@
                             </select>
                         </div>
                         <div>
-                            <label class="block text-[#232E28] font-bold mb-1">Jenis (Subtipe)</label>
+                            <label class="block text-[#2C3E35] font-bold mb-1">Jenis (Subtipe)</label>
                             <input type="text" wire:model="product_subtype" placeholder="Contoh: KABEL DATA, MULTI, TRANSFER" class="w-full p-3 border border-slate-300 rounded-2xl font-bold" />
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-[#232E28] font-bold mb-1">Kategori</label>
+                            <label class="block text-[#2C3E35] font-bold mb-1">Kategori</label>
                             <select wire:model="category_id" class="w-full p-3 border border-slate-300 rounded-2xl bg-white font-bold cursor-pointer">
                                 <option value="">Pilih Kategori</option>
                                 @foreach($categories as $cat)
@@ -466,7 +466,7 @@
                             </select>
                         </div>
                         <div>
-                            <label class="block text-[#232E28] font-bold mb-1">Merk / Brand</label>
+                            <label class="block text-[#2C3E35] font-bold mb-1">Merk / Brand</label>
                             <select wire:model="brand_id" class="w-full p-3 border border-slate-300 rounded-2xl bg-white font-bold cursor-pointer">
                                 <option value="">Pilih Merk / Brand</option>
                                 @foreach($brands as $b)
@@ -478,7 +478,7 @@
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-[#232E28] font-bold mb-1">Modal *</label>
+                            <label class="block text-[#2C3E35] font-bold mb-1">Modal *</label>
                             <div class="relative">
                                 <span class="absolute left-3.5 top-3.5 text-xs font-bold text-[#718379]">Rp</span>
                                 <input
@@ -492,13 +492,13 @@
                                     "
                                     value="{{ $cost_price ? number_format((float) $cost_price, 0, ',', '.') : '' }}"
                                     placeholder="0"
-                                    class="w-full pl-10 pr-3 py-3 border border-slate-300 rounded-2xl font-mono font-bold text-right text-xs text-[#232E28] focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]"
+                                    class="w-full pl-10 pr-3 py-3 border border-slate-300 rounded-2xl font-mono font-bold text-right text-xs text-[#2C3E35] focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]"
                                     required
                                 />
                             </div>
                         </div>
                         <div>
-                            <label class="block text-[#232E28] font-bold mb-1">Harga Jual *</label>
+                            <label class="block text-[#2C3E35] font-bold mb-1">Harga Jual *</label>
                             <div class="relative">
                                 <span class="absolute left-3.5 top-3.5 text-xs font-bold text-[#718379]">Rp</span>
                                 <input
@@ -512,7 +512,7 @@
                                     "
                                     value="{{ $selling_price ? number_format((float) $selling_price, 0, ',', '.') : '' }}"
                                     placeholder="0"
-                                    class="w-full pl-10 pr-3 py-3 border border-slate-300 rounded-2xl font-mono text-[#232E28] font-extrabold text-sm text-right focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]"
+                                    class="w-full pl-10 pr-3 py-3 border border-slate-300 rounded-2xl font-mono text-[#2C3E35] font-extrabold text-sm text-right focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]"
                                     required
                                 />
                             </div>
@@ -521,7 +521,7 @@
 
                     @if(!$editingProductId && $product_type === 'PHYSICAL')
                         <div>
-                            <label class="block text-[#232E28] font-bold mb-1">Stok Awal Fisik</label>
+                            <label class="block text-[#2C3E35] font-bold mb-1">Stok Awal Fisik</label>
                             <input type="number" wire:model="initial_stock" placeholder="0" class="w-full p-3 border border-slate-300 rounded-2xl font-mono font-bold" />
                         </div>
                     @endif
@@ -541,16 +541,16 @@
 
     <!-- Import CSV / Excel Modal -->
     @if($showImportModal)
-        <div class="fixed inset-0 bg-[#232E28]/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+        <div class="fixed inset-0 bg-[#2C3E35]/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
             <div class="bg-white rounded-3xl p-7 max-w-md w-full shadow-2xl space-y-4 border border-slate-100">
                 <div class="flex items-center justify-between border-b pb-3.5">
-                    <h3 class="text-lg font-extrabold text-[#232E28]">Import Data Barang dari Excel</h3>
+                    <h3 class="text-lg font-extrabold text-[#2C3E35]">Import Data Barang dari Excel</h3>
                     <button wire:click="$set('showImportModal', false)" class="text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
                 </div>
 
                 <form wire:submit.prevent="processImport" class="space-y-4 text-xs font-semibold">
                     <div>
-                        <label class="block text-[#232E28] font-bold mb-1">Pilih File Excel (.xlsx)</label>
+                        <label class="block text-[#2C3E35] font-bold mb-1">Pilih File Excel (.xlsx)</label>
                         <input type="file" wire:model="importFile" class="w-full p-3 border border-slate-300 rounded-2xl bg-[#F3F6F4] font-medium" required />
                     </div>
 

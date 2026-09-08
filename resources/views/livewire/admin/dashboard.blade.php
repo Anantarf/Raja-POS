@@ -2,11 +2,11 @@
     <!-- Welcome Banner Card (Flat Crisp Border) -->
     <div class="bg-gradient-to-r from-[#3F7A5D]/10 via-[#3F7A5D]/5 to-white border border-slate-200/80 rounded-2xl p-6 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-5 shadow-sm">
         <div class="space-y-2.5">
-            <h1 class="text-3xl sm:text-4xl font-extrabold text-[#232E28] tracking-tight">
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-[#2C3E35] tracking-tight">
                 Selamat Datang, {{ auth()->user()->name }}!
             </h1>
             <p class="text-lg text-[#34463D] max-w-3xl leading-relaxed font-medium">
-                <span class="font-bold text-[#232E28]">Ringkasan Operasional:</span> Anda memiliki akses penuh sebagai <span class="font-extrabold text-[#3F7A5D]">{{ auth()->user()->role?->name ?? 'Kasir' }}</span> pada sistem kasir &amp; manajemen ritel Raja Aksesoris.
+                <span class="font-bold text-[#2C3E35]">Ringkasan Operasional:</span> Anda memiliki akses penuh sebagai <span class="font-extrabold text-[#3F7A5D]">{{ auth()->user()->role?->name ?? 'Kasir' }}</span> pada sistem kasir &amp; manajemen ritel Raja Aksesoris.
             </p>
             <div class="pt-2">
                 <a href="/pos" class="h-12 px-6 text-lg bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-2xl inline-flex items-center gap-2 transition shadow-sm btn-glow active-press hover-lift">
@@ -21,7 +21,7 @@
         <!-- 1. Total Omzet -->
         <div class="bg-white rounded-2xl p-6 border border-slate-200/80 hover:border-[#3F7A5D]/50 shadow-sm hover-lift cursor-default">
             <div class="flex items-center justify-between mb-3">
-                <span class="text-base text-[#5F7167] font-black uppercase tracking-wide">Total Omzet</span>
+                <span class="text-base text-[#5F7167] font-extrabold uppercase tracking-wide">Total Omzet</span>
                 @if(($metrics['omzet_growth'] ?? 0) > 0)
                     <span class="px-3 py-1 rounded-lg text-xs font-bold text-[#3F7A5D] bg-[#E3EEE8] border border-[#3F7A5D]/20">
                         &uarr; +{{ $metrics['omzet_growth'] }}%
@@ -36,7 +36,7 @@
                     </span>
                 @endif
             </div>
-            <div class="text-3xl sm:text-4xl font-extrabold text-[#232E28] font-mono tracking-tight mt-2">
+            <div class="text-3xl sm:text-4xl font-extrabold text-[#2C3E35] font-mono tracking-tight mt-2">
                 Rp {{ number_format($metrics['omzet'], 0, ',', '.') }}
             </div>
             <div class="text-base text-[#4F6258] mt-2 font-medium">Transaksi Selesai</div>
@@ -45,7 +45,7 @@
         <!-- 2. Margin -->
         <div class="bg-white rounded-2xl p-6 border border-slate-200/80 hover:border-[#C2AC7C]/50 shadow-sm hover-lift cursor-default">
             <div class="flex items-center justify-between mb-3">
-                <span class="text-base text-[#5F7167] font-black uppercase tracking-wide">Margin Toko</span>
+                <span class="text-base text-[#5F7167] font-extrabold uppercase tracking-wide">Margin Toko</span>
                 <span class="px-3 py-1 rounded-lg text-xs font-bold text-[#8F794B] bg-[#C2AC7C]/20 border border-[#C2AC7C]/40">
                     Margin
                 </span>
@@ -65,12 +65,12 @@
         <!-- 3. Total Saldo Toko -->
         <div class="bg-white rounded-2xl p-6 border border-slate-200/80 hover:border-[#3F7A5D]/50 shadow-sm hover-lift cursor-default">
             <div class="flex items-center justify-between mb-3">
-                <span class="text-base text-[#5F7167] font-black uppercase tracking-wide">Total Saldo Toko</span>
+                <span class="text-base text-[#5F7167] font-extrabold uppercase tracking-wide">Total Saldo Toko</span>
                 <span class="px-3 py-1 rounded-lg text-xs font-bold text-[#3F7A5D] bg-[#E3EEE8]">
                     Aktif
                 </span>
             </div>
-            <div class="text-3xl sm:text-4xl font-extrabold text-[#232E28] font-mono tracking-tight mt-2">
+            <div class="text-3xl sm:text-4xl font-extrabold text-[#2C3E35] font-mono tracking-tight mt-2">
                 Rp {{ number_format($metrics['total_balance'], 0, ',', '.') }}
             </div>
             <div class="text-base text-[#4F6258] mt-2 font-medium">Saldo riil seluruh akun &amp; cash</div>
@@ -79,12 +79,12 @@
         <!-- 4. Total Transaksi -->
         <div class="bg-white rounded-2xl p-6 border border-slate-200/80 hover:border-[#3F7A5D]/50 shadow-sm hover-lift cursor-default">
             <div class="flex items-center justify-between mb-3">
-                <span class="text-base text-[#5F7167] font-black uppercase tracking-wide">Total Transaksi</span>
+                <span class="text-base text-[#5F7167] font-extrabold uppercase tracking-wide">Total Transaksi</span>
                 <span class="px-3 py-1 rounded-lg text-xs font-bold text-[#3F7A5D] bg-[#E3EEE8]">
                     Sukses
                 </span>
             </div>
-            <div class="text-3xl sm:text-4xl font-extrabold text-[#232E28] font-mono tracking-tight mt-2">
+            <div class="text-3xl sm:text-4xl font-extrabold text-[#2C3E35] font-mono tracking-tight mt-2">
                 {{ number_format($metrics['sales_count'], 0, ',', '.') }} <span class="text-lg text-[#4F6258] font-normal">Trx</span>
             </div>
             <div class="text-base text-[#4F6258] mt-2 font-medium">Transaksi berhasil diproses</div>
@@ -100,7 +100,7 @@
         <div class="lg:col-span-2 bg-white rounded-xl p-5 border border-slate-200/80 shadow-2xs space-y-3">
             <div class="flex items-center justify-between">
                 <div>
-                    <h2 class="text-lg font-extrabold text-[#232E28] tracking-tight">Grafik Omzet Penjualan Harian</h2>
+                    <h2 class="text-lg font-extrabold text-[#2C3E35] tracking-tight">Grafik Omzet Penjualan Harian</h2>
                     <p class="text-xs text-[#5F7167] font-medium mt-0.5">Visualisasi tren omzet ritel toko 7 hari terakhir.</p>
                 </div>
                 <span class="px-3 py-1 rounded-lg text-xs font-extrabold bg-[#E3EEE8] text-[#3F7A5D]">
@@ -117,7 +117,7 @@
                     <div class="w-11 h-11 rounded-full bg-[#E3EEE8] text-[#3F7A5D] flex items-center justify-center shadow-2xs">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
                     </div>
-                    <div class="font-extrabold text-[#232E28] text-sm">Belum Ada Omzet pada Periode Ini</div>
+                    <div class="font-extrabold text-[#2C3E35] text-sm">Belum Ada Omzet pada Periode Ini</div>
                     <div class="text-xs text-[#5F7167] max-w-xs leading-relaxed font-medium">Grafik tren harian akan otomatis aktif begitu transaksi pertama berhasil diproses pada 7 hari terakhir.</div>
                 </div>
             @endif
@@ -127,7 +127,7 @@
         <div class="bg-white rounded-xl p-5 border border-slate-200/80 shadow-2xs flex flex-col justify-between space-y-3">
             <div>
                 <div class="flex items-center justify-between mb-3">
-                    <h2 class="text-lg font-extrabold text-[#232E28] tracking-tight">Rincian Omzet</h2>
+                    <h2 class="text-lg font-extrabold text-[#2C3E35] tracking-tight">Rincian Omzet</h2>
                     <a href="/admin/sales" class="text-xs font-bold text-[#3F7A5D] hover:underline">
                         Riwayat &rarr;
                     </a>
@@ -144,7 +144,7 @@
                         <tbody class="divide-y divide-slate-100 font-medium">
                             @forelse($dailyTrends['labels'] as $index => $label)
                                 <tr class="hover:bg-[#F3F6F4]/60 transition">
-                                    <td class="py-2.5 px-3 font-semibold text-[#232E28] text-sm">{{ $label }}</td>
+                                    <td class="py-2.5 px-3 font-semibold text-[#2C3E35] text-sm">{{ $label }}</td>
                                     <td class="py-2.5 px-3 text-right font-mono font-extrabold text-[#3F7A5D] text-base">
                                         Rp {{ number_format($dailyTrends['data'][$index] ?? 0, 0, ',', '.') }}
                                     </td>

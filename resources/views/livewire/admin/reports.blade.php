@@ -2,13 +2,13 @@
     <!-- Page Header & Period Filter Toolbar -->
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
         <div>
-            <h1 class="text-xl sm:text-2xl font-extrabold text-[#232E28] tracking-tight">Laporan Toko</h1>
+            <h1 class="text-xl sm:text-2xl font-extrabold text-[#2C3E35] tracking-tight">Laporan Toko</h1>
             <p class="text-xs sm:text-sm text-[#718379] font-medium mt-0.5">Analisis lengkap performa penjualan, margin, kasir, stok barang, dan saldo toko.</p>
         </div>
 
         <!-- Filter Period & Print Control -->
         <div class="flex items-center gap-2 flex-wrap text-sm">
-            <select wire:model.live="period" class="h-11 px-3 py-2.5 border border-slate-200 rounded-xl bg-[#F3F6F4] text-[#232E28] font-bold focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] cursor-pointer">
+            <select wire:model.live="period" class="h-11 px-3 py-2.5 border border-slate-200 rounded-xl bg-[#F3F6F4] text-[#2C3E35] font-bold focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] cursor-pointer">
                 <option value="all_time">Semua Waktu</option>
                 <option value="today">Hari Ini</option>
                 <option value="7_days">7 Hari Terakhir</option>
@@ -40,7 +40,7 @@
             'payment' => 'Metode Pembayaran',
             'balance' => 'Saldo Toko'
         ] as $key => $label)
-            <a href="/admin/reports/{{ $key }}" class="px-3.5 py-2.5 rounded-xl transition {{ $type === $key ? 'bg-[#3F7A5D] text-white shadow-sm' : 'text-[#52645B] hover:bg-[#F3F6F4] hover:text-[#232E28]' }}">{{ $label }}</a>
+            <a href="/admin/reports/{{ $key }}" class="px-3.5 py-2.5 rounded-xl transition {{ $type === $key ? 'bg-[#3F7A5D] text-white shadow-sm' : 'text-[#52645B] hover:bg-[#F3F6F4] hover:text-[#2C3E35]' }}">{{ $label }}</a>
         @endforeach
     </div>
 
@@ -50,7 +50,7 @@
             <!-- 1. Omzet -->
             <div class="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-sm space-y-1">
                 <div class="text-[11px] text-[#718379] font-extrabold uppercase tracking-wider">Omzet Penjualan</div>
-                <div class="text-2xl font-black font-mono tracking-tight text-[#232E28]">
+                <div class="text-2xl font-extrabold font-mono tracking-tight text-[#2C3E35]">
                     Rp {{ number_format($metrics['omzet'], 0, ',', '.') }}
                 </div>
                 <div class="text-[11px] text-[#718379] font-medium">Total penerimaan penjualan</div>
@@ -59,7 +59,7 @@
             <!-- 2. Modal -->
             <div class="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-sm space-y-1">
                 <div class="text-[11px] text-[#718379] font-extrabold uppercase tracking-wider">Modal Barang</div>
-                <div class="text-2xl font-black font-mono tracking-tight text-slate-600">
+                <div class="text-2xl font-extrabold font-mono tracking-tight text-slate-600">
                     Rp {{ number_format($metrics['cogs'], 0, ',', '.') }}
                 </div>
                 <div class="text-[11px] text-[#718379] font-medium">Total modal produk terjual</div>
@@ -74,7 +74,7 @@
                     <span>Margin Toko</span>
                     <span class="px-1.5 py-0.5 rounded text-[10px] bg-[#3F7A5D] text-white font-bold">{{ number_format($marginRatio, 1) }}%</span>
                 </div>
-                <div class="text-2xl font-black font-mono tracking-tight text-[#3F7A5D]">
+                <div class="text-2xl font-extrabold font-mono tracking-tight text-[#3F7A5D]">
                     Rp {{ number_format($metrics['gross_profit'], 0, ',', '.') }}
                 </div>
                 <div class="text-[11px] text-[#718379] font-medium">Omzet dikurangi Modal</div>
@@ -83,7 +83,7 @@
             <!-- 4. Total Transaksi -->
             <div class="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-sm space-y-1">
                 <div class="text-[11px] text-[#718379] font-extrabold uppercase tracking-wider">Total Transaksi</div>
-                <div class="text-2xl font-black font-mono tracking-tight text-[#232E28]">
+                <div class="text-2xl font-extrabold font-mono tracking-tight text-[#2C3E35]">
                     {{ number_format($salesCount, 0, ',', '.') }} Trx
                 </div>
                 <div class="text-[11px] text-[#718379] font-medium">Transaksi berhasil</div>
@@ -95,7 +95,7 @@
             @endphp
             <div class="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-sm space-y-1">
                 <div class="text-[11px] text-[#718379] font-extrabold uppercase tracking-wider">Rata-rata Transaksi</div>
-                <div class="text-2xl font-black font-mono tracking-tight text-[#232E28]">
+                <div class="text-2xl font-extrabold font-mono tracking-tight text-[#2C3E35]">
                     Rp {{ number_format($avgTicket, 0, ',', '.') }}
                 </div>
                 <div class="text-[11px] text-[#718379] font-medium">Nilai per transaksi</div>
@@ -112,7 +112,7 @@
             <div class="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-sm space-y-4">
                 <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                     <div>
-                        <h3 class="text-sm font-extrabold text-[#232E28] uppercase tracking-wider">Grafik Omzet Harian (7 Hari Terakhir)</h3>
+                        <h3 class="text-sm font-extrabold text-[#2C3E35] uppercase tracking-wider">Grafik Omzet Harian (7 Hari Terakhir)</h3>
                         <p class="text-xs text-[#718379] font-medium">Grafik visualisasi omzet penjualan harian toko.</p>
                     </div>
                     <span class="text-xs font-mono font-bold text-[#3F7A5D] bg-[#E3EEE8] px-2.5 py-1 rounded-lg">Realtime</span>
@@ -144,7 +144,7 @@
                 <!-- Top Selling Products -->
                 <div class="bg-white border border-slate-200/80 rounded-2xl shadow-sm overflow-hidden space-y-3">
                     <div class="p-4 sm:p-5 border-b border-slate-100">
-                        <h3 class="text-sm font-extrabold text-[#232E28] uppercase tracking-wider">Top 5 Produk Terlaris</h3>
+                        <h3 class="text-sm font-extrabold text-[#2C3E35] uppercase tracking-wider">Top 5 Produk Terlaris</h3>
                         <p class="text-xs text-[#718379] mt-0.5">Produk dengan jumlah unit terjual terbanyak dalam periode terpilih.</p>
                     </div>
                     <div class="overflow-x-auto">
@@ -161,19 +161,19 @@
                                     <tr class="hover:bg-[#F3F6F4]/60 transition">
                                         <td class="py-3 px-4">
                                             <div class="flex items-center gap-2">
-                                                <span class="w-6 h-6 rounded-lg text-[11px] font-black flex items-center justify-center {{ $index === 0 ? 'bg-amber-100 text-amber-800' : ($index === 1 ? 'bg-slate-200 text-slate-700' : ($index === 2 ? 'bg-orange-100 text-orange-800' : 'bg-slate-100 text-slate-600')) }}">
+                                                <span class="w-6 h-6 rounded-lg text-[11px] font-extrabold flex items-center justify-center {{ $index === 0 ? 'bg-amber-100 text-amber-800' : ($index === 1 ? 'bg-slate-200 text-slate-700' : ($index === 2 ? 'bg-orange-100 text-orange-800' : 'bg-slate-100 text-slate-600')) }}">
                                                     #{{ $index + 1 }}
                                                 </span>
                                                 <div>
-                                                    <div class="font-bold text-[#232E28]">{{ $prod->product_name }}</div>
+                                                    <div class="font-bold text-[#2C3E35]">{{ $prod->product_name }}</div>
                                                     <div class="text-[10px] text-[#718379] font-mono">Kode: {{ $prod->code }}</div>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="py-3 px-4 text-center font-mono font-extrabold text-[#232E28]">
+                                        <td class="py-3 px-4 text-center font-mono font-extrabold text-[#2C3E35]">
                                             {{ number_format($prod->total_qty, 0, ',', '.') }}
                                         </td>
-                                        <td class="py-3 px-4 text-right font-mono font-black text-[#3F7A5D]">
+                                        <td class="py-3 px-4 text-right font-mono font-extrabold text-[#3F7A5D]">
                                             Rp {{ number_format($prod->total_omzet, 0, ',', '.') }}
                                         </td>
                                     </tr>
@@ -189,7 +189,7 @@
 
                 <!-- Category Sales Breakdown -->
                 <div class="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-sm space-y-4">
-                    <h3 class="text-sm font-extrabold text-[#232E28] uppercase tracking-wider border-b border-slate-100 pb-3">Penjualan Berdasarkan Kategori</h3>
+                    <h3 class="text-sm font-extrabold text-[#2C3E35] uppercase tracking-wider border-b border-slate-100 pb-3">Penjualan Berdasarkan Kategori</h3>
                     
                     <div class="space-y-3 text-xs">
                         @forelse($categoryBreakdown as $cat)
@@ -198,7 +198,7 @@
                             @endphp
                             <div class="space-y-1">
                                 <div class="flex justify-between items-center font-semibold">
-                                    <span class="text-[#232E28] font-bold">{{ $cat->category_name }} ({{ $cat->total_qty }} Unit)</span>
+                                    <span class="text-[#2C3E35] font-bold">{{ $cat->category_name }} ({{ $cat->total_qty }} Unit)</span>
                                     <span class="font-mono font-extrabold text-[#3F7A5D]">Rp {{ number_format($cat->total_omzet, 0, ',', '.') }} ({{ number_format($catPct, 1) }}%)</span>
                                 </div>
                                 <div class="w-full bg-[#F3F6F4] h-2 rounded-full overflow-hidden">
@@ -217,7 +217,7 @@
     @elseif($type === 'cashier')
         <div class="bg-white border border-slate-200/80 rounded-2xl shadow-sm overflow-hidden">
             <div class="p-4 sm:p-5 border-b border-slate-100">
-                <h3 class="text-sm font-extrabold text-[#232E28] uppercase tracking-wider">Performa &amp; Produktivitas Kasir</h3>
+                <h3 class="text-sm font-extrabold text-[#2C3E35] uppercase tracking-wider">Performa &amp; Produktivitas Kasir</h3>
                 <p class="text-xs text-[#718379] mt-0.5">Laporan total transaksi, omzet, dan margin yang dihasilkan oleh masing-masing petugas kasir.</p>
             </div>
             <div class="overflow-x-auto">
@@ -233,16 +233,16 @@
                     <tbody class="divide-y divide-slate-100 font-medium">
                         @forelse($cashierPerformance as $cashier)
                             <tr class="hover:bg-[#F3F6F4]/60 transition">
-                                <td class="py-3.5 px-4 font-bold text-[#232E28] text-sm">
+                                <td class="py-3.5 px-4 font-bold text-[#2C3E35] text-sm">
                                     {{ $cashier->cashier_name }}
                                 </td>
-                                <td class="py-3.5 px-4 text-center font-mono font-bold text-[#232E28]">
+                                <td class="py-3.5 px-4 text-center font-mono font-bold text-[#2C3E35]">
                                     {{ number_format($cashier->total_sales, 0, ',', '.') }} Trx
                                 </td>
-                                <td class="py-3.5 px-4 text-right font-mono font-extrabold text-[#232E28]">
+                                <td class="py-3.5 px-4 text-right font-mono font-extrabold text-[#2C3E35]">
                                     Rp {{ number_format($cashier->total_omzet, 0, ',', '.') }}
                                 </td>
-                                <td class="py-3.5 px-4 text-right font-mono font-black text-[#3F7A5D]">
+                                <td class="py-3.5 px-4 text-right font-mono font-extrabold text-[#3F7A5D]">
                                     Rp {{ number_format($cashier->total_margin, 0, ',', '.') }}
                                 </td>
                             </tr>
@@ -263,7 +263,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
                 <div class="bg-white border border-slate-200/80 rounded-2xl p-4 shadow-sm space-y-1">
                     <div class="text-[11px] text-[#718379] font-extrabold uppercase tracking-wider">Total Modal Stok (HPP)</div>
-                    <div class="text-2xl font-black font-mono tracking-tight text-[#232E28]">
+                    <div class="text-2xl font-extrabold font-mono tracking-tight text-[#2C3E35]">
                         Rp {{ number_format($inventoryValuation['total_cost'], 0, ',', '.') }}
                     </div>
                     <div class="text-[11px] text-[#718379]">Modal mengendap pada produk stok fisik toko</div>
@@ -271,7 +271,7 @@
 
                 <div class="bg-white border border-[#3F7A5D]/40 bg-gradient-to-b from-[#E3EEE8]/40 to-white rounded-2xl p-4 shadow-sm space-y-1">
                     <div class="text-[11px] text-[#3F7A5D] font-extrabold uppercase tracking-wider">Potensi Omzet Stok</div>
-                    <div class="text-2xl font-black font-mono tracking-tight text-[#3F7A5D]">
+                    <div class="text-2xl font-extrabold font-mono tracking-tight text-[#3F7A5D]">
                         Rp {{ number_format($inventoryValuation['total_retail'], 0, ',', '.') }}
                     </div>
                     <div class="text-[11px] text-[#718379]">Potensi omzet jika seluruh stok terjual</div>
@@ -279,7 +279,7 @@
 
                 <div class="bg-white border border-slate-200/80 rounded-2xl p-4 shadow-sm space-y-1">
                     <div class="text-[11px] text-[#718379] font-extrabold uppercase tracking-wider">Total Fisik Unit Stok</div>
-                    <div class="text-2xl font-black font-mono tracking-tight text-[#232E28]">
+                    <div class="text-2xl font-extrabold font-mono tracking-tight text-[#2C3E35]">
                         {{ number_format($inventoryValuation['total_units'], 0, ',', '.') }} Unit
                     </div>
                     <div class="text-[11px] text-[#718379]">Dari {{ number_format($inventoryCount, 0, ',', '.') }} jenis produk</div>
@@ -287,7 +287,7 @@
 
                 <div class="bg-white border border-slate-200/80 rounded-2xl p-4 shadow-sm space-y-1">
                     <div class="text-[11px] text-[#718379] font-extrabold uppercase tracking-wider">Stok Menipis / Habis</div>
-                    <div class="text-2xl font-black font-mono tracking-tight {{ $lowStockCount > 0 ? 'text-rose-600' : 'text-[#3F7A5D]' }}">
+                    <div class="text-2xl font-extrabold font-mono tracking-tight {{ $lowStockCount > 0 ? 'text-rose-600' : 'text-[#3F7A5D]' }}">
                         {{ number_format($lowStockCount, 0, ',', '.') }} Item
                     </div>
                     <div class="text-[11px] text-[#718379]">Perlu restock segera</div>
@@ -308,7 +308,7 @@
     @elseif($type === 'payment')
         <div class="bg-white border border-slate-200/80 rounded-2xl shadow-sm overflow-hidden">
             <div class="p-4 sm:p-5 border-b border-slate-100">
-                <h3 class="text-sm font-extrabold text-[#232E28] uppercase tracking-wider">Rincian Pembayaran Masuk</h3>
+                <h3 class="text-sm font-extrabold text-[#2C3E35] uppercase tracking-wider">Rincian Pembayaran Masuk</h3>
                 <p class="text-xs text-[#718379] mt-0.5">Distribusi penerimaan uang berdasarkan metode pembayaran yang digunakan pelanggan.</p>
             </div>
             <table class="w-full text-xs text-left">
@@ -321,7 +321,7 @@
                 <tbody class="divide-y divide-slate-100 font-medium">
                     @forelse($paymentDistribution as $method => $amount)
                         <tr class="hover:bg-[#F3F6F4]/60 transition">
-                            <td class="py-3.5 px-4 font-bold text-[#232E28] text-sm">{{ $method }}</td>
+                            <td class="py-3.5 px-4 font-bold text-[#2C3E35] text-sm">{{ $method }}</td>
                             <td class="py-3.5 px-4 text-right font-mono font-extrabold text-[#3F7A5D] text-sm">Rp {{ number_format($amount, 0, ',', '.') }}</td>
                         </tr>
                     @empty

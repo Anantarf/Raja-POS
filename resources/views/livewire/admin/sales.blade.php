@@ -2,7 +2,7 @@
     <!-- Header -->
     <div class="flex items-center justify-between">
         <div>
-            <h1 class="text-xl sm:text-2xl font-extrabold text-[#232E28] tracking-tight">Riwayat Transaksi</h1>
+            <h1 class="text-xl sm:text-2xl font-extrabold text-[#2C3E35] tracking-tight">Riwayat Transaksi</h1>
             <p class="text-xs sm:text-sm text-[#718379] font-medium mt-0.5">Daftar seluruh transaksi penjualan toko, rincian pembayaran, dan cetak ulang struk kasir.</p>
         </div>
     </div>
@@ -14,7 +14,7 @@
                 type="text"
                 wire:model.live.debounce.300ms="search"
                 placeholder="Cari No. TRX / Kasir..."
-                class="w-full h-11 pl-9 pr-3 py-2.5 border border-slate-200 rounded-xl text-sm font-semibold focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] bg-[#F3F6F4] text-[#232E28] placeholder:text-[#718379]"
+                class="w-full h-11 pl-9 pr-3 py-2.5 border border-slate-200 rounded-xl text-sm font-semibold focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] bg-[#F3F6F4] text-[#2C3E35] placeholder:text-[#718379]"
             />
             <svg class="w-4 h-4 text-slate-400 absolute left-3 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
@@ -22,7 +22,7 @@
         </div>
 
         <div>
-            <select wire:model.live="paymentMethodId" class="w-full h-11 py-2.5 px-3 border border-slate-200 rounded-xl text-sm font-semibold bg-[#F3F6F4] text-[#232E28] focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] cursor-pointer">
+            <select wire:model.live="paymentMethodId" class="w-full h-11 py-2.5 px-3 border border-slate-200 rounded-xl text-sm font-semibold bg-[#F3F6F4] text-[#2C3E35] focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] cursor-pointer">
                 <option value="">Semua Metode Pembayaran</option>
                 @foreach($paymentMethods as $pm)
                     @php
@@ -43,7 +43,7 @@
             <input
                 type="date"
                 wire:model.live="startDate"
-                class="w-full h-11 py-2.5 px-3 border border-slate-200 rounded-xl text-sm font-semibold bg-[#F3F6F4] text-[#232E28] focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]"
+                class="w-full h-11 py-2.5 px-3 border border-slate-200 rounded-xl text-sm font-semibold bg-[#F3F6F4] text-[#2C3E35] focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]"
                 placeholder="Dari Tanggal"
             />
         </div>
@@ -52,7 +52,7 @@
             <input
                 type="date"
                 wire:model.live="endDate"
-                class="w-full h-11 py-2.5 px-3 border border-slate-200 rounded-xl text-sm font-semibold bg-[#F3F6F4] text-[#232E28] focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]"
+                class="w-full h-11 py-2.5 px-3 border border-slate-200 rounded-xl text-sm font-semibold bg-[#F3F6F4] text-[#2C3E35] focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]"
                 placeholder="Sampai Tanggal"
             />
         </div>
@@ -106,20 +106,20 @@
                                 <div class="font-bold text-[#3F7A5D] font-mono text-xs bg-[#F3F6F4] border border-slate-200/80 px-2.5 py-0.5 rounded-md inline-block">{{ $sale->invoice_number }}</div>
                                 <div class="text-xs text-[#718379] mt-1 font-semibold whitespace-nowrap">{{ $sale->created_at->format('d M Y, H:i') }}</div>
                             </td>
-                            <td class="py-3.5 px-4 text-[#232E28] whitespace-nowrap">
-                                <div class="font-bold text-[#232E28]">{{ $sale->user?->name ?? 'Kasir' }}</div>
+                            <td class="py-3.5 px-4 text-[#2C3E35] whitespace-nowrap">
+                                <div class="font-bold text-[#2C3E35]">{{ $sale->user?->name ?? 'Kasir' }}</div>
                                 <div class="text-xs text-[#718379] font-semibold">{{ $sale->location?->name ?? 'Toko' }}</div>
                             </td>
                             <td class="py-3.5 px-4 whitespace-nowrap">
                                 <div class="flex flex-wrap gap-1">
                                     @foreach($sale->payments as $p)
-                                        <span class="px-2.5 py-0.5 rounded-md text-[11px] font-mono font-bold bg-[#F3F6F4] text-[#232E28] border border-slate-200/80 inline-block whitespace-nowrap">
+                                        <span class="px-2.5 py-0.5 rounded-md text-[11px] font-mono font-bold bg-[#F3F6F4] text-[#2C3E35] border border-slate-200/80 inline-block whitespace-nowrap">
                                             {{ $p->paymentMethod?->name }}: Rp {{ number_format($p->amount, 0, ',', '.') }}
                                         </span>
                                     @endforeach
                                 </div>
                             </td>
-                            <td class="py-3.5 px-4 text-right font-mono font-extrabold text-[#232E28] text-sm whitespace-nowrap">
+                            <td class="py-3.5 px-4 text-right font-mono font-extrabold text-[#2C3E35] text-sm whitespace-nowrap">
                                 Rp {{ number_format($sale->grand_total, 0, ',', '.') }}
                             </td>
                             <td class="py-3.5 px-4 text-center whitespace-nowrap">
@@ -129,10 +129,10 @@
                             </td>
                             <td class="py-3.5 px-4 text-center whitespace-nowrap">
                                 <div class="flex items-center justify-center gap-1.5 whitespace-nowrap">
-                                    <button wire:click="openDetailModal({{ $sale->id }})" class="px-3 py-1.5 bg-slate-100 hover:bg-[#E3EEE8] text-[#232E28] hover:text-[#3F7A5D] border border-slate-200/80 rounded-xl text-xs font-extrabold transition cursor-pointer shadow-sm">
+                                    <button wire:click="openDetailModal({{ $sale->id }})" class="px-3 py-1.5 bg-slate-100 hover:bg-[#E3EEE8] text-[#2C3E35] hover:text-[#3F7A5D] border border-slate-200/80 rounded-xl text-xs font-extrabold transition cursor-pointer shadow-sm">
                                         Detail Transaksi
                                     </button>
-                                    <button wire:click="openReceiptModal({{ $sale->id }})" class="px-3 py-1.5 bg-slate-100 hover:bg-[#E3EEE8] text-[#232E28] hover:text-[#3F7A5D] border border-slate-200/80 rounded-xl text-xs font-extrabold transition cursor-pointer shadow-sm flex items-center gap-1">
+                                    <button wire:click="openReceiptModal({{ $sale->id }})" class="px-3 py-1.5 bg-slate-100 hover:bg-[#E3EEE8] text-[#2C3E35] hover:text-[#3F7A5D] border border-slate-200/80 rounded-xl text-xs font-extrabold transition cursor-pointer shadow-sm flex items-center gap-1">
                                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
                                         <span>Struk</span>
                                     </button>
@@ -160,12 +160,12 @@
 
     <!-- Detail Snapshot Modal -->
     @if($showDetailModal && $selectedSale)
-        <div class="fixed inset-0 bg-[#232E28]/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+        <div class="fixed inset-0 bg-[#2C3E35]/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
             <div class="bg-white rounded-2xl p-6 max-w-lg w-full shadow-2xl space-y-4 border border-slate-100">
                 <!-- Modal Header -->
                 <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                     <div>
-                        <h3 class="text-base font-extrabold text-[#232E28]">Detail Transaksi</h3>
+                        <h3 class="text-base font-extrabold text-[#2C3E35]">Detail Transaksi</h3>
                         <div class="text-xs font-mono text-[#3F7A5D] font-bold bg-[#E3EEE8] border border-[#3F7A5D]/20 px-2.5 py-0.5 rounded-md inline-block mt-1">{{ $selectedSale->invoice_number }}</div>
                     </div>
                     <button type="button" wire:click="$set('showDetailModal', false)" class="text-slate-400 hover:text-slate-600 p-1 cursor-pointer">
@@ -176,9 +176,9 @@
                 <div class="space-y-3.5 text-xs">
                     <!-- Info Box -->
                     <div class="bg-[#F3F6F4] p-3.5 rounded-xl border border-slate-200/80 space-y-1.5 font-medium">
-                        <div class="flex justify-between text-[#718379]"><span>Waktu Transaksi:</span><span class="font-mono font-bold text-[#232E28]">{{ $selectedSale->created_at->format('d F Y, H:i:s') }}</span></div>
-                        <div class="flex justify-between text-[#718379]"><span>Kasir:</span><span class="font-bold text-[#232E28]">{{ $selectedSale->user?->name ?? 'Kasir' }}</span></div>
-                        <div class="flex justify-between text-[#718379]"><span>Lokasi Toko:</span><span class="font-bold text-[#232E28]">{{ $selectedSale->location?->name ?? 'Toko Utama' }}</span></div>
+                        <div class="flex justify-between text-[#718379]"><span>Waktu Transaksi:</span><span class="font-mono font-bold text-[#2C3E35]">{{ $selectedSale->created_at->format('d F Y, H:i:s') }}</span></div>
+                        <div class="flex justify-between text-[#718379]"><span>Kasir:</span><span class="font-bold text-[#2C3E35]">{{ $selectedSale->user?->name ?? 'Kasir' }}</span></div>
+                        <div class="flex justify-between text-[#718379]"><span>Lokasi Toko:</span><span class="font-bold text-[#2C3E35]">{{ $selectedSale->location?->name ?? 'Toko Utama' }}</span></div>
                     </div>
 
                     <!-- Items Table -->
@@ -195,9 +195,9 @@
                             <tbody class="divide-y divide-slate-100 font-medium">
                                 @foreach($selectedSale->items as $item)
                                     <tr class="hover:bg-[#F3F6F4]/50 transition">
-                                        <td class="p-3 font-semibold text-[#232E28]">{{ $item->product_name_snapshot }}</td>
+                                        <td class="p-3 font-semibold text-[#2C3E35]">{{ $item->product_name_snapshot }}</td>
                                         <td class="p-3 text-center font-mono font-bold whitespace-nowrap">{{ $item->quantity }}</td>
-                                        <td class="p-3 text-right font-mono text-[#232E28] whitespace-nowrap">Rp {{ number_format($item->selling_price, 0, ',', '.') }}</td>
+                                        <td class="p-3 text-right font-mono text-[#2C3E35] whitespace-nowrap">Rp {{ number_format($item->selling_price, 0, ',', '.') }}</td>
                                         <td class="p-3 text-right font-mono font-extrabold text-[#3F7A5D] whitespace-nowrap">Rp {{ number_format($item->subtotal, 0, ',', '.') }}</td>
                                     </tr>
                                 @endforeach
@@ -209,7 +209,7 @@
                     <div class="bg-[#F3F6F4] p-3.5 rounded-xl border border-slate-200/80 space-y-2 text-xs font-medium">
                         <div class="flex justify-between text-[#718379]">
                             <span>Subtotal:</span>
-                            <span class="font-mono font-bold text-[#232E28]">Rp {{ number_format($selectedSale->subtotal, 0, ',', '.') }}</span>
+                            <span class="font-mono font-bold text-[#2C3E35]">Rp {{ number_format($selectedSale->subtotal, 0, ',', '.') }}</span>
                         </div>
                         @if($selectedSale->discount_amount > 0)
                             <div class="flex justify-between text-rose-600 font-semibold">
@@ -218,7 +218,7 @@
                             </div>
                         @endif
                         <div class="flex justify-between items-baseline pt-1 border-t border-slate-200/80">
-                            <span class="font-extrabold text-[#232E28]">Grand Total:</span>
+                            <span class="font-extrabold text-[#2C3E35]">Grand Total:</span>
                             <span class="font-mono font-extrabold text-[#3F7A5D] text-base">Rp {{ number_format($selectedSale->total_amount, 0, ',', '.') }}</span>
                         </div>
 
@@ -228,7 +228,7 @@
                             @foreach($selectedSale->payments as $p)
                                 <div class="flex justify-between font-mono">
                                     <span class="text-[#52645B]">{{ $p->paymentMethod?->name ?? 'Pembayaran' }}:</span>
-                                    <span class="font-bold text-[#232E28]">Rp {{ number_format($p->amount, 0, ',', '.') }}</span>
+                                    <span class="font-bold text-[#2C3E35]">Rp {{ number_format($p->amount, 0, ',', '.') }}</span>
                                 </div>
                             @endforeach
                             <div class="flex justify-between text-emerald-700 font-bold font-mono pt-1">
@@ -245,7 +245,7 @@
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
                         <span>Lihat &amp; Cetak Struk</span>
                     </button>
-                    <button type="button" wire:click="$set('showDetailModal', false)" class="py-2.5 px-5 bg-slate-100 hover:bg-slate-200 text-[#232E28] font-bold rounded-2xl text-xs transition cursor-pointer">
+                    <button type="button" wire:click="$set('showDetailModal', false)" class="py-2.5 px-5 bg-slate-100 hover:bg-slate-200 text-[#2C3E35] font-bold rounded-2xl text-xs transition cursor-pointer">
                         Tutup
                     </button>
                 </div>
@@ -256,7 +256,7 @@
     <!-- In-Page Thermal Receipt Pop-Up Modal -->
     @if($showReceiptModal && $receiptSale)
         <div
-            class="fixed inset-0 bg-[#232E28]/70 backdrop-blur-sm flex items-center justify-center z-[60] p-4 overflow-y-auto"
+            class="fixed inset-0 bg-[#2C3E35]/70 backdrop-blur-sm flex items-center justify-center z-[60] p-4 overflow-y-auto"
             x-data="{
                 printReceipt() {
                     const printContents = document.getElementById('printable-receipt-content').innerHTML;
@@ -305,7 +305,7 @@
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
                         </div>
                         <div>
-                            <h3 class="text-sm font-extrabold text-[#232E28]">Preview Struk Kasir</h3>
+                            <h3 class="text-sm font-extrabold text-[#2C3E35]">Preview Struk Kasir</h3>
                             <p class="text-[11px] font-mono text-[#718379]">Kertas Thermal 58mm</p>
                         </div>
                     </div>
@@ -389,7 +389,7 @@
                             <span>Buka versi cetak penuh</span>
                             <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
                         </a>
-                        <button type="button" wire:click="$set('showReceiptModal', false)" class="py-1.5 px-4 bg-slate-100 hover:bg-slate-200 text-[#232E28] font-bold rounded-xl text-xs transition cursor-pointer">
+                        <button type="button" wire:click="$set('showReceiptModal', false)" class="py-1.5 px-4 bg-slate-100 hover:bg-slate-200 text-[#2C3E35] font-bold rounded-xl text-xs transition cursor-pointer">
                             Tutup
                         </button>
                     </div>

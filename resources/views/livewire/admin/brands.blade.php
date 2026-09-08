@@ -1,7 +1,7 @@
 <div class="space-y-5">
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-            <h1 class="text-xl sm:text-2xl font-extrabold text-[#232E28] tracking-tight">Merk / Brand Produk</h1>
+            <h1 class="text-xl sm:text-2xl font-extrabold text-[#2C3E35] tracking-tight">Merk / Brand Produk</h1>
             <p class="text-xs sm:text-sm text-[#718379] font-medium mt-0.5">Kelola merek manufaktur aksesoris toko.</p>
         </div>
         <button wire:click="openModal" class="h-10 px-4 py-2 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-2xl text-sm transition flex items-center gap-2 shadow-sm active:scale-95 cursor-pointer uppercase tracking-wider shrink-0">
@@ -18,7 +18,7 @@
                 type="text"
                 wire:model.live.debounce.300ms="search"
                 placeholder="Cari nama brand..."
-                class="w-full h-11 pl-9 pr-3.5 py-2.5 border border-slate-200 rounded-xl text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] bg-[#F3F6F4] text-[#232E28] placeholder:text-[#718379]"
+                class="w-full h-11 pl-9 pr-3.5 py-2.5 border border-slate-200 rounded-xl text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] bg-[#F3F6F4] text-[#2C3E35] placeholder:text-[#718379]"
             />
             <svg class="w-4 h-4 text-slate-400 absolute left-3 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
@@ -56,7 +56,7 @@
             <tbody class="divide-y divide-slate-100 font-medium">
                 @forelse($brands as $b)
                     <tr class="hover:bg-[#F3F6F4]/60 transition">
-                        <td class="py-3.5 px-4 font-bold text-[#232E28] text-sm">{{ $b->name }}</td>
+                        <td class="py-3.5 px-4 font-bold text-[#2C3E35] text-sm">{{ $b->name }}</td>
                         <td class="py-3.5 px-4 font-mono">
                             <span class="bg-[#F3F6F4] border border-slate-200/80 text-[#3F7A5D] px-2.5 py-0.5 rounded-md font-mono font-bold text-xs">{{ $b->slug }}</span>
                         </td>
@@ -76,17 +76,17 @@
     </div>
 
     @if($showModal)
-        <div class="fixed inset-0 bg-[#232E28]/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+        <div class="fixed inset-0 bg-[#2C3E35]/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
             <div class="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl space-y-4 border border-slate-100">
-                <h3 class="text-lg font-extrabold text-[#232E28]">{{ $editingBrandId ? 'Edit Brand' : 'Tambah Brand' }}</h3>
+                <h3 class="text-lg font-extrabold text-[#2C3E35]">{{ $editingBrandId ? 'Edit Brand' : 'Tambah Brand' }}</h3>
                 <form wire:submit.prevent="saveBrand" class="space-y-4 text-sm">
                     <div>
-                        <label class="block text-[#232E28] font-bold mb-1.5">Nama Brand *</label>
+                        <label class="block text-[#2C3E35] font-bold mb-1.5">Nama Brand *</label>
                         <input type="text" wire:model="name" class="w-full h-11 p-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] text-sm" required />
                     </div>
                     <div class="flex gap-2 pt-2">
                         <button type="submit" class="flex-1 h-11 py-2.5 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-bold rounded-xl text-sm transition uppercase tracking-wider shadow-sm">Simpan</button>
-                        <button type="button" wire:click="$set('showModal', false)" class="h-11 py-2.5 px-4 bg-slate-100 hover:bg-slate-200 text-[#232E28] font-bold rounded-xl text-sm transition">Batal</button>
+                        <button type="button" wire:click="$set('showModal', false)" class="h-11 py-2.5 px-4 bg-slate-100 hover:bg-slate-200 text-[#2C3E35] font-bold rounded-xl text-sm transition">Batal</button>
                     </div>
                 </form>
             </div>

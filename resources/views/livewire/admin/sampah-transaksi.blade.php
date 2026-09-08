@@ -2,7 +2,7 @@
     <!-- Header -->
     <div class="flex items-center justify-between">
         <div>
-            <h1 class="text-2xl font-extrabold text-[#232E28] tracking-tight">Daftar Transaksi Dibatalkan</h1>
+            <h1 class="text-2xl font-extrabold text-[#2C3E35] tracking-tight">Daftar Transaksi Dibatalkan</h1>
             <p class="text-sm text-[#718379] font-medium mt-0.5">Daftar riwayat transaksi yang dibatalkan oleh kasir/admin. Otomatis terhapus permanen setelah 30 hari.</p>
         </div>
     </div>
@@ -14,7 +14,7 @@
                 type="text"
                 wire:model.live.debounce.300ms="search"
                 placeholder="Cari No. TRX..."
-                class="w-full h-11 pl-9 pr-3.5 border border-slate-200 rounded-xl text-sm font-semibold focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] bg-[#F3F6F4] text-[#232E28] placeholder:text-[#718379]"
+                class="w-full h-11 pl-9 pr-3.5 border border-slate-200 rounded-xl text-sm font-semibold focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] bg-[#F3F6F4] text-[#2C3E35] placeholder:text-[#718379]"
             />
             <svg class="w-4 h-4 text-slate-400 absolute left-3 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
@@ -42,8 +42,8 @@
                                 <div class="font-bold text-[#3F7A5D] font-mono text-xs bg-[#F3F6F4] border border-slate-200/80 px-2.5 py-1 rounded-md inline-block">{{ $sale->invoice_number }}</div>
                                 <div class="text-xs text-[#718379] mt-1 font-semibold whitespace-nowrap">Dibatalkan: {{ $sale->updated_at->format('d M Y, H:i') }}</div>
                             </td>
-                            <td class="py-3.5 px-4 text-[#232E28] whitespace-nowrap">
-                                <div class="font-bold text-[#232E28] text-sm">{{ $sale->user?->name }}</div>
+                            <td class="py-3.5 px-4 text-[#2C3E35] whitespace-nowrap">
+                                <div class="font-bold text-[#2C3E35] text-sm">{{ $sale->user?->name }}</div>
                                 <div class="text-xs text-[#718379] font-semibold">{{ $sale->location?->name }}</div>
                             </td>
                             <td class="py-3.5 px-4 text-right font-mono font-extrabold text-rose-600 text-sm whitespace-nowrap">

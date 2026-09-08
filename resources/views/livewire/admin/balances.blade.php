@@ -2,7 +2,7 @@
     <!-- Header -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-            <h1 class="text-xl sm:text-2xl font-extrabold text-[#232E28] tracking-tight">Monitoring Saldo</h1>
+            <h1 class="text-xl sm:text-2xl font-extrabold text-[#2C3E35] tracking-tight">Monitoring Saldo</h1>
             <p class="text-xs sm:text-sm text-[#718379] font-medium mt-0.5">Kelola saldo toko, rekening bank, mutasi transfer, dan penyesuaian saldo.</p>
         </div>
         <div class="flex items-center gap-2 overflow-x-auto py-1">
@@ -29,7 +29,7 @@
     <div class="bg-gradient-to-r from-[#3F7A5D]/10 via-[#3F7A5D]/5 to-white rounded-2xl p-5 border border-slate-200/80 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-5">
         <div class="space-y-1">
             <div class="text-xs text-[#718379] font-extrabold uppercase tracking-wider">Total Saldo Operasional Toko</div>
-            <div class="text-3xl sm:text-4xl font-black text-[#3F7A5D] font-mono tracking-tight">
+            <div class="text-3xl sm:text-4xl font-extrabold text-[#3F7A5D] font-mono tracking-tight">
                 Rp {{ number_format($totalBalance, 0, ',', '.') }}
             </div>
             <p class="text-xs sm:text-sm text-[#718379] font-medium">Gabungan saldo uang cash, rekening bank, QRIS, dan e-wallet toko.</p>
@@ -42,7 +42,7 @@
                 </div>
                 <div>
                     <div class="text-xs text-[#3F7A5D] uppercase font-extrabold tracking-wider">Uang Cash</div>
-                    <div class="text-sm font-mono font-black text-[#232E28]">Rp {{ number_format($totalCash, 0, ',', '.') }}</div>
+                    <div class="text-sm font-mono font-extrabold text-[#2C3E35]">Rp {{ number_format($totalCash, 0, ',', '.') }}</div>
                 </div>
             </div>
 
@@ -52,7 +52,7 @@
                 </div>
                 <div>
                     <div class="text-xs text-[#718379] uppercase font-extrabold tracking-wider">Bank &amp; QRIS</div>
-                    <div class="text-sm font-mono font-extrabold text-[#232E28]">Rp {{ number_format($totalBank, 0, ',', '.') }}</div>
+                    <div class="text-sm font-mono font-extrabold text-[#2C3E35]">Rp {{ number_format($totalBank, 0, ',', '.') }}</div>
                 </div>
             </div>
 
@@ -62,7 +62,7 @@
                 </div>
                 <div>
                     <div class="text-xs text-[#718379] uppercase font-extrabold tracking-wider">E-Wallet</div>
-                    <div class="text-sm font-mono font-extrabold text-[#232E28]">Rp {{ number_format($totalEwallet, 0, ',', '.') }}</div>
+                    <div class="text-sm font-mono font-extrabold text-[#2C3E35]">Rp {{ number_format($totalEwallet, 0, ',', '.') }}</div>
                 </div>
             </div>
         </div>
@@ -80,7 +80,7 @@
                     <span>{{ $acc->name }}</span>
                     <span class="w-2 h-2 rounded-full {{ $hasBalance ? 'bg-[#3F7A5D]' : 'bg-slate-300' }} inline-block"></span>
                 </div>
-                <div class="text-xl font-black font-mono tracking-tight {{ $isMinus ? 'text-rose-600' : ($hasBalance ? 'text-[#3F7A5D]' : 'text-slate-400') }}">
+                <div class="text-xl font-extrabold font-mono tracking-tight {{ $isMinus ? 'text-rose-600' : ($hasBalance ? 'text-[#3F7A5D]' : 'text-slate-400') }}">
                     Rp {{ number_format($acc->balance, 0, ',', '.') }}
                 </div>
                 @if($isMinus && $acc->account_type === 'CASH')
@@ -97,14 +97,14 @@
         <!-- Table Header & Quick Filters -->
         <div class="p-4 sm:p-5 border-b border-slate-200/80 flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-                <h2 class="text-sm font-extrabold text-[#232E28] uppercase tracking-wider">Riwayat Mutasi Saldo</h2>
+                <h2 class="text-sm font-extrabold text-[#2C3E35] uppercase tracking-wider">Riwayat Mutasi Saldo</h2>
                 <p class="text-xs text-[#718379] font-medium mt-0.5">Audit lengkap aliran uang masuk, keluar, transfer antar rekening, dan sisa saldo setelah mutasi.</p>
             </div>
 
             <div class="flex items-center gap-2 flex-wrap">
                 <!-- Filter Tabs (Clean text without emoji noise) -->
                 <div class="bg-[#F3F6F4] p-1 rounded-xl flex items-center gap-1 text-[11px] font-extrabold text-[#718379]">
-                    <button wire:click="setFilterType('ALL')" class="px-3 py-1.5 rounded-lg transition {{ $filterType === 'ALL' ? 'bg-white text-[#3F7A5D] shadow-sm' : 'hover:text-[#232E28]' }}">
+                    <button wire:click="setFilterType('ALL')" class="px-3 py-1.5 rounded-lg transition {{ $filterType === 'ALL' ? 'bg-white text-[#3F7A5D] shadow-sm' : 'hover:text-[#2C3E35]' }}">
                         Semua Mutasi
                     </button>
                     <button wire:click="setFilterType('IN')" class="px-3 py-1.5 rounded-lg transition {{ $filterType === 'IN' ? 'bg-emerald-600 text-white shadow-sm' : 'hover:text-emerald-700' }}">
@@ -216,7 +216,7 @@
                             </td>
 
                             <!-- Aliran Akun -->
-                            <td class="py-3.5 px-4 text-[#232E28] font-semibold whitespace-nowrap">
+                            <td class="py-3.5 px-4 text-[#2C3E35] font-semibold whitespace-nowrap">
                                 <div class="flex items-center gap-1.5 text-xs">
                                     @if($trx->sourceAccount)
                                         <span class="font-extrabold text-rose-600">{{ $trx->sourceAccount->name }}</span>
@@ -235,7 +235,7 @@
                             </td>
 
                             <!-- Nominal Mutasi -->
-                            <td class="py-3.5 px-4 text-right font-mono font-black text-sm whitespace-nowrap">
+                            <td class="py-3.5 px-4 text-right font-mono font-extrabold text-sm whitespace-nowrap">
                                 @if($isIncoming)
                                     <span class="text-[#3F7A5D]">+ Rp {{ number_format($trx->amount, 0, ',', '.') }}</span>
                                 @elseif($isOutgoing)
@@ -247,7 +247,7 @@
 
                             <!-- Posisi Saldo Akhir -->
                             <td class="py-3.5 px-4 text-right whitespace-nowrap">
-                                <div class="font-mono text-xs text-[#232E28] font-bold">
+                                <div class="font-mono text-xs text-[#2C3E35] font-bold">
                                     Rp {{ number_format($trx->balance_after, 0, ',', '.') }}
                                 </div>
                                 <div class="text-[10px] text-[#718379] font-medium mt-0.5">
@@ -257,7 +257,7 @@
 
                             <!-- Keterangan & Petugas -->
                             <td class="py-3.5 px-4">
-                                <div class="text-[#232E28] font-semibold leading-snug">
+                                <div class="text-[#2C3E35] font-semibold leading-snug">
                                     @php
                                         $desc = e($trx->description);
                                         $desc = preg_replace_callback('/(TRX)-([a-zA-Z0-9]{8})-[a-zA-Z0-9-]{10,}/i', function ($m) {
@@ -267,7 +267,7 @@
                                     @endphp
                                     {!! $desc !!}
                                 </div>
-                                <div class="text-[10px] text-[#718379] font-medium mt-0.5">Oleh: <span class="font-bold text-[#232E28]">{{ $trx->user?->name ?? 'System' }}</span></div>
+                                <div class="text-[10px] text-[#718379] font-medium mt-0.5">Oleh: <span class="font-bold text-[#2C3E35]">{{ $trx->user?->name ?? 'System' }}</span></div>
                             </td>
                         </tr>
                     @empty
@@ -286,10 +286,10 @@
 
     <!-- Action Modal -->
     @if($showModal)
-        <div class="fixed inset-0 bg-[#232E28]/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+        <div class="fixed inset-0 bg-[#2C3E35]/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
             <div class="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl space-y-4 border border-slate-100">
                 <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-                    <h3 class="text-base font-extrabold text-[#232E28]">
+                    <h3 class="text-base font-extrabold text-[#2C3E35]">
                         {{ $showModal === 'TRANSFER' ? 'Transfer Saldo Antar Akun' : ($showModal === 'DEPOSIT' ? 'Deposit / Setor Saldo' : ($showModal === 'WITHDRAWAL' ? 'Penarikan Saldo' : 'Koreksi / Penyesuaian Saldo')) }}
                     </h3>
                     <button type="button" wire:click="$set('showModal', null)" class="text-slate-400 hover:text-slate-600 p-1 cursor-pointer">
@@ -301,7 +301,7 @@
                     @if(in_array($showModal, ['TRANSFER', 'WITHDRAWAL']))
                         <div>
                             <label class="block text-[#718379] font-bold uppercase tracking-wider text-[11px] mb-1">Akun Asal *</label>
-                            <select wire:model="sourceAccountId" class="w-full p-2.5 border border-slate-200 rounded-xl bg-[#F3F6F4] text-[#232E28] font-semibold focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] cursor-pointer">
+                            <select wire:model="sourceAccountId" class="w-full p-2.5 border border-slate-200 rounded-xl bg-[#F3F6F4] text-[#2C3E35] font-semibold focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] cursor-pointer">
                                 <option value="">Pilih Akun Asal</option>
                                 @foreach($accounts as $acc)
                                     <option value="{{ $acc->id }}">{{ $acc->name }} (Rp {{ number_format($acc->balance, 0, ',', '.') }})</option>
@@ -313,7 +313,7 @@
                     @if(in_array($showModal, ['TRANSFER', 'DEPOSIT', 'ADJUSTMENT']))
                         <div>
                             <label class="block text-[#718379] font-bold uppercase tracking-wider text-[11px] mb-1">Akun Tujuan *</label>
-                            <select wire:model="destinationAccountId" class="w-full p-2.5 border border-slate-200 rounded-xl bg-[#F3F6F4] text-[#232E28] font-semibold focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] cursor-pointer">
+                            <select wire:model="destinationAccountId" class="w-full p-2.5 border border-slate-200 rounded-xl bg-[#F3F6F4] text-[#2C3E35] font-semibold focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] cursor-pointer">
                                 <option value="">Pilih Akun Tujuan</option>
                                 @foreach($accounts as $acc)
                                     <option value="{{ $acc->id }}">{{ $acc->name }} (Rp {{ number_format($acc->balance, 0, ',', '.') }})</option>
@@ -345,14 +345,14 @@
 
                     <div>
                         <label class="block text-[#718379] font-bold uppercase tracking-wider text-[11px] mb-1">Keterangan / Alasan *</label>
-                        <input type="text" wire:model="description" class="w-full p-2.5 border border-slate-200 rounded-xl bg-[#F3F6F4] text-[#232E28] focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] font-semibold" required />
+                        <input type="text" wire:model="description" class="w-full p-2.5 border border-slate-200 rounded-xl bg-[#F3F6F4] text-[#2C3E35] focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] font-semibold" required />
                     </div>
 
                     <div class="pt-3 flex gap-2">
                         <button type="submit" class="flex-1 py-3 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-2xl transition shadow-sm text-xs uppercase tracking-wider cursor-pointer">
                             Proses Mutasi Saldo
                         </button>
-                        <button type="button" wire:click="$set('showModal', null)" class="py-3 px-4 bg-slate-100 hover:bg-slate-200 text-[#232E28] font-bold rounded-2xl text-xs transition cursor-pointer">
+                        <button type="button" wire:click="$set('showModal', null)" class="py-3 px-4 bg-slate-100 hover:bg-slate-200 text-[#2C3E35] font-bold rounded-2xl text-xs transition cursor-pointer">
                             Batal
                         </button>
                     </div>

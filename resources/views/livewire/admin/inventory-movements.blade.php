@@ -1,7 +1,7 @@
 <div class="space-y-5">
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-            <h1 class="text-2xl font-extrabold text-[#232E28] tracking-tight">Riwayat Stok Masuk / Keluar</h1>
+            <h1 class="text-2xl font-extrabold text-[#2C3E35] tracking-tight">Riwayat Stok Masuk / Keluar</h1>
             <p class="text-sm text-[#718379] font-medium mt-0.5">Riwayat lengkap pergerakan keluar-masuk barang (Penjualan, Opname, Penyesuaian, dan Pemulihan Transaksi).</p>
         </div>
     </div>
@@ -12,14 +12,14 @@
                 type="text"
                 wire:model.live.debounce.300ms="search"
                 placeholder="Cari nama barang, barcode, tipe..."
-                class="w-full h-11 pl-9 pr-3.5 border border-slate-200 rounded-xl text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] bg-[#F3F6F4] text-[#232E28] placeholder:text-[#718379]"
+                class="w-full h-11 pl-9 pr-3.5 border border-slate-200 rounded-xl text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] bg-[#F3F6F4] text-[#2C3E35] placeholder:text-[#718379]"
             />
             <svg class="w-4 h-4 text-slate-400 absolute left-3 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
             </svg>
         </div>
 
-        <select wire:model.live="movementType" class="w-full md:w-auto h-11 px-3.5 border border-slate-200 rounded-xl bg-white font-bold text-sm text-[#232E28] focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]">
+        <select wire:model.live="movementType" class="w-full md:w-auto h-11 px-3.5 border border-slate-200 rounded-xl bg-white font-bold text-sm text-[#2C3E35] focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]">
             <option value="ALL">Semua Tipe Pergerakan</option>
             @foreach($movementTypes as $type)
                 <option value="{{ $type }}">
@@ -85,7 +85,7 @@
                         <tr class="hover:bg-[#F3F6F4]/60 transition">
                             <td class="py-3.5 px-4 text-[#718379] font-semibold text-xs whitespace-nowrap">{{ $movement->created_at->format('d M Y, H:i') }}</td>
                             <td class="py-3.5 px-4">
-                                <div class="font-bold text-[#232E28] text-sm">{{ $movement->product?->name ?? '-' }}</div>
+                                <div class="font-bold text-[#2C3E35] text-sm">{{ $movement->product?->name ?? '-' }}</div>
                                 <div class="text-xs text-[#718379] font-mono mt-0.5">Barcode: {{ $movement->product?->effective_barcode ?? '-' }} &bull; {{ $movement->location?->name ?? '-' }}</div>
                             </td>
                             <td class="py-3.5 px-4 whitespace-nowrap">
@@ -96,7 +96,7 @@
                             <td class="py-3.5 px-4 text-center font-mono font-bold whitespace-nowrap text-sm">{{ $movement->quantity_after }}</td>
                             <td class="py-3.5 px-4 whitespace-nowrap">
                                 @if($movement->notes)
-                                    <span class="px-2.5 py-1 rounded-md bg-[#F3F6F4] text-[#232E28] font-mono text-xs font-bold border border-slate-200/80 inline-block whitespace-nowrap">
+                                    <span class="px-2.5 py-1 rounded-md bg-[#F3F6F4] text-[#2C3E35] font-mono text-xs font-bold border border-slate-200/80 inline-block whitespace-nowrap">
                                         {{ $movement->notes }}
                                     </span>
                                 @else

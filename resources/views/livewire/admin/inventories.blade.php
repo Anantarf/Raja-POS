@@ -2,13 +2,13 @@
     <!-- Header -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-            <h1 class="text-xl sm:text-2xl font-extrabold text-[#232E28] tracking-tight">Stok &amp; Hitung Fisik Barang</h1>
+            <h1 class="text-xl sm:text-2xl font-extrabold text-[#2C3E35] tracking-tight">Stok &amp; Hitung Fisik Barang</h1>
             <p class="text-xs sm:text-sm text-[#718379] font-medium mt-0.5">Pantau sisa stok barang real-time, riwayat hitung fisik (opname), dan penyesuaian stok.</p>
         </div>
 
         @if($activeTab === 'opname')
             <div class="flex flex-wrap items-center gap-2">
-                <button wire:click="openBulkModal" class="h-10 px-4 py-2 bg-slate-100 hover:bg-[#E3EEE8] text-[#232E28] hover:text-[#3F7A5D] border border-slate-200/80 font-extrabold rounded-2xl text-sm transition flex items-center gap-2 shadow-sm active:scale-95 cursor-pointer uppercase tracking-wider shrink-0">
+                <button wire:click="openBulkModal" class="h-10 px-4 py-2 bg-slate-100 hover:bg-[#E3EEE8] text-[#2C3E35] hover:text-[#3F7A5D] border border-slate-200/80 font-extrabold rounded-2xl text-sm transition flex items-center gap-2 shadow-sm active:scale-95 cursor-pointer uppercase tracking-wider shrink-0">
                     <svg class="w-4 h-4 text-[#3F7A5D]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
                     </svg>
@@ -26,11 +26,11 @@
 
     <!-- Tab Switcher -->
     <div class="border-b border-slate-200/80 flex items-center gap-2 text-sm">
-        <button wire:click="setTab('stok')" class="px-5 py-3 font-extrabold border-b-2 transition flex items-center gap-2 cursor-pointer text-sm {{ $activeTab === 'stok' ? 'border-[#3F7A5D] text-[#3F7A5D] bg-[#E3EEE8]/50 rounded-t-xl' : 'border-transparent text-[#718379] hover:text-[#232E28]' }}">
+        <button wire:click="setTab('stok')" class="px-5 py-3 font-extrabold border-b-2 transition flex items-center gap-2 cursor-pointer text-sm {{ $activeTab === 'stok' ? 'border-[#3F7A5D] text-[#3F7A5D] bg-[#E3EEE8]/50 rounded-t-xl' : 'border-transparent text-[#718379] hover:text-[#2C3E35]' }}">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
             <span>Stok Barang Saat Ini</span>
         </button>
-        <button wire:click="setTab('opname')" class="px-5 py-3 font-extrabold border-b-2 transition flex items-center gap-2 cursor-pointer text-sm {{ $activeTab === 'opname' ? 'border-[#3F7A5D] text-[#3F7A5D] bg-[#E3EEE8]/50 rounded-t-xl' : 'border-transparent text-[#718379] hover:text-[#232E28]' }}">
+        <button wire:click="setTab('opname')" class="px-5 py-3 font-extrabold border-b-2 transition flex items-center gap-2 cursor-pointer text-sm {{ $activeTab === 'opname' ? 'border-[#3F7A5D] text-[#3F7A5D] bg-[#E3EEE8]/50 rounded-t-xl' : 'border-transparent text-[#718379] hover:text-[#2C3E35]' }}">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
             <span>Riwayat Hitung Stok (Opname)</span>
         </button>
@@ -45,7 +45,7 @@
                     type="text"
                     wire:model.live.debounce.300ms="search"
                     placeholder="Cari nama barang, barcode..."
-                    class="w-full h-11 pl-9 pr-3.5 py-2.5 border border-slate-200 rounded-xl text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] bg-[#F3F6F4] text-[#232E28] placeholder:text-[#718379]"
+                    class="w-full h-11 pl-9 pr-3.5 py-2.5 border border-slate-200 rounded-xl text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] bg-[#F3F6F4] text-[#2C3E35] placeholder:text-[#718379]"
                 />
                 <svg class="w-4 h-4 text-slate-400 absolute left-3 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
@@ -53,8 +53,8 @@
             </div>
 
             <div class="w-full md:w-auto flex items-center gap-2 text-sm">
-                <label class="font-bold text-[#232E28]">Lokasi Toko:</label>
-                <select wire:model.live="selectedLocationId" class="h-11 px-3 py-2.5 border border-slate-200 rounded-xl text-sm font-bold bg-white text-[#232E28] focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]">
+                <label class="font-bold text-[#2C3E35]">Lokasi Toko:</label>
+                <select wire:model.live="selectedLocationId" class="h-11 px-3 py-2.5 border border-slate-200 rounded-xl text-sm font-bold bg-white text-[#2C3E35] focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]">
                     @foreach($locations as $loc)
                         <option value="{{ $loc->id }}">{{ $loc->name }}</option>
                     @endforeach
@@ -106,16 +106,16 @@
                         @forelse($inventories as $inv)
                             <tr class="hover:bg-[#F3F6F4]/60 transition">
                                 <td class="py-3.5 px-4">
-                                    <div class="font-bold text-[#232E28] leading-tight text-sm">{{ $inv->product?->name }}</div>
+                                    <div class="font-bold text-[#2C3E35] leading-tight text-sm">{{ $inv->product?->name }}</div>
                                     <div class="text-xs text-[#718379] font-mono mt-1 flex items-center gap-2">
                                         <span class="bg-[#F3F6F4] text-[#3F7A5D] border border-slate-200/80 px-2.5 py-0.5 rounded-md font-bold font-mono text-[11px]">Barcode: {{ $inv->product?->effective_barcode }}</span>
                                         <span>&bull; Kategori: {{ $inv->product?->category?->name ?? 'Umum' }}</span>
                                     </div>
                                 </td>
-                                <td class="py-3.5 px-4 font-semibold text-[#232E28] text-sm">
+                                <td class="py-3.5 px-4 font-semibold text-[#2C3E35] text-sm">
                                     {{ $inv->location?->name }}
                                 </td>
-                                <td class="py-3.5 px-4 text-center font-mono font-extrabold text-base text-[#232E28]">
+                                <td class="py-3.5 px-4 text-center font-mono font-extrabold text-base text-[#2C3E35]">
                                     {{ number_format($inv->quantity, 0, ',', '.') }}
                                 </td>
                                 <td class="py-3.5 px-4 text-center">
@@ -124,7 +124,7 @@
                                     </span>
                                 </td>
                                 <td class="py-3.5 px-4 text-center">
-                                    <button wire:click="openAdjustmentModal({{ $inv->id }})" class="px-3 py-1.5 bg-slate-100 hover:bg-[#E3EEE8] hover:text-[#3F7A5D] text-[#232E28] rounded-xl text-xs font-extrabold transition border border-slate-200/80 inline-flex items-center gap-1.5 active:scale-95 cursor-pointer">
+                                    <button wire:click="openAdjustmentModal({{ $inv->id }})" class="px-3 py-1.5 bg-slate-100 hover:bg-[#E3EEE8] hover:text-[#3F7A5D] text-[#2C3E35] rounded-xl text-xs font-extrabold transition border border-slate-200/80 inline-flex items-center gap-1.5 active:scale-95 cursor-pointer">
                                         <span>Adjust Stok</span>
                                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
@@ -156,7 +156,7 @@
                     type="text"
                     wire:model.live.debounce.300ms="opnameSearch"
                     placeholder="Cari No. Opname, nama barang, barcode..."
-                    class="w-full pl-9 pr-3.5 py-2.5 border border-slate-200 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] bg-[#F3F6F4] text-[#232E28] placeholder:text-[#718379]"
+                    class="w-full pl-9 pr-3.5 py-2.5 border border-slate-200 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] bg-[#F3F6F4] text-[#2C3E35] placeholder:text-[#718379]"
                 />
                 <svg class="w-4 h-4 text-slate-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
@@ -194,17 +194,17 @@
                                 </td>
                                 <td class="py-3.5 px-4">
                                     @if($itemsCount > 1)
-                                        <div class="font-bold text-[#232E28] text-sm flex items-center gap-1.5">
+                                        <div class="font-bold text-[#2C3E35] text-sm flex items-center gap-1.5">
                                             <span>Audit Opname Massal</span>
                                             <span class="bg-[#E3EEE8] text-[#3F7A5D] text-[10px] font-extrabold px-2 py-0.5 rounded-md">{{ $itemsCount }} Barang</span>
                                         </div>
                                         <div class="text-xs text-[#718379] font-semibold">{{ $opn->location?->name }} &bull; {{ $firstItem?->product?->name }} & dll.</div>
                                     @else
-                                        <div class="font-bold text-[#232E28] text-sm">{{ $firstItem?->product?->name ?? 'Barang' }}</div>
+                                        <div class="font-bold text-[#2C3E35] text-sm">{{ $firstItem?->product?->name ?? 'Barang' }}</div>
                                         <div class="text-xs text-[#718379] font-semibold">{{ $opn->location?->name }}</div>
                                     @endif
                                 </td>
-                                <td class="py-3.5 px-4 text-center font-mono font-bold text-[#232E28] whitespace-nowrap">{{ $totalSystem }}</td>
+                                <td class="py-3.5 px-4 text-center font-mono font-bold text-[#2C3E35] whitespace-nowrap">{{ $totalSystem }}</td>
                                 <td class="py-3.5 px-4 text-center font-mono font-extrabold text-[#3F7A5D] text-sm whitespace-nowrap">{{ $totalPhysical }}</td>
                                 <td class="py-3.5 px-4 text-center font-mono font-extrabold whitespace-nowrap {{ $totalDiff < 0 ? 'text-rose-600' : ($totalDiff > 0 ? 'text-emerald-600' : 'text-[#718379]') }}">
                                     {{ $totalDiff > 0 ? '+' : '' }}{{ $totalDiff }}
@@ -216,7 +216,7 @@
                                 </td>
                                 <td class="py-3.5 px-4 text-center whitespace-nowrap">
                                     <div class="flex items-center justify-center gap-1.5 whitespace-nowrap">
-                                        <button wire:click="openDetailModal({{ $opn->id }})" class="px-3 py-1.5 bg-slate-100 hover:bg-[#E3EEE8] text-[#232E28] hover:text-[#3F7A5D] border border-slate-200/80 rounded-xl text-xs font-extrabold transition cursor-pointer shadow-sm">
+                                        <button wire:click="openDetailModal({{ $opn->id }})" class="px-3 py-1.5 bg-slate-100 hover:bg-[#E3EEE8] text-[#2C3E35] hover:text-[#3F7A5D] border border-slate-200/80 rounded-xl text-xs font-extrabold transition cursor-pointer shadow-sm">
                                             Detail
                                         </button>
                                         @if($opn->status === 'DRAFT')
@@ -243,16 +243,16 @@
 
     <!-- Manual Stock Adjustment Modal (Tab 1) -->
     @if($showAdjustmentModal)
-        <div class="fixed inset-0 bg-[#232E28]/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+        <div class="fixed inset-0 bg-[#2C3E35]/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
             <div class="bg-white rounded-2xl p-6 max-w-md w-full shadow-xl space-y-4 border border-slate-100">
                 <div class="flex items-center justify-between border-b pb-3">
-                    <h3 class="text-base font-extrabold text-[#232E28]">Penyesuaian Manual Stok</h3>
+                    <h3 class="text-base font-extrabold text-[#2C3E35]">Penyesuaian Manual Stok</h3>
                     <button wire:click="$set('showAdjustmentModal', false)" class="text-slate-400 hover:text-slate-600 text-lg font-bold">&times;</button>
                 </div>
 
                 <form wire:submit.prevent="processAdjustment" class="space-y-3.5 text-xs font-medium">
                     <div>
-                        <label class="block text-[#232E28] font-bold mb-1">Tipe Penyesuaian</label>
+                        <label class="block text-[#2C3E35] font-bold mb-1">Tipe Penyesuaian</label>
                         <select wire:model="adjustType" class="w-full p-2.5 border border-slate-200 rounded-xl bg-white font-semibold focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]">
                             <option value="SET">Atur Jumlah Baru (SET)</option>
                             <option value="ADD">Tambah Stok (+)</option>
@@ -261,12 +261,12 @@
                     </div>
 
                     <div>
-                        <label class="block text-[#232E28] font-bold mb-1">Jumlah Nilai *</label>
+                        <label class="block text-[#2C3E35] font-bold mb-1">Jumlah Nilai *</label>
                         <input type="number" wire:model="adjustQuantity" min="0" class="w-full p-2.5 border border-slate-200 rounded-xl font-mono font-extrabold text-sm text-[#3F7A5D] focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]" required />
                     </div>
 
                     <div>
-                        <label class="block text-[#232E28] font-bold mb-1">Alasan Penyesuaian *</label>
+                        <label class="block text-[#2C3E35] font-bold mb-1">Alasan Penyesuaian *</label>
                         <input type="text" wire:model="adjustReason" class="w-full p-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]" required placeholder="Misal: Penyesuaian opname manual" />
                     </div>
 
@@ -274,7 +274,7 @@
                         <button type="submit" class="flex-1 py-3 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-2xl transition text-xs uppercase tracking-wider shadow-sm cursor-pointer">
                             Update Stok Fisik
                         </button>
-                        <button type="button" wire:click="$set('showAdjustmentModal', false)" class="py-3 px-4 bg-slate-100 hover:bg-slate-200 text-[#232E28] font-bold rounded-2xl text-xs transition">
+                        <button type="button" wire:click="$set('showAdjustmentModal', false)" class="py-3 px-4 bg-slate-100 hover:bg-slate-200 text-[#2C3E35] font-bold rounded-2xl text-xs transition">
                             Batal
                         </button>
                     </div>
@@ -285,10 +285,10 @@
 
     <!-- Quick Single Item Modal (Tab 2) -->
     @if($showCreateModal)
-        <div class="fixed inset-0 bg-[#232E28]/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+        <div class="fixed inset-0 bg-[#2C3E35]/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
             <div class="bg-white rounded-2xl p-6 max-w-md w-full shadow-xl space-y-4 border border-slate-100">
                 <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-                    <h3 class="text-base font-extrabold text-[#232E28]">Opname Cepat (1 Barang)</h3>
+                    <h3 class="text-base font-extrabold text-[#2C3E35]">Opname Cepat (1 Barang)</h3>
                     <button type="button" wire:click="$set('showCreateModal', false)" class="text-slate-400 hover:text-slate-600 p-1">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                     </button>
@@ -296,7 +296,7 @@
 
                 <form wire:submit.prevent="createSession" class="space-y-4 text-xs">
                     <div>
-                        <label class="block font-bold text-[#232E28] mb-1.5">Lokasi Toko</label>
+                        <label class="block font-bold text-[#2C3E35] mb-1.5">Lokasi Toko</label>
                         <select wire:model="location_id" class="w-full p-3 border border-slate-200 rounded-xl bg-[#F3F6F4] text-xs font-semibold focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] transition cursor-pointer" required>
                             <option value="">Pilih Lokasi Toko</option>
                             @foreach($locations as $loc)
@@ -306,7 +306,7 @@
                     </div>
 
                     <div>
-                        <label class="block font-bold text-[#232E28] mb-1.5">Produk *</label>
+                        <label class="block font-bold text-[#2C3E35] mb-1.5">Produk *</label>
                         <select wire:model="product_id" class="w-full p-3 border border-slate-200 rounded-xl bg-[#F3F6F4] text-xs font-semibold focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] transition cursor-pointer" required>
                             <option value="">Pilih Produk</option>
                             @foreach($products as $prod)
@@ -316,17 +316,17 @@
                     </div>
 
                     <div>
-                        <label class="block font-bold text-[#232E28] mb-1.5">Hasil Hitung Stok Fisik *</label>
+                        <label class="block font-bold text-[#2C3E35] mb-1.5">Hasil Hitung Stok Fisik *</label>
                         <input type="number" wire:model="physical_qty" class="w-full p-3 border border-slate-200 rounded-xl bg-[#F3F6F4] text-xs font-mono font-bold focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] transition" required min="0" placeholder="0" />
                     </div>
 
                     <div>
-                        <label class="block font-bold text-[#232E28] mb-1.5">Catatan / Alasan Opname</label>
+                        <label class="block font-bold text-[#2C3E35] mb-1.5">Catatan / Alasan Opname</label>
                         <textarea wire:model="notes" rows="2" class="w-full p-3 border border-slate-200 rounded-xl bg-[#F3F6F4] text-xs focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] transition" placeholder="Misal: Barang hilang/rusak saat pajang"></textarea>
                     </div>
 
                     <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
-                        <button type="button" wire:click="$set('showCreateModal', false)" class="py-2.5 px-4 bg-slate-100 hover:bg-slate-200 text-[#232E28] font-bold rounded-2xl text-xs transition cursor-pointer">Batal</button>
+                        <button type="button" wire:click="$set('showCreateModal', false)" class="py-2.5 px-4 bg-slate-100 hover:bg-slate-200 text-[#2C3E35] font-bold rounded-2xl text-xs transition cursor-pointer">Batal</button>
                         <button type="submit" class="py-2.5 px-5 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-2xl text-xs uppercase tracking-wider transition active:scale-95 shadow-sm cursor-pointer">Simpan Opname</button>
                     </div>
                 </form>
@@ -336,11 +336,11 @@
 
     <!-- Bulk Opname Sheet Modal (Tab 2) -->
     @if($showBulkModal)
-        <div class="fixed inset-0 bg-[#232E28]/60 backdrop-blur-sm flex items-center justify-center z-50 p-3 sm:p-6">
+        <div class="fixed inset-0 bg-[#2C3E35]/60 backdrop-blur-sm flex items-center justify-center z-50 p-3 sm:p-6">
             <div class="bg-white rounded-2xl p-5 sm:p-6 max-w-5xl w-full shadow-2xl space-y-4 border border-slate-100 max-h-[90vh] flex flex-col">
                 <div class="flex items-center justify-between border-b border-slate-100 pb-3 shrink-0">
                     <div>
-                        <h3 class="text-lg font-extrabold text-[#232E28]">Lembar Hitung Stock Opname Massal</h3>
+                        <h3 class="text-lg font-extrabold text-[#2C3E35]">Lembar Hitung Stock Opname Massal</h3>
                         <p class="text-xs text-[#718379] font-medium mt-0.5">Audit seluruh barang toko sekaligus. Masukkan hasil hitung fisik pada kolom yang tersedia.</p>
                     </div>
                     <button type="button" wire:click="$set('showBulkModal', false)" class="text-slate-400 hover:text-slate-600 p-1">
@@ -351,7 +351,7 @@
                 <!-- Filters -->
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs shrink-0 bg-[#F3F6F4] p-3 rounded-xl border border-slate-200/80">
                     <div>
-                        <label class="block font-bold text-[#232E28] mb-1">Lokasi Toko</label>
+                        <label class="block font-bold text-[#2C3E35] mb-1">Lokasi Toko</label>
                         <select wire:model.live="bulk_location_id" class="w-full p-2.5 border border-slate-200 rounded-xl bg-white font-semibold cursor-pointer">
                             @foreach($locations as $loc)
                                 <option value="{{ $loc->id }}">{{ $loc->name }}</option>
@@ -359,7 +359,7 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block font-bold text-[#232E28] mb-1">Filter Kategori</label>
+                        <label class="block font-bold text-[#2C3E35] mb-1">Filter Kategori</label>
                         <select wire:model.live="bulk_category_id" class="w-full p-2.5 border border-slate-200 rounded-xl bg-white font-semibold cursor-pointer">
                             <option value="">Semua Kategori</option>
                             @foreach($categories as $cat)
@@ -368,7 +368,7 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block font-bold text-[#232E28] mb-1">Cari Barang / Barcode</label>
+                        <label class="block font-bold text-[#2C3E35] mb-1">Cari Barang / Barcode</label>
                         <input type="text" wire:model.live.debounce.300ms="bulk_search" placeholder="Cari nama barang..." class="w-full p-2.5 border border-slate-200 rounded-xl bg-white font-semibold" />
                     </div>
                 </div>
@@ -394,10 +394,10 @@
                                 @endphp
                                 <tr class="hover:bg-[#F3F6F4]/60 transition {{ $diff != 0 ? 'bg-amber-50/50' : '' }}">
                                     <td class="py-3 px-4">
-                                        <div class="font-bold text-[#232E28] text-xs">{{ $item['product_name'] }}</div>
+                                        <div class="font-bold text-[#2C3E35] text-xs">{{ $item['product_name'] }}</div>
                                         <div class="text-[11px] text-[#718379] font-mono mt-0.5">Barcode: {{ $item['effective_barcode'] }}</div>
                                     </td>
-                                    <td class="py-3 px-4 text-center font-mono font-bold text-[#232E28]">{{ $sysQty }}</td>
+                                    <td class="py-3 px-4 text-center font-mono font-bold text-[#2C3E35]">{{ $sysQty }}</td>
                                     <td class="py-3 px-4 text-center">
                                         <input
                                             type="number"
@@ -432,10 +432,10 @@
                 <!-- Footer Summary & Actions -->
                 <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-3 border-t border-slate-100 shrink-0 text-xs">
                     <div class="text-[#718379] font-medium">
-                        Total Barang Diaudit: <span class="font-mono font-bold text-[#232E28]">{{ count($bulkItems) }}</span> Item
+                        Total Barang Diaudit: <span class="font-mono font-bold text-[#2C3E35]">{{ count($bulkItems) }}</span> Item
                     </div>
                     <div class="flex items-center gap-2">
-                        <button type="button" wire:click="$set('showBulkModal', false)" class="py-2.5 px-4 bg-slate-100 hover:bg-slate-200 text-[#232E28] font-bold rounded-2xl text-xs transition cursor-pointer">Batal</button>
+                        <button type="button" wire:click="$set('showBulkModal', false)" class="py-2.5 px-4 bg-slate-100 hover:bg-slate-200 text-[#2C3E35] font-bold rounded-2xl text-xs transition cursor-pointer">Batal</button>
                         <button type="button" wire:click="createBulkSession" class="py-2.5 px-5 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-2xl text-xs uppercase tracking-wider transition active:scale-95 shadow-sm cursor-pointer">
                             Simpan & Ajukan Opname Massal
                         </button>
@@ -447,11 +447,11 @@
 
     <!-- Session Detail Modal (Tab 2) -->
     @if($showDetailModal && $selectedOpnameDetail)
-        <div class="fixed inset-0 bg-[#232E28]/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+        <div class="fixed inset-0 bg-[#2C3E35]/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
             <div class="bg-white rounded-2xl p-6 max-w-2xl w-full shadow-xl space-y-4 border border-slate-100 max-h-[85vh] flex flex-col">
                 <div class="flex items-center justify-between border-b border-slate-100 pb-3 shrink-0">
                     <div>
-                        <h3 class="text-base font-extrabold text-[#232E28]">Detail Sesi Stock Opname</h3>
+                        <h3 class="text-base font-extrabold text-[#2C3E35]">Detail Sesi Stock Opname</h3>
                         <div class="text-xs text-[#718379] font-mono mt-0.5">{{ $selectedOpnameDetail->formatted_opname_number }} &bull; {{ $selectedOpnameDetail->location?->name }}</div>
                     </div>
                     <button type="button" wire:click="$set('showDetailModal', false)" class="text-slate-400 hover:text-slate-600 p-1">
@@ -474,7 +474,7 @@
                             @foreach($selectedOpnameDetail->items as $item)
                                 <tr class="hover:bg-[#F3F6F4]/60">
                                     <td class="py-3 px-4">
-                                        <div class="font-bold text-[#232E28]">{{ $item->product?->name }}</div>
+                                        <div class="font-bold text-[#2C3E35]">{{ $item->product?->name }}</div>
                                         <div class="text-[11px] text-[#718379] font-mono">Barcode: {{ $item->product?->effective_barcode }}</div>
                                     </td>
                                     <td class="py-3 px-4 text-center font-mono font-bold">{{ $item->system_quantity }}</td>
@@ -493,7 +493,7 @@
                     <div class="text-[#718379]">
                         Status: <span class="font-bold uppercase {{ $selectedOpnameDetail->status === 'COMPLETED' ? 'text-[#3F7A5D]' : 'text-amber-800' }}">{{ $selectedOpnameDetail->status === 'COMPLETED' ? 'SELESAI' : 'DRAFT' }}</span>
                     </div>
-                    <button type="button" wire:click="$set('showDetailModal', false)" class="py-2 px-4 bg-slate-100 hover:bg-slate-200 text-[#232E28] font-bold rounded-xl">Tutup</button>
+                    <button type="button" wire:click="$set('showDetailModal', false)" class="py-2 px-4 bg-slate-100 hover:bg-slate-200 text-[#2C3E35] font-bold rounded-xl">Tutup</button>
                 </div>
             </div>
         </div>
