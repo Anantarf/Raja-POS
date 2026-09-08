@@ -79,14 +79,20 @@
                             type="text"
                             wire:model.live.debounce.300ms="search"
                             placeholder="Cari nama produk / scan barcode..."
-                            class="w-full h-11 pl-10 pr-9 py-2 text-base font-semibold border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] bg-[#F3F6F4] placeholder:text-[#718379] transition-all"
+                            aria-label="Cari nama produk atau scan barcode"
+                            class="w-full h-11 pl-10 pr-10 py-2 text-base font-semibold border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/30 focus:border-[#3F7A5D] bg-[#F3F6F4] placeholder:text-[#718379] transition-all"
                             autofocus
                         />
                         <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                         </svg>
                         @if($search)
-                            <button type="button" wire:click="$set('search', '')" aria-label="Bersihkan pencarian" class="absolute right-3 top-3 text-slate-400 hover:text-slate-600 text-xs font-bold bg-slate-200 rounded-full w-5 h-5 flex items-center justify-center">
+                            <button
+                                type="button"
+                                wire:click="$set('search', '')"
+                                aria-label="Bersihkan pencarian"
+                                class="absolute right-2 top-2 text-slate-500 hover:text-slate-800 text-sm font-extrabold bg-slate-200 hover:bg-slate-300 rounded-lg w-7 h-7 flex items-center justify-center transition active-press cursor-pointer"
+                            >
                                 &times;
                             </button>
                         @endif
@@ -95,7 +101,8 @@
                     <div class="flex items-center justify-between sm:justify-end gap-2 shrink-0">
                         <select
                             wire:model.live="selectedType"
-                            class="h-11 px-3 py-2 border border-slate-200 rounded-xl bg-white text-sm font-bold text-[#232E28] focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] shrink-0 cursor-pointer shadow-xs"
+                            aria-label="Filter Jenis Produk"
+                            class="h-11 px-3 py-2 border border-slate-200 rounded-xl bg-white text-sm font-bold text-[#232E28] focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/30 focus:border-[#3F7A5D] shrink-0 cursor-pointer shadow-xs"
                         >
                             <option value="ALL">Semua Jenis</option>
                             <option value="PHYSICAL">Fisik</option>
@@ -131,9 +138,11 @@
 
                 <!-- Category Tabs Row + Total Item Count Badge -->
                 <div class="flex items-center justify-between gap-3 shrink-0 pt-0.5">
-                    <div class="flex items-center gap-1.5 overflow-x-auto py-0.5 px-0.5 flex-1 min-w-0 no-scrollbar">
+                    <div role="tablist" aria-label="Kategori Produk" class="flex items-center gap-1.5 overflow-x-auto py-0.5 px-0.5 flex-1 min-w-0 no-scrollbar">
                         <button
                             type="button"
+                            role="tab"
+                            aria-selected="{{ $selectedCategory === null ? 'true' : 'false' }}"
                             wire:click="$set('selectedCategory', null)"
                             class="h-9 px-3.5 py-1.5 rounded-xl text-sm font-extrabold transition-all shrink-0 border cursor-pointer {{ $selectedCategory === null ? 'bg-[#3F7A5D] text-white border-[#3F7A5D] shadow-xs' : 'bg-[#F3F6F4] text-[#232E28] border-slate-200 hover:bg-slate-200' }}"
                         >
@@ -142,6 +151,8 @@
                         @foreach($categories as $cat)
                             <button
                                 type="button"
+                                role="tab"
+                                aria-selected="{{ $selectedCategory === $cat->id ? 'true' : 'false' }}"
                                 wire:click="$set('selectedCategory', {{ $cat->id }})"
                                 class="h-9 px-3.5 py-1.5 rounded-xl text-sm font-extrabold transition-all shrink-0 border cursor-pointer {{ $selectedCategory === $cat->id ? 'bg-[#3F7A5D] text-white border-[#3F7A5D] shadow-xs' : 'bg-[#F3F6F4] text-[#232E28] border-slate-200 hover:bg-slate-200' }}"
                             >
@@ -159,7 +170,7 @@
             <!-- Product Display (Grid Cards or Aligned List Rows) -->
             <div class="flex-1 overflow-y-auto pr-1 pb-6">
                 @if($viewMode === 'grid')
-                    <!-- Product Cards Grid (Spacious 3-Column Layout with Comfortable Touch Targets & Zero Clipping) -->
+                    <!-- Product Cards Grid (Spacious 3-Column Layout with Keyboard Accessibility) -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-3.5">
                         @forelse($products as $product)
                             @php
@@ -175,8 +186,13 @@
                             @endphp
 
                             <div
+                                tabindex="0"
+                                role="button"
+                                aria-label="Tambah {{ $product->name }} ke keranjang - Rp {{ number_format((float) $product->selling_price, 0, ',', '.') }}"
                                 wire:click="addToCart({{ $product->id }})"
-                                class="bg-white border border-[#E3EEE8] hover:border-[#3F7A5D] rounded-2xl overflow-hidden flex flex-col justify-between h-[215px] sm:h-[238px] cursor-pointer transition-all duration-200 relative group hover-lift active-press shadow-xs hover:shadow-md {{ $isIncomplete ? 'opacity-65 bg-rose-50/20' : '' }}"
+                                @keydown.enter="$wire.addToCart({{ $product->id }})"
+                                @keydown.space.prevent="$wire.addToCart({{ $product->id }})"
+                                class="bg-white border border-[#E3EEE8] hover:border-[#3F7A5D] focus:border-[#3F7A5D] focus:ring-2 focus:ring-[#3F7A5D]/30 focus:outline-none rounded-2xl overflow-hidden flex flex-col justify-between h-[215px] sm:h-[238px] cursor-pointer transition-all duration-200 relative group hover-lift active-press shadow-xs hover:shadow-md {{ $isIncomplete ? 'opacity-65 bg-rose-50/20' : '' }}"
                             >
                                 <div>
                                     <!-- Top Image/Banner Container -->
