@@ -19,33 +19,33 @@
     --color-emco-body: #F3F6F4;
     --color-emco-muted: #5F7167;
 
-    --text-xs: 0.78rem;
+    --text-2xs: 0.65rem;
+    --text-2xs--line-height: 0.95rem;
+    --text-xs: 0.75rem;
     --text-xs--line-height: 1.15rem;
-    --text-sm: 0.9rem;
-    --text-sm--line-height: 1.35rem;
+    --text-sm: 0.875rem;
+    --text-sm--line-height: 1.3rem;
     --text-base: 1rem;
-    --text-base--line-height: 1.55rem;
-    --text-lg: 1.125rem;
-    --text-lg--line-height: 1.7rem;
-    --text-xl: 1.28rem;
-    --text-xl--line-height: 1.85rem;
-    --text-2xl: 1.55rem;
-    --text-2xl--line-height: 2rem;
-    --text-3xl: 1.9rem;
-    --text-3xl--line-height: 2.35rem;
-    --text-4xl: 2.25rem;
-    --text-4xl--line-height: 2.7rem;
-    --text-5xl: 2.7rem;
-    --text-5xl--line-height: 3.15rem;
+    --text-base--line-height: 1.5rem;
+    --text-lg: 1.25rem;
+    --text-lg--line-height: 1.75rem;
+    --text-xl: 1.5rem;
+    --text-xl--line-height: 2rem;
+    --text-2xl: 1.875rem;
+    --text-2xl--line-height: 2.35rem;
+    --text-3xl: 2.35rem;
+    --text-3xl--line-height: 2.85rem;
+    --text-4xl: 2.95rem;
+    --text-4xl--line-height: 3.45rem;
 }
 @layer base {
     html {
-        font-size: 16.5px;
+        font-size: 15px;
     }
 
     body {
         font-size: 1rem;
-        line-height: 1.55;
+        line-height: 1.5;
     }
 }
 
