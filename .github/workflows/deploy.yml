@@ -76,21 +76,12 @@ jobs:
             php artisan route:clear
             php artisan event:clear
 
-            echo "Building frontend assets..."
-            if command -v npm > /dev/null 2>&1; then
-              if npm ci --no-audit --no-fund && npm run build; then
-                echo "Frontend assets built on server."
-              else
-                echo "Frontend build failed on server; using committed public/build assets."
-              fi
-            else
-              echo "npm not found; using committed public/build assets."
-            fi
+            echo "Using committed frontend assets..."
             if [ ! -f public/build/manifest.json ]; then
-              echo "public/build/manifest.json is missing."
+              echo "public/build/manifest.json is missing. Run npm run build locally and commit public/build."
               exit 1
             fi
-            echo "Built manifest:"
+            echo "Committed manifest:"
             cat public/build/manifest.json
 
             echo "Syncing frontend build to public web root..."
