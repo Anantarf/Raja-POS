@@ -581,47 +581,7 @@
                                 </div>
                             </div>
 
-                            <!-- Dynamic Smart Quick Cash Nominal Shortcuts for Cash Payment (Touchscreen Friendly 44px Min Target) -->
-                            @if($selectedPm && $selectedPm->type === 'CASH' && $this->grand_total > 0)
-                                @php
-                                    $gt = $this->grand_total;
-                                    $preset1 = (int) (ceil($gt / 50000) * 50000);
-                                    if ($preset1 <= $gt) {
-                                        $preset1 += 50000;
-                                    }
-                                    $preset2 = $preset1 + 50000;
-                                    if ($gt >= 100000 && $preset1 < 200000 && $preset2 < 200000) {
-                                        $preset2 = 200000;
-                                    }
-                                @endphp
-                                <div class="flex items-center gap-2 pt-1 overflow-x-auto no-scrollbar">
-                                    <button
-                                        type="button"
-                                        wire:click="$set('payments.{{ $index }}.amount', {{ min(1000000000, $this->grand_total) }})"
-                                        class="h-11 min-h-[44px] px-3.5 py-2 bg-emerald-50 hover:bg-emerald-100 text-[#3F7A5D] border border-emerald-200/80 rounded-xl text-sm font-extrabold transition shrink-0 cursor-pointer shadow-2xs active-press"
-                                    >
-                                        Uang Pas
-                                    </button>
-                                    @if($preset1 > $gt)
-                                        <button
-                                            type="button"
-                                            wire:click="$set('payments.{{ $index }}.amount', {{ $preset1 }})"
-                                            class="h-11 min-h-[44px] px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-200/80 rounded-xl text-sm font-extrabold transition shrink-0 cursor-pointer shadow-2xs active-press font-mono"
-                                        >
-                                            {{ number_format($preset1 / 1000, 0, ',', '.') }}k
-                                        </button>
-                                    @endif
-                                    @if($preset2 > $preset1)
-                                        <button
-                                            type="button"
-                                            wire:click="$set('payments.{{ $index }}.amount', {{ $preset2 }})"
-                                            class="h-11 min-h-[44px] px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-200/80 rounded-xl text-sm font-extrabold transition shrink-0 cursor-pointer shadow-2xs active-press font-mono"
-                                        >
-                                            {{ number_format($preset2 / 1000, 0, ',', '.') }}k
-                                        </button>
-                                    @endif
-                                </div>
-                            @endif
+
 
                             @if($selectedPm && in_array($selectedPm->type, ['TRANSFER', 'E_WALLET']))
                                 <div>
