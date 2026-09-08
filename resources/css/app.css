@@ -19,32 +19,32 @@
     --color-emco-body: #F3F6F4;
     --color-emco-muted: #5F7167;
 
-    --text-xs: 0.82rem;
-    --text-xs--line-height: 1.25rem;
-    --text-sm: 0.95rem;
-    --text-sm--line-height: 1.45rem;
-    --text-base: 1.075rem;
-    --text-base--line-height: 1.7rem;
-    --text-lg: 1.22rem;
-    --text-lg--line-height: 1.9rem;
-    --text-xl: 1.42rem;
-    --text-xl--line-height: 2.05rem;
-    --text-2xl: 1.72rem;
-    --text-2xl--line-height: 2.25rem;
-    --text-3xl: 2.1rem;
-    --text-3xl--line-height: 2.55rem;
-    --text-4xl: 2.55rem;
-    --text-4xl--line-height: 3rem;
-    --text-5xl: 3.1rem;
-    --text-5xl--line-height: 3.55rem;
+    --text-xs: 0.78rem;
+    --text-xs--line-height: 1.15rem;
+    --text-sm: 0.9rem;
+    --text-sm--line-height: 1.35rem;
+    --text-base: 1rem;
+    --text-base--line-height: 1.55rem;
+    --text-lg: 1.125rem;
+    --text-lg--line-height: 1.7rem;
+    --text-xl: 1.28rem;
+    --text-xl--line-height: 1.85rem;
+    --text-2xl: 1.55rem;
+    --text-2xl--line-height: 2rem;
+    --text-3xl: 1.9rem;
+    --text-3xl--line-height: 2.35rem;
+    --text-4xl: 2.25rem;
+    --text-4xl--line-height: 2.7rem;
+    --text-5xl: 2.7rem;
+    --text-5xl--line-height: 3.15rem;
 }
 @layer base {
     html {
-        font-size: 18px;
+        font-size: 16.5px;
     }
 
     body {
         font-size: 1rem;
-        line-height: 1.6;
+        line-height: 1.55;
     }
 }

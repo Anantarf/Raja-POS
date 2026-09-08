@@ -90,7 +90,8 @@ jobs:
               cp -R public/build/. "$PUBLIC_DIR/build/"
               echo "Public manifest after sync:"
               cat "$PUBLIC_DIR/build/manifest.json"
-              grep -q "app-D-hYbSn0.css" "$PUBLIC_DIR/build/manifest.json"
+              grep -q '"resources/css/app.css"' "$PUBLIC_DIR/build/manifest.json"
+              grep -q '"file": "assets/app-' "$PUBLIC_DIR/build/manifest.json"
               touch "$PUBLIC_DIR/index.php"
             else
               echo "Public web root not found: $PUBLIC_DIR"
