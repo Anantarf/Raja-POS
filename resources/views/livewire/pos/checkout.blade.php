@@ -110,6 +110,10 @@
                             <option value="LAYANAN">Layanan</option>
                         </select>
 
+                        <span class="h-11 px-3 flex items-center justify-center rounded-xl bg-[#E3EEE8] text-[#3F7A5D] border border-[#3F7A5D]/20 font-mono font-extrabold text-xs whitespace-nowrap shrink-0" title="Jumlah Katalog Produk">
+                            {{ number_format($totalProductsCount, 0, ',', '.') }} Item
+                        </span>
+
                         <!-- View Mode Toggle (Grid Cards vs List Rows) -->
                         <div class="flex items-center bg-[#F3F6F4] p-1 h-11 rounded-xl border border-slate-200 shrink-0">
                             <button
@@ -136,34 +140,28 @@
                     </div>
                 </div>
 
-                <!-- Category Tabs Row + Total Item Count Badge -->
-                <div class="flex items-center justify-between gap-3 shrink-0 pt-0.5">
-                    <div role="tablist" aria-label="Kategori Produk" class="flex items-center gap-1.5 overflow-x-auto py-0.5 px-0.5 flex-1 min-w-0 no-scrollbar">
+                <!-- Category Tabs Row (Pure Full Width Pill Scrollbar-Free Container) -->
+                <div role="tablist" aria-label="Kategori Produk" class="flex items-center gap-2 overflow-x-auto py-1 px-0.5 w-full shrink-0 no-scrollbar">
+                    <button
+                        type="button"
+                        role="tab"
+                        aria-selected="{{ $selectedCategory === null ? 'true' : 'false' }}"
+                        wire:click="$set('selectedCategory', null)"
+                        class="h-9 px-4 py-1.5 rounded-xl text-sm font-extrabold transition-all shrink-0 border cursor-pointer {{ $selectedCategory === null ? 'bg-[#3F7A5D] text-white border-[#3F7A5D] shadow-xs' : 'bg-[#F3F6F4] text-[#232E28] border-slate-200 hover:bg-slate-200' }}"
+                    >
+                        Semua Kategori
+                    </button>
+                    @foreach($categories as $cat)
                         <button
                             type="button"
                             role="tab"
-                            aria-selected="{{ $selectedCategory === null ? 'true' : 'false' }}"
-                            wire:click="$set('selectedCategory', null)"
-                            class="h-9 px-3.5 py-1.5 rounded-xl text-sm font-extrabold transition-all shrink-0 border cursor-pointer {{ $selectedCategory === null ? 'bg-[#3F7A5D] text-white border-[#3F7A5D] shadow-xs' : 'bg-[#F3F6F4] text-[#232E28] border-slate-200 hover:bg-slate-200' }}"
+                            aria-selected="{{ $selectedCategory === $cat->id ? 'true' : 'false' }}"
+                            wire:click="$set('selectedCategory', {{ $cat->id }})"
+                            class="h-9 px-4 py-1.5 rounded-xl text-sm font-extrabold transition-all shrink-0 border cursor-pointer {{ $selectedCategory === $cat->id ? 'bg-[#3F7A5D] text-white border-[#3F7A5D] shadow-xs' : 'bg-[#F3F6F4] text-[#232E28] border-slate-200 hover:bg-slate-200' }}"
                         >
-                            Semua Kategori
+                            {{ $cat->name }}
                         </button>
-                        @foreach($categories as $cat)
-                            <button
-                                type="button"
-                                role="tab"
-                                aria-selected="{{ $selectedCategory === $cat->id ? 'true' : 'false' }}"
-                                wire:click="$set('selectedCategory', {{ $cat->id }})"
-                                class="h-9 px-3.5 py-1.5 rounded-xl text-sm font-extrabold transition-all shrink-0 border cursor-pointer {{ $selectedCategory === $cat->id ? 'bg-[#3F7A5D] text-white border-[#3F7A5D] shadow-xs' : 'bg-[#F3F6F4] text-[#232E28] border-slate-200 hover:bg-slate-200' }}"
-                            >
-                                {{ $cat->name }}
-                            </button>
-                        @endforeach
-                    </div>
-
-                    <span class="h-9 px-3 flex items-center justify-center rounded-xl bg-[#E3EEE8] text-[#3F7A5D] border border-[#3F7A5D]/20 font-mono font-extrabold text-xs whitespace-nowrap shrink-0" title="Jumlah Katalog Produk">
-                        {{ number_format($totalProductsCount, 0, ',', '.') }} Item
-                    </span>
+                    @endforeach
                 </div>
             </div>
 
