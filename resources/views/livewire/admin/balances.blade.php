@@ -26,7 +26,7 @@
     </div>
 
     <!-- Summary KPI Banner (EMCO Palette Touch) -->
-    <div class="bg-white rounded-2xl p-5 border border-slate-200/80 border-l-4 border-l-[#3F7A5D] shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-5">
+    <div class="bg-gradient-to-r from-[#3F7A5D]/10 via-[#3F7A5D]/5 to-white rounded-2xl p-5 border border-slate-200/80 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-5">
         <div class="space-y-1">
             <div class="text-xs text-[#718379] font-extrabold uppercase tracking-wider">Total Saldo Operasional Toko</div>
             <div class="text-3xl sm:text-4xl font-black text-[#3F7A5D] font-mono tracking-tight">

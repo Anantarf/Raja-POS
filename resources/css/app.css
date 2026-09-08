@@ -48,3 +48,14 @@
         line-height: 1.55;
     }
 }
+
+@layer utilities {
+    .bg-emco-primary { background-color: var(--color-emco-primary) !important; }
+    .bg-emco-primary-hover:hover { background-color: var(--color-emco-primary-hover) !important; }
+    .text-emco-primary { color: var(--color-emco-primary) !important; }
+    .border-emco-primary { border-color: var(--color-emco-primary) !important; }
+    .text-emco-dark { color: var(--color-emco-dark) !important; }
+    .text-emco-muted { color: var(--color-emco-muted) !important; }
+    .bg-emco-body { background-color: var(--color-emco-body) !important; }
+    .bg-emco-light { background-color: var(--color-emco-primary-light) !important; }
+}

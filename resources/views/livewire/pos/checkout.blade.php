@@ -763,7 +763,7 @@
             @click="activeTab = (activeTab === 'cart' ? 'catalog' : 'cart'); document.getElementById('cart-section')?.scrollIntoView({ behavior: 'smooth' })"
             class="bg-[#3F7A5D] hover:bg-[#32634B] text-white h-10 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-extrabold flex items-center gap-1 shadow-md active:scale-95 transition shrink-0 cursor-pointer whitespace-nowrap"
         >
-            <span x-text="activeTab === 'cart' ? '&larr; Katalog' : 'Lihat & Bayar'"></span>
+            <span x-text="activeTab === 'cart' ? '\u2190 Katalog' : 'Lihat & Bayar'"></span>
             <svg x-show="activeTab !== 'cart'" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7-7 7"></path>
             </svg>
