@@ -1,29 +1,37 @@
 <div x-data="{ activeTab: 'catalog' }" class="min-h-screen lg:h-screen flex flex-col overflow-y-auto lg:overflow-hidden bg-[#F3F6F4] font-sans text-[#232E28]">
     <!-- Topbar Navigation Header -->
     <header class="px-3 sm:px-6 pt-3 sm:pt-4 pb-2 sm:pb-3 flex-shrink-0">
-        <div class="bg-white rounded-2xl border border-[#E3EEE8] px-3.5 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between gap-2 sm:gap-3">
-            <div class="flex items-center gap-2 sm:gap-2.5 min-w-0">
-                <img src="{{ asset('favicon.svg') }}" alt="Raja POS" class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl shrink-0">
-                <span class="bg-[#3F7A5D] text-white font-extrabold px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-xl text-sm sm:text-lg tracking-wide uppercase shadow-sm whitespace-nowrap shrink-0">RAJA AKSESORIS</span>
-                <span class="text-base font-extrabold text-[#232E28] hidden md:inline border-l border-[#E3EEE8] pl-4 truncate">
-                    {{ $location?->name ?? 'Raja Aksesoris Bango' }}
+        <div class="bg-white rounded-2xl border border-[#E3EEE8] px-3.5 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between gap-2 sm:gap-3 shadow-xs">
+            <div class="flex items-center gap-2.5 sm:gap-3 min-w-0">
+                <img src="{{ asset('favicon.svg') }}" alt="Raja POS" class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl shrink-0 shadow-2xs">
+                <span class="bg-[#3F7A5D] text-white font-extrabold px-3 py-1.5 rounded-xl text-sm sm:text-base tracking-wide uppercase shadow-2xs whitespace-nowrap shrink-0">
+                    RAJA AKSESORIS
                 </span>
+                
+                <!-- Store Location Status Badge -->
+                <div class="hidden md:flex items-center gap-1.5 text-sm font-extrabold text-[#5F7167] bg-[#F3F6F4] px-3 py-1.5 rounded-xl border border-[#E3EEE8] shrink-0">
+                    <svg class="w-4 h-4 text-[#3F7A5D] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    </svg>
+                    <span>{{ $location?->name ?? 'Raja Aksesoris Bango' }}</span>
+                </div>
             </div>
 
-            <div class="flex items-center gap-2 sm:gap-4 text-sm font-semibold shrink-0">
-                <div class="hidden sm:flex items-center gap-2.5 bg-[#F3F6F4] px-3.5 py-1.5 rounded-xl border border-[#E3EEE8]">
-                    <div class="w-6 h-6 rounded-full bg-[#3F7A5D] text-white font-bold flex items-center justify-center text-xs">
+            <div class="flex items-center gap-2.5 sm:gap-4 text-sm font-semibold shrink-0">
+                <div class="hidden sm:flex items-center gap-2.5 bg-[#F3F6F4] px-3.5 py-1.5 rounded-xl border border-[#E3EEE8] shadow-2xs">
+                    <div class="w-6.5 h-6.5 rounded-full bg-[#3F7A5D] text-white font-bold flex items-center justify-center text-xs shadow-2xs">
                         {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
                     </div>
                     <span class="font-extrabold text-[#232E28] text-sm">{{ auth()->user()->name }}</span>
-                    <span class="text-[#5F7167] font-semibold text-sm">({{ auth()->user()->role?->name ?? 'Kasir' }})</span>
+                    <span class="text-[#5F7167] font-semibold text-xs uppercase tracking-wide">({{ auth()->user()->role?->name ?? 'Kasir' }})</span>
                 </div>
 
-                <a href="/admin" class="bg-[#3F7A5D] hover:bg-[#32634B] text-white h-11 px-4 py-2.5 rounded-xl font-bold text-base transition flex items-center gap-1.5 active:scale-95 shadow-xs whitespace-nowrap">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                <a href="/admin" class="bg-[#3F7A5D] hover:bg-[#32634B] text-white h-11 px-4 py-2.5 rounded-xl font-extrabold text-sm sm:text-base transition flex items-center gap-2 btn-glow active-press hover-lift shadow-xs whitespace-nowrap cursor-pointer" title="Buka Dashboard Admin Management">
+                    <svg class="w-4.5 h-4.5 text-white shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
                     </svg>
-                    <span>Panel Admin</span>
+                    <span>Dashboard Admin</span>
                 </a>
             </div>
         </div>
