@@ -458,8 +458,8 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-[#232E28] font-bold mb-1">Kategori</label>
-                            <select wire:model="category_id" class="w-full p-3 border border-slate-300 rounded-2xl bg-white font-bold">
-                                <option value="">-- Pilih Kategori --</option>
+                            <select wire:model="category_id" class="w-full p-3 border border-slate-300 rounded-2xl bg-white font-bold cursor-pointer">
+                                <option value="">Pilih Kategori</option>
                                 @foreach($categories as $cat)
                                     <option value="{{ $cat->id }}">{{ $cat->name }}</option>
                                 @endforeach
@@ -467,8 +467,8 @@
                         </div>
                         <div>
                             <label class="block text-[#232E28] font-bold mb-1">Merk / Brand</label>
-                            <select wire:model="brand_id" class="w-full p-3 border border-slate-300 rounded-2xl bg-white font-bold">
-                                <option value="">-- Pilih Merk / Brand --</option>
+                            <select wire:model="brand_id" class="w-full p-3 border border-slate-300 rounded-2xl bg-white font-bold cursor-pointer">
+                                <option value="">Pilih Merk / Brand</option>
                                 @foreach($brands as $b)
                                     <option value="{{ $b->id }}">{{ $b->name }}</option>
                                 @endforeach

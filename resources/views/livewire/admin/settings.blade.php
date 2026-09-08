@@ -155,8 +155,8 @@
                     </div>
                     <div>
                         <label class="block text-[#718379] font-extrabold uppercase tracking-wider text-xs mb-1">Role / Wewenang *</label>
-                        <select wire:model="userRoleId" class="w-full h-11 px-3.5 border border-slate-200 rounded-xl bg-[#F3F6F4] text-[#232E28] font-bold text-sm focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]" required>
-                            <option value="">-- Pilih Role --</option>
+                        <select wire:model="userRoleId" class="w-full h-11 px-3.5 border border-slate-200 rounded-xl bg-[#F3F6F4] text-[#232E28] font-bold text-sm focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] cursor-pointer" required>
+                            <option value="">Pilih Role / Wewenang</option>
                             @foreach($roles as $r)
                                 <option value="{{ $r->id }}">{{ $r->name }}</option>
                             @endforeach
@@ -164,8 +164,8 @@
                     </div>
                     <div>
                         <label class="block text-[#718379] font-extrabold uppercase tracking-wider text-xs mb-1">Lokasi Kerja *</label>
-                        <select wire:model="userLocationId" class="w-full h-11 px-3.5 border border-slate-200 rounded-xl bg-[#F3F6F4] text-[#232E28] font-bold text-sm focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]" required>
-                            <option value="">-- Pilih Lokasi --</option>
+                        <select wire:model="userLocationId" class="w-full h-11 px-3.5 border border-slate-200 rounded-xl bg-[#F3F6F4] text-[#232E28] font-bold text-sm focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] cursor-pointer" required>
+                            <option value="">Pilih Lokasi Kerja</option>
                             @foreach($locations as $location)
                                 <option value="{{ $location->id }}">{{ $location->name }}</option>
                             @endforeach
@@ -320,11 +320,11 @@
                     </div>
                     <div>
                         <label class="block text-[#718379] font-extrabold uppercase tracking-wider text-xs mb-1">Kategori Tipe *</label>
-                        <select wire:model="pmType" class="w-full h-11 px-3.5 border border-slate-200 rounded-xl bg-[#F3F6F4] text-[#232E28] font-bold text-sm focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]">
-                            <option value="CASH">CASH (Uang Tunai)</option>
-                            <option value="QRIS">QRIS (Scan Barcode)</option>
-                            <option value="TRANSFER">TRANSFER (Rekening Bank)</option>
-                            <option value="E_WALLET">E_WALLET (Dompet Digital)</option>
+                        <select wire:model="pmType" class="w-full h-11 px-3.5 border border-slate-200 rounded-xl bg-[#F3F6F4] text-[#232E28] font-bold text-sm focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] cursor-pointer">
+                            <option value="CASH">Tunai (Cash)</option>
+                            <option value="QRIS">QRIS (Nontunai)</option>
+                            <option value="TRANSFER">Transfer Bank</option>
+                            <option value="E_WALLET">E-Wallet (Dompet Digital)</option>
                         </select>
                     </div>
                     <button type="submit" class="w-full h-10 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-xl transition text-sm uppercase tracking-wider cursor-pointer shadow-sm active:scale-95 flex items-center justify-center">

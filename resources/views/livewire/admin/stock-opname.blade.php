@@ -141,8 +141,8 @@
                 <form wire:submit.prevent="createSession" class="space-y-4 text-sm">
                     <div>
                         <label class="block font-bold text-[#232E28] mb-1.5 text-sm">Lokasi Toko</label>
-                        <select wire:model="location_id" class="w-full h-11 px-3.5 border border-slate-200 rounded-xl bg-[#F3F6F4] text-sm font-semibold focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] transition" required>
-                            <option value="">-- Pilih Lokasi --</option>
+                        <select wire:model="location_id" class="w-full h-11 px-3.5 border border-slate-200 rounded-xl bg-[#F3F6F4] text-sm font-semibold focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] transition cursor-pointer" required>
+                            <option value="">Pilih Lokasi Toko</option>
                             @foreach($locations as $loc)
                                 <option value="{{ $loc->id }}">{{ $loc->name }}</option>
                             @endforeach
@@ -151,8 +151,8 @@
 
                     <div>
                         <label class="block font-bold text-[#232E28] mb-1.5 text-sm">Produk *</label>
-                        <select wire:model="product_id" class="w-full h-11 px-3.5 border border-slate-200 rounded-xl bg-[#F3F6F4] text-sm font-semibold focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] transition" required>
-                            <option value="">-- Pilih Produk --</option>
+                        <select wire:model="product_id" class="w-full h-11 px-3.5 border border-slate-200 rounded-xl bg-[#F3F6F4] text-sm font-semibold focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] transition cursor-pointer" required>
+                            <option value="">Pilih Produk</option>
                             @foreach($products as $prod)
                                 <option value="{{ $prod->id }}">{{ $prod->name }} (Barcode: {{ $prod->effective_barcode }})</option>
                             @endforeach
@@ -196,7 +196,7 @@
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm shrink-0 bg-[#F3F6F4] p-3 rounded-xl border border-slate-200/80">
                     <div>
                         <label class="block font-bold text-[#232E28] mb-1 text-xs">Lokasi Toko</label>
-                        <select wire:model.live="bulk_location_id" class="w-full h-11 px-3 border border-slate-200 rounded-xl bg-white font-semibold text-sm">
+                        <select wire:model.live="bulk_location_id" class="w-full h-11 px-3 border border-slate-200 rounded-xl bg-white font-semibold text-sm cursor-pointer">
                             @foreach($locations as $loc)
                                 <option value="{{ $loc->id }}">{{ $loc->name }}</option>
                             @endforeach
@@ -204,8 +204,8 @@
                     </div>
                     <div>
                         <label class="block font-bold text-[#232E28] mb-1 text-xs">Filter Kategori</label>
-                        <select wire:model.live="bulk_category_id" class="w-full h-11 px-3 border border-slate-200 rounded-xl bg-white font-semibold text-sm">
-                            <option value="">-- Semua Kategori --</option>
+                        <select wire:model.live="bulk_category_id" class="w-full h-11 px-3 border border-slate-200 rounded-xl bg-white font-semibold text-sm cursor-pointer">
+                            <option value="">Semua Kategori</option>
                             @foreach($categories as $cat)
                                 <option value="{{ $cat->id }}">{{ $cat->name }}</option>
                             @endforeach
