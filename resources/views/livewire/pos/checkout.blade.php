@@ -288,8 +288,8 @@
                         @endif
                     </div>
                 @else
-                    <!-- Product List View (Aligned Table Rows) -->
-                    <div class="bg-white rounded-2xl border border-[#E3EEE8] overflow-hidden">
+                    <!-- Product List View (Aligned Table Rows with Scan-First Font Hierarchy) -->
+                    <div class="bg-white rounded-2xl border border-[#E3EEE8] overflow-hidden shadow-xs">
                         <div class="divide-y divide-slate-100">
                             @forelse($products as $product)
                                 @php
@@ -305,34 +305,40 @@
                                 @endphp
 
                                 <div
+                                    tabindex="0"
+                                    role="button"
+                                    aria-label="Tambah {{ $product->name }} ke keranjang - Rp {{ number_format((float) $product->selling_price, 0, ',', '.') }}"
                                     wire:click="addToCart({{ $product->id }})"
-                                    class="p-3 sm:p-3.5 hover:bg-[#F3F6F4] cursor-pointer transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-3 group border-b border-slate-100/80 {{ $isIncomplete ? 'opacity-60 bg-rose-50/20' : '' }}"
+                                    @keydown.enter="$wire.addToCart({{ $product->id }})"
+                                    @keydown.space.prevent="$wire.addToCart({{ $product->id }})"
+                                    class="p-3.5 hover:bg-[#F3F6F4] focus:bg-[#E3EEE8]/50 focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/30 cursor-pointer transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3 group border-b border-slate-100/80 {{ $isIncomplete ? 'opacity-60 bg-rose-50/20' : '' }}"
                                 >
-                                    <!-- Top Row (Mobile) / Left Column (Desktop) -->
-                                    <div class="flex items-start sm:items-center gap-2.5 sm:gap-3 min-w-0 flex-1">
-                                        <!-- Code & Initials Avatar -->
-                                        <div class="w-10 h-10 rounded-xl bg-[#E3EEE8]/70 border border-[#3F7A5D]/20 flex items-center justify-center font-mono font-extrabold text-sm text-[#3F7A5D] shrink-0 group-hover:bg-[#3F7A5D] group-hover:text-white transition-colors mt-0.5 sm:mt-0">
+                                    <!-- Left Column: Avatar + Product Name & Badges -->
+                                    <div class="flex items-center gap-3.5 min-w-0 flex-1">
+                                        <!-- Code & Initials Avatar Badge -->
+                                        <div class="w-11 h-11 rounded-2xl bg-[#E3EEE8] border border-[#3F7A5D]/25 flex items-center justify-center font-mono font-black text-sm text-[#3F7A5D] shrink-0 group-hover:bg-[#3F7A5D] group-hover:text-white transition-all shadow-2xs">
                                             {{ $initials }}
                                         </div>
 
+                                        <!-- Product Title First, Badges Second -->
                                         <div class="min-w-0 flex-1">
-                                            <div class="flex items-center gap-1.5 flex-wrap mb-1">
-                                                <span class="text-xs font-mono font-bold text-slate-600 bg-slate-100 px-1.5 py-0.5 rounded border border-slate-200/60 whitespace-nowrap">
+                                            <h4 class="text-base font-extrabold text-[#232E28] group-hover:text-[#3F7A5D] transition-colors leading-snug truncate">
+                                                {{ $product->name }}
+                                            </h4>
+                                            <div class="flex items-center gap-2 flex-wrap mt-0.5">
+                                                <span class="text-[0.72rem] font-mono font-bold text-slate-600 bg-slate-100 px-2 py-0.5 rounded-md border border-slate-200/70 whitespace-nowrap">
                                                     {{ $product->code }}
                                                 </span>
-                                                <span class="text-xs uppercase font-extrabold px-1.5 py-0.5 rounded border whitespace-nowrap {{ $product->product_type === 'PHYSICAL' ? 'bg-[#3F7A5D]/10 text-[#3F7A5D] border-[#3F7A5D]/20' : ($product->product_type === 'DIGITAL' ? 'bg-emerald-100/90 text-emerald-800 border-emerald-300/60' : 'bg-[#C2AC7C]/15 text-[#8F794B] border-[#C2AC7C]/30') }}">
+                                                <span class="text-[0.72rem] uppercase font-extrabold px-2 py-0.5 rounded-md border whitespace-nowrap {{ $product->product_type === 'PHYSICAL' ? 'bg-[#3F7A5D]/10 text-[#3F7A5D] border-[#3F7A5D]/20' : ($product->product_type === 'DIGITAL' ? 'bg-emerald-100/90 text-emerald-800 border-emerald-300/60' : 'bg-[#C2AC7C]/15 text-[#8F794B] border-[#C2AC7C]/30') }}">
                                                     {{ $product->product_type === 'PHYSICAL' ? 'FISIK' : ($product->product_type === 'DIGITAL' ? 'DIGITAL' : 'LAYANAN') }}
                                                 </span>
                                             </div>
-                                            <h4 class="text-base sm:text-lg font-bold text-[#232E28] group-hover:text-[#3F7A5D] transition-colors leading-snug line-clamp-2">
-                                                {{ $product->name }}
-                                            </h4>
                                         </div>
                                     </div>
 
-                                    <!-- Bottom Row (Mobile) / Right Column (Desktop) -->
-                                    <div class="flex items-center justify-between sm:justify-end gap-2.5 sm:gap-3 shrink-0 pt-1 sm:pt-0 border-t sm:border-t-0 border-slate-100/80 text-right pl-11 sm:pl-0">
-                                        <div class="sm:min-w-[120px] text-left sm:text-right">
+                                    <!-- Right Column: Price & Stock Badge Alignment -->
+                                    <div class="flex items-center justify-between sm:justify-end gap-3.5 shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-100/80 text-right pl-14 sm:pl-0">
+                                        <div class="sm:min-w-[130px] text-left sm:text-right">
                                             @if($product->product_type === 'LAYANAN')
                                                 <span class="inline-flex items-center gap-0.5 text-xs font-bold text-teal-700 bg-teal-50 border border-teal-200/80 px-2 py-0.5 rounded whitespace-nowrap">
                                                     Input Nominal
@@ -342,7 +348,7 @@
                                                     INCOMPLETE
                                                 </span>
                                             @else
-                                                <div class="text-sm sm:text-base font-extrabold text-[#232E28] font-mono whitespace-nowrap">
+                                                <div class="text-base sm:text-lg font-black text-[#232E28] font-mono whitespace-nowrap">
                                                     Rp {{ number_format((float) $product->selling_price, 0, ',', '.') }}
                                                 </div>
                                             @endif
@@ -350,15 +356,15 @@
 
                                         <div class="sm:w-24 text-right">
                                             @if($product->product_type === 'PHYSICAL')
-                                                <span class="px-2.5 py-0.5 rounded-full font-bold text-xs inline-block whitespace-nowrap {{ $stockStatus === 'OUT_OF_STOCK' ? 'bg-rose-50 text-rose-700' : ($stockStatus === 'LOW_STOCK' ? 'bg-amber-50 text-amber-700' : 'bg-[#E3EEE8] text-[#3F7A5D]') }}">
+                                                <span class="px-2.5 py-1 rounded-full font-extrabold text-xs inline-block whitespace-nowrap {{ $stockStatus === 'OUT_OF_STOCK' ? 'bg-rose-50 text-rose-700 border border-rose-200/60' : ($stockStatus === 'LOW_STOCK' ? 'bg-amber-50 text-amber-700 border border-amber-200/60' : 'bg-[#E3EEE8] text-[#3F7A5D] border border-[#3F7A5D]/20') }}">
                                                     Stok: {{ $stockQty }}
                                                 </span>
                                             @elseif($product->product_type === 'DIGITAL')
-                                                <span class="px-2.5 py-0.5 rounded-full font-bold text-xs bg-emerald-50 text-emerald-700 border border-emerald-200/60 inline-block whitespace-nowrap">
+                                                <span class="px-2.5 py-1 rounded-full font-extrabold text-xs bg-emerald-50 text-emerald-700 border border-emerald-200/60 inline-block whitespace-nowrap">
                                                     Digital
                                                 </span>
                                             @else
-                                                <span class="px-2.5 py-0.5 rounded-full font-bold text-xs bg-amber-50 text-amber-700 border border-amber-200/60 inline-block whitespace-nowrap">
+                                                <span class="px-2.5 py-1 rounded-full font-extrabold text-xs bg-amber-50 text-amber-700 border border-amber-200/60 inline-block whitespace-nowrap">
                                                     Layanan
                                                 </span>
                                             @endif
