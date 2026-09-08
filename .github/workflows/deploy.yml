@@ -78,8 +78,11 @@ jobs:
 
             echo "Building frontend assets..."
             if command -v npm > /dev/null 2>&1; then
-              npm ci --no-audit --no-fund
-              npm run build
+              if npm ci --no-audit --no-fund && npm run build; then
+                echo "Frontend assets built on server."
+              else
+                echo "Frontend build failed on server; using committed public/build assets."
+              fi
             else
               echo "npm not found; using committed public/build assets."
             fi
