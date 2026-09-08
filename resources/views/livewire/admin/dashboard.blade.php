@@ -1,93 +1,93 @@
 <div class="space-y-6">
-    <!-- Welcome Banner Card (Flat Crisp Border) -->
-    <div class="bg-gradient-to-r from-[#3F7A5D]/10 via-[#3F7A5D]/5 to-white border border-slate-200/80 rounded-2xl p-6 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-5 shadow-sm">
-        <div class="space-y-2.5">
-            <h1 class="text-3xl sm:text-4xl font-extrabold text-[#2C3E35] tracking-tight">
+    <!-- Welcome Banner Card -->
+    <div class="bg-gradient-to-r from-[#3F7A5D]/10 via-[#3F7A5D]/5 to-white border border-slate-200/80 rounded-2xl p-4 sm:p-5 relative overflow-hidden flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">
+        <div class="space-y-1.5">
+            <h1 class="text-xl sm:text-2xl font-extrabold text-[#2C3E35] tracking-tight">
                 Selamat Datang, {{ auth()->user()->name }}!
             </h1>
-            <p class="text-lg text-[#34463D] max-w-3xl leading-relaxed font-medium">
+            <p class="text-xs sm:text-sm text-[#34463D] max-w-2xl leading-relaxed font-medium">
                 <span class="font-bold text-[#2C3E35]">Ringkasan Operasional:</span> Anda memiliki akses penuh sebagai <span class="font-extrabold text-[#3F7A5D]">{{ auth()->user()->role?->name ?? 'Kasir' }}</span> pada sistem kasir &amp; manajemen ritel Raja Aksesoris.
             </p>
-            <div class="pt-2">
-                <a href="/pos" class="h-12 px-6 text-lg bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-2xl inline-flex items-center gap-2 transition shadow-sm btn-glow active-press hover-lift">
+            <div class="pt-1">
+                <a href="/pos" class="h-11 px-4 text-sm bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-xl inline-flex items-center gap-2 transition shadow-sm btn-glow active-press hover-lift">
                     <span>Buka Layar Kasir</span> &rarr;
                 </a>
             </div>
         </div>
     </div>
 
-    <!-- Executive Stat Cards Grid (Golden Ratio Clean Cards) -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+    <!-- Executive Stat Cards Grid -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-3.5">
         <!-- 1. Total Omzet -->
-        <div class="bg-white rounded-2xl p-6 border border-slate-200/80 hover:border-[#3F7A5D]/50 shadow-sm hover-lift cursor-default">
-            <div class="flex items-center justify-between mb-3">
-                <span class="text-base text-[#5F7167] font-extrabold uppercase tracking-wide">Total Omzet</span>
+        <div class="bg-white rounded-2xl p-4 border border-slate-200/80 hover:border-[#3F7A5D]/50 shadow-sm hover-lift cursor-default">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs text-[#5F7167] font-extrabold uppercase tracking-wider">Total Omzet</span>
                 @if(($metrics['omzet_growth'] ?? 0) > 0)
-                    <span class="px-3 py-1 rounded-lg text-xs font-bold text-[#3F7A5D] bg-[#E3EEE8] border border-[#3F7A5D]/20">
+                    <span class="px-2 py-0.5 rounded-md text-[10px] font-bold text-[#3F7A5D] bg-[#E3EEE8] border border-[#3F7A5D]/20">
                         &uarr; +{{ $metrics['omzet_growth'] }}%
                     </span>
                 @elseif(($metrics['omzet_growth'] ?? 0) < 0)
-                    <span class="px-3 py-1 rounded-lg text-xs font-bold text-rose-600 bg-rose-50 border border-rose-200">
+                    <span class="px-2 py-0.5 rounded-md text-[10px] font-bold text-rose-600 bg-rose-50 border border-rose-200">
                         &darr; {{ $metrics['omzet_growth'] }}%
                     </span>
                 @else
-                    <span class="px-3 py-1 rounded-lg text-xs font-bold text-slate-600 bg-slate-100 border border-slate-200">
+                    <span class="px-2 py-0.5 rounded-md text-[10px] font-bold text-slate-600 bg-slate-100 border border-slate-200">
                         Hari Ini
                     </span>
                 @endif
             </div>
-            <div class="text-3xl sm:text-4xl font-extrabold text-[#2C3E35] font-mono tracking-tight mt-2">
+            <div class="text-xl sm:text-2xl font-extrabold text-[#2C3E35] font-mono tracking-tight">
                 Rp {{ number_format($metrics['omzet'], 0, ',', '.') }}
             </div>
-            <div class="text-base text-[#4F6258] mt-2 font-medium">Transaksi Selesai</div>
+            <div class="text-xs text-[#4F6258] mt-1 font-medium">Transaksi Selesai</div>
         </div>
 
         <!-- 2. Margin -->
-        <div class="bg-white rounded-2xl p-6 border border-slate-200/80 hover:border-[#C2AC7C]/50 shadow-sm hover-lift cursor-default">
-            <div class="flex items-center justify-between mb-3">
-                <span class="text-base text-[#5F7167] font-extrabold uppercase tracking-wide">Margin Toko</span>
-                <span class="px-3 py-1 rounded-lg text-xs font-bold text-[#8F794B] bg-[#C2AC7C]/20 border border-[#C2AC7C]/40">
+        <div class="bg-white rounded-2xl p-4 border border-slate-200/80 hover:border-[#C2AC7C]/50 shadow-sm hover-lift cursor-default">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs text-[#5F7167] font-extrabold uppercase tracking-wider">Margin Toko</span>
+                <span class="px-2 py-0.5 rounded-md text-[10px] font-bold text-[#8F794B] bg-[#C2AC7C]/20 border border-[#C2AC7C]/40">
                     Margin
                 </span>
             </div>
             @if(auth()->user()->hasRole('OWNER') || auth()->user()->hasPermission('report.profit.view') || auth()->user()->can('report.profit.view'))
-                <div class="text-3xl sm:text-4xl font-extrabold text-[#8F794B] font-mono tracking-tight mt-2">
+                <div class="text-xl sm:text-2xl font-extrabold text-[#8F794B] font-mono tracking-tight">
                     Rp {{ number_format($metrics['gross_profit'], 0, ',', '.') }}
                 </div>
-                <div class="text-base text-[#4F6258] mt-2 font-medium">Omzet dikurangi Modal</div>
+                <div class="text-xs text-[#4F6258] mt-1 font-medium">Omzet dikurangi Modal</div>
             @else
-                <div class="text-sm font-bold text-slate-400 mt-3 italic bg-[#F3F6F4] px-3.5 py-2 rounded-xl border border-slate-200 text-center">
-                    [Akses Terbatas - Owner]
+                <div class="text-xs font-bold text-slate-400 mt-2 italic bg-[#F3F6F4] px-3 py-1.5 rounded-xl border border-slate-200 text-center">
+                    [Akses Terbatas]
                 </div>
             @endif
         </div>
 
         <!-- 3. Total Saldo Toko -->
-        <div class="bg-white rounded-2xl p-6 border border-slate-200/80 hover:border-[#3F7A5D]/50 shadow-sm hover-lift cursor-default">
-            <div class="flex items-center justify-between mb-3">
-                <span class="text-base text-[#5F7167] font-extrabold uppercase tracking-wide">Total Saldo Toko</span>
-                <span class="px-3 py-1 rounded-lg text-xs font-bold text-[#3F7A5D] bg-[#E3EEE8]">
+        <div class="bg-white rounded-2xl p-4 border border-slate-200/80 hover:border-[#3F7A5D]/50 shadow-sm hover-lift cursor-default">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs text-[#5F7167] font-extrabold uppercase tracking-wider">Total Saldo</span>
+                <span class="px-2 py-0.5 rounded-md text-[10px] font-bold text-[#3F7A5D] bg-[#E3EEE8]">
                     Aktif
                 </span>
             </div>
-            <div class="text-3xl sm:text-4xl font-extrabold text-[#2C3E35] font-mono tracking-tight mt-2">
+            <div class="text-xl sm:text-2xl font-extrabold text-[#2C3E35] font-mono tracking-tight">
                 Rp {{ number_format($metrics['total_balance'], 0, ',', '.') }}
             </div>
-            <div class="text-base text-[#4F6258] mt-2 font-medium">Saldo riil seluruh akun &amp; cash</div>
+            <div class="text-xs text-[#4F6258] mt-1 font-medium">Saldo riil seluruh akun &amp; cash</div>
         </div>
 
         <!-- 4. Total Transaksi -->
-        <div class="bg-white rounded-2xl p-6 border border-slate-200/80 hover:border-[#3F7A5D]/50 shadow-sm hover-lift cursor-default">
-            <div class="flex items-center justify-between mb-3">
-                <span class="text-base text-[#5F7167] font-extrabold uppercase tracking-wide">Total Transaksi</span>
-                <span class="px-3 py-1 rounded-lg text-xs font-bold text-[#3F7A5D] bg-[#E3EEE8]">
+        <div class="bg-white rounded-2xl p-4 border border-slate-200/80 hover:border-[#3F7A5D]/50 shadow-sm hover-lift cursor-default">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs text-[#5F7167] font-extrabold uppercase tracking-wider">Total Transaksi</span>
+                <span class="px-2 py-0.5 rounded-md text-[10px] font-bold text-[#3F7A5D] bg-[#E3EEE8]">
                     Sukses
                 </span>
             </div>
-            <div class="text-3xl sm:text-4xl font-extrabold text-[#2C3E35] font-mono tracking-tight mt-2">
-                {{ number_format($metrics['sales_count'], 0, ',', '.') }} <span class="text-lg text-[#4F6258] font-normal">Trx</span>
+            <div class="text-xl sm:text-2xl font-extrabold text-[#2C3E35] font-mono tracking-tight">
+                {{ number_format($metrics['sales_count'], 0, ',', '.') }} <span class="text-sm text-[#4F6258] font-normal">Trx</span>
             </div>
-            <div class="text-base text-[#4F6258] mt-2 font-medium">Transaksi berhasil diproses</div>
+            <div class="text-xs text-[#4F6258] mt-1 font-medium">Transaksi berhasil diproses</div>
         </div>
     </div>
 
