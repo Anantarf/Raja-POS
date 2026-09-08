@@ -86,7 +86,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                         </svg>
                         @if($search)
-                            <button wire:click="$set('search', '')" class="absolute right-3 top-3 text-slate-400 hover:text-slate-600 text-xs font-bold bg-slate-200 rounded-full w-5 h-5 flex items-center justify-center">
+                            <button type="button" wire:click="$set('search', '')" aria-label="Bersihkan pencarian" class="absolute right-3 top-3 text-slate-400 hover:text-slate-600 text-xs font-bold bg-slate-200 rounded-full w-5 h-5 flex items-center justify-center">
                                 &times;
                             </button>
                         @endif
@@ -110,14 +110,20 @@
                         <!-- View Mode Toggle (Grid Cards vs List Rows) -->
                         <div class="flex items-center bg-[#F3F6F4] p-1 h-11 rounded-xl border border-slate-200 shrink-0">
                             <button
+                                type="button"
                                 wire:click="setViewMode('grid')"
+                                aria-label="Tampilan Kartu (Grid)"
+                                aria-pressed="{{ $viewMode === 'grid' ? 'true' : 'false' }}"
                                 class="h-9 px-2.5 rounded-lg text-sm font-bold transition-all cursor-pointer flex items-center justify-center {{ $viewMode === 'grid' ? 'bg-[#3F7A5D] text-white shadow-xs' : 'text-[#718379] hover:text-[#232E28]' }}"
                                 title="Tampilan Kartu (Grid)"
                             >
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
                             </button>
                             <button
+                                type="button"
                                 wire:click="setViewMode('list')"
+                                aria-label="Tampilan Daftar (Baris)"
+                                aria-pressed="{{ $viewMode === 'list' ? 'true' : 'false' }}"
                                 class="h-9 px-2.5 rounded-lg text-sm font-bold transition-all cursor-pointer flex items-center justify-center {{ $viewMode === 'list' ? 'bg-[#3F7A5D] text-white shadow-xs' : 'text-[#718379] hover:text-[#232E28]' }}"
                                 title="Tampilan Daftar (Baris)"
                             >
@@ -130,6 +136,7 @@
                 <!-- Category Tabs (Full Width Pill Toolbar) -->
                 <div class="flex items-center gap-2 overflow-x-auto py-1 px-0.5 w-full shrink-0 text-sm font-bold no-scrollbar">
                     <button
+                        type="button"
                         wire:click="$set('selectedCategory', null)"
                         class="h-11 px-4 py-2.5 rounded-xl text-base font-bold transition-all shrink-0 border cursor-pointer {{ $selectedCategory === null ? 'bg-[#3F7A5D] text-white border-[#3F7A5D] shadow-xs' : 'bg-[#F3F6F4] text-[#232E28] border-slate-200 hover:bg-slate-200' }}"
                     >
@@ -137,6 +144,7 @@
                     </button>
                     @foreach($categories as $cat)
                         <button
+                            type="button"
                             wire:click="$set('selectedCategory', {{ $cat->id }})"
                             class="h-11 px-4 py-2.5 rounded-xl text-base font-bold transition-all shrink-0 border cursor-pointer {{ $selectedCategory === $cat->id ? 'bg-[#3F7A5D] text-white border-[#3F7A5D] shadow-xs' : 'bg-[#F3F6F4] text-[#232E28] border-slate-200 hover:bg-slate-200' }}"
                         >
@@ -383,7 +391,7 @@
                     </span>
                 </div>
                 @if(count($cart) > 0)
-                    <button wire:click="clearCart" class="text-sm text-rose-600 hover:underline font-bold transition cursor-pointer">
+                    <button type="button" wire:click="clearCart" class="text-sm text-rose-600 hover:underline font-bold transition cursor-pointer">
                         Kosongkan
                     </button>
                 @endif
@@ -429,7 +437,7 @@
                             <div class="text-sm font-extrabold text-[#232E28] font-mono tracking-tight">
                                 Rp {{ number_format($item['price'] * $item['quantity'], 0, ',', '.') }}
                             </div>
-                            <button wire:click="removeFromCart({{ $id }})" class="text-xs uppercase font-bold text-rose-500 hover:text-rose-700 transition cursor-pointer mt-0.5">
+                            <button type="button" wire:click="removeFromCart({{ $id }})" class="text-xs uppercase font-bold text-rose-500 hover:text-rose-700 transition cursor-pointer mt-0.5">
                                 Hapus
                             </button>
                         </div>
@@ -465,7 +473,7 @@
                 <div class="space-y-2">
                     <div class="flex items-center justify-between text-sm font-extrabold text-[#232E28]">
                         <span>Metode Pembayaran</span>
-                        <button wire:click="addPaymentRow" class="text-[#3F7A5D] hover:underline text-sm font-bold cursor-pointer">
+                        <button type="button" wire:click="addPaymentRow" class="text-[#3F7A5D] hover:underline text-sm font-bold cursor-pointer">
                             + Tambah Metode
                         </button>
                     </div>
@@ -502,34 +510,34 @@
                                     </div>
 
                                     @if(count($payments) > 1)
-                                        <button wire:click="removePaymentRow({{ $index }})" class="text-rose-500 hover:text-rose-700 font-bold w-9 h-11 bg-rose-50 rounded-xl text-lg flex items-center justify-center cursor-pointer shrink-0" title="Hapus metode pembayaran">
+                                        <button type="button" wire:click="removePaymentRow({{ $index }})" class="text-rose-500 hover:text-rose-700 font-bold w-11 h-11 min-h-[44px] bg-rose-50 rounded-xl text-lg flex items-center justify-center cursor-pointer shrink-0 border border-rose-200/60" title="Hapus metode pembayaran">
                                             &times;
                                         </button>
                                     @endif
                                 </div>
                             </div>
 
-                            <!-- Quick Cash Nominal Shortcuts for Cash Payment -->
+                            <!-- Quick Cash Nominal Shortcuts for Cash Payment (Touchscreen Friendly 44px Min Target) -->
                             @if($selectedPm && $selectedPm->type === 'CASH' && $this->grand_total > 0)
-                                <div class="flex items-center gap-1.5 pt-0.5">
+                                <div class="flex items-center gap-2 pt-1">
                                     <button
                                         type="button"
                                         wire:click="$set('payments.{{ $index }}.amount', {{ min(1000000000, $this->grand_total) }})"
-                                        class="h-9 px-3 py-1 bg-emerald-50 hover:bg-emerald-100 text-[#3F7A5D] border border-emerald-200/80 rounded-xl text-xs sm:text-sm font-bold transition shrink-0 cursor-pointer"
+                                        class="h-11 min-h-[44px] px-3.5 py-2 bg-emerald-50 hover:bg-emerald-100 text-[#3F7A5D] border border-emerald-200/80 rounded-xl text-sm font-extrabold transition shrink-0 cursor-pointer shadow-2xs"
                                     >
                                         Uang Pas
                                     </button>
                                     <button
                                         type="button"
                                         wire:click="$set('payments.{{ $index }}.amount', 50000)"
-                                        class="h-9 px-3 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200/80 rounded-xl text-xs sm:text-sm font-bold transition shrink-0 cursor-pointer"
+                                        class="h-11 min-h-[44px] px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-200/80 rounded-xl text-sm font-extrabold transition shrink-0 cursor-pointer shadow-2xs"
                                     >
                                         50k
                                     </button>
                                     <button
                                         type="button"
                                         wire:click="$set('payments.{{ $index }}.amount', 100000)"
-                                        class="h-9 px-3 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200/80 rounded-xl text-xs sm:text-sm font-bold transition shrink-0 cursor-pointer"
+                                        class="h-11 min-h-[44px] px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-200/80 rounded-xl text-sm font-extrabold transition shrink-0 cursor-pointer shadow-2xs"
                                     >
                                         100k
                                     </button>
@@ -560,6 +568,7 @@
 
                 <!-- Primary Action Checkout Button (High Contrast Disabled & Active) -->
                 <button
+                    type="button"
                     wire:click="processCheckout"
                     @if(count($cart) === 0 || $this->total_paid < $this->grand_total) disabled @endif
                     class="w-full h-14 py-3.5 rounded-2xl font-black text-base sm:text-lg uppercase tracking-wider transition-all {{ count($cart) > 0 && $this->total_paid >= $this->grand_total ? 'bg-[#3F7A5D] hover:bg-[#32634B] text-white shadow-sm cursor-pointer active:scale-[0.99]' : 'bg-slate-100 text-slate-400 border border-slate-200/80 cursor-not-allowed' }}"
@@ -602,6 +611,7 @@
                         CETAK STRUK THERMAL
                     </a>
                     <button
+                        type="button"
                         wire:click="closeSuccessModal"
                         class="w-full h-14 py-3.5 bg-slate-100 hover:bg-slate-200 text-[#232E28] font-bold rounded-2xl text-sm transition cursor-pointer"
                     >
@@ -622,7 +632,7 @@
                             <span class="text-xs uppercase font-extrabold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 border border-emerald-200">Layanan</span>
                             <h3 class="text-lg font-extrabold text-[#232E28] mt-1">{{ $selectedPpobProductName }}</h3>
                         </div>
-                        <button wire:click="$set('showPpobModal', false)" class="text-slate-400 hover:text-slate-600 font-bold text-xl px-2 cursor-pointer">&times;</button>
+                        <button type="button" wire:click="$set('showPpobModal', false)" aria-label="Tutup modal" class="text-slate-400 hover:text-slate-600 font-bold text-xl px-2 cursor-pointer">&times;</button>
                     </div>
 
                 <div class="space-y-3">
@@ -710,12 +720,14 @@
 
                 <div class="flex gap-2 pt-2">
                     <button
+                        type="button"
                         wire:click="confirmAddPpobToCart"
                         class="flex-1 h-11 py-2.5 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-bold rounded-2xl text-sm transition uppercase tracking-wider shadow-sm cursor-pointer"
                     >
                         Masukkan Ke Keranjang
                     </button>
                     <button
+                        type="button"
                         wire:click="$set('showPpobModal', false)"
                         class="h-11 py-2.5 px-4 bg-slate-100 hover:bg-slate-200 text-[#232E28] font-bold rounded-2xl text-sm transition cursor-pointer"
                     >
@@ -751,7 +763,7 @@
             @click="activeTab = (activeTab === 'cart' ? 'catalog' : 'cart'); document.getElementById('cart-section')?.scrollIntoView({ behavior: 'smooth' })"
             class="bg-[#3F7A5D] hover:bg-[#32634B] text-white h-10 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-extrabold flex items-center gap-1 shadow-md active:scale-95 transition shrink-0 cursor-pointer whitespace-nowrap"
         >
-            <span x-text="activeTab === 'cart' ? '← Katalog' : 'Lihat & Bayar'"></span>
+            <span x-text="activeTab === 'cart' ? '&larr; Katalog' : 'Lihat & Bayar'"></span>
             <svg x-show="activeTab !== 'cart'" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7-7 7"></path>
             </svg>
