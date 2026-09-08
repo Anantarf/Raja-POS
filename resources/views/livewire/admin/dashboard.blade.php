@@ -175,7 +175,7 @@
                     type: 'bar',
                     height: 240,
                     toolbar: { show: false },
-                    fontFamily: 'Public Sans, Poppins, sans-serif'
+                    fontFamily: 'Inter, Roboto, sans-serif'
                 },
                 colors: ['#3F7A5D'],
                 plotOptions: {
