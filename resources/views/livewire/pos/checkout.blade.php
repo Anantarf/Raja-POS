@@ -157,8 +157,8 @@
             <!-- Product Display (Grid Cards or Aligned List Rows) -->
             <div class="flex-1 overflow-y-auto pr-1">
                 @if($viewMode === 'grid')
-                    <!-- Product Cards Grid (Spacious 3-Column Layout with Comfortable Touch Targets) -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4">
+                    <!-- Product Cards Grid (Spacious 3-Column Layout with Comfortable Touch Targets & Zero Clipping) -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-3.5">
                         @forelse($products as $product)
                             @php
                                 $isIncomplete = $product->price_status === 'INCOMPLETE' && $product->product_type !== 'LAYANAN';
@@ -174,44 +174,46 @@
 
                             <div
                                 wire:click="addToCart({{ $product->id }})"
-                                class="bg-white border border-[#E3EEE8] hover:border-[#3F7A5D] rounded-2xl overflow-hidden flex flex-col justify-between h-[240px] sm:h-[275px] cursor-pointer transition-all duration-200 relative group hover-lift active-press shadow-xs hover:shadow-md {{ $isIncomplete ? 'opacity-65 bg-rose-50/20' : '' }}"
+                                class="bg-white border border-[#E3EEE8] hover:border-[#3F7A5D] rounded-2xl overflow-hidden flex flex-col justify-between h-[215px] sm:h-[238px] cursor-pointer transition-all duration-200 relative group hover-lift active-press shadow-xs hover:shadow-md {{ $isIncomplete ? 'opacity-65 bg-rose-50/20' : '' }}"
                             >
                                 <div>
                                     <!-- Top Image/Banner Container -->
-                                    <div class="w-full h-28 sm:h-36 relative overflow-hidden bg-gradient-to-br from-[#E3EEE8]/70 via-[#F3F6F4] to-[#E3EEE8]/40 flex items-center justify-center shrink-0">
+                                    <div class="w-full h-24 sm:h-28 relative overflow-hidden bg-gradient-to-br from-[#E3EEE8]/60 via-[#F3F6F4] to-[#E3EEE8]/30 flex items-center justify-center shrink-0">
                                         <!-- Overlay Badges -->
-                                        <div class="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between z-10 opacity-90 group-hover:opacity-100 transition-opacity">
-                                            <span class="text-xs font-mono text-[#3F7A5D] bg-white/95 backdrop-blur-sm px-2 py-0.5 rounded-md font-bold border border-[#3F7A5D]/20 shadow-2xs">
+                                        <div class="absolute top-2 left-2 right-2 flex items-center justify-between z-10 opacity-90 group-hover:opacity-100 transition-opacity">
+                                            <span class="text-[0.7rem] font-mono text-[#3F7A5D] bg-white/95 backdrop-blur-sm px-1.5 py-0.5 rounded font-bold border border-[#3F7A5D]/20 shadow-2xs">
                                                 {{ $product->code }}
                                             </span>
-                                            <span class="text-xs uppercase font-extrabold px-2 py-0.5 rounded-md backdrop-blur-sm border {{ $product->product_type === 'PHYSICAL' ? 'bg-[#3F7A5D]/10 text-[#3F7A5D] border-[#3F7A5D]/20' : ($product->product_type === 'DIGITAL' ? 'bg-emerald-100/90 text-emerald-800 border-emerald-300/60' : 'bg-[#C2AC7C]/15 text-[#8F794B] border-[#C2AC7C]/30') }}">
+                                            <span class="text-[0.7rem] uppercase font-extrabold px-1.5 py-0.5 rounded backdrop-blur-sm border {{ $product->product_type === 'PHYSICAL' ? 'bg-[#3F7A5D]/10 text-[#3F7A5D] border-[#3F7A5D]/20' : ($product->product_type === 'DIGITAL' ? 'bg-emerald-100/90 text-emerald-800 border-emerald-300/60' : 'bg-[#C2AC7C]/15 text-[#8F794B] border-[#C2AC7C]/30') }}">
                                                 {{ $product->product_type === 'PHYSICAL' ? 'FISIK' : ($product->product_type === 'DIGITAL' ? 'DIGITAL' : 'LAYANAN') }}
                                             </span>
                                         </div>
 
                                         @if(!empty($product->image_path) && Illuminate\Support\Facades\Storage::disk('public')->exists($product->image_path))
                                             <img src="{{ Illuminate\Support\Facades\Storage::url($product->image_path) }}" alt="{{ $product->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-                                            <div class="absolute inset-x-0 bottom-0 h-6 bg-gradient-to-t from-white via-white/40 to-transparent"></div>
+                                            <div class="absolute inset-x-0 bottom-0 h-4 bg-gradient-to-t from-white via-white/40 to-transparent"></div>
                                         @else
                                             <div class="flex items-center justify-center h-full pt-2">
-                                                <span class="text-2xl sm:text-3xl font-mono font-extrabold text-[#3F7A5D]/80 tracking-wider">
-                                                    {{ $initials }}
-                                                </span>
+                                                <div class="w-12 h-12 rounded-2xl bg-white/90 shadow-2xs border border-[#3F7A5D]/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+                                                    <span class="text-base sm:text-lg font-mono font-black text-[#3F7A5D]">
+                                                        {{ $initials }}
+                                                    </span>
+                                                </div>
                                             </div>
-                                            <div class="absolute inset-x-0 bottom-0 h-6 bg-gradient-to-t from-white to-transparent"></div>
+                                            <div class="absolute inset-x-0 bottom-0 h-4 bg-gradient-to-t from-white to-transparent"></div>
                                         @endif
                                     </div>
 
                                     <!-- Card Title (Top-Aligned Baseline) -->
-                                    <div class="px-3.5 sm:px-4 pt-2.5 pb-1 h-12 sm:h-14 flex items-start">
-                                        <h4 class="text-base sm:text-lg font-extrabold text-[#232E28] leading-snug group-hover:text-[#3F7A5D] transition-colors line-clamp-2 overflow-hidden text-ellipsis">
+                                    <div class="px-3 pt-2 pb-0.5 h-10 sm:h-12 flex items-start">
+                                        <h4 class="text-sm sm:text-base font-extrabold text-[#232E28] leading-snug group-hover:text-[#3F7A5D] transition-colors line-clamp-2 overflow-hidden text-ellipsis">
                                             {{ $product->name }}
                                         </h4>
                                     </div>
                                 </div>
 
                                 <!-- Card Footer Price & Stock (Perfect Sejajar Alignment) -->
-                                <div class="px-3.5 sm:px-4 pb-2.5 sm:pb-3 pt-2 border-t border-slate-100 flex items-center justify-between gap-1.5 shrink-0 bg-white min-h-[46px] sm:min-h-[50px]">
+                                <div class="px-3 py-2 border-t border-slate-100 flex items-center justify-between gap-1 shrink-0 bg-white min-h-[42px] sm:min-h-[44px]">
                                     <div class="min-w-0 flex-1">
                                         @if($product->product_type === 'LAYANAN')
                                             <span class="inline-flex items-center gap-0.5 text-xs font-bold text-teal-700 bg-teal-50 border border-teal-200/80 px-2 py-0.5 rounded whitespace-nowrap">
@@ -222,7 +224,7 @@
                                                 INCOMPLETE
                                             </span>
                                         @else
-                                            <div class="text-lg sm:text-xl font-black text-[#232E28] font-mono tracking-tight whitespace-nowrap">
+                                            <div class="text-base sm:text-lg font-black text-[#232E28] font-mono tracking-tight whitespace-nowrap">
                                                 Rp {{ number_format((float) $product->selling_price, 0, ',', '.') }}
                                             </div>
                                         @endif
@@ -230,15 +232,15 @@
 
                                     <div class="shrink-0">
                                         @if($product->product_type === 'PHYSICAL')
-                                            <span class="px-2.5 py-1 rounded-full font-extrabold text-xs whitespace-nowrap {{ $stockStatus === 'OUT_OF_STOCK' ? 'bg-rose-50 text-rose-700 border border-rose-200/60' : ($stockStatus === 'LOW_STOCK' ? 'bg-amber-50 text-amber-700 border border-amber-200/60' : 'bg-[#E3EEE8] text-[#3F7A5D] border border-[#3F7A5D]/20') }}">
+                                            <span class="px-2 py-0.5 rounded-full font-bold text-[0.72rem] whitespace-nowrap {{ $stockStatus === 'OUT_OF_STOCK' ? 'bg-rose-50 text-rose-700 border border-rose-200/60' : ($stockStatus === 'LOW_STOCK' ? 'bg-amber-50 text-amber-700 border border-amber-200/60' : 'bg-[#E3EEE8] text-[#3F7A5D] border border-[#3F7A5D]/20') }}">
                                                 Stok: {{ $stockQty }}
                                             </span>
                                         @elseif($product->product_type === 'DIGITAL')
-                                            <span class="px-2.5 py-1 rounded-full font-extrabold text-xs bg-emerald-50 text-emerald-700 border border-emerald-200/60 whitespace-nowrap">
+                                            <span class="px-2 py-0.5 rounded-full font-bold text-[0.72rem] bg-emerald-50 text-emerald-700 border border-emerald-200/60 whitespace-nowrap">
                                                 Digital
                                             </span>
                                         @else
-                                            <span class="px-2.5 py-1 rounded-full font-extrabold text-xs bg-amber-50 text-amber-700 border border-amber-200/60 whitespace-nowrap">
+                                            <span class="px-2 py-0.5 rounded-full font-bold text-[0.72rem] bg-amber-50 text-amber-700 border border-amber-200/60 whitespace-nowrap">
                                                 Layanan
                                             </span>
                                         @endif
