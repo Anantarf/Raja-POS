@@ -132,7 +132,7 @@ class SaleCancellationService
         });
 
         if ($result) {
-            ProcessAuditLogJob::dispatch(
+            ProcessAuditLogJob::dispatchSync(
                 action: 'SALE_TRASH',
                 description: "Transaksi #{$sale->invoice_number} dipindahkan ke sampah. Alasan: {$reason}",
                 userId: $user->id,
@@ -275,7 +275,7 @@ class SaleCancellationService
         });
 
         if ($result) {
-            ProcessAuditLogJob::dispatch(
+            ProcessAuditLogJob::dispatchSync(
                 action: 'SALE_RESTORE',
                 description: "Transaksi #{$sale->invoice_number} dipulihkan dari sampah",
                 userId: $user->id,

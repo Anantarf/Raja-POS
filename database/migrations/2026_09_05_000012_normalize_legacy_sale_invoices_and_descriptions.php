@@ -35,8 +35,8 @@ return new class extends Migration
         $transactions = DB::table('balance_transactions')->get();
         foreach ($transactions as $trx) {
             $desc = (string) ($trx->description ?? '');
-            if (preg_match('/TRX-[a-f0-9]{8}-[a-f0-9-]{20,}/i', $desc)) {
-                $newDesc = preg_replace_callback('/(TRX)-([a-f0-9]{8})-[a-f0-9-]{20,}/i', function ($matches) {
+            if (preg_match('/TRX-[a-f0-9]{8}-[a-f0-9-]{10,}/i', $desc)) {
+                $newDesc = preg_replace_callback('/(TRX)-([a-f0-9]{8})-[a-f0-9-]{10,}/i', function ($matches) {
                     return strtoupper($matches[1] . '-' . substr($matches[2], 0, 8));
                 }, $desc);
 
@@ -50,8 +50,8 @@ return new class extends Migration
         $movements = DB::table('inventory_movements')->get();
         foreach ($movements as $m) {
             $notes = (string) ($m->notes ?? '');
-            if (preg_match('/TRX-[a-f0-9]{8}-[a-f0-9-]{20,}/i', $notes)) {
-                $newNotes = preg_replace_callback('/(TRX)-([a-f0-9]{8})-[a-f0-9-]{20,}/i', function ($matches) {
+            if (preg_match('/TRX-[a-f0-9]{8}-[a-f0-9-]{10,}/i', $notes)) {
+                $newNotes = preg_replace_callback('/(TRX)-([a-f0-9]{8})-[a-f0-9-]{10,}/i', function ($matches) {
                     return strtoupper($matches[1] . '-' . substr($matches[2], 0, 8));
                 }, $notes);
 

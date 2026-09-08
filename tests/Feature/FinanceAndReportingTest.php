@@ -39,10 +39,12 @@ class FinanceAndReportingTest extends TestCase
 
     public function test_migration_normalizes_sale_invoices_and_descriptions(): void
     {
+        $user = User::first();
+        $location = Location::first();
         \Illuminate\Support\Facades\DB::table('sales')->insert([
             'invoice_number' => 'TRX-30971e96-924c-45fa-b1a6-21234d4e4db3',
-            'cashier_id' => 1,
-            'location_id' => 1,
+            'cashier_id' => $user->id,
+            'location_id' => $location->id,
             'transaction_date' => now(),
             'subtotal' => 10000,
             'total_amount' => 10000,
@@ -59,7 +61,7 @@ class FinanceAndReportingTest extends TestCase
             'balance_before' => 0,
             'balance_after' => 10000,
             'description' => 'Penerimaan pembayaran QRIS untuk POS #TRX-30971e96-924c-45fa-b1a6-21234d4e4db3',
-            'created_by' => 1,
+            'created_by' => $user->id,
             'transaction_date' => now(),
             'created_at' => now(),
             'updated_at' => now(),
