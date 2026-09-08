@@ -91,154 +91,137 @@
         </div>
     </div>
 
-    <!-- Data Visualization Chart & Table Grid -->
-    @php
-        $hasChartData = array_sum($dailyTrends['data'] ?? []) > 0;
-    @endphp
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
-        <!-- 1. ApexCharts Bar Chart Card -->
-        <div class="lg:col-span-2 bg-white rounded-xl p-5 border border-slate-200/80 shadow-2xs space-y-3">
-            <div class="flex items-center justify-between">
-                <div>
-                    <h2 class="text-lg font-extrabold text-[#2C3E35] tracking-tight">Grafik Omzet Penjualan Harian</h2>
-                    <p class="text-xs text-[#5F7167] font-medium mt-0.5">Visualisasi tren omzet ritel toko 7 hari terakhir.</p>
-                </div>
-                <span class="px-3 py-1 rounded-lg text-xs font-extrabold bg-[#E3EEE8] text-[#3F7A5D]">
-                    7 Hari Terakhir
-                </span>
-            </div>
+    <!-- Interactive Daily Omzet Bar Chart Card (Full Width) -->
+    <div
+        x-data="{
+            chart: null,
+            initChart() {
+                const labels = @json($dailyTrends['labels']);
+                const data = @json($dailyTrends['data']);
 
-            @if($hasChartData)
-                <!-- ApexCharts Container (Compact 240px) -->
-                <div id="emco-sales-chart" class="w-full h-60"></div>
-            @else
-                <!-- Clean Empty State (When 7-Day Revenue is Rp 0) -->
-                <div class="h-60 border border-dashed border-slate-200 rounded-xl bg-[#F3F6F4]/50 flex flex-col items-center justify-center text-center p-5 space-y-2">
-                    <div class="w-11 h-11 rounded-full bg-[#E3EEE8] text-[#3F7A5D] flex items-center justify-center shadow-2xs">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
-                    </div>
-                    <div class="font-extrabold text-[#2C3E35] text-sm">Belum Ada Omzet pada Periode Ini</div>
-                    <div class="text-xs text-[#5F7167] max-w-xs leading-relaxed font-medium">Grafik tren harian akan otomatis aktif begitu transaksi pertama berhasil diproses pada 7 hari terakhir.</div>
-                </div>
-            @endif
-        </div>
+                const formattedLabels = labels.map(l => l.toUpperCase());
 
-        <!-- 2. Breakdown Tabel Harian -->
-        <div class="bg-white rounded-xl p-5 border border-slate-200/80 shadow-2xs flex flex-col justify-between space-y-3">
+                const options = {
+                    chart: {
+                        type: 'bar',
+                        height: 300,
+                        toolbar: { show: false },
+                        fontFamily: 'Inter, Roboto, sans-serif',
+                        animations: {
+                            enabled: true,
+                            easing: 'easeinout',
+                            speed: 500
+                        }
+                    },
+                    colors: ['#3F7A5D'],
+                    plotOptions: {
+                        bar: {
+                            horizontal: false,
+                            columnWidth: '42%',
+                            borderRadius: 8,
+                            borderRadiusApplication: 'end',
+                            startingShape: 'rounded'
+                        }
+                    },
+                    dataLabels: { enabled: false },
+                    stroke: { show: true, width: 2, colors: ['transparent'] },
+                    series: [{
+                        name: 'Total Omzet',
+                        data: data
+                    }],
+                    xaxis: {
+                        categories: formattedLabels,
+                        axisBorder: { show: false },
+                        axisTicks: { show: false },
+                        labels: {
+                            style: {
+                                colors: '#5F7167',
+                                fontSize: '12px',
+                                fontWeight: 700
+                            }
+                        }
+                    },
+                    yaxis: {
+                        min: 0,
+                        labels: {
+                            style: {
+                                colors: '#5F7167',
+                                fontSize: '12px',
+                                fontWeight: 700
+                            },
+                            formatter: function (val) {
+                                if (val === 0) return 'Rp 0';
+                                if (val >= 1000000000) return 'Rp ' + (val / 1000000000).toFixed(1) + ' M';
+                                if (val >= 1000000) return 'Rp ' + (val / 1000000).toFixed(1) + ' jt';
+                                if (val >= 1000) return 'Rp ' + (val / 1000).toFixed(0) + ' rb';
+                                return 'Rp ' + val;
+                            }
+                        }
+                    },
+                    grid: {
+                        borderColor: '#E3EEE8',
+                        strokeDashArray: 4
+                    },
+                    states: {
+                        hover: {
+                            filter: {
+                                type: 'darken',
+                                value: 0.88
+                            }
+                        }
+                    },
+                    tooltip: {
+                        theme: 'light',
+                        style: {
+                            fontSize: '13px',
+                            fontFamily: 'Inter, sans-serif'
+                        },
+                        y: {
+                            formatter: function (val) {
+                                return 'Rp ' + new Intl.NumberFormat('id-ID').format(val);
+                            }
+                        }
+                    }
+                };
+
+                const renderChart = () => {
+                    if (this.chart) {
+                        this.chart.destroy();
+                    }
+                    this.chart = new ApexCharts(this.$refs.chartCanvas, options);
+                    this.chart.render();
+                };
+
+                if (typeof ApexCharts !== 'undefined') {
+                    renderChart();
+                } else {
+                    const script = document.createElement('script');
+                    script.src = 'https://cdn.jsdelivr.net/npm/apexcharts';
+                    script.onload = () => {
+                        renderChart();
+                    };
+                    document.head.appendChild(script);
+                }
+            }
+        }"
+        x-init="initChart()"
+        class="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm space-y-4"
+    >
+        <div class="flex items-center justify-between border-b border-slate-100/80 pb-4">
             <div>
-                <div class="flex items-center justify-between mb-3">
-                    <h2 class="text-lg font-extrabold text-[#2C3E35] tracking-tight">Rincian Omzet</h2>
-                    <a href="/admin/sales" class="text-xs font-bold text-[#3F7A5D] hover:underline">
-                        Riwayat &rarr;
-                    </a>
-                </div>
-
-                <div class="overflow-x-auto rounded-xl border border-slate-200/80">
-                    <table class="w-full text-sm text-left">
-                        <thead class="bg-[#F3F6F4] text-[#5F7167] uppercase text-xs font-extrabold tracking-wider border-b border-slate-200/80">
-                            <tr>
-                                <th class="py-2.5 px-3">Tanggal</th>
-                                <th class="py-2.5 px-3 text-right">Omzet (Rp)</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-slate-100 font-medium">
-                            @forelse($dailyTrends['labels'] as $index => $label)
-                                <tr class="hover:bg-[#F3F6F4]/60 transition">
-                                    <td class="py-2.5 px-3 font-semibold text-[#2C3E35] text-sm">{{ $label }}</td>
-                                    <td class="py-2.5 px-3 text-right font-mono font-extrabold text-[#3F7A5D] text-base">
-                                        Rp {{ number_format($dailyTrends['data'][$index] ?? 0, 0, ',', '.') }}
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="2" class="py-5 text-center text-slate-400 font-medium text-xs">Belum ada data.</td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
+                <h2 class="text-base sm:text-lg font-extrabold text-[#2C3E35] tracking-tight uppercase">
+                    GRAFIK OMZET HARIAN (7 HARI TERAKHIR)
+                </h2>
+                <p class="text-xs sm:text-sm text-[#5F7167] font-medium mt-0.5">
+                    Grafik visualisasi omzet penjualan harian toko.
+                </p>
             </div>
+            <span class="px-3.5 py-1.5 rounded-xl text-xs font-extrabold bg-[#E3EEE8] text-[#3F7A5D] border border-[#3F7A5D]/20">
+                Realtime
+            </span>
         </div>
+
+        <!-- ApexCharts Interactive Canvas Element -->
+        <div x-ref="chartCanvas" class="w-full min-h-[300px]"></div>
     </div>
 </div>
-
-@if($hasChartData)
-    <!-- Include ApexCharts -->
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const labels = @json($dailyTrends['labels']);
-            const data = @json($dailyTrends['data']);
-
-            const options = {
-                chart: {
-                    type: 'bar',
-                    height: 240,
-                    toolbar: { show: false },
-                    fontFamily: 'Inter, Roboto, sans-serif'
-                },
-                colors: ['#3F7A5D'],
-                plotOptions: {
-                    bar: {
-                        horizontal: false,
-                        columnWidth: '38%',
-                        borderRadius: 6,
-                        startingShape: 'rounded'
-                    }
-                },
-                dataLabels: { enabled: false },
-                stroke: { show: true, width: 2, colors: ['transparent'] },
-                series: [{
-                    name: 'Total Omzet',
-                    data: data
-                }],
-                xaxis: {
-                    categories: labels,
-                    axisBorder: { show: false },
-                    axisTicks: { show: false },
-                    labels: {
-                        style: {
-                            colors: '#718379',
-                            fontSize: '12px',
-                            fontWeight: 700
-                        }
-                    }
-                },
-                yaxis: {
-                    min: 0,
-                    labels: {
-                        style: {
-                            colors: '#718379',
-                            fontSize: '12px',
-                            fontWeight: 700
-                        },
-                        formatter: function (val) {
-                            if (val === 0) return 'Rp 0';
-                            if (val >= 1000000000) return 'Rp ' + (val / 1000000000).toFixed(1) + ' M';
-                            if (val >= 1000000) return 'Rp ' + (val / 1000000).toFixed(1) + ' jt';
-                            if (val >= 1000) return 'Rp ' + (val / 1000).toFixed(0) + ' rb';
-                            return 'Rp ' + val;
-                        }
-                    }
-                },
-                grid: {
-                    borderColor: '#E3EEE8',
-                    strokeDashArray: 4
-                },
-                tooltip: {
-                    y: {
-                        formatter: function (val) {
-                            return 'Rp ' + new Intl.NumberFormat('id-ID').format(val);
-                        }
-                    }
-                }
-            };
-
-            const chartEl = document.querySelector("#emco-sales-chart");
-            if (chartEl) {
-                const chart = new ApexCharts(chartEl, options);
-                chart.render();
-            }
-        });
-    </script>
-@endif
