@@ -1,4 +1,4 @@
-<div class="space-y-6">
+<div class="space-y-5">
     <!-- Welcome Banner Card -->
     <div class="bg-gradient-to-r from-[#3F7A5D]/10 via-[#3F7A5D]/5 to-white border border-slate-200/80 rounded-2xl p-4 sm:p-5 relative overflow-hidden flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">
         <div class="space-y-1.5">
@@ -9,17 +9,17 @@
                 <span class="font-bold text-[#2C3E35]">Ringkasan Operasional:</span> Anda memiliki akses penuh sebagai <span class="font-extrabold text-[#3F7A5D]">{{ auth()->user()->role?->name ?? 'Kasir' }}</span> pada sistem kasir &amp; manajemen ritel Raja Aksesoris.
             </p>
             <div class="pt-1">
-                <a href="/pos" class="h-11 px-4 text-sm bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-xl inline-flex items-center gap-2 transition shadow-sm btn-glow active-press hover-lift">
+                <a href="/pos" class="h-10 px-4 text-xs sm:text-sm bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-xl inline-flex items-center gap-2 transition shadow-sm active:scale-95">
                     <span>Buka Layar Kasir</span> &rarr;
                 </a>
             </div>
         </div>
     </div>
 
-    <!-- Executive Stat Cards Grid -->
+    <!-- Executive Stat Cards Grid (4 Columns) -->
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-3.5">
         <!-- 1. Total Omzet -->
-        <div class="bg-white rounded-2xl p-4 border border-slate-200/80 hover:border-[#3F7A5D]/50 shadow-sm hover-lift cursor-default">
+        <div class="bg-white rounded-2xl p-4 border border-slate-200/80 hover:border-[#3F7A5D]/50 shadow-sm transition cursor-default">
             <div class="flex items-center justify-between mb-2">
                 <span class="text-xs text-[#5F7167] font-extrabold uppercase tracking-wider">Total Omzet</span>
                 @if(($metrics['omzet_growth'] ?? 0) > 0)
@@ -43,7 +43,7 @@
         </div>
 
         <!-- 2. Margin -->
-        <div class="bg-white rounded-2xl p-4 border border-slate-200/80 hover:border-[#C2AC7C]/50 shadow-sm hover-lift cursor-default">
+        <div class="bg-white rounded-2xl p-4 border border-slate-200/80 hover:border-[#C2AC7C]/50 shadow-sm transition cursor-default">
             <div class="flex items-center justify-between mb-2">
                 <span class="text-xs text-[#5F7167] font-extrabold uppercase tracking-wider">Margin Toko</span>
                 <span class="px-2 py-0.5 rounded-md text-[10px] font-bold text-[#8F794B] bg-[#C2AC7C]/20 border border-[#C2AC7C]/40">
@@ -63,7 +63,7 @@
         </div>
 
         <!-- 3. Total Saldo Toko -->
-        <div class="bg-white rounded-2xl p-4 border border-slate-200/80 hover:border-[#3F7A5D]/50 shadow-sm hover-lift cursor-default">
+        <div class="bg-white rounded-2xl p-4 border border-slate-200/80 hover:border-[#3F7A5D]/50 shadow-sm transition cursor-default">
             <div class="flex items-center justify-between mb-2">
                 <span class="text-xs text-[#5F7167] font-extrabold uppercase tracking-wider">Total Saldo</span>
                 <span class="px-2 py-0.5 rounded-md text-[10px] font-bold text-[#3F7A5D] bg-[#E3EEE8]">
@@ -77,7 +77,7 @@
         </div>
 
         <!-- 4. Total Transaksi -->
-        <div class="bg-white rounded-2xl p-4 border border-slate-200/80 hover:border-[#3F7A5D]/50 shadow-sm hover-lift cursor-default">
+        <div class="bg-white rounded-2xl p-4 border border-slate-200/80 hover:border-[#3F7A5D]/50 shadow-sm transition cursor-default">
             <div class="flex items-center justify-between mb-2">
                 <span class="text-xs text-[#5F7167] font-extrabold uppercase tracking-wider">Total Transaksi</span>
                 <span class="px-2 py-0.5 rounded-md text-[10px] font-bold text-[#3F7A5D] bg-[#E3EEE8]">
@@ -91,24 +91,138 @@
         </div>
     </div>
 
-    <!-- Daily Omzet Bar Chart Card (Full Width, Interactive ApexCharts) -->
-    <div class="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm space-y-4">
-        <div class="flex items-center justify-between border-b border-slate-100/80 pb-4">
-            <div>
-                <h2 class="text-base sm:text-lg font-extrabold text-[#2C3E35] tracking-tight uppercase">
-                    GRAFIK OMZET HARIAN (7 HARI TERAKHIR)
-                </h2>
-                <p class="text-xs sm:text-sm text-[#5F7167] font-medium mt-0.5">
-                    Grafik visualisasi omzet penjualan harian toko.
-                </p>
+    <!-- Golden Ratio Main Layout Grid (3:2 Ratio / 60% : 40% Width) -->
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-5 sm:gap-6">
+        
+        <!-- Left Main Panel (60% Golden Ratio Width: lg:col-span-3) -->
+        <div class="lg:col-span-3 space-y-5">
+            <!-- 1. Daily Omzet Bar Chart Card -->
+            <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                    <div>
+                        <h2 class="text-sm sm:text-base font-extrabold text-[#2C3E35] tracking-tight uppercase">
+                            Grafik Omzet Harian (7 Hari Terakhir)
+                        </h2>
+                        <p class="text-xs text-[#5F7167] font-medium mt-0.5">
+                            Visualisasi tren performa omzet penjualan ritel toko.
+                        </p>
+                    </div>
+                    <span class="px-3 py-1 rounded-xl text-xs font-extrabold bg-[#E3EEE8] text-[#3F7A5D] border border-[#3F7A5D]/20">
+                        Realtime
+                    </span>
+                </div>
+
+                <!-- ApexCharts Canvas -->
+                <div id="dashboard-omzet-chart" class="w-full" style="min-height:280px;"></div>
             </div>
-            <span class="px-3.5 py-1.5 rounded-xl text-xs font-extrabold bg-[#E3EEE8] text-[#3F7A5D] border border-[#3F7A5D]/20">
-                Realtime
-            </span>
+
+            <!-- 2. Payment Method Distribution Card -->
+            <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm space-y-3.5">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                    <div>
+                        <h2 class="text-sm sm:text-base font-extrabold text-[#2C3E35] tracking-tight uppercase">
+                            Distribusi Metode Pembayaran
+                        </h2>
+                        <p class="text-xs text-[#5F7167] font-medium mt-0.5">
+                            Perbandingan transaksi Tunai, Transfer Bank, QRIS, &amp; E-Wallet.
+                        </p>
+                    </div>
+                    <span class="text-xs font-extrabold text-[#3F7A5D] bg-[#E3EEE8] px-2.5 py-1 rounded-lg">Audit Saldo</span>
+                </div>
+
+                @php
+                    $totalPayAmount = array_sum($paymentDistribution ?? []);
+                @endphp
+
+                <div class="space-y-3 pt-1">
+                    @forelse($paymentDistribution ?? [] as $method => $amount)
+                        @php
+                            $percentage = $totalPayAmount > 0 ? round(($amount / $totalPayAmount) * 100, 1) : 0;
+                        @endphp
+                        <div class="space-y-1">
+                            <div class="flex items-center justify-between text-xs font-bold">
+                                <span class="text-[#2C3E35] uppercase tracking-wider">{{ $method }}</span>
+                                <div class="space-x-1 font-mono">
+                                    <span class="text-[#3F7A5D] font-extrabold">Rp {{ number_format($amount, 0, ',', '.') }}</span>
+                                    <span class="text-slate-400">({{ $percentage }}%)</span>
+                                </div>
+                            </div>
+                            <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+                                <div class="bg-[#3F7A5D] h-2 rounded-full transition-all duration-500" style="width: {{ $percentage }}%"></div>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="text-xs text-slate-400 italic text-center py-4">Belum ada data pembayaran terdeteksi.</div>
+                    @endforelse
+                </div>
+            </div>
         </div>
 
-        <!-- ApexCharts Canvas -->
-        <div id="dashboard-omzet-chart" class="w-full" style="min-height:300px;"></div>
+        <!-- Right Side Panel (40% Golden Ratio Width: lg:col-span-2) -->
+        <div class="lg:col-span-2 space-y-5">
+            <!-- 1. Top 5 Selling Products Card -->
+            <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                    <div>
+                        <h2 class="text-sm sm:text-base font-extrabold text-[#2C3E35] tracking-tight uppercase">
+                            5 Produk Terlaris
+                        </h2>
+                        <p class="text-xs text-[#5F7167] font-medium mt-0.5">
+                            Barang paling cepat laku (Fast Moving Items).
+                        </p>
+                    </div>
+                    <span class="text-xs font-extrabold text-amber-700 bg-amber-50 border border-amber-200/80 px-2 py-0.5 rounded-lg">Top 5</span>
+                </div>
+
+                <div class="divide-y divide-slate-100">
+                    @forelse($topProducts ?? [] as $index => $item)
+                        <div class="py-2.5 first:pt-0 last:pb-0 flex items-center justify-between gap-3 text-xs">
+                            <div class="flex items-center gap-2.5 min-w-0">
+                                <span class="w-6 h-6 rounded-lg bg-[#E3EEE8] text-[#3F7A5D] font-extrabold flex items-center justify-center text-[11px] shrink-0">
+                                    #{{ $index + 1 }}
+                                </span>
+                                <div class="truncate">
+                                    <div class="font-bold text-[#2C3E35] truncate">{{ ucwords(strtolower($item->product_name)) }}</div>
+                                    <div class="text-[10px] text-[#718379] font-mono">{{ $item->code }}</div>
+                                </div>
+                            </div>
+                            <div class="text-right shrink-0">
+                                <div class="font-mono font-extrabold text-[#3F7A5D] text-xs">{{ $item->total_qty }} pcs</div>
+                                <div class="text-[10px] text-[#718379] font-mono">Rp {{ number_format($item->total_omzet, 0, ',', '.') }}</div>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="text-xs text-slate-400 italic text-center py-6">Belum ada transaksi produk terlaris.</div>
+                    @endforelse
+                </div>
+            </div>
+
+            <!-- 2. Quick Action & Utilities Card -->
+            <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm space-y-3.5">
+                <h2 class="text-xs font-extrabold text-[#5F7167] uppercase tracking-wider">
+                    Akses Pintar Operasional
+                </h2>
+                <div class="grid grid-cols-2 gap-2 text-xs">
+                    <a href="/admin/inventories" class="p-3 bg-[#F3F6F4] hover:bg-[#E3EEE8] text-[#2C3E35] font-bold rounded-xl border border-slate-200/70 transition text-center flex flex-col items-center gap-1.5 active:scale-95">
+                        <svg class="w-5 h-5 text-[#3F7A5D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+                        <span>Kelola Stok</span>
+                    </a>
+                    <a href="/admin/balances" class="p-3 bg-[#F3F6F4] hover:bg-[#E3EEE8] text-[#2C3E35] font-bold rounded-xl border border-slate-200/70 transition text-center flex flex-col items-center gap-1.5 active:scale-95">
+                        <svg class="w-5 h-5 text-[#3F7A5D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <span>Audit Saldo</span>
+                    </a>
+                    <a href="/admin/stock-opname" class="p-3 bg-[#F3F6F4] hover:bg-[#E3EEE8] text-[#2C3E35] font-bold rounded-xl border border-slate-200/70 transition text-center flex flex-col items-center gap-1.5 active:scale-95">
+                        <svg class="w-5 h-5 text-[#3F7A5D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 02 2h2a2 2 0 02-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+                        <span>Stock Opname</span>
+                    </a>
+                    <a href="/admin/reports" class="p-3 bg-[#F3F6F4] hover:bg-[#E3EEE8] text-[#2C3E35] font-bold rounded-xl border border-slate-200/70 transition text-center flex flex-col items-center gap-1.5 active:scale-95">
+                        <svg class="w-5 h-5 text-[#3F7A5D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 012-2h2a2 2 0 012 2v6a2 2 0 01-2 2H11a2 2 0 01-2-2zM5 19v-4a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H7a2 2 0 01-2-2zM13 19v-8a2 2 0 012-2h2a2 2 0 012 2v8a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                        <span>Laporan Toko</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 
@@ -124,7 +238,7 @@
         var options = {
             chart: {
                 type: 'bar',
-                height: 300,
+                height: 280,
                 toolbar: { show: false },
                 fontFamily: 'Inter, Roboto, sans-serif',
                 animations: { enabled: true, easing: 'easeinout', speed: 500 }
@@ -145,12 +259,12 @@
                 categories: formattedLabels,
                 axisBorder: { show: false },
                 axisTicks: { show: false },
-                labels: { style: { colors: '#5F7167', fontSize: '12px', fontWeight: 700 } }
+                labels: { style: { colors: '#5F7167', fontSize: '11px', fontWeight: 700 } }
             },
             yaxis: {
                 min: 0,
                 labels: {
-                    style: { colors: '#5F7167', fontSize: '12px', fontWeight: 700 },
+                    style: { colors: '#5F7167', fontSize: '11px', fontWeight: 700 },
                     formatter: function (val) {
                         if (val === 0) return 'Rp 0';
                         if (val >= 1000000000) return 'Rp ' + (val / 1000000000).toFixed(1) + ' M';
@@ -164,7 +278,7 @@
             states: { hover: { filter: { type: 'darken', value: 0.88 } } },
             tooltip: {
                 theme: 'light',
-                style: { fontSize: '13px', fontFamily: 'Inter, sans-serif' },
+                style: { fontSize: '12px', fontFamily: 'Inter, sans-serif' },
                 y: {
                     formatter: function (val) {
                         return 'Rp ' + new Intl.NumberFormat('id-ID').format(val);

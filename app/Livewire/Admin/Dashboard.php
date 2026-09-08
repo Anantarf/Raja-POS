@@ -11,10 +11,14 @@ class Dashboard extends Component
     {
         $metrics = $reportService->getSummaryMetrics();
         $dailyTrends = $reportService->getDailySalesTrend(7);
+        $paymentDistribution = $reportService->getPaymentMethodDistribution();
+        $topProducts = $reportService->getTopSellingProducts(null, null, 5);
 
         return view('livewire.admin.dashboard', [
             'metrics' => $metrics,
             'dailyTrends' => $dailyTrends,
+            'paymentDistribution' => $paymentDistribution,
+            'topProducts' => $topProducts,
         ])->layout('components.layouts.admin', ['title' => 'Dashboard']);
     }
 }
