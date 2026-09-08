@@ -230,8 +230,8 @@
 
                                     <!-- Card Title (Top-Aligned Baseline) -->
                                     <div class="px-3 pt-2 pb-0.5 h-10 sm:h-12 flex items-start">
-                                        <h4 class="text-sm sm:text-base font-extrabold text-[#232E28] leading-snug group-hover:text-[#3F7A5D] transition-colors line-clamp-2 overflow-hidden text-ellipsis">
-                                            {{ $product->name }}
+                                        <h4 class="text-sm sm:text-base font-bold text-[#2C3E35] leading-snug group-hover:text-[#3F7A5D] transition-colors line-clamp-2 overflow-hidden text-ellipsis">
+                                            {{ ucwords(strtolower($product->name)) }}
                                         </h4>
                                     </div>
                                 </div>
@@ -248,7 +248,7 @@
                                                 INCOMPLETE
                                             </span>
                                         @else
-                                            <div class="text-base sm:text-lg font-black text-[#232E28] font-mono tracking-tight whitespace-nowrap">
+                                            <div class="text-base sm:text-lg font-extrabold text-[#2C3E35] font-mono tracking-tight whitespace-nowrap">
                                                 Rp {{ number_format((float) $product->selling_price, 0, ',', '.') }}
                                             </div>
                                         @endif
@@ -336,8 +336,8 @@
 
                                         <!-- Product Title First, Badges Second -->
                                         <div class="min-w-0 flex-1">
-                                            <h4 class="text-base font-extrabold text-[#232E28] group-hover:text-[#3F7A5D] transition-colors leading-snug truncate">
-                                                {{ $product->name }}
+                                            <h4 class="text-base font-bold text-[#2C3E35] group-hover:text-[#3F7A5D] transition-colors leading-snug truncate">
+                                                {{ ucwords(strtolower($product->name)) }}
                                             </h4>
                                             <div class="flex items-center gap-2 flex-wrap mt-0.5">
                                                 <span class="text-[0.72rem] font-mono font-bold text-slate-600 bg-slate-100 px-2 py-0.5 rounded-md border border-slate-200/70 whitespace-nowrap">
@@ -362,7 +362,7 @@
                                                     INCOMPLETE
                                                 </span>
                                             @else
-                                                <div class="text-base sm:text-lg font-black text-[#232E28] font-mono whitespace-nowrap">
+                                                <div class="text-base sm:text-lg font-extrabold text-[#2C3E35] font-mono whitespace-nowrap">
                                                     Rp {{ number_format((float) $product->selling_price, 0, ',', '.') }}
                                                 </div>
                                             @endif
@@ -459,8 +459,8 @@
                     <div class="py-3 flex items-center justify-between gap-3 group">
                         <!-- Product Name & Unit Price -->
                         <div class="flex-1 min-w-0">
-                            <div class="text-base font-bold text-[#232E28] truncate leading-snug group-hover:text-[#3F7A5D] transition-colors" title="{{ $item['name'] }}">
-                                {{ $item['name'] }}
+                            <div class="text-base font-bold text-[#2C3E35] truncate leading-snug group-hover:text-[#3F7A5D] transition-colors" title="{{ $item['name'] }}">
+                                {{ ucwords(strtolower($item['name'])) }}
                             </div>
                             <div class="text-[0.78rem] text-[#718379] font-mono font-semibold mt-0.5">
                                 @ Rp {{ number_format($item['price'], 0, ',', '.') }}
@@ -490,7 +490,7 @@
 
                         <!-- Fixed-Width Subtotal & Delete Action with Trash Icon Button -->
                         <div class="shrink-0 w-[105px] text-right flex flex-col items-end justify-between min-h-[42px] py-0.5">
-                            <div class="text-sm font-extrabold text-[#232E28] font-mono tracking-tight">
+                            <div class="text-sm font-extrabold text-[#2C3E35] font-mono tracking-tight">
                                 Rp {{ number_format($item['price'] * $item['quantity'], 0, ',', '.') }}
                             </div>
                             <button
@@ -528,7 +528,7 @@
                         <div class="text-base font-extrabold uppercase text-[#5F7167] tracking-wider">Total Belanja</div>
                         <div class="text-sm text-slate-500 font-semibold mt-0.5">Subtotal: Rp {{ number_format($this->subtotal, 0, ',', '.') }}</div>
                     </div>
-                    <div class="text-3xl sm:text-4xl font-black text-[#232E28] font-mono tracking-tight">
+                    <div class="text-3xl sm:text-4xl font-extrabold text-[#2C3E35] font-mono tracking-tight">
                         Rp {{ number_format($this->grand_total, 0, ',', '.') }}
                     </div>
                 </div>
