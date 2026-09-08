@@ -522,25 +522,25 @@
                 @endforelse
             </div>
 
-            <!-- 3. PROPORTIONAL PAYMENT FOOTER -->
-            <div class="p-4 sm:p-5 border-t border-slate-200/80 bg-[#F3F6F4]/60 space-y-3 shrink-0">
+            <!-- 3. PROPORTIONAL COMPACT PAYMENT FOOTER -->
+            <div class="p-3 sm:p-3.5 border-t border-slate-200/80 bg-[#F3F6F4]/60 space-y-2 shrink-0">
 
                 <!-- Grand Total Billing Card -->
-                <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs flex items-baseline justify-between">
+                <div class="bg-white p-3 rounded-xl border border-slate-200/80 shadow-xs flex items-center justify-between">
                     <div>
-                        <div class="text-base font-extrabold uppercase text-[#5F7167] tracking-wider">Total Belanja</div>
-                        <div class="text-sm text-slate-500 font-semibold mt-0.5">Subtotal: Rp {{ number_format($this->subtotal, 0, ',', '.') }}</div>
+                        <div class="text-xs font-bold uppercase text-[#5F7167] tracking-wider">Total Belanja</div>
+                        <div class="text-xs text-slate-500 font-medium mt-0.5">Subtotal: Rp {{ number_format($this->subtotal, 0, ',', '.') }}</div>
                     </div>
-                    <div class="text-3xl sm:text-4xl font-extrabold text-[#2C3E35] font-mono tracking-tight">
+                    <div class="text-xl sm:text-2xl font-extrabold text-[#232E28] font-mono tracking-tight">
                         Rp {{ number_format($this->grand_total, 0, ',', '.') }}
                     </div>
                 </div>
 
                 <!-- Payment Method Inputs -->
-                <div class="space-y-2">
-                    <div class="flex items-center justify-between text-sm font-extrabold text-[#232E28]">
+                <div class="space-y-1.5">
+                    <div class="flex items-center justify-between text-xs font-bold text-[#232E28]">
                         <span>Metode Pembayaran</span>
-                        <button type="button" wire:click="addPaymentRow" class="text-[#3F7A5D] hover:underline text-sm font-bold cursor-pointer">
+                        <button type="button" wire:click="addPaymentRow" class="text-[#3F7A5D] hover:underline text-xs font-bold cursor-pointer">
                             + Tambah Metode
                         </button>
                     </div>
@@ -549,9 +549,9 @@
                         @php
                             $selectedPm = $paymentMethods->firstWhere('id', $pay['payment_method_id']);
                         @endphp
-                        <div class="bg-white p-3.5 rounded-2xl border border-slate-200/80 space-y-2.5 text-base shadow-xs">
+                        <div class="bg-white p-2.5 rounded-xl border border-slate-200/80 space-y-2 text-xs shadow-xs">
                             <div class="flex flex-col sm:flex-row sm:items-center gap-2">
-                                <select wire:model.live="payments.{{ $index }}.payment_method_id" class="w-full sm:w-1/2 h-12 px-3.5 py-2.5 border border-slate-200 rounded-xl bg-white text-base font-bold text-[#232E28] focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] shadow-2xs cursor-pointer">
+                                <select wire:model.live="payments.{{ $index }}.payment_method_id" class="w-full sm:w-1/2 h-9 px-2.5 py-1 border border-slate-200 rounded-lg bg-white text-xs sm:text-sm font-bold text-[#232E28] focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] shadow-2xs cursor-pointer">
                                     @foreach($paymentMethods as $pm)
                                         @php
                                             $pmLabel = match($pm->type) {
@@ -568,7 +568,7 @@
 
                                 <div class="flex items-center gap-1.5 flex-1 w-full sm:w-auto">
                                     <div class="relative flex-1">
-                                        <span class="absolute left-3 top-3 text-sm font-bold text-[#718379]">Rp</span>
+                                        <span class="absolute left-2.5 top-2 text-xs font-bold text-[#718379]">Rp</span>
                                         <input
                                             type="text"
                                             maxlength="13"
@@ -581,12 +581,12 @@
                                             "
                                             value="{{ $pay['amount'] ? number_format((float) $pay['amount'], 0, ',', '.') : '' }}"
                                             placeholder="0"
-                                            class="w-full h-11 pl-9 pr-3 py-2.5 border border-slate-200 rounded-xl font-mono font-extrabold text-right text-base sm:text-lg text-[#232E28] focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]"
+                                            class="w-full h-9 pl-8 pr-2.5 py-1 border border-slate-200 rounded-lg font-mono font-extrabold text-right text-sm text-[#232E28] focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]"
                                         />
                                     </div>
 
                                     @if(count($payments) > 1)
-                                        <button type="button" wire:click="removePaymentRow({{ $index }})" class="text-rose-500 hover:text-rose-700 font-bold w-11 h-11 min-h-[44px] bg-rose-50 rounded-xl text-lg flex items-center justify-center cursor-pointer shrink-0 border border-rose-200/60" title="Hapus metode pembayaran">
+                                        <button type="button" wire:click="removePaymentRow({{ $index }})" class="text-rose-500 hover:text-rose-700 font-bold w-9 h-9 bg-rose-50 rounded-lg text-base flex items-center justify-center cursor-pointer shrink-0 border border-rose-200/60" title="Hapus metode pembayaran">
                                             &times;
                                         </button>
                                     @endif
@@ -600,7 +600,7 @@
                                     $placeholderText = $selectedPm->type === 'TRANSFER' ? 'Pilih Rekening Bank Tujuan' : 'Pilih Akun E-Wallet Tujuan';
                                 @endphp
                                 <div>
-                                    <select wire:model="payments.{{ $index }}.balance_account_id" class="w-full h-11 px-3.5 py-2 border border-slate-200 rounded-xl bg-indigo-50/50 text-sm font-extrabold text-indigo-900 focus:ring-2 focus:ring-indigo-500/20 shadow-2xs cursor-pointer">
+                                    <select wire:model="payments.{{ $index }}.balance_account_id" class="w-full h-9 px-2.5 py-1 border border-slate-200 rounded-lg bg-indigo-50/50 text-xs font-bold text-indigo-900 focus:ring-2 focus:ring-indigo-500/20 shadow-2xs cursor-pointer">
                                         <option value="">{{ $placeholderText }}</option>
                                         @foreach($filteredAccounts as $ba)
                                             <option value="{{ $ba->id }}">{{ $ba->name }}</option>
@@ -613,9 +613,9 @@
                 </div>
 
                 <!-- Cash Change Display (Overflow Protected) -->
-                <div class="bg-white px-4 py-3.5 rounded-2xl border border-slate-200/80 shadow-xs flex items-center justify-between text-sm overflow-hidden">
-                    <span class="font-extrabold text-[#232E28] shrink-0 text-sm sm:text-base">Kembalian</span>
-                    <span class="truncate text-right font-mono font-black {{ $this->change_amount > 0 ? 'text-emerald-700 text-2xl sm:text-3xl' : 'text-[#232E28] text-sm font-bold' }}">
+                <div class="bg-white px-3 py-2 rounded-xl border border-slate-200/80 shadow-xs flex items-center justify-between text-xs overflow-hidden">
+                    <span class="font-bold text-[#232E28] shrink-0 text-xs sm:text-sm">Kembalian</span>
+                    <span class="truncate text-right font-mono font-black {{ $this->change_amount > 0 ? 'text-emerald-700 text-lg sm:text-xl' : 'text-[#232E28] text-xs font-bold' }}">
                         Rp {{ number_format($this->change_amount, 0, ',', '.') }}
                     </span>
                 </div>
@@ -625,9 +625,9 @@
                     type="button"
                     wire:click="processCheckout"
                     @if(count($cart) === 0 || $this->total_paid < $this->grand_total) disabled @endif
-                    class="w-full h-14 py-3.5 rounded-2xl font-black text-base sm:text-lg uppercase tracking-wider transition-all flex items-center justify-center gap-2.5 {{ count($cart) > 0 && $this->total_paid >= $this->grand_total ? 'bg-[#3F7A5D] hover:bg-[#32634B] text-white shadow-md cursor-pointer active-press hover-lift btn-glow' : 'bg-slate-100 text-slate-400 border border-slate-200/80 cursor-not-allowed' }}"
+                    class="w-full h-11 py-2.5 rounded-xl font-extrabold text-sm sm:text-base uppercase tracking-wider transition-all flex items-center justify-center gap-2 {{ count($cart) > 0 && $this->total_paid >= $this->grand_total ? 'bg-[#3F7A5D] hover:bg-[#32634B] text-white shadow-md cursor-pointer active-press hover-lift btn-glow' : 'bg-slate-100 text-slate-400 border border-slate-200/80 cursor-not-allowed' }}"
                 >
-                    <svg class="w-5 h-5 text-white shrink-0 {{ count($cart) > 0 && $this->total_paid >= $this->grand_total ? 'opacity-100' : 'opacity-40' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+                    <svg class="w-4 h-4 text-white shrink-0 {{ count($cart) > 0 && $this->total_paid >= $this->grand_total ? 'opacity-100' : 'opacity-40' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                     </svg>
                     <span>SELESAIKAN TRANSAKSI & CETAK STRUK</span>
