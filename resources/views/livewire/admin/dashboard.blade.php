@@ -92,7 +92,7 @@
     </div>
 
     <!-- Golden Ratio Main Layout Grid (3:2 Ratio / 60% : 40% Width) -->
-    <div class="grid grid-cols-1 lg:grid-cols-5 gap-5 sm:gap-6">
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-5 sm:gap-6 items-start">
         
         <!-- Left Main Panel (60% Golden Ratio Width: lg:col-span-3) -->
         <div class="lg:col-span-3 space-y-5">
@@ -113,48 +113,7 @@
                 </div>
 
                 <!-- ApexCharts Canvas -->
-                <div id="dashboard-omzet-chart" class="w-full" style="min-height:280px;"></div>
-            </div>
-
-            <!-- 2. Payment Method Distribution Card -->
-            <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm space-y-3.5">
-                <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-                    <div>
-                        <h2 class="text-sm sm:text-base font-extrabold text-[#2C3E35] tracking-tight uppercase">
-                            Distribusi Metode Pembayaran
-                        </h2>
-                        <p class="text-xs text-[#5F7167] font-medium mt-0.5">
-                            Perbandingan transaksi Tunai, Transfer Bank, QRIS, &amp; E-Wallet.
-                        </p>
-                    </div>
-                    <span class="text-xs font-extrabold text-[#3F7A5D] bg-[#E3EEE8] px-2.5 py-1 rounded-lg">Audit Saldo</span>
-                </div>
-
-                @php
-                    $totalPayAmount = array_sum($paymentDistribution ?? []);
-                @endphp
-
-                <div class="space-y-3 pt-1">
-                    @forelse($paymentDistribution ?? [] as $method => $amount)
-                        @php
-                            $percentage = $totalPayAmount > 0 ? round(($amount / $totalPayAmount) * 100, 1) : 0;
-                        @endphp
-                        <div class="space-y-1">
-                            <div class="flex items-center justify-between text-xs font-bold">
-                                <span class="text-[#2C3E35] uppercase tracking-wider">{{ $method }}</span>
-                                <div class="space-x-1 font-mono">
-                                    <span class="text-[#3F7A5D] font-extrabold">Rp {{ number_format($amount, 0, ',', '.') }}</span>
-                                    <span class="text-slate-400">({{ $percentage }}%)</span>
-                                </div>
-                            </div>
-                            <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
-                                <div class="bg-[#3F7A5D] h-2 rounded-full transition-all duration-500" style="width: {{ $percentage }}%"></div>
-                            </div>
-                        </div>
-                    @empty
-                        <div class="text-xs text-slate-400 italic text-center py-4">Belum ada data pembayaran terdeteksi.</div>
-                    @endforelse
-                </div>
+                <div id="dashboard-omzet-chart" class="w-full" style="min-height:320px;"></div>
             </div>
         </div>
 
@@ -176,7 +135,7 @@
 
                 <div class="divide-y divide-slate-100">
                     @forelse($topProducts ?? [] as $index => $item)
-                        <div class="py-2.5 first:pt-0 last:pb-0 flex items-center justify-between gap-3 text-xs">
+                        <div class="py-2 flex items-center justify-between gap-3 text-xs">
                             <div class="flex items-center gap-2.5 min-w-0">
                                 <span class="w-6 h-6 rounded-lg bg-[#E3EEE8] text-[#3F7A5D] font-extrabold flex items-center justify-center text-[11px] shrink-0">
                                     #{{ $index + 1 }}
@@ -192,7 +151,48 @@
                             </div>
                         </div>
                     @empty
-                        <div class="text-xs text-slate-400 italic text-center py-6">Belum ada transaksi produk terlaris.</div>
+                        <div class="text-xs text-slate-400 italic text-center py-4">Belum ada transaksi produk terlaris.</div>
+                    @endforelse
+                </div>
+            </div>
+
+            <!-- 2. Payment Method Distribution Card -->
+            <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm space-y-3.5">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                    <div>
+                        <h2 class="text-sm sm:text-base font-extrabold text-[#2C3E35] tracking-tight uppercase">
+                            Distribusi Metode Pembayaran
+                        </h2>
+                        <p class="text-xs text-[#5F7167] font-medium mt-0.5">
+                            Perbandingan transaksi Tunai, Transfer Bank, QRIS, &amp; E-Wallet.
+                        </p>
+                    </div>
+                    <span class="text-xs font-extrabold text-[#3F7A5D] bg-[#E3EEE8] px-2.5 py-1 rounded-lg">Audit Saldo</span>
+                </div>
+
+                @php
+                    $totalPayAmount = array_sum($paymentDistribution ?? []);
+                @endphp
+
+                <div class="space-y-2.5 pt-1">
+                    @forelse($paymentDistribution ?? [] as $method => $amount)
+                        @php
+                            $percentage = $totalPayAmount > 0 ? round(($amount / $totalPayAmount) * 100, 1) : 0;
+                        @endphp
+                        <div class="space-y-1">
+                            <div class="flex items-center justify-between text-xs font-bold">
+                                <span class="text-[#2C3E35] uppercase tracking-wider">{{ $method }}</span>
+                                <div class="space-x-1 font-mono">
+                                    <span class="text-[#3F7A5D] font-extrabold">Rp {{ number_format($amount, 0, ',', '.') }}</span>
+                                    <span class="text-slate-400">({{ $percentage }}%)</span>
+                                </div>
+                            </div>
+                            <div class="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
+                                <div class="bg-[#3F7A5D] h-1.5 rounded-full transition-all duration-500" style="width: {{ $percentage }}%"></div>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="text-xs text-slate-400 italic text-center py-3">Belum ada data pembayaran terdeteksi.</div>
                     @endforelse
                 </div>
             </div>
@@ -213,7 +213,7 @@
         var options = {
             chart: {
                 type: 'bar',
-                height: 280,
+                height: 320,
                 toolbar: { show: false },
                 fontFamily: 'Inter, Roboto, sans-serif',
                 animations: { enabled: true, easing: 'easeinout', speed: 500 }
