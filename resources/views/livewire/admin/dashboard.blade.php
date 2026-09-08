@@ -91,122 +91,8 @@
         </div>
     </div>
 
-    <!-- Interactive Daily Omzet Bar Chart Card (Full Width) -->
-    <div
-        x-data="{
-            chart: null,
-            initChart() {
-                const labels = @json($dailyTrends['labels']);
-                const data = @json($dailyTrends['data']);
-
-                const formattedLabels = labels.map(l => l.toUpperCase());
-
-                const options = {
-                    chart: {
-                        type: 'bar',
-                        height: 300,
-                        toolbar: { show: false },
-                        fontFamily: 'Inter, Roboto, sans-serif',
-                        animations: {
-                            enabled: true,
-                            easing: 'easeinout',
-                            speed: 500
-                        }
-                    },
-                    colors: ['#3F7A5D'],
-                    plotOptions: {
-                        bar: {
-                            horizontal: false,
-                            columnWidth: '42%',
-                            borderRadius: 8,
-                            borderRadiusApplication: 'end',
-                            startingShape: 'rounded'
-                        }
-                    },
-                    dataLabels: { enabled: false },
-                    stroke: { show: true, width: 2, colors: ['transparent'] },
-                    series: [{
-                        name: 'Total Omzet',
-                        data: data
-                    }],
-                    xaxis: {
-                        categories: formattedLabels,
-                        axisBorder: { show: false },
-                        axisTicks: { show: false },
-                        labels: {
-                            style: {
-                                colors: '#5F7167',
-                                fontSize: '12px',
-                                fontWeight: 700
-                            }
-                        }
-                    },
-                    yaxis: {
-                        min: 0,
-                        labels: {
-                            style: {
-                                colors: '#5F7167',
-                                fontSize: '12px',
-                                fontWeight: 700
-                            },
-                            formatter: function (val) {
-                                if (val === 0) return 'Rp 0';
-                                if (val >= 1000000000) return 'Rp ' + (val / 1000000000).toFixed(1) + ' M';
-                                if (val >= 1000000) return 'Rp ' + (val / 1000000).toFixed(1) + ' jt';
-                                if (val >= 1000) return 'Rp ' + (val / 1000).toFixed(0) + ' rb';
-                                return 'Rp ' + val;
-                            }
-                        }
-                    },
-                    grid: {
-                        borderColor: '#E3EEE8',
-                        strokeDashArray: 4
-                    },
-                    states: {
-                        hover: {
-                            filter: {
-                                type: 'darken',
-                                value: 0.88
-                            }
-                        }
-                    },
-                    tooltip: {
-                        theme: 'light',
-                        style: {
-                            fontSize: '13px',
-                            fontFamily: 'Inter, sans-serif'
-                        },
-                        y: {
-                            formatter: function (val) {
-                                return 'Rp ' + new Intl.NumberFormat('id-ID').format(val);
-                            }
-                        }
-                    }
-                };
-
-                const renderChart = () => {
-                    if (this.chart) {
-                        this.chart.destroy();
-                    }
-                    this.chart = new ApexCharts(this.$refs.chartCanvas, options);
-                    this.chart.render();
-                };
-
-                if (typeof ApexCharts !== 'undefined') {
-                    renderChart();
-                } else {
-                    const script = document.createElement('script');
-                    script.src = 'https://cdn.jsdelivr.net/npm/apexcharts';
-                    script.onload = () => {
-                        renderChart();
-                    };
-                    document.head.appendChild(script);
-                }
-            }
-        }"
-        x-init="initChart()"
-        class="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm space-y-4"
-    >
+    <!-- Daily Omzet Bar Chart Card (Full Width, Interactive ApexCharts) -->
+    <div class="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm space-y-4">
         <div class="flex items-center justify-between border-b border-slate-100/80 pb-4">
             <div>
                 <h2 class="text-base sm:text-lg font-extrabold text-[#2C3E35] tracking-tight uppercase">
@@ -221,7 +107,76 @@
             </span>
         </div>
 
-        <!-- ApexCharts Interactive Canvas Element -->
-        <div x-ref="chartCanvas" class="w-full min-h-[300px]"></div>
+        <!-- ApexCharts Canvas -->
+        <div id="dashboard-omzet-chart" class="w-full" style="min-height:300px;"></div>
     </div>
 </div>
+
+<!-- ApexCharts CDN -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script>
+    (function () {
+        var labels = @json($dailyTrends['labels']);
+        var data   = @json($dailyTrends['data']);
+
+        var formattedLabels = labels.map(function (l) { return l.toUpperCase(); });
+
+        var options = {
+            chart: {
+                type: 'bar',
+                height: 300,
+                toolbar: { show: false },
+                fontFamily: 'Inter, Roboto, sans-serif',
+                animations: { enabled: true, easing: 'easeinout', speed: 500 }
+            },
+            colors: ['#3F7A5D'],
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    columnWidth: '42%',
+                    borderRadius: 8,
+                    borderRadiusApplication: 'end'
+                }
+            },
+            dataLabels: { enabled: false },
+            stroke: { show: true, width: 2, colors: ['transparent'] },
+            series: [{ name: 'Total Omzet', data: data }],
+            xaxis: {
+                categories: formattedLabels,
+                axisBorder: { show: false },
+                axisTicks: { show: false },
+                labels: { style: { colors: '#5F7167', fontSize: '12px', fontWeight: 700 } }
+            },
+            yaxis: {
+                min: 0,
+                labels: {
+                    style: { colors: '#5F7167', fontSize: '12px', fontWeight: 700 },
+                    formatter: function (val) {
+                        if (val === 0) return 'Rp 0';
+                        if (val >= 1000000000) return 'Rp ' + (val / 1000000000).toFixed(1) + ' M';
+                        if (val >= 1000000) return 'Rp ' + (val / 1000000).toFixed(1) + ' jt';
+                        if (val >= 1000) return 'Rp ' + (val / 1000).toFixed(0) + ' rb';
+                        return 'Rp ' + val;
+                    }
+                }
+            },
+            grid: { borderColor: '#E3EEE8', strokeDashArray: 4 },
+            states: { hover: { filter: { type: 'darken', value: 0.88 } } },
+            tooltip: {
+                theme: 'light',
+                style: { fontSize: '13px', fontFamily: 'Inter, sans-serif' },
+                y: {
+                    formatter: function (val) {
+                        return 'Rp ' + new Intl.NumberFormat('id-ID').format(val);
+                    }
+                }
+            }
+        };
+
+        var el = document.getElementById('dashboard-omzet-chart');
+        if (el) {
+            var chart = new ApexCharts(el, options);
+            chart.render();
+        }
+    })();
+</script>
