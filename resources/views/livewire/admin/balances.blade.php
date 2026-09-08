@@ -29,10 +29,10 @@
     <div class="bg-gradient-to-r from-[#3F7A5D]/10 via-[#3F7A5D]/5 to-white rounded-2xl p-5 border border-slate-200/80 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-5">
         <div class="space-y-1">
             <div class="text-xs text-[#718379] font-extrabold uppercase tracking-wider">Total Saldo Operasional Toko</div>
-            <div class="text-3xl sm:text-4xl font-extrabold text-[#3F7A5D] font-mono tracking-tight">
+            <div class="text-2xl sm:text-3xl font-extrabold text-[#3F7A5D] font-mono tracking-tight">
                 Rp {{ number_format($totalBalance, 0, ',', '.') }}
             </div>
-            <p class="text-xs sm:text-sm text-[#718379] font-medium">Gabungan saldo uang cash, rekening bank, QRIS, dan e-wallet toko.</p>
+            <p class="text-xs text-[#718379] font-medium">Gabungan saldo uang cash, rekening bank, QRIS, dan e-wallet toko.</p>
         </div>
 
         <div class="flex items-center gap-3 flex-wrap">

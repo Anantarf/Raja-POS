@@ -1,8 +1,8 @@
 <div class="space-y-5">
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-            <h1 class="text-2xl font-extrabold text-[#2C3E35] tracking-tight">Sesi Stock Opname</h1>
-            <p class="text-sm text-[#718379] font-medium mt-0.5">Penyesuaian stok fisik berkala (Cepat 1 Barang / Opname Massal Seluruh Toko).</p>
+            <h1 class="text-xl sm:text-2xl font-extrabold text-[#2C3E35] tracking-tight">Sesi Stock Opname</h1>
+            <p class="text-xs sm:text-sm text-[#718379] font-medium mt-0.5">Penyesuaian stok fisik berkala (Cepat 1 Barang / Opname Massal Seluruh Toko).</p>
         </div>
         <div class="flex flex-wrap items-center gap-2.5">
             <button wire:click="openBulkModal" class="h-11 px-4 bg-slate-100 hover:bg-[#E3EEE8] text-[#2C3E35] hover:text-[#3F7A5D] border border-slate-200/80 font-extrabold rounded-xl text-sm transition flex items-center gap-2 shadow-sm active:scale-95 cursor-pointer shrink-0">

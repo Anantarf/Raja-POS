@@ -1,19 +1,19 @@
 <div class="space-y-6">
     <!-- Page Header Banner (Golden Ratio Accent & Optical Alignment) -->
-    <div class="bg-gradient-to-r from-[#3F7A5D]/10 via-[#3F7A5D]/5 to-white border border-slate-200/80 rounded-2xl p-6 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div class="space-y-1">
-            <h1 class="text-2xl sm:text-3xl font-extrabold text-[#2C3E35] tracking-tight">Pengaturan Toko &amp; Sistem</h1>
-            <p class="text-base text-[#52645B] font-medium leading-relaxed">Kelola profil toko, pengguna sistem, role &amp; hak akses, metode pembayaran, dan lokasi cabang.</p>
+    <div class="bg-gradient-to-r from-[#3F7A5D]/10 via-[#3F7A5D]/5 to-white border border-slate-200/80 rounded-2xl p-4 sm:p-5 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div class="space-y-0.5">
+            <h1 class="text-xl sm:text-2xl font-extrabold text-[#2C3E35] tracking-tight">Pengaturan Toko &amp; Sistem</h1>
+            <p class="text-xs sm:text-sm text-[#52645B] font-medium leading-relaxed">Kelola profil toko, pengguna sistem, role &amp; hak akses, metode pembayaran, dan lokasi cabang.</p>
         </div>
 
-        <div class="flex items-center gap-2 text-sm font-extrabold text-[#3F7A5D] bg-[#E3EEE8] px-4 py-2.5 rounded-xl border border-[#3F7A5D]/30 shrink-0">
-            <svg class="w-4.5 h-4.5 text-[#3F7A5D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+        <div class="flex items-center gap-2 text-xs font-extrabold text-[#3F7A5D] bg-[#E3EEE8] px-3 py-2 rounded-xl border border-[#3F7A5D]/30 shrink-0">
+            <svg class="w-4 h-4 text-[#3F7A5D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
             <span>Akses Hak Khusus Owner</span>
         </div>
     </div>
 
     <!-- Navigation Sub-Tabs -->
-    <div class="flex flex-wrap gap-2 border-b border-slate-200/80 pb-3 text-base font-extrabold">
+    <div class="flex flex-wrap gap-2 border-b border-slate-200/80 pb-3 text-xs sm:text-sm font-extrabold">
         @foreach([
             'STORE_SETTINGS' => ['Profil Toko', '/admin/settings/store-settings'],
             'USERS' => ['Pengguna & Akses', '/admin/settings/users'],
@@ -21,7 +21,7 @@
             'PAYMENT_METHODS' => ['Metode Pembayaran', '/admin/settings/payment-methods'],
             'LOCATIONS' => ['Lokasi Cabang', '/admin/settings/locations'],
         ] as $tab => [$label, $href])
-            <a href="{{ $href }}" class="px-4 py-2.5 rounded-xl transition-all duration-200 {{ $activeTab === $tab ? 'bg-[#3F7A5D] text-white shadow-xs' : 'text-[#52645B] hover:bg-[#F3F6F4] hover:text-[#2C3E35]' }}">{{ $label }}</a>
+            <a href="{{ $href }}" class="px-3 py-2 rounded-xl transition-all duration-200 {{ $activeTab === $tab ? 'bg-[#3F7A5D] text-white shadow-xs' : 'text-[#52645B] hover:bg-[#F3F6F4] hover:text-[#2C3E35]' }}">{{ $label }}</a>
         @endforeach
     </div>
 
