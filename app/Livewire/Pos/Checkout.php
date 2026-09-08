@@ -9,6 +9,7 @@ use App\Models\Location;
 use App\Models\PaymentMethod;
 use App\Models\Product;
 use App\Services\PosService;
+use Illuminate\Support\Str;
 use Livewire\Component;
 
 class Checkout extends Component
@@ -79,7 +80,7 @@ class Checkout extends Component
 
     public function mount()
     {
-        $this->checkoutIdempotencyKey = (string) \Illuminate\Support\Str::uuid();
+        $this->checkoutIdempotencyKey = (string) Str::uuid();
         $this->initPaymentEntries();
     }
 
@@ -295,7 +296,7 @@ class Checkout extends Component
     public function clearCart()
     {
         $this->cart = [];
-        $this->checkoutIdempotencyKey = (string) \Illuminate\Support\Str::uuid();
+        $this->checkoutIdempotencyKey = (string) Str::uuid();
         $this->initPaymentEntries();
     }
 
@@ -352,8 +353,8 @@ class Checkout extends Component
 
     public function updateDefaultPaymentAmount()
     {
-        if (count($this->payments) === 1) {
-            $this->payments[0]['amount'] = min(1000000000, $this->grand_total);
+        foreach ($this->payments as $index => $payment) {
+            $this->payments[$index]['amount'] = min(1000000000, max(0, (float) ($payment['amount'] ?? 0)));
         }
     }
 

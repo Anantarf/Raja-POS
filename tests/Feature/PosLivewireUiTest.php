@@ -3,16 +3,25 @@
 namespace Tests\Feature;
 
 use App\Jobs\PurgeExpiredTrashedSalesJob;
+use App\Livewire\Admin\Inventories;
+use App\Livewire\Admin\Reports;
+use App\Livewire\Admin\Sales;
+use App\Livewire\Admin\SampahTransaksi;
 use App\Livewire\Pos\Checkout;
-use App\Models\AuditLog;
 use App\Models\BalanceAccount;
 use App\Models\Inventory;
 use App\Models\Location;
 use App\Models\PaymentMethod;
+use App\Models\Permission;
 use App\Models\Product;
 use App\Models\Role;
 use App\Models\Sale;
+use App\Models\StockOpname;
+use App\Models\StockOpnameItem;
 use App\Models\User;
+use App\Services\BalanceService;
+use App\Services\FinanceReportService;
+use App\Services\InventoryService;
 use App\Services\PosService;
 use App\Services\SaleCancellationService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -24,11 +33,17 @@ class PosLivewireUiTest extends TestCase
     use RefreshDatabase;
 
     protected User $owner;
+
     protected User $cashier;
+
     protected Location $locationBango;
+
     protected Location $locationDuren;
+
     protected Product $productPhysical;
+
     protected PaymentMethod $cashMethod;
+
     protected BalanceAccount $cashAccount;
 
     protected function setUp(): void
@@ -38,8 +53,8 @@ class PosLivewireUiTest extends TestCase
         $ownerRole = Role::create(['name' => 'OWNER', 'display_name' => 'Owner']);
         $cashierRole = Role::create(['name' => 'CASHIER', 'display_name' => 'Cashier']);
 
-        $trashPerm = \App\Models\Permission::create(['name' => 'sales.trash', 'display_name' => 'Cancel Sale']);
-        $restorePerm = \App\Models\Permission::create(['name' => 'sales.restore', 'display_name' => 'Restore Sale']);
+        $trashPerm = Permission::create(['name' => 'sales.trash', 'display_name' => 'Cancel Sale']);
+        $restorePerm = Permission::create(['name' => 'sales.restore', 'display_name' => 'Restore Sale']);
         $cashierRole->permissions()->attach([$trashPerm->id, $restorePerm->id]);
 
         $this->locationBango = Location::create(['name' => 'Raja Bango', 'code' => 'RAJA-BANGO', 'status' => 'ACTIVE']);
@@ -120,6 +135,24 @@ class PosLivewireUiTest extends TestCase
             'action' => 'POS_CHECKOUT',
             'user_id' => $this->cashier->id,
             'location_id' => $this->locationBango->id,
+        ]);
+    }
+
+    public function test_pos_checkout_does_not_auto_fill_cash_payment_when_item_added(): void
+    {
+        $this->actingAs($this->cashier);
+
+        Livewire::test(Checkout::class)
+            ->call('addToCart', $this->productPhysical->id)
+            ->assertSet('payments.0.amount', 0)
+            ->call('processCheckout')
+            ->assertSet('showSuccessModal', false);
+
+        $this->assertDatabaseMissing('sales', [
+            'cashier_id' => $this->cashier->id,
+            'location_id' => $this->locationBango->id,
+            'total_amount' => 25000,
+            'status' => 'COMPLETED',
         ]);
     }
 
@@ -255,7 +288,7 @@ class PosLivewireUiTest extends TestCase
             'selling_price' => 52000,
         ]);
 
-        $opname = \App\Models\StockOpname::create([
+        $opname = StockOpname::create([
             'opname_number' => 'SOP-DIG-001',
             'location_id' => $this->locationBango->id,
             'status' => 'DRAFT',
@@ -263,7 +296,7 @@ class PosLivewireUiTest extends TestCase
             'created_by' => $this->owner->id,
         ]);
 
-        \App\Models\StockOpnameItem::create([
+        StockOpnameItem::create([
             'stock_opname_id' => $opname->id,
             'product_id' => $digitalProduct->id,
             'system_quantity' => 0,
@@ -274,7 +307,7 @@ class PosLivewireUiTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Stock Opname hanya berlaku untuk produk fisik');
 
-        app(\App\Services\InventoryService::class)->approveStockOpname($opname, $this->owner);
+        app(InventoryService::class)->approveStockOpname($opname, $this->owner);
     }
 
     public function test_admin_livewire_components_enforce_location_scoping(): void
@@ -306,7 +339,7 @@ class PosLivewireUiTest extends TestCase
         $this->actingAs($this->cashier);
 
         // Sales Livewire Component only shows Bango transactions and ignores opening Duren detail
-        Livewire::test(\App\Livewire\Admin\Sales::class)
+        Livewire::test(Sales::class)
             ->call('openDetailModal', $saleDuren->id)
             ->assertViewHas('selectedSale', null)
             ->call('openDetailModal', $saleBango->id)
@@ -316,11 +349,11 @@ class PosLivewireUiTest extends TestCase
 
         // SampahTransaksi Livewire Component
         $saleDuren->update(['status' => 'TRASHED', 'trashed_at' => now()]);
-        Livewire::test(\App\Livewire\Admin\SampahTransaksi::class)
+        Livewire::test(SampahTransaksi::class)
             ->assertDontSee('TRX-LIVEWIRE-DUREN');
 
         // Inventories Livewire Component enforces location_id and options
-        Livewire::test(\App\Livewire\Admin\Inventories::class)
+        Livewire::test(Inventories::class)
             ->assertSet('selectedLocationId', $this->locationBango->id)
             ->assertViewHas('locations', function ($locs) {
                 return $locs->count() === 1 && $locs->first()->id === $this->locationBango->id;
@@ -355,7 +388,7 @@ class PosLivewireUiTest extends TestCase
             'status' => 'COMPLETED',
         ]);
 
-        $reportService = app(\App\Services\FinanceReportService::class);
+        $reportService = app(FinanceReportService::class);
 
         // Branch Cashier (Bango) metrics only sum Bango sale (25,000)
         $cashierMetrics = $reportService->getSummaryMetrics(user: $this->cashier);
@@ -369,7 +402,7 @@ class PosLivewireUiTest extends TestCase
 
         // Reports Livewire component for Cashier sees 25,000 omzet
         $this->actingAs($this->cashier);
-        Livewire::test(\App\Livewire\Admin\Reports::class)
+        Livewire::test(Reports::class)
             ->assertViewHas('metrics', function ($m) {
                 return $m['omzet'] == 25000 && $m['omset'] == 25000;
             });
@@ -389,7 +422,7 @@ class PosLivewireUiTest extends TestCase
         $this->actingAs($this->cashier);
 
         // Checkout Livewire component default and accounts list exclude foreign location accounts
-        Livewire::test(\App\Livewire\Pos\Checkout::class)
+        Livewire::test(Checkout::class)
             ->assertViewHas('balanceAccounts', function ($accounts) use ($durenCashAccount) {
                 return ! $accounts->contains('id', $durenCashAccount->id);
             });
@@ -416,7 +449,7 @@ class PosLivewireUiTest extends TestCase
             'location_id' => $this->locationDuren->id,
         ]);
 
-        $balanceService = app(\App\Services\BalanceService::class);
+        $balanceService = app(BalanceService::class);
 
         // Branch Cashier cannot transfer or adjust another branch's balance account
         $this->expectException(\InvalidArgumentException::class);
