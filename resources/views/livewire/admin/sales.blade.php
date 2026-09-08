@@ -22,10 +22,19 @@
         </div>
 
         <div>
-            <select wire:model.live="paymentMethodId" class="w-full h-11 py-2.5 px-3 border border-slate-200 rounded-xl text-sm font-semibold bg-[#F3F6F4] text-[#232E28] focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]">
-                <option value="">-- Semua Metode Pembayaran --</option>
+            <select wire:model.live="paymentMethodId" class="w-full h-11 py-2.5 px-3 border border-slate-200 rounded-xl text-sm font-semibold bg-[#F3F6F4] text-[#232E28] focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] cursor-pointer">
+                <option value="">Semua Metode Pembayaran</option>
                 @foreach($paymentMethods as $pm)
-                    <option value="{{ $pm->id }}">{{ $pm->name }} ({{ $pm->type }})</option>
+                    @php
+                        $pmLabel = match($pm->type) {
+                            'CASH' => 'Tunai / Cash',
+                            'QRIS' => 'QRIS',
+                            'TRANSFER' => 'Transfer Bank',
+                            'E_WALLET' => 'E-Wallet',
+                            default => $pm->name,
+                        };
+                    @endphp
+                    <option value="{{ $pm->id }}">{{ $pmLabel }}</option>
                 @endforeach
             </select>
         </div>

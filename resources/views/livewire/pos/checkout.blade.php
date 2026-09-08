@@ -548,9 +548,18 @@
                         @endphp
                         <div class="bg-white p-3.5 rounded-2xl border border-slate-200/80 space-y-2.5 text-base shadow-xs">
                             <div class="flex flex-col sm:flex-row sm:items-center gap-2">
-                                <select wire:model.live="payments.{{ $index }}.payment_method_id" class="w-full sm:w-1/2 h-12 px-3.5 py-2.5 border border-slate-200 rounded-xl bg-white text-base font-bold text-[#232E28] focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]">
+                                <select wire:model.live="payments.{{ $index }}.payment_method_id" class="w-full sm:w-1/2 h-12 px-3.5 py-2.5 border border-slate-200 rounded-xl bg-white text-base font-bold text-[#232E28] focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] shadow-2xs cursor-pointer">
                                     @foreach($paymentMethods as $pm)
-                                        <option value="{{ $pm->id }}">{{ $pm->name }} ({{ $pm->type }})</option>
+                                        @php
+                                            $pmLabel = match($pm->type) {
+                                                'CASH' => 'Tunai / Cash',
+                                                'QRIS' => 'QRIS',
+                                                'TRANSFER' => 'Transfer Bank',
+                                                'E_WALLET' => 'E-Wallet',
+                                                default => $pm->name,
+                                            };
+                                        @endphp
+                                        <option value="{{ $pm->id }}">{{ $pmLabel }}</option>
                                     @endforeach
                                 </select>
 
@@ -581,14 +590,21 @@
                                 </div>
                             </div>
 
-
-
                             @if($selectedPm && in_array($selectedPm->type, ['TRANSFER', 'E_WALLET']))
                                 <div>
-                                    <select wire:model="payments.{{ $index }}.balance_account_id" class="w-full h-11 p-2.5 border border-slate-200 rounded-xl bg-indigo-50/50 text-sm font-semibold text-indigo-900 focus:ring-2 focus:ring-indigo-500/20">
-                                        <option value="">-- Pilih Akun Bank/E-Wallet Tujuan --</option>
+                                    <select wire:model="payments.{{ $index }}.balance_account_id" class="w-full h-11 px-3 py-2 border border-slate-200 rounded-xl bg-indigo-50/50 text-sm font-extrabold text-indigo-900 focus:ring-2 focus:ring-indigo-500/20 shadow-2xs cursor-pointer">
+                                        <option value="">Pilih Rekening / Akun Tujuan</option>
                                         @foreach($balanceAccounts as $ba)
-                                            <option value="{{ $ba->id }}">{{ $ba->name }} ({{ $ba->account_type }})</option>
+                                            @php
+                                                $baCategory = match($ba->account_type) {
+                                                    'BANK' => 'Bank',
+                                                    'E_WALLET' => 'E-Wallet',
+                                                    'PROVIDER' => 'Provider',
+                                                    'CASH' => 'Kas',
+                                                    default => ''
+                                                };
+                                            @endphp
+                                            <option value="{{ $ba->id }}">{{ $ba->name }}{{ $baCategory ? " ($baCategory)" : '' }}</option>
                                         @endforeach
                                     </select>
                                 </div>
