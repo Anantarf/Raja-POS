@@ -818,14 +818,14 @@
                     </div>
 
                     <!-- Dynamic Live Calculations Card -->
-                    @php
+                    <?php
                         $bAmt = (float) ($ppobBillAmount ?? 0);
                         $sFee = (float) ($ppobStoreAdminFee ?? 0);
                         $vFee = (float) ($ppobVendorAdminFee ?? 0);
                         $calcTotalPay = $bAmt + $sFee;
                         $calcTotalCost = $bAmt + $vFee;
                         $calcMargin = $calcTotalPay - $calcTotalCost;
-                    @endphp
+                    ?>
                     <div class="bg-[#F3F6F4] p-4 rounded-2xl border border-slate-200/80 space-y-2">
                         <div class="flex items-center justify-between text-base font-bold text-[#232E28]">
                             <span>Total Ditagihkan Ke Pelanggan:</span>
