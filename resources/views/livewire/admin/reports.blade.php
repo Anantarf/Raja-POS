@@ -8,7 +8,7 @@
 
         <!-- Filter Period & Print Control -->
         <div class="flex items-center gap-2 flex-wrap text-sm">
-            <select wire:model.live="period" class="h-11 px-3 py-2.5 border border-slate-200 rounded-xl bg-[#F3F6F4] text-[#232E28] font-bold focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]">
+            <select wire:model.live="period" class="h-11 px-3 py-2.5 border border-slate-200 rounded-xl bg-[#F3F6F4] text-[#232E28] font-bold focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] cursor-pointer">
                 <option value="all_time">Semua Waktu</option>
                 <option value="today">Hari Ini</option>
                 <option value="7_days">7 Hari Terakhir</option>
