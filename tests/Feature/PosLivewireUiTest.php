@@ -122,7 +122,11 @@ class PosLivewireUiTest extends TestCase
             ->call('addToCart', $this->productPhysical->id)
             ->call('setPaymentAmount', 25000)
             ->call('processCheckout')
-            ->assertSet('showSuccessModal', true);
+            ->assertSet('showSuccessModal', true)
+            ->assertSee('Transaksi Berhasil!')
+            ->assertSee('Cetak Struk Thermal')
+            ->assertSee('RAJA AKSESORIS')
+            ->assertSee('Kabel Data Type C');
 
         $this->assertDatabaseHas('sales', [
             'cashier_id' => $this->cashier->id,

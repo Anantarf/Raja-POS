@@ -8,6 +8,7 @@ use App\Models\Inventory;
 use App\Models\Location;
 use App\Models\PaymentMethod;
 use App\Models\Product;
+use App\Models\Sale;
 use App\Services\PosService;
 use Illuminate\Support\Str;
 use Livewire\Component;
@@ -378,6 +379,15 @@ class Checkout extends Component
     public function getChangeAmountProperty(): float
     {
         return max(0, $this->total_paid - $this->grand_total);
+    }
+
+    public function getCompletedSaleProperty(): ?Sale
+    {
+        if (! $this->completedSaleId) {
+            return null;
+        }
+
+        return Sale::with(['items', 'payments.paymentMethod', 'cashier'])->find($this->completedSaleId);
     }
 
     public function processCheckout()

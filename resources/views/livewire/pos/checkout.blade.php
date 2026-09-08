@@ -235,7 +235,7 @@
                                         </div>
                                     </div>
 
-                                    <!-- Dimensions: Kategori • Subtipe (jika ada) • Merk -->
+                                    <!-- Dimensions: Kategori - Subtipe (jika ada) - Merk -->
                                     <div class="text-[11px] text-slate-500 flex items-center gap-1.5 flex-wrap font-medium">
                                         <span class="text-slate-700 font-semibold">{{ $product->category?->name ?? 'Umum' }}</span>
                                         @if(!empty($product->product_subtype) && trim($product->product_subtype) !== '-')
@@ -638,47 +638,111 @@
 
     </div>
 
-    <!-- Success Modal -->
+    <!-- Success Modal with Receipt Preview -->
     @if($showSuccessModal)
-        <div class="fixed inset-0 bg-[#232E28]/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-            <div class="bg-white rounded-2xl p-7 max-w-sm w-full shadow-2xl text-center space-y-5 border border-slate-100">
-                <div class="w-16 h-16 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center mx-auto shadow-inner">
-                    <svg class="w-8 h-8 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                    </svg>
-                </div>
-                <div>
-                    <h3 class="text-2xl font-black text-[#232E28]">Transaksi Berhasil!</h3>
-                    <p class="text-sm text-[#3F7A5D] font-mono mt-1 font-bold">{{ $completedInvoiceNumber }}</p>
-                </div>
+        @php($completedSale = $this->completedSale)
+        <div class="fixed inset-0 bg-[#232E28]/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 overflow-y-auto">
+            <div class="bg-white rounded-2xl p-5 max-w-3xl w-full shadow-2xl border border-slate-100 my-auto">
+                <div class="grid grid-cols-1 md:grid-cols-[0.9fr_1.1fr] gap-5 items-start">
+                    <div class="text-center space-y-4">
+                        <div class="w-14 h-14 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center mx-auto shadow-inner">
+                            <svg class="w-7 h-7 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-black text-[#232E28]">Transaksi Berhasil!</h3>
+                            <p class="text-sm text-[#3F7A5D] font-mono mt-1 font-bold">{{ $completedInvoiceNumber }}</p>
+                        </div>
 
-                <div class="bg-[#F3F6F4] p-5 rounded-2xl border border-slate-200">
-                    <div class="text-base text-[#5F7167] font-medium">Kembali</div>
-                    <div class="text-3xl sm:text-4xl font-black text-emerald-700 font-mono mt-1">
-                        Rp {{ number_format($completedChangeAmount, 0, ',', '.') }}
+                        <div class="bg-[#F3F6F4] p-4 rounded-xl border border-slate-200">
+                            <div class="text-sm text-[#5F7167] font-medium">Kembali</div>
+                            <div class="text-2xl sm:text-3xl font-black text-emerald-700 font-mono mt-1">
+                                Rp {{ number_format($completedChangeAmount, 0, ',', '.') }}
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col gap-2 pt-1">
+                            <a
+                                href="/receipt/thermal/{{ $completedSaleId }}"
+                                target="_blank"
+                                class="w-full h-12 py-3 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-bold rounded-xl text-xs transition uppercase tracking-wider text-center flex items-center justify-center"
+                            >
+                                Cetak Struk Thermal
+                            </a>
+                            <button
+                                type="button"
+                                wire:click="closeSuccessModal"
+                                class="w-full h-12 py-3 bg-slate-100 hover:bg-slate-200 text-[#232E28] font-bold rounded-xl text-sm transition cursor-pointer"
+                            >
+                                Selesai / Transaksi Baru
+                            </button>
+                        </div>
                     </div>
-                </div>
 
-                <div class="flex flex-col gap-3 pt-1">
-                    <a
-                        href="/receipt/thermal/{{ $completedSaleId }}"
-                        target="_blank"
-                        class="w-full h-14 py-3.5 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-bold rounded-2xl text-sm transition uppercase tracking-wider text-center flex items-center justify-center"
-                    >
-                        CETAK STRUK THERMAL
-                    </a>
-                    <button
-                        type="button"
-                        wire:click="closeSuccessModal"
-                        class="w-full h-14 py-3.5 bg-slate-100 hover:bg-slate-200 text-[#232E28] font-bold rounded-2xl text-sm transition cursor-pointer"
-                    >
-                        Selesai / Transaksi Baru
-                    </button>
+                    <div class="bg-[#F3F6F4] p-3 rounded-xl border border-slate-200/80 max-h-[70vh] overflow-y-auto">
+                        <div class="bg-white p-4 rounded-lg shadow-sm border border-slate-200 font-mono text-xs text-black leading-relaxed space-y-2 select-text max-w-[320px] mx-auto">
+                            <div class="text-center font-bold text-sm uppercase tracking-wide">RAJA AKSESORIS</div>
+                            <div class="text-center text-[10px] text-slate-600">Retail Management System</div>
+
+                            <div class="border-t border-dashed border-black my-2"></div>
+
+                            <div class="text-[11px] space-y-0.5">
+                                <div><strong>No:</strong> {{ $completedSale?->invoice_number ?? $completedInvoiceNumber }}</div>
+                                <div><strong>Tgl:</strong> {{ $completedSale?->transaction_date?->timezone('Asia/Jakarta')->format('d/m/Y H:i') ?? now('Asia/Jakarta')->format('d/m/Y H:i') }}</div>
+                                <div><strong>Kasir:</strong> {{ $completedSale?->cashier?->name ?? auth()->user()->name }}</div>
+                            </div>
+
+                            <div class="border-t border-dashed border-black my-2"></div>
+
+                            <table class="w-full text-xs text-left">
+                                @forelse($completedSale?->items ?? [] as $item)
+                                    <tr>
+                                        <td colspan="2" class="font-bold pt-1">{{ $item->product_name_snapshot }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left text-[11px] text-slate-700">{{ $item->quantity }} x Rp{{ number_format($item->selling_price, 0, ',', '.') }}</td>
+                                        <td class="text-right font-bold whitespace-nowrap">Rp{{ number_format($item->subtotal, 0, ',', '.') }}</td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="2" class="text-center text-slate-500 py-2">Item tidak tersedia.</td>
+                                    </tr>
+                                @endforelse
+                            </table>
+
+                            <div class="border-t border-dashed border-black my-2"></div>
+
+                            <div class="space-y-1 text-xs">
+                                <div class="flex justify-between font-bold text-sm">
+                                    <span>TOTAL</span>
+                                    <span>Rp{{ number_format($completedSale?->total_amount ?? 0, 0, ',', '.') }}</span>
+                                </div>
+                                @foreach($completedSale?->payments ?? [] as $payment)
+                                    <div class="flex justify-between text-[11px]">
+                                        <span>BAYAR ({{ $payment->paymentMethod?->name ?? 'Metode' }})</span>
+                                        <span>Rp{{ number_format($payment->amount, 0, ',', '.') }}</span>
+                                    </div>
+                                @endforeach
+                                <div class="flex justify-between text-[11px]">
+                                    <span>KEMBALI</span>
+                                    <span>Rp{{ number_format($completedSale?->change_amount ?? $completedChangeAmount, 0, ',', '.') }}</span>
+                                </div>
+                            </div>
+
+                            <div class="border-t border-dashed border-black my-2"></div>
+
+                            <div class="text-center text-[10px] text-slate-600 pt-1 space-y-0.5">
+                                <div class="font-bold">Terima Kasih Telah Berbelanja!</div>
+                                <div>Kepuasan Anda Adalah Kebanggaan Kami.</div>
+                                <div>Sampai Jumpa Kembali di Raja Aksesoris!</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     @endif
-
     <!-- PPOB Open-Nominal Bill Modal -->
     @if($showPpobModal)
         <div class="fixed inset-0 bg-[#232E28]/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
