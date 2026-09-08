@@ -68,9 +68,9 @@
                             <div class="flex items-center gap-1">
                                 <span>No. TRX &amp; Waktu</span>
                                 @if($sortField === 'invoice_number' || $sortField === 'created_at')
-                                    <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
+                                    <span>{{ $sortDirection === 'asc' ? 'â†‘' : 'â†“' }}</span>
                                 @else
-                                    <span class="text-slate-300">↕</span>
+                                    <span class="text-slate-300">â†•</span>
                                 @endif
                             </div>
                         </th>
@@ -80,9 +80,9 @@
                             <div class="flex items-center justify-end gap-1">
                                 <span>Total Transaksi</span>
                                 @if($sortField === 'grand_total')
-                                    <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
+                                    <span>{{ $sortDirection === 'asc' ? 'â†‘' : 'â†“' }}</span>
                                 @else
-                                    <span class="text-slate-300">↕</span>
+                                    <span class="text-slate-300">â†•</span>
                                 @endif
                             </div>
                         </th>
@@ -90,9 +90,9 @@
                             <div class="flex items-center justify-center gap-1">
                                 <span>Status</span>
                                 @if($sortField === 'status')
-                                    <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
+                                    <span>{{ $sortDirection === 'asc' ? 'â†‘' : 'â†“' }}</span>
                                 @else
-                                    <span class="text-slate-300">↕</span>
+                                    <span class="text-slate-300">â†•</span>
                                 @endif
                             </div>
                         </th>
@@ -104,7 +104,7 @@
                         <tr class="hover:bg-[#F3F6F4]/60 transition">
                             <td class="py-3.5 px-4 whitespace-nowrap">
                                 <div class="font-bold text-[#3F7A5D] font-mono text-xs bg-[#F3F6F4] border border-slate-200/80 px-2.5 py-0.5 rounded-md inline-block">{{ $sale->invoice_number }}</div>
-                                <div class="text-xs text-[#718379] mt-1 font-semibold whitespace-nowrap">{{ $sale->created_at->format('d M Y, H:i') }}</div>
+                                <div class="text-xs text-[#718379] mt-1 font-semibold whitespace-nowrap">{{ $sale->created_at->timezone('Asia/Jakarta')->format('d M Y, H:i') }}</div>
                             </td>
                             <td class="py-3.5 px-4 text-[#2C3E35] whitespace-nowrap">
                                 <div class="font-bold text-[#2C3E35]">{{ $sale->user?->name ?? 'Kasir' }}</div>
@@ -176,7 +176,7 @@
                 <div class="space-y-3.5 text-xs">
                     <!-- Info Box -->
                     <div class="bg-[#F3F6F4] p-3.5 rounded-xl border border-slate-200/80 space-y-1.5 font-medium">
-                        <div class="flex justify-between text-[#718379]"><span>Waktu Transaksi:</span><span class="font-mono font-bold text-[#2C3E35]">{{ $selectedSale->created_at->format('d F Y, H:i:s') }}</span></div>
+                        <div class="flex justify-between text-[#718379]"><span>Waktu Transaksi:</span><span class="font-mono font-bold text-[#2C3E35]">{{ $selectedSale->created_at->timezone('Asia/Jakarta')->format('d F Y, H:i:s') }}</span></div>
                         <div class="flex justify-between text-[#718379]"><span>Kasir:</span><span class="font-bold text-[#2C3E35]">{{ $selectedSale->user?->name ?? 'Kasir' }}</span></div>
                         <div class="flex justify-between text-[#718379]"><span>Lokasi Toko:</span><span class="font-bold text-[#2C3E35]">{{ $selectedSale->location?->name ?? 'Toko Utama' }}</span></div>
                     </div>
@@ -324,7 +324,7 @@
 
                         <div class="text-[11px] space-y-0.5">
                             <div><strong>No:</strong> {{ $receiptSale->invoice_number }}</div>
-                            <div><strong>Tgl:</strong> {{ $receiptSale->created_at->format('d/m/Y H:i') }}</div>
+                            <div><strong>Tgl:</strong> {{ $receiptSale->created_at->timezone('Asia/Jakarta')->format('d/m/Y H:i') }}</div>
                             <div><strong>Kasir:</strong> {{ $receiptSale->user?->name ?? 'Kasir' }}</div>
                         </div>
 

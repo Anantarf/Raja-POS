@@ -75,7 +75,7 @@
 
     <div class="meta">
         <div><strong>No:</strong> {{ $sale->invoice_number }}</div>
-        <div><strong>Tgl:</strong> {{ $sale->transaction_date->format('d/m/Y H:i') }}</div>
+        <div><strong>Tgl:</strong> {{ $sale->transaction_date->timezone('Asia/Jakarta')->format('d/m/Y H:i') }}</div>
         <div><strong>Kasir:</strong> {{ $sale->cashier->name ?? 'Kasir' }}</div>
     </div>
 

@@ -38,9 +38,9 @@
                             <div class="flex items-center gap-1">
                                 <span>Waktu</span>
                                 @if($sortField === 'created_at')
-                                    <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
+                                    <span>{{ $sortDirection === 'asc' ? 'â†‘' : 'â†“' }}</span>
                                 @else
-                                    <span class="text-slate-300">↕</span>
+                                    <span class="text-slate-300">â†•</span>
                                 @endif
                             </div>
                         </th>
@@ -49,9 +49,9 @@
                             <div class="flex items-center gap-1">
                                 <span>Tipe Pergerakan</span>
                                 @if($sortField === 'movement_type')
-                                    <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
+                                    <span>{{ $sortDirection === 'asc' ? 'â†‘' : 'â†“' }}</span>
                                 @else
-                                    <span class="text-slate-300">↕</span>
+                                    <span class="text-slate-300">â†•</span>
                                 @endif
                             </div>
                         </th>
@@ -60,9 +60,9 @@
                             <div class="flex items-center justify-center gap-1">
                                 <span>Perubahan</span>
                                 @if($sortField === 'quantity_change')
-                                    <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
+                                    <span>{{ $sortDirection === 'asc' ? 'â†‘' : 'â†“' }}</span>
                                 @else
-                                    <span class="text-slate-300">↕</span>
+                                    <span class="text-slate-300">â†•</span>
                                 @endif
                             </div>
                         </th>
@@ -83,7 +83,7 @@
                             };
                         @endphp
                         <tr class="hover:bg-[#F3F6F4]/60 transition">
-                            <td class="py-3.5 px-4 text-[#718379] font-semibold text-xs whitespace-nowrap">{{ $movement->created_at->format('d M Y, H:i') }}</td>
+                            <td class="py-3.5 px-4 text-[#718379] font-semibold text-xs whitespace-nowrap">{{ $movement->created_at->timezone('Asia/Jakarta')->format('d M Y, H:i') }}</td>
                             <td class="py-3.5 px-4">
                                 <div class="font-bold text-[#2C3E35] text-sm">{{ $movement->product?->name ?? '-' }}</div>
                                 <div class="text-xs text-[#718379] font-mono mt-0.5">Barcode: {{ $movement->product?->effective_barcode ?? '-' }} &bull; {{ $movement->location?->name ?? '-' }}</div>

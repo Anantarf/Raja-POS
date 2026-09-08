@@ -72,9 +72,9 @@
                                 <div class="flex items-center gap-1">
                                     <span>Nama Barang</span>
                                     @if($sortField === 'product_name')
-                                        <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
+                                        <span>{{ $sortDirection === 'asc' ? 'â†‘' : 'â†“' }}</span>
                                     @else
-                                        <span class="text-slate-300">↕</span>
+                                        <span class="text-slate-300">â†•</span>
                                     @endif
                                 </div>
                             </th>
@@ -83,9 +83,9 @@
                                 <div class="flex items-center justify-center gap-1">
                                     <span>Jumlah Stok</span>
                                     @if($sortField === 'quantity')
-                                        <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
+                                        <span>{{ $sortDirection === 'asc' ? 'â†‘' : 'â†“' }}</span>
                                     @else
-                                        <span class="text-slate-300">↕</span>
+                                        <span class="text-slate-300">â†•</span>
                                     @endif
                                 </div>
                             </th>
@@ -93,9 +93,9 @@
                                 <div class="flex items-center justify-center gap-1">
                                     <span>Status Stok</span>
                                     @if($sortField === 'stock_status')
-                                        <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
+                                        <span>{{ $sortDirection === 'asc' ? 'â†‘' : 'â†“' }}</span>
                                     @else
-                                        <span class="text-slate-300">↕</span>
+                                        <span class="text-slate-300">â†•</span>
                                     @endif
                                 </div>
                             </th>
@@ -190,7 +190,7 @@
                             <tr class="hover:bg-[#F3F6F4]/60 transition">
                                 <td class="py-3.5 px-4 font-mono text-xs whitespace-nowrap">
                                     <div class="font-bold text-[#3F7A5D] bg-[#F3F6F4] border border-slate-200/80 px-2.5 py-0.5 rounded-md inline-block">{{ $opn->formatted_opname_number }}</div>
-                                    <div class="text-[10px] text-[#718379] font-sans mt-1 font-semibold whitespace-nowrap">{{ $opn->created_at->format('d M Y, H:i') }}</div>
+                                    <div class="text-[10px] text-[#718379] font-sans mt-1 font-semibold whitespace-nowrap">{{ $opn->created_at->timezone('Asia/Jakarta')->format('d M Y, H:i') }}</div>
                                 </td>
                                 <td class="py-3.5 px-4">
                                     @if($itemsCount > 1)
