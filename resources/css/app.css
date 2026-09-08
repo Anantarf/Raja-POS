@@ -6,8 +6,8 @@
 @source '../**/*.js';
 
 @theme {
-    --font-sans: 'Public Sans', 'Poppins', -apple-system, sans-serif;
-    --font-mono: 'Poppins', 'Courier New', monospace;
+    --font-sans: 'Inter', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-mono: 'Roboto', 'Inter', 'Courier New', monospace;
 
     --color-emco-primary: #3F7A5D;
     --color-emco-primary-hover: #32634B;
