@@ -1,11 +1,11 @@
 <div class="space-y-5">
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-            <h1 class="text-2xl font-extrabold text-[#2C3E35] tracking-tight">Kategori Produk</h1>
-            <p class="text-sm text-[#718379] font-medium mt-0.5">Kelola pengelompokan jenis barang toko.</p>
+            <h1 class="text-xl sm:text-2xl font-extrabold text-[#2C3E35] tracking-tight">Kategori Produk</h1>
+            <p class="text-xs sm:text-sm text-[#718379] font-medium mt-0.5">Kelola pengelompokan jenis barang toko.</p>
         </div>
-        <button wire:click="openModal" class="h-10 px-4 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-2xl text-sm transition flex items-center gap-2 shadow-sm active:scale-95 cursor-pointer uppercase tracking-wider shrink-0">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <button wire:click="openModal" class="h-11 px-4 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-xl text-sm transition flex items-center gap-2 shadow-sm active:scale-95 cursor-pointer shrink-0">
+            <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
             </svg>
             <span>Tambah Kategori</span>
@@ -62,8 +62,8 @@
                         </td>
                         <td class="py-3.5 px-4 text-center">
                             <div class="flex items-center justify-center gap-2">
-                                <button wire:click="openModal({{ $cat->id }})" class="h-9 px-3 bg-slate-100 hover:bg-indigo-50 hover:text-indigo-600 text-slate-700 rounded-lg text-sm font-bold transition flex items-center justify-center">Edit</button>
-                                <button wire:click="deleteCategory({{ $cat->id }})" wire:confirm="Hapus kategori ini?" class="h-9 px-3 bg-slate-100 hover:bg-rose-50 hover:text-rose-600 text-slate-400 rounded-lg text-sm font-bold transition flex items-center justify-center">Hapus</button>
+                                <button wire:click="openModal({{ $cat->id }})" class="h-9 px-3.5 bg-slate-100 hover:bg-indigo-50 hover:text-indigo-600 text-slate-700 rounded-xl text-sm font-bold transition flex items-center justify-center cursor-pointer">Edit</button>
+                                <button wire:click="deleteCategory({{ $cat->id }})" wire:confirm="Hapus kategori ini?" class="h-9 px-3.5 bg-slate-100 hover:bg-rose-50 hover:text-rose-600 text-slate-400 rounded-xl text-sm font-bold transition flex items-center justify-center cursor-pointer">Hapus</button>
                             </div>
                         </td>
                     </tr>
@@ -85,8 +85,8 @@
                         <input type="text" wire:model="name" class="w-full h-11 px-3.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] text-sm" required />
                     </div>
                     <div class="flex gap-2 pt-2">
-                        <button type="submit" class="flex-1 h-10 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-bold rounded-xl text-sm transition uppercase tracking-wider shadow-sm flex items-center justify-center">Simpan</button>
-                        <button type="button" wire:click="$set('showModal', false)" class="h-10 px-4 bg-slate-100 hover:bg-slate-200 text-[#2C3E35] font-bold rounded-xl text-sm transition flex items-center justify-center">Batal</button>
+                        <button type="submit" class="flex-1 h-11 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-xl text-sm transition shadow-sm flex items-center justify-center cursor-pointer">Simpan</button>
+                        <button type="button" wire:click="$set('showModal', false)" class="h-11 px-4 bg-slate-100 hover:bg-slate-200 text-[#2C3E35] font-bold rounded-xl text-sm transition flex items-center justify-center cursor-pointer">Batal</button>
                     </div>
                 </form>
             </div>

@@ -6,9 +6,9 @@
             <p class="text-xs sm:text-sm text-[#718379] font-medium mt-0.5">Kelola data barang fisik, produk digital, dan daftar harga jual toko.</p>
         </div>
 
-        <div class="flex items-center gap-2 flex-wrap sm:flex-nowrap">
+        <div class="flex items-center gap-2.5 flex-wrap sm:flex-nowrap">
             <!-- Unduh Template Excel -->
-            <a href="/admin/products/template-excel" title="Unduh Template Excel" class="h-10 px-3.5 py-2 bg-white hover:bg-slate-50 text-[#2C3E35] font-bold border border-slate-200 rounded-xl text-sm shadow-sm transition flex items-center gap-1.5 active:scale-95 shrink-0">
+            <a href="/admin/products/template-excel" title="Unduh Template Excel" class="h-11 px-3.5 py-2 bg-white hover:bg-slate-50 text-[#2C3E35] font-bold border border-slate-200 rounded-xl text-sm shadow-sm transition flex items-center gap-1.5 active:scale-95 shrink-0">
                 <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                 </svg>
@@ -16,7 +16,7 @@
             </a>
 
             <!-- Export Data Excel -->
-            <a href="/admin/products/export-excel?category_id={{ $selectedCategory }}&type={{ $selectedType }}" title="Export Data Produk" class="h-10 px-3.5 py-2 bg-white hover:bg-slate-50 text-[#2C3E35] font-bold border border-slate-200 rounded-xl text-sm shadow-sm transition flex items-center gap-1.5 active:scale-95 shrink-0">
+            <a href="/admin/products/export-excel?category_id={{ $selectedCategory }}&type={{ $selectedType }}" title="Export Data Produk" class="h-11 px-3.5 py-2 bg-white hover:bg-slate-50 text-[#2C3E35] font-bold border border-slate-200 rounded-xl text-sm shadow-sm transition flex items-center gap-1.5 active:scale-95 shrink-0">
                 <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                 </svg>
@@ -24,7 +24,7 @@
             </a>
 
             <!-- Import CSV / Excel -->
-            <button wire:click="$set('showImportModal', true)" title="Impor File Excel" class="h-10 px-3.5 py-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-xl text-sm shadow-sm transition flex items-center gap-1.5 active:scale-95 shrink-0 cursor-pointer">
+            <button wire:click="$set('showImportModal', true)" title="Impor File Excel" class="h-11 px-3.5 py-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-xl text-sm shadow-sm transition flex items-center gap-1.5 active:scale-95 shrink-0 cursor-pointer">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
                 </svg>
@@ -32,8 +32,8 @@
             </button>
 
             <!-- Tambah Produk Baru -->
-            <button wire:click="openCreateModal" class="h-10 px-4 py-2 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-bold rounded-xl text-sm shadow-sm transition flex items-center gap-1.5 active:scale-95 shrink-0 cursor-pointer">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button wire:click="openCreateModal" class="h-11 px-4 py-2 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-xl text-sm shadow-sm transition flex items-center gap-1.5 active:scale-95 shrink-0 cursor-pointer">
+                <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                 </svg>
                 <span>Tambah Produk</span>

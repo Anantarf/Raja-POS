@@ -7,15 +7,15 @@
         </div>
 
         @if($activeTab === 'opname')
-            <div class="flex flex-wrap items-center gap-2">
-                <button wire:click="openBulkModal" class="h-10 px-4 py-2 bg-slate-100 hover:bg-[#E3EEE8] text-[#2C3E35] hover:text-[#3F7A5D] border border-slate-200/80 font-extrabold rounded-2xl text-sm transition flex items-center gap-2 shadow-sm active:scale-95 cursor-pointer uppercase tracking-wider shrink-0">
+            <div class="flex flex-wrap items-center gap-2.5">
+                <button wire:click="openBulkModal" class="h-11 px-4 py-2 bg-slate-100 hover:bg-[#E3EEE8] text-[#2C3E35] hover:text-[#3F7A5D] border border-slate-200/80 font-extrabold rounded-xl text-sm transition flex items-center gap-2 shadow-sm active:scale-95 cursor-pointer shrink-0">
                     <svg class="w-4 h-4 text-[#3F7A5D]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
                     </svg>
                     <span>Hitung Banyak Barang Sekaligus</span>
                 </button>
-                <button wire:click="openCreateModal" class="h-10 px-4 py-2 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-2xl text-sm transition flex items-center gap-2 shadow-sm active:scale-95 cursor-pointer uppercase tracking-wider shrink-0">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <button wire:click="openCreateModal" class="h-11 px-4 py-2 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-xl text-sm transition flex items-center gap-2 shadow-sm active:scale-95 cursor-pointer shrink-0">
+                    <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                     </svg>
                     <span>Hitung Cepat (1 Barang)</span>

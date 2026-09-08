@@ -171,8 +171,9 @@
                             @endforeach
                         </select>
                     </div>
-                    <button type="submit" class="w-full h-10 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-xl transition text-sm uppercase tracking-wider cursor-pointer shadow-sm active:scale-95 flex items-center justify-center">
-                        + Tambah Pengguna Sistem
+                    <button type="submit" class="w-full h-11 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-xl transition text-sm cursor-pointer shadow-sm active:scale-95 flex items-center justify-center gap-1.5">
+                        <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                        Tambah Pengguna Sistem
                     </button>
                 </form>
             </div>
@@ -262,8 +263,9 @@
                         <label class="block text-[#718379] font-extrabold uppercase tracking-wider text-xs mb-1">Nama Cabang Toko *</label>
                         <input type="text" wire:model="locationName" placeholder="Raja Aksesoris Bango" class="w-full h-11 px-3.5 border border-slate-200 rounded-xl bg-[#F3F6F4] text-[#2C3E35] font-semibold text-sm focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]" required />
                     </div>
-                    <button type="submit" class="w-full h-10 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-xl transition text-sm uppercase tracking-wider cursor-pointer shadow-sm active:scale-95 flex items-center justify-center">
-                        + Tambah Cabang Toko
+                    <button type="submit" class="w-full h-11 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-xl transition text-sm cursor-pointer shadow-sm active:scale-95 flex items-center justify-center gap-1.5">
+                        <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                        Tambah Cabang Toko
                     </button>
                 </form>
             </div>
@@ -327,8 +329,9 @@
                             <option value="E_WALLET">E-Wallet (Dompet Digital)</option>
                         </select>
                     </div>
-                    <button type="submit" class="w-full h-10 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-xl transition text-sm uppercase tracking-wider cursor-pointer shadow-sm active:scale-95 flex items-center justify-center">
-                        + Tambah Metode Pembayaran
+                    <button type="submit" class="w-full h-11 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-xl transition text-sm cursor-pointer shadow-sm active:scale-95 flex items-center justify-center gap-1.5">
+                        <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                        Tambah Metode Pembayaran
                     </button>
                 </form>
             </div>

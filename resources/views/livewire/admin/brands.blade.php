@@ -4,8 +4,8 @@
             <h1 class="text-xl sm:text-2xl font-extrabold text-[#2C3E35] tracking-tight">Merk / Brand Produk</h1>
             <p class="text-xs sm:text-sm text-[#718379] font-medium mt-0.5">Kelola merek manufaktur aksesoris toko.</p>
         </div>
-        <button wire:click="openModal" class="h-10 px-4 py-2 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-2xl text-sm transition flex items-center gap-2 shadow-sm active:scale-95 cursor-pointer uppercase tracking-wider shrink-0">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <button wire:click="openModal" class="h-11 px-4 py-2 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-xl text-sm transition flex items-center gap-2 shadow-sm active:scale-95 cursor-pointer shrink-0">
+            <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
             </svg>
             <span>Tambah Brand</span>
@@ -62,8 +62,8 @@
                         </td>
                         <td class="py-3.5 px-4 text-center">
                             <div class="flex items-center justify-center gap-2">
-                                <button wire:click="openModal({{ $b->id }})" class="h-9 px-3 py-1.5 bg-slate-100 hover:bg-indigo-50 hover:text-indigo-600 text-slate-700 rounded-xl text-sm font-bold transition">Edit</button>
-                                <button wire:click="deleteBrand({{ $b->id }})" wire:confirm="Hapus brand ini?" class="h-9 px-3 py-1.5 bg-slate-100 hover:bg-rose-50 hover:text-rose-600 text-slate-400 rounded-xl text-sm font-bold transition">Hapus</button>
+                                <button wire:click="openModal({{ $b->id }})" class="h-9 px-3.5 py-1.5 bg-slate-100 hover:bg-indigo-50 hover:text-indigo-600 text-slate-700 rounded-xl text-sm font-bold transition cursor-pointer">Edit</button>
+                                <button wire:click="deleteBrand({{ $b->id }})" wire:confirm="Hapus brand ini?" class="h-9 px-3.5 py-1.5 bg-slate-100 hover:bg-rose-50 hover:text-rose-600 text-slate-400 rounded-xl text-sm font-bold transition cursor-pointer">Hapus</button>
                             </div>
                         </td>
                     </tr>
