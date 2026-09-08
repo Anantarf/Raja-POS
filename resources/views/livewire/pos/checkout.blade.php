@@ -198,46 +198,59 @@
                                 wire:click="addToCart({{ $product->id }})"
                                 @keydown.enter="$wire.addToCart({{ $product->id }})"
                                 @keydown.space.prevent="$wire.addToCart({{ $product->id }})"
-                                class="bg-white border border-[#E3EEE8] hover:border-[#3F7A5D] focus:border-[#3F7A5D] focus:ring-2 focus:ring-[#3F7A5D]/30 focus:outline-none rounded-2xl overflow-hidden flex flex-col justify-between h-[215px] sm:h-[238px] cursor-pointer transition-all duration-200 relative group hover-lift active-press shadow-xs hover:shadow-md {{ $isIncomplete ? 'opacity-65 bg-rose-50/20' : '' }}"
+                                class="bg-white rounded-2xl border border-slate-200/80 p-3.5 sm:p-4 shadow-sm hover:shadow-md hover:border-[#3F7A5D]/50 focus:border-[#3F7A5D] focus:ring-2 focus:ring-[#3F7A5D]/30 focus:outline-none transition-all duration-200 flex flex-col justify-between h-[310px] sm:h-[330px] group cursor-pointer active-press hover-lift relative {{ $isIncomplete ? 'opacity-65 bg-rose-50/20' : '' }}"
                             >
-                                <div>
-                                    <!-- Top Image/Banner Container -->
-                                    <div class="w-full h-24 sm:h-28 relative overflow-hidden bg-gradient-to-br from-[#E3EEE8]/60 via-[#F3F6F4] to-[#E3EEE8]/30 flex items-center justify-center shrink-0">
-                                        <!-- Overlay Badges -->
-                                        <div class="absolute top-2 left-2 right-2 flex items-center justify-between z-10 opacity-90 group-hover:opacity-100 transition-opacity">
-                                            <span class="text-[0.7rem] font-mono text-[#3F7A5D] bg-white/95 backdrop-blur-sm px-1.5 py-0.5 rounded font-bold border border-[#3F7A5D]/20 shadow-2xs">
-                                                {{ $product->code }}
-                                            </span>
-                                            <span class="text-[0.7rem] uppercase font-extrabold px-1.5 py-0.5 rounded backdrop-blur-sm border {{ $product->product_type === 'PHYSICAL' ? 'bg-[#3F7A5D]/10 text-[#3F7A5D] border-[#3F7A5D]/20' : ($product->product_type === 'DIGITAL' ? 'bg-emerald-100/90 text-emerald-800 border-emerald-300/60' : 'bg-[#C2AC7C]/15 text-[#8F794B] border-[#C2AC7C]/30') }}">
-                                                {{ $product->product_type === 'PHYSICAL' ? 'FISIK' : ($product->product_type === 'DIGITAL' ? 'DIGITAL' : 'LAYANAN') }}
-                                            </span>
-                                        </div>
+                                <div class="space-y-2">
+                                    <!-- Top Metadata & Type Badge -->
+                                    <div class="flex items-center justify-between text-xs">
+                                        <span class="px-2.5 py-0.5 rounded-md text-[11px] font-extrabold uppercase tracking-wider border {{ $product->product_type === 'PHYSICAL' ? 'bg-[#3F7A5D]/10 text-[#3F7A5D] border-[#3F7A5D]/20' : ($product->product_type === 'DIGITAL' ? 'bg-emerald-100/90 text-emerald-800 border-emerald-300/60' : 'bg-[#C2AC7C]/15 text-[#8F794B] border-[#C2AC7C]/30') }}">
+                                            {{ $product->product_type === 'PHYSICAL' ? 'FISIK' : ($product->product_type === 'DIGITAL' ? 'DIGITAL' : 'LAYANAN') }}
+                                        </span>
 
-                                        @if(!empty($product->image_path) && Illuminate\Support\Facades\Storage::disk('public')->exists($product->image_path))
-                                            <img src="{{ Illuminate\Support\Facades\Storage::url($product->image_path) }}" alt="{{ $product->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-                                            <div class="absolute inset-x-0 bottom-0 h-4 bg-gradient-to-t from-white via-white/40 to-transparent"></div>
-                                        @else
-                                            <div class="flex items-center justify-center h-full pt-2">
-                                                <div class="w-11 h-11 rounded-2xl bg-[#E3EEE8] border border-[#3F7A5D]/25 shadow-2xs flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
-                                                    <span class="text-base font-mono font-black text-[#3F7A5D] tracking-wide">
-                                                        {{ $initials }}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="absolute inset-x-0 bottom-0 h-4 bg-gradient-to-t from-white to-transparent"></div>
+                                        @if($product->product_type === 'PHYSICAL')
+                                            <span class="font-semibold text-slate-500 text-xs">
+                                                Stok: <strong class="{{ $stockStatus === 'OUT_OF_STOCK' ? 'text-rose-600' : 'text-slate-800' }}">{{ $stockQty }}</strong>
+                                            </span>
                                         @endif
                                     </div>
 
-                                    <!-- Card Title (Top-Aligned Baseline) -->
-                                    <div class="px-3 pt-2 pb-0.5 h-10 sm:h-12 flex items-start">
-                                        <h4 class="text-xs sm:text-sm font-bold text-[#2C3E35] leading-snug group-hover:text-[#3F7A5D] transition-colors line-clamp-2 overflow-hidden text-ellipsis">
+                                    <!-- Product Image / Initials Banner -->
+                                    <div class="h-24 sm:h-26 bg-[#F3F6F4]/80 rounded-xl relative flex items-center justify-center overflow-hidden border border-slate-100/80">
+                                        @if(!empty($product->image_path) && Illuminate\Support\Facades\Storage::disk('public')->exists($product->image_path))
+                                            <img src="{{ Illuminate\Support\Facades\Storage::url($product->image_path) }}" alt="{{ $product->name }}" class="w-full h-full object-cover rounded-xl group-hover:scale-105 transition-transform duration-300">
+                                        @else
+                                            <span class="text-2xl font-mono font-extrabold text-[#3F7A5D]/80 tracking-wider">
+                                                {{ $initials }}
+                                            </span>
+                                        @endif
+                                    </div>
+
+                                    <!-- Product Title & Barcode -->
+                                    <div>
+                                        <h3 class="font-bold text-[#232E28] text-xs sm:text-sm leading-snug line-clamp-2 group-hover:text-[#3F7A5D] transition-colors">
                                             {{ $product->name }}
-                                        </h4>
+                                        </h3>
+                                        <div class="text-[11px] font-mono text-slate-400 mt-0.5 truncate">
+                                            Barcode: {{ $product->effective_barcode ?? $product->code }}
+                                        </div>
+                                    </div>
+
+                                    <!-- Dimensions: Kategori • Subtipe (jika ada) • Merk -->
+                                    <div class="text-[11px] text-slate-500 flex items-center gap-1.5 flex-wrap font-medium">
+                                        <span class="text-slate-700 font-semibold">{{ $product->category?->name ?? 'Umum' }}</span>
+                                        @if(!empty($product->product_subtype) && trim($product->product_subtype) !== '-')
+                                            <span class="text-slate-300">&bull;</span>
+                                            <span class="text-[#3F7A5D] font-bold">{{ $product->product_subtype }}</span>
+                                        @endif
+                                        @if(!empty($product->brand?->name) && trim($product->brand->name) !== '-')
+                                            <span class="text-slate-300">&bull;</span>
+                                            <span class="text-slate-600">{{ $product->brand->name }}</span>
+                                        @endif
                                     </div>
                                 </div>
 
-                                <!-- Card Footer Price & Stock (Perfect Sejajar Alignment) -->
-                                <div class="px-3 py-2 border-t border-slate-100 flex items-center justify-between gap-1 shrink-0 bg-white min-h-[42px] sm:min-h-[44px]">
+                                <!-- Card Footer Price & Action -->
+                                <div class="pt-2 border-t border-slate-100 flex items-center justify-between gap-1 shrink-0 bg-white">
                                     <div class="min-w-0 flex-1">
                                         @if($product->product_type === 'LAYANAN')
                                             <span class="inline-flex items-center gap-0.5 text-xs font-bold text-teal-700 bg-teal-50 border border-teal-200/80 px-2 py-0.5 rounded whitespace-nowrap">
@@ -248,26 +261,16 @@
                                                 INCOMPLETE
                                             </span>
                                         @else
-                                            <div class="text-sm sm:text-base font-extrabold text-[#2C3E35] font-mono tracking-tight whitespace-nowrap">
+                                            <div class="text-sm sm:text-base font-extrabold text-[#232E28] font-mono tracking-tight whitespace-nowrap">
                                                 Rp {{ number_format((float) $product->selling_price, 0, ',', '.') }}
                                             </div>
                                         @endif
                                     </div>
 
                                     <div class="shrink-0">
-                                        @if($product->product_type === 'PHYSICAL')
-                                            <span class="px-2 py-0.5 rounded-full font-bold text-[0.7rem] whitespace-nowrap {{ $stockStatus === 'OUT_OF_STOCK' ? 'bg-rose-50 text-rose-700 border border-rose-200/60' : ($stockStatus === 'LOW_STOCK' ? 'bg-amber-50 text-amber-700 border border-amber-200/60' : 'bg-[#E3EEE8] text-[#3F7A5D] border border-[#3F7A5D]/20') }}">
-                                                Stok: {{ $stockQty }}
-                                            </span>
-                                        @elseif($product->product_type === 'DIGITAL')
-                                            <span class="px-2 py-0.5 rounded-full font-bold text-[0.7rem] bg-emerald-50 text-emerald-700 border border-emerald-200/60 whitespace-nowrap">
-                                                Digital
-                                            </span>
-                                        @else
-                                            <span class="px-2 py-0.5 rounded-full font-bold text-[0.7rem] bg-amber-50 text-amber-700 border border-amber-200/60 whitespace-nowrap">
-                                                Layanan
-                                            </span>
-                                        @endif
+                                        <span class="h-7 px-2.5 rounded-lg bg-[#E3EEE8] text-[#3F7A5D] border border-[#3F7A5D]/20 font-bold text-xs flex items-center justify-center group-hover:bg-[#3F7A5D] group-hover:text-white transition-colors">
+                                            + Tambah
+                                        </span>
                                     </div>
                                 </div>
                             </div>
