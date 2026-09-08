@@ -182,13 +182,13 @@
                                     #{{ $index + 1 }}
                                 </span>
                                 <div class="truncate">
-                                    <div class="font-bold text-[#2C3E35] truncate">{{ ucwords(strtolower($item->product_name)) }}</div>
-                                    <div class="text-[10px] text-[#718379] font-mono">{{ $item->code }}</div>
+                                    <div class="font-bold text-[#2C3E35] truncate">{{ ucwords(strtolower(data_get($item, 'product_name', ''))) }}</div>
+                                    <div class="text-[10px] text-[#718379] font-mono">{{ data_get($item, 'code', '-') }}</div>
                                 </div>
                             </div>
                             <div class="text-right shrink-0">
-                                <div class="font-mono font-extrabold text-[#3F7A5D] text-xs">{{ $item->total_qty }} pcs</div>
-                                <div class="text-[10px] text-[#718379] font-mono">Rp {{ number_format($item->total_omzet, 0, ',', '.') }}</div>
+                                <div class="font-mono font-extrabold text-[#3F7A5D] text-xs">{{ data_get($item, 'total_qty', 0) }} pcs</div>
+                                <div class="text-[10px] text-[#718379] font-mono">Rp {{ number_format((float) data_get($item, 'total_omzet', 0), 0, ',', '.') }}</div>
                             </div>
                         </div>
                     @empty
