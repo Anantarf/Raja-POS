@@ -46,12 +46,24 @@
                     <span class="text-[#5F7167] font-semibold text-xs uppercase tracking-wide">({{ auth()->user()->role?->name ?? 'Kasir' }})</span>
                 </div>
 
-                <a href="/admin" class="bg-[#3F7A5D] hover:bg-[#32634B] text-white h-11 px-3 sm:px-4 py-2.5 rounded-xl font-extrabold text-sm sm:text-base transition flex items-center gap-2 btn-glow active-press hover-lift shadow-xs whitespace-nowrap cursor-pointer" title="Buka Dashboard Admin Management">
-                    <svg class="w-4.5 h-4.5 text-white shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
-                    </svg>
-                    <span class="hidden sm:inline">Dashboard Admin</span>
-                </a>
+                @can('dashboard.view')
+                    <a href="/admin" class="bg-[#3F7A5D] hover:bg-[#32634B] text-white h-11 px-3 sm:px-4 py-2.5 rounded-xl font-extrabold text-sm sm:text-base transition flex items-center gap-2 btn-glow active-press hover-lift shadow-xs whitespace-nowrap cursor-pointer" title="Buka Dashboard Admin Management">
+                        <svg class="w-4.5 h-4.5 text-white shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
+                        </svg>
+                        <span class="hidden sm:inline">Dashboard Admin</span>
+                    </a>
+                @endcan
+
+                <form method="POST" action="{{ route('logout') }}" class="inline">
+                    @csrf
+                    <button type="submit" class="h-11 px-3 py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200/80 rounded-xl font-extrabold text-xs sm:text-sm transition flex items-center gap-1.5 active-press cursor-pointer" title="Keluar / Ganti Sesi Kasir">
+                        <svg class="w-4 h-4 text-rose-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                        </svg>
+                        <span class="hidden sm:inline">Keluar</span>
+                    </button>
+                </form>
             </div>
         </div>
     </header>
@@ -105,6 +117,7 @@
                         <input
                             type="text"
                             wire:model.live.debounce.300ms="search"
+                            wire:keydown.enter="handleSearchEnter"
                             placeholder="Cari nama produk / scan barcode..."
                             aria-label="Cari nama produk atau scan barcode"
                             class="w-full h-11 pl-10 pr-10 py-2 text-xs sm:text-sm font-semibold border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/30 focus:border-[#3F7A5D] bg-[#F3F6F4] placeholder:text-[#718379] transition-all"

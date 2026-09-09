@@ -35,6 +35,30 @@ class Checkout extends Component
         $this->perPage = 36;
     }
 
+    public function handleSearchEnter(): void
+    {
+        if (trim($this->search) === '') {
+            return;
+        }
+
+        $searchTerm = trim($this->search);
+        $product = Product::query()
+            ->where('status', 'ACTIVE')
+            ->where(function ($q) use ($searchTerm) {
+                $q->where('barcode', $searchTerm)
+                    ->orWhere('code', $searchTerm)
+                    ->orWhere('name', 'like', "%{$searchTerm}%");
+            })
+            ->first();
+
+        if ($product) {
+            $this->addToCart($product->id);
+            $this->search = '';
+        } else {
+            $this->dispatch('notify', message: "Produk dengan kata kunci '{$searchTerm}' tidak ditemukan.", type: 'warning');
+        }
+    }
+
     public function updatedSelectedCategory(): void
     {
         $this->perPage = 36;
