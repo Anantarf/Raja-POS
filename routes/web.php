@@ -57,6 +57,8 @@ Route::middleware(['auth'])->group(function () {
 
     // Receipt Route
     Route::get('/receipt/thermal/{sale}', function (Sale $sale) {
+        $sale = Sale::forUserLocation()->whereKey($sale->id)->firstOrFail();
+
         abort_unless(auth()->user()->can('sales.view_all') || (auth()->user()->can('sales.view_own') && $sale->cashier_id === auth()->id()), 403);
         $sale->load(['cashier', 'items', 'payments.paymentMethod']);
 

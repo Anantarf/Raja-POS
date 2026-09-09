@@ -1,4 +1,23 @@
-<div x-data="{ activeTab: 'catalog' }" class="min-h-screen lg:h-screen flex flex-col overflow-y-auto lg:overflow-hidden bg-[#F3F6F4] font-sans text-[#232E28]">
+<div 
+    x-data="{ activeTab: 'catalog' }" 
+    x-init="
+        window.addEventListener('cart-updated', e => {
+            const cartData = e.detail?.cart || (Array.isArray(e.detail) ? e.detail[0]?.cart : null);
+            if (cartData && Object.keys(cartData).length > 0) {
+                localStorage.setItem('raja_pos_draft_cart', JSON.stringify(cartData));
+            } else {
+                localStorage.removeItem('raja_pos_draft_cart');
+            }
+        });
+        window.addEventListener('auto-print-receipt', e => {
+            const saleId = e.detail?.saleId || (Array.isArray(e.detail) ? e.detail[0]?.saleId : null);
+            if (saleId && typeof window.printReceiptDirect === 'function') {
+                setTimeout(() => window.printReceiptDirect(saleId), 300);
+            }
+        });
+    "
+    class="min-h-screen lg:h-screen flex flex-col overflow-y-auto lg:overflow-hidden bg-[#F3F6F4] font-sans text-[#232E28]"
+>
     <!-- Topbar Navigation Header -->
     <header class="px-3 sm:px-6 pt-3 sm:pt-4 pb-2 sm:pb-3 flex-shrink-0">
         <div class="bg-white rounded-2xl border border-[#E3EEE8] px-3.5 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between gap-2 sm:gap-3 shadow-xs">
@@ -72,13 +91,13 @@
     <!-- Main Operational Split View (Desktop: 61.8% Katalog : 38.2% Keranjang, Tablet: 58% : 42%, Mobile: Responsive Tab) -->
     <div class="flex-1 flex flex-col md:flex-row overflow-y-auto md:overflow-hidden px-2.5 sm:px-6 pb-20 md:pb-5 gap-3.5 md:gap-5">
 
-        <!-- LEFT COLUMN: Product Catalog (Golden Ratio Proportion) -->
+        <!-- Left Column: Product Catalog -->
         <div
             :class="{ 'hidden md:flex': activeTab === 'cart', 'flex': activeTab === 'catalog' }"
             class="w-full md:w-[58%] lg:w-[61.8%] flex-col flex-shrink-0 flex-1 md:h-full overflow-hidden"
         >
 
-            <!-- Streamlined Toolbar -->
+            <!-- Toolbar -->
             <div class="p-3 sm:p-4 bg-white rounded-2xl border border-slate-200/80 shadow-sm space-y-3 mb-3 shrink-0">
                 <!-- Search & Jenis Dropdown Row -->
                 <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
@@ -423,7 +442,7 @@
             </div>
         </div>
 
-        <!-- RIGHT COLUMN: Golden Ratio Cart Sidebar (38.2% Desktop / 42% Tablet) -->
+        <!-- Right Column: Cart Sidebar -->
         <div
             id="cart-section"
             :class="{ 'hidden md:flex': activeTab === 'catalog', 'flex': activeTab === 'cart' }"
@@ -456,7 +475,7 @@
                 @endif
             </div>
 
-            <!-- 2. MAXIMIZED FLEX-1 CART ITEMS SCROLLABLE LIST -->
+            <!-- Cart Items List -->
             <div class="flex-1 overflow-y-auto px-5 py-3 divide-y divide-slate-100 min-h-0">
                 @forelse($cart as $id => $item)
                     <div class="py-3 flex items-center justify-between gap-3 group">
@@ -522,7 +541,7 @@
                 @endforelse
             </div>
 
-            <!-- 3. PROPORTIONAL COMPACT PAYMENT FOOTER -->
+            <!-- Payment Footer -->
             <div class="p-3 sm:p-3.5 border-t border-slate-200/80 bg-[#F3F6F4]/60 space-y-2 shrink-0">
 
                 <!-- Grand Total Billing Card -->
@@ -663,17 +682,27 @@
                         </div>
 
                         <div class="flex flex-col gap-2 pt-1">
-                            <a
-                                href="/receipt/thermal/{{ $completedSaleId }}"
-                                target="_blank"
-                                class="w-full h-12 py-3 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-bold rounded-xl text-xs transition uppercase tracking-wider text-center flex items-center justify-center"
+                            <button
+                                type="button"
+                                onclick="printReceiptDirect({{ $completedSaleId }})"
+                                class="w-full h-12 py-3 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-xl text-xs transition uppercase tracking-wider text-center flex items-center justify-center gap-2 cursor-pointer shadow-xs active-press hover-lift"
                             >
-                                Cetak Struk Thermal
-                            </a>
+                                <svg class="w-4 h-4 text-white shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                                </svg>
+                                <span>Cetak Struk Thermal (Langsung)</span>
+                            </button>
+                            <button
+                                type="button"
+                                onclick="window.location.href='intent:' + encodeURIComponent(window.location.origin + '/receipt/thermal/{{ $completedSaleId }}') + '#Intent;scheme=http;package=ru.a256.rawbtprinter;end;'"
+                                class="w-full h-10 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs transition text-center flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs active-press"
+                            >
+                                <span>Cetak Direct (RawBT Bluetooth)</span>
+                            </button>
                             <button
                                 type="button"
                                 wire:click="closeSuccessModal"
-                                class="w-full h-12 py-3 bg-slate-100 hover:bg-slate-200 text-[#232E28] font-bold rounded-xl text-sm transition cursor-pointer"
+                                class="w-full h-11 py-2.5 bg-slate-100 hover:bg-slate-200 text-[#232E28] font-bold rounded-xl text-sm transition cursor-pointer"
                             >
                                 Selesai / Transaksi Baru
                             </button>
@@ -818,26 +847,18 @@
                     </div>
 
                     <!-- Dynamic Live Calculations Card -->
-                    <?php
-                        $bAmt = (float) ($ppobBillAmount ?? 0);
-                        $sFee = (float) ($ppobStoreAdminFee ?? 0);
-                        $vFee = (float) ($ppobVendorAdminFee ?? 0);
-                        $calcTotalPay = $bAmt + $sFee;
-                        $calcTotalCost = $bAmt + $vFee;
-                        $calcMargin = $calcTotalPay - $calcTotalCost;
-                    ?>
                     <div class="bg-[#F3F6F4] p-4 rounded-2xl border border-slate-200/80 space-y-2">
                         <div class="flex items-center justify-between text-base font-bold text-[#232E28]">
                             <span>Total Ditagihkan Ke Pelanggan:</span>
-                            <span class="font-mono text-base text-[#3F7A5D] font-black">Rp {{ number_format($calcTotalPay, 0, ',', '.') }}</span>
+                            <span class="font-mono text-base text-[#3F7A5D] font-black">Rp {{ number_format(((float)($ppobBillAmount ?? 0) + (float)($ppobStoreAdminFee ?? 0)), 0, ',', '.') }}</span>
                         </div>
                         <div class="flex items-center justify-between text-base text-[#5F7167]">
                             <span>Estimasi Modal Toko:</span>
-                            <span class="font-mono">Rp {{ number_format($calcTotalCost, 0, ',', '.') }}</span>
+                            <span class="font-mono">Rp {{ number_format(((float)($ppobBillAmount ?? 0) + (float)($ppobVendorAdminFee ?? 0)), 0, ',', '.') }}</span>
                         </div>
                         <div class="flex items-center justify-between text-sm font-extrabold text-emerald-700 pt-1 border-t border-slate-200/60">
                             <span>Estimasi Keuntungan Toko (Margin):</span>
-                            <span class="font-mono">Rp {{ number_format($calcMargin, 0, ',', '.') }}</span>
+                            <span class="font-mono">Rp {{ number_format(((float)($ppobStoreAdminFee ?? 0) - (float)($ppobVendorAdminFee ?? 0)), 0, ',', '.') }}</span>
                         </div>
                     </div>
                 </div>
@@ -893,4 +914,25 @@
             </svg>
         </button>
     </div>
+
+    <!-- Hidden Thermal Receipt Printing Frame -->
+    <iframe id="receipt-iframe" class="hidden fixed -top-full -left-full w-0 h-0 border-0"></iframe>
+
+    <script>
+        window.printReceiptDirect = function(saleId) {
+            if (!saleId) return;
+            const iframe = document.getElementById('receipt-iframe');
+            if (!iframe) return;
+
+            iframe.src = '/receipt/thermal/' + saleId;
+            iframe.onload = function() {
+                try {
+                    iframe.contentWindow.focus();
+                    iframe.contentWindow.print();
+                } catch (e) {
+                    console.error('Direct print error:', e);
+                }
+            };
+        };
+    </script>
 </div>

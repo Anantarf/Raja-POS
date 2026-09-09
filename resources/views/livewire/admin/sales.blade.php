@@ -68,9 +68,9 @@
                             <div class="flex items-center gap-1">
                                 <span>No. TRX &amp; Waktu</span>
                                 @if($sortField === 'invoice_number' || $sortField === 'created_at')
-                                    <span>{{ $sortDirection === 'asc' ? 'â†‘' : 'â†“' }}</span>
+                                    <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
                                 @else
-                                    <span class="text-slate-300">â†•</span>
+                                    <span class="text-slate-300">↕</span>
                                 @endif
                             </div>
                         </th>
@@ -80,9 +80,9 @@
                             <div class="flex items-center justify-end gap-1">
                                 <span>Total Transaksi</span>
                                 @if($sortField === 'grand_total')
-                                    <span>{{ $sortDirection === 'asc' ? 'â†‘' : 'â†“' }}</span>
+                                    <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
                                 @else
-                                    <span class="text-slate-300">â†•</span>
+                                    <span class="text-slate-300">↕</span>
                                 @endif
                             </div>
                         </th>
@@ -90,9 +90,9 @@
                             <div class="flex items-center justify-center gap-1">
                                 <span>Status</span>
                                 @if($sortField === 'status')
-                                    <span>{{ $sortDirection === 'asc' ? 'â†‘' : 'â†“' }}</span>
+                                    <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
                                 @else
-                                    <span class="text-slate-300">â†•</span>
+                                    <span class="text-slate-300">↕</span>
                                 @endif
                             </div>
                         </th>

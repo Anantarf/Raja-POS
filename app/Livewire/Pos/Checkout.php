@@ -357,6 +357,8 @@ class Checkout extends Component
         foreach ($this->payments as $index => $payment) {
             $this->payments[$index]['amount'] = min(1000000000, max(0, (float) ($payment['amount'] ?? 0)));
         }
+
+        $this->dispatch('cart-updated', cart: $this->cart);
     }
 
     public function getSubtotalProperty(): float
@@ -451,6 +453,7 @@ class Checkout extends Component
             $this->completedInvoiceNumber = $sale->invoice_number;
             $this->completedChangeAmount = (float) $sale->change_amount;
             $this->showSuccessModal = true;
+            $this->dispatch('auto-print-receipt', saleId: $sale->id);
 
             $this->clearCart();
         } catch (\Exception $e) {

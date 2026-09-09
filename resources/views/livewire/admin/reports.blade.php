@@ -141,7 +141,7 @@
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-5 gap-5 sm:gap-6">
-                <!-- Top Selling Products (60% Golden Ratio Width: lg:col-span-3) -->
+                <!-- Top Selling Products -->
                 <div class="lg:col-span-3 bg-white border border-slate-200/80 rounded-2xl shadow-sm overflow-hidden space-y-3">
                     <div class="p-4 sm:p-5 border-b border-slate-100">
                         <h3 class="text-sm font-extrabold text-[#2C3E35] uppercase tracking-wider">Top 5 Produk Terlaris</h3>
@@ -187,7 +187,7 @@
                     </div>
                 </div>
 
-                <!-- Category Sales Breakdown (40% Golden Ratio Width: lg:col-span-2) -->
+                <!-- Category Sales Breakdown -->
                 <div class="lg:col-span-2 bg-white border border-slate-200/80 rounded-2xl p-5 shadow-sm space-y-4">
                     <h3 class="text-sm font-extrabold text-[#2C3E35] uppercase tracking-wider border-b border-slate-100 pb-3">Penjualan Berdasarkan Kategori</h3>
                     

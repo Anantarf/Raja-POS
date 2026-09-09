@@ -59,7 +59,7 @@
     .bg-emco-body { background-color: var(--color-emco-body) !important; }
     .bg-emco-light { background-color: var(--color-emco-primary-light) !important; }
 
-    /* Ultra-Premium Micro-Interaction Utilities */
+    /* UI Helper Utilities */
     .hover-lift {
         transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }

@@ -44,9 +44,9 @@
                             <div class="flex items-center gap-1">
                                 <span>No. Opname &amp; Waktu</span>
                                 @if($sortField === 'opname_number' || $sortField === 'created_at')
-                                    <span>{{ $sortDirection === 'asc' ? 'â†‘' : 'â†“' }}</span>
+                                    <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
                                 @else
-                                    <span class="text-slate-300">â†•</span>
+                                    <span class="text-slate-300">↕</span>
                                 @endif
                             </div>
                         </th>
@@ -58,9 +58,9 @@
                             <div class="flex items-center justify-center gap-1">
                                 <span>Status</span>
                                 @if($sortField === 'status')
-                                    <span>{{ $sortDirection === 'asc' ? 'â†‘' : 'â†“' }}</span>
+                                    <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
                                 @else
-                                    <span class="text-slate-300">â†•</span>
+                                    <span class="text-slate-300">↕</span>
                                 @endif
                             </div>
                         </th>

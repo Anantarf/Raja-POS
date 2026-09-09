@@ -38,9 +38,9 @@
                             <div class="flex items-center gap-1">
                                 <span>Waktu</span>
                                 @if($sortField === 'created_at')
-                                    <span>{{ $sortDirection === 'asc' ? 'â†‘' : 'â†“' }}</span>
+                                    <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
                                 @else
-                                    <span class="text-slate-300">â†•</span>
+                                    <span class="text-slate-300">↕</span>
                                 @endif
                             </div>
                         </th>
@@ -49,9 +49,9 @@
                             <div class="flex items-center gap-1">
                                 <span>Tipe Pergerakan</span>
                                 @if($sortField === 'movement_type')
-                                    <span>{{ $sortDirection === 'asc' ? 'â†‘' : 'â†“' }}</span>
+                                    <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
                                 @else
-                                    <span class="text-slate-300">â†•</span>
+                                    <span class="text-slate-300">↕</span>
                                 @endif
                             </div>
                         </th>
@@ -60,9 +60,9 @@
                             <div class="flex items-center justify-center gap-1">
                                 <span>Perubahan</span>
                                 @if($sortField === 'quantity_change')
-                                    <span>{{ $sortDirection === 'asc' ? 'â†‘' : 'â†“' }}</span>
+                                    <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
                                 @else
-                                    <span class="text-slate-300">â†•</span>
+                                    <span class="text-slate-300">↕</span>
                                 @endif
                             </div>
                         </th>

@@ -143,7 +143,8 @@ class Inventories extends Component
     // --- Tab 2: Stock Opname Methods ---
     public function openCreateModal()
     {
-        $this->location_id = Location::first()?->id;
+        $user = auth()->user();
+        $this->location_id = $user->hasGlobalLocationAccess() ? Location::first()?->id : $user->location_id;
         $this->product_id = Product::first()?->id;
         $this->physical_qty = 0;
         $this->notes = 'Stock Opname Rutin';
@@ -152,7 +153,12 @@ class Inventories extends Component
 
     public function createSession()
     {
-        abort_unless(auth()->user()->can('stock_opname.create'), 403);
+        $user = auth()->user();
+        abort_unless($user->can('stock_opname.create'), 403);
+        if (! $user->hasGlobalLocationAccess()) {
+            $this->location_id = $user->location_id;
+        }
+
         $this->validate([
             'location_id' => 'required|exists:locations,id',
             'product_id' => 'required|exists:products,id',
@@ -191,7 +197,8 @@ class Inventories extends Component
 
     public function openBulkModal()
     {
-        $this->bulk_location_id = Location::first()?->id;
+        $user = auth()->user();
+        $this->bulk_location_id = $user->hasGlobalLocationAccess() ? Location::first()?->id : $user->location_id;
         $this->bulk_category_id = '';
         $this->bulk_search = '';
         $this->loadBulkItems();
@@ -200,6 +207,11 @@ class Inventories extends Component
 
     public function loadBulkItems()
     {
+        $user = auth()->user();
+        if (! $user->hasGlobalLocationAccess()) {
+            $this->bulk_location_id = $user->location_id;
+        }
+
         if (! $this->bulk_location_id) {
             return;
         }
@@ -252,7 +264,12 @@ class Inventories extends Component
 
     public function createBulkSession()
     {
-        abort_unless(auth()->user()->can('stock_opname.create'), 403);
+        $user = auth()->user();
+        abort_unless($user->can('stock_opname.create'), 403);
+        if (! $user->hasGlobalLocationAccess()) {
+            $this->bulk_location_id = $user->location_id;
+        }
+
         if (empty($this->bulkItems) || ! $this->bulk_location_id) {
             $this->dispatch('notify', message: 'Tidak ada data barang yang diaudit.', type: 'warning');
 

@@ -72,9 +72,9 @@
                                 <div class="flex items-center gap-1">
                                     <span>Nama Barang</span>
                                     @if($sortField === 'product_name')
-                                        <span>{{ $sortDirection === 'asc' ? 'â†‘' : 'â†“' }}</span>
+                                        <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
                                     @else
-                                        <span class="text-slate-300">â†•</span>
+                                        <span class="text-slate-300">↕</span>
                                     @endif
                                 </div>
                             </th>
@@ -83,9 +83,9 @@
                                 <div class="flex items-center justify-center gap-1">
                                     <span>Jumlah Stok</span>
                                     @if($sortField === 'quantity')
-                                        <span>{{ $sortDirection === 'asc' ? 'â†‘' : 'â†“' }}</span>
+                                        <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
                                     @else
-                                        <span class="text-slate-300">â†•</span>
+                                        <span class="text-slate-300">↕</span>
                                     @endif
                                 </div>
                             </th>
@@ -93,9 +93,9 @@
                                 <div class="flex items-center justify-center gap-1">
                                     <span>Status Stok</span>
                                     @if($sortField === 'stock_status')
-                                        <span>{{ $sortDirection === 'asc' ? 'â†‘' : 'â†“' }}</span>
+                                        <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
                                     @else
-                                        <span class="text-slate-300">â†•</span>
+                                        <span class="text-slate-300">↕</span>
                                     @endif
                                 </div>
                             </th>

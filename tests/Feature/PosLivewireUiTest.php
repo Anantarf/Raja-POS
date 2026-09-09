@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Jobs\PurgeExpiredTrashedSalesJob;
 use App\Livewire\Admin\Inventories;
+use App\Livewire\Admin\Products;
 use App\Livewire\Admin\Reports;
 use App\Livewire\Admin\Sales;
 use App\Livewire\Admin\SampahTransaksi;
@@ -362,6 +363,72 @@ class PosLivewireUiTest extends TestCase
             ->assertViewHas('locations', function ($locs) {
                 return $locs->count() === 1 && $locs->first()->id === $this->locationBango->id;
             });
+    }
+
+    public function test_admin_receipt_route_respects_location_scope(): void
+    {
+        $this->cashier->role->permissions()->attach(
+            Permission::create(['name' => 'sales.view_all', 'display_name' => 'View all sales'])->id
+        );
+
+        $saleDuren = Sale::create([
+            'invoice_number' => 'TRX-RECEIPT-DUREN',
+            'cashier_id' => $this->cashier->id,
+            'location_id' => $this->locationDuren->id,
+            'transaction_date' => now(),
+            'subtotal' => 50000,
+            'discount_amount' => 0,
+            'total_amount' => 50000,
+            'amount_paid' => 50000,
+            'status' => 'COMPLETED',
+        ]);
+
+        $this->actingAs($this->cashier)
+            ->get('/receipt/thermal/'.$saleDuren->id)
+            ->assertNotFound();
+    }
+
+    public function test_product_edit_uses_current_user_location_stock(): void
+    {
+        $this->cashier->role->permissions()->attach(
+            Permission::create(['name' => 'product.view', 'display_name' => 'View products'])->id
+        );
+
+        Inventory::create([
+            'product_id' => $this->productPhysical->id,
+            'location_id' => $this->locationDuren->id,
+            'quantity' => 7,
+        ]);
+
+        $this->actingAs($this->cashier);
+
+        Livewire::test(Products::class)
+            ->call('openEditModal', $this->productPhysical->id)
+            ->assertSet('initial_stock', 50);
+    }
+
+    public function test_inventories_stock_opname_creation_forces_user_location(): void
+    {
+        $this->cashier->role->permissions()->attach(
+            Permission::create(['name' => 'stock_opname.create', 'display_name' => 'Create stock opname'])->id
+        );
+
+        $this->actingAs($this->cashier);
+
+        Livewire::test(Inventories::class)
+            ->set('location_id', $this->locationDuren->id)
+            ->set('product_id', $this->productPhysical->id)
+            ->set('physical_qty', 12)
+            ->call('createSession');
+
+        $this->assertDatabaseHas('stock_opnames', [
+            'location_id' => $this->locationBango->id,
+            'created_by' => $this->cashier->id,
+        ]);
+        $this->assertDatabaseMissing('stock_opnames', [
+            'location_id' => $this->locationDuren->id,
+            'created_by' => $this->cashier->id,
+        ]);
     }
 
     public function test_finance_report_service_and_reports_component_enforce_location_scoping(): void

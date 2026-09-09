@@ -63,9 +63,10 @@
     </style>
 </head>
 <body onload="window.print()">
-    <div class="no-print" style="margin-bottom: 10px;">
-        <button onclick="window.print()" style="padding: 6px 12px; cursor: pointer;">Cetak Struk</button>
-        <button onclick="window.close()" style="padding: 6px 12px; cursor: pointer;">Tutup</button>
+    <div class="no-print" style="margin-bottom: 10px; display: flex; gap: 8px; flex-wrap: wrap;">
+        <button onclick="window.print()" style="padding: 6px 12px; cursor: pointer; background: #0284c7; color: #ffffff; border: none; border-radius: 4px; font-weight: 600; font-family: sans-serif;">Cetak Struk (Browser)</button>
+        <button onclick="window.location.href='intent:' + encodeURIComponent(window.location.href) + '#Intent;scheme=http;package=ru.a256.rawbtprinter;end;'" style="padding: 6px 12px; cursor: pointer; background: #16a34a; color: #ffffff; border: none; border-radius: 4px; font-weight: 600; font-family: sans-serif;">Cetak Direct (RawBT POS)</button>
+        <button onclick="window.close()" style="padding: 6px 12px; cursor: pointer; background: #64748b; color: #ffffff; border: none; border-radius: 4px; font-family: sans-serif;">Tutup</button>
     </div>
 
     <div class="header text-center">

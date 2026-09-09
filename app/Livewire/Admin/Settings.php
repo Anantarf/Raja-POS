@@ -50,7 +50,7 @@ class Settings extends Component
         $this->validate([
             'userName' => 'required|string|max:255',
             'userUsername' => 'required|string|max:255|unique:users,username',
-            'userPassword' => 'required|string|min:4',
+            'userPassword' => 'required|string|min:6',
             'userRoleId' => 'required|exists:roles,id',
             'userLocationId' => 'required|exists:locations,id',
         ]);

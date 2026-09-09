@@ -91,12 +91,12 @@
         </div>
     </div>
 
-    <!-- Golden Ratio Main Layout Grid (3:2 Ratio / 60% : 40% Width) -->
+    <!-- Main Content Grid -->
     <div class="grid grid-cols-1 lg:grid-cols-5 gap-5 sm:gap-6 items-start">
         
-        <!-- Left Main Panel (60% Golden Ratio Width: lg:col-span-3) -->
+        <!-- Left Panel: Daily Sales Chart -->
         <div class="lg:col-span-3 space-y-5">
-            <!-- 1. Daily Omzet Bar Chart Card -->
+            <!-- Daily Omzet Bar Chart -->
             <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm space-y-4">
                 <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                     <div>
@@ -117,7 +117,7 @@
             </div>
         </div>
 
-        <!-- Right Side Panel (40% Golden Ratio Width: lg:col-span-2) -->
+        <!-- Right Panel: Best Sellers & Activity -->
         <div class="lg:col-span-2 space-y-5">
             <!-- 1. Top 5 Selling Products Card -->
             <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm space-y-4">

@@ -1,5 +1,5 @@
 <div class="space-y-6">
-    <!-- Page Header Banner (Golden Ratio Accent & Optical Alignment) -->
+    <!-- Page Header Banner -->
     <div class="bg-gradient-to-r from-[#3F7A5D]/10 via-[#3F7A5D]/5 to-white border border-slate-200/80 rounded-2xl p-4 sm:p-5 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div class="space-y-0.5">
             <h1 class="text-xl sm:text-2xl font-extrabold text-[#2C3E35] tracking-tight">Pengaturan Toko &amp; Sistem</h1>
@@ -25,7 +25,7 @@
         @endforeach
     </div>
 
-    <!-- Tab 1: STORE SETTINGS (Golden Ratio 3:2 Layout Grid) -->
+    <!-- Tab 1: Store Settings -->
     @if($activeTab === 'STORE_SETTINGS')
         @php
             $settingMap = $settings->pluck('value', 'key');
@@ -39,7 +39,7 @@
         @endphp
 
         <div class="grid grid-cols-1 lg:grid-cols-5 gap-5">
-            <!-- Left Main Panel (60% Golden Ratio Width) -->
+            <!-- Main Panel -->
             <div class="lg:col-span-3 bg-white border border-slate-200/80 rounded-2xl p-5 shadow-sm space-y-5">
                 <div class="flex items-start justify-between gap-4 border-b border-slate-100 pb-3.5">
                     <div>
@@ -60,7 +60,7 @@
                 </div>
             </div>
 
-            <!-- Right Info Panel (40% Golden Ratio Width) -->
+            <!-- Info Panel -->
             <div class="lg:col-span-2 bg-white border border-slate-200/80 rounded-2xl p-5 shadow-sm space-y-4">
                 <div class="border-b border-slate-100 pb-3.5">
                     <h3 class="text-base font-extrabold text-[#2C3E35] uppercase tracking-wider">Panduan &amp; Spesifikasi Sistem</h3>
@@ -210,7 +210,7 @@
             </div>
         </div>
 
-    <!-- Tab 4: LOCATIONS (Golden Ratio 3:2 Grid Layout) -->
+    <!-- Tab 4: Locations -->
     @elseif($activeTab === 'LOCATIONS')
         <div class="grid grid-cols-1 lg:grid-cols-5 gap-5">
             <div class="lg:col-span-3 bg-white border border-slate-200/80 rounded-2xl shadow-sm overflow-hidden">
@@ -248,7 +248,7 @@
                 </div>
             </div>
 
-            <!-- Form Tambah Lokasi (40% Golden Ratio Panel) -->
+            <!-- Form Tambah Lokasi -->
             <div class="lg:col-span-2 bg-white border border-slate-200/80 rounded-2xl p-5 shadow-sm space-y-4">
                 <div class="border-b border-slate-100 pb-3">
                     <h3 class="text-base font-extrabold text-[#2C3E35] uppercase tracking-wider">Tambah Cabang Toko</h3>
@@ -271,7 +271,7 @@
             </div>
         </div>
 
-    <!-- Tab 5: PAYMENT_METHODS (Golden Ratio 3:2 Grid Layout) -->
+    <!-- Tab 5: Payment Methods -->
     @else
         <div class="grid grid-cols-1 lg:grid-cols-5 gap-5">
             <div class="lg:col-span-3 bg-white border border-slate-200/80 rounded-2xl shadow-sm overflow-hidden">
@@ -309,7 +309,7 @@
                 </div>
             </div>
 
-            <!-- Form Tambah Metode Pembayaran (40% Golden Ratio Panel) -->
+            <!-- Form Tambah Metode Pembayaran -->
             <div class="lg:col-span-2 bg-white border border-slate-200/80 rounded-2xl p-5 shadow-sm space-y-4">
                 <div class="border-b border-slate-100 pb-3">
                     <h3 class="text-base font-extrabold text-[#2C3E35] uppercase tracking-wider">Tambah Metode Pembayaran</h3>

@@ -141,9 +141,9 @@
                             <div class="flex items-center gap-1">
                                 <span>No. Mutasi &amp; Waktu</span>
                                 @if($sortField === 'transaction_number' || $sortField === 'created_at')
-                                    <span>{{ $sortDirection === 'asc' ? 'â†‘' : 'â†“' }}</span>
+                                    <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
                                 @else
-                                    <span class="text-slate-300">â†•</span>
+                                    <span class="text-slate-300">↕</span>
                                 @endif
                             </div>
                         </th>
@@ -153,9 +153,9 @@
                             <div class="flex items-center justify-end gap-1">
                                 <span>Nominal</span>
                                 @if($sortField === 'amount')
-                                    <span>{{ $sortDirection === 'asc' ? 'â†‘' : 'â†“' }}</span>
+                                    <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
                                 @else
-                                    <span class="text-slate-300">â†•</span>
+                                    <span class="text-slate-300">↕</span>
                                 @endif
                             </div>
                         </th>

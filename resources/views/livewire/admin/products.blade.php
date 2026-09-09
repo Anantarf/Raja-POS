@@ -1,5 +1,5 @@
 <div class="space-y-5">
-    <!-- Header Controls (Clean Single-Row Enterprise Alignment) -->
+    <!-- Header Controls -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 pb-1">
         <div>
             <h1 class="text-xl sm:text-2xl font-extrabold text-[#2C3E35] tracking-tight">Katalog &amp; Daftar Produk</h1>

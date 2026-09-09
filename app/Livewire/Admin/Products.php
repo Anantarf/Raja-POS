@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Inventory;
 use App\Models\Location;
 use App\Models\Product;
+use App\Services\CatalogCacheService;
 use App\Services\InventoryService;
 use App\Services\ProductImportService;
 use App\Traits\WithSorting;
@@ -16,7 +17,7 @@ use Livewire\WithPagination;
 
 class Products extends Component
 {
-    use WithPagination, WithFileUploads, WithSorting;
+    use WithFileUploads, WithPagination, WithSorting;
 
     public $search = '';
 
@@ -137,7 +138,9 @@ class Products extends Component
         $this->selling_price = $product->selling_price;
         $this->description = $product->description;
 
-        $inv = Inventory::where('product_id', $product->id)->first();
+        $inv = Inventory::forUserLocation()
+            ->where('product_id', $product->id)
+            ->first();
         $this->initial_stock = $inv?->quantity ?? 0;
 
         $this->showCreateModal = true;
@@ -200,7 +203,7 @@ class Products extends Component
 
         $this->showCreateModal = false;
         $this->resetForm();
-        app(\App\Services\CatalogCacheService::class)->clearCatalogCache();
+        app(CatalogCacheService::class)->clearCatalogCache();
         $this->dispatch('notify', message: $message, type: 'success');
     }
 
@@ -216,7 +219,7 @@ class Products extends Component
 
         $this->showImportModal = false;
         $this->importFile = null;
-        app(\App\Services\CatalogCacheService::class)->clearCatalogCache();
+        app(CatalogCacheService::class)->clearCatalogCache();
 
         $msg = "Import Selesai: {$result['imported_count']} produk sukses ditambahkan.";
         if (count($result['errors']) > 0) {
@@ -231,7 +234,7 @@ class Products extends Component
         abort_unless(auth()->user()->can('product.delete'), 403);
         $product = Product::findOrFail($productId);
         $product->delete();
-        app(\App\Services\CatalogCacheService::class)->clearCatalogCache();
+        app(CatalogCacheService::class)->clearCatalogCache();
         $this->dispatch('notify', message: 'Produk berhasil dihapus.', type: 'danger');
     }
 
