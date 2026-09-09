@@ -13,7 +13,7 @@
     </div>
 
     <!-- Navigation Sub-Tabs -->
-    <div class="flex flex-wrap gap-2 border-b border-slate-200/80 pb-3 text-xs sm:text-sm font-extrabold">
+    <div class="flex items-center gap-1.5 sm:gap-2 border-b border-slate-200/80 pb-3 text-xs sm:text-sm font-extrabold overflow-x-auto no-scrollbar whitespace-nowrap">
         @foreach([
             'STORE_SETTINGS' => ['Profil Toko', '/admin/settings/store-settings'],
             'USERS' => ['Pengguna & Akses', '/admin/settings/users'],
@@ -21,7 +21,7 @@
             'PAYMENT_METHODS' => ['Metode Pembayaran', '/admin/settings/payment-methods'],
             'LOCATIONS' => ['Lokasi Cabang', '/admin/settings/locations'],
         ] as $tab => [$label, $href])
-            <a href="{{ $href }}" class="px-3 py-2 rounded-xl transition-all duration-200 {{ $activeTab === $tab ? 'bg-[#3F7A5D] text-white shadow-xs' : 'text-[#52645B] hover:bg-[#F3F6F4] hover:text-[#2C3E35]' }}">{{ $label }}</a>
+            <a href="{{ $href }}" class="px-3 py-2 rounded-xl transition-all duration-200 shrink-0 {{ $activeTab === $tab ? 'bg-[#3F7A5D] text-white shadow-xs' : 'text-[#52645B] hover:bg-[#F3F6F4] hover:text-[#2C3E35]' }}">{{ $label }}</a>
         @endforeach
     </div>
 

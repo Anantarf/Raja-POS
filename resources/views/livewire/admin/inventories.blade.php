@@ -1,21 +1,21 @@
 <div class="space-y-5">
     <!-- Header -->
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
         <div>
             <h1 class="text-xl sm:text-2xl font-extrabold text-[#2C3E35] tracking-tight">Stok &amp; Hitung Fisik Barang</h1>
             <p class="text-xs sm:text-sm text-[#718379] font-medium mt-0.5">Pantau sisa stok barang real-time, riwayat hitung fisik (opname), dan penyesuaian stok.</p>
         </div>
 
         @if($activeTab === 'opname')
-            <div class="flex flex-wrap items-center gap-2.5">
-                <button wire:click="openBulkModal" class="h-11 px-4 py-2 bg-slate-100 hover:bg-[#E3EEE8] text-[#2C3E35] hover:text-[#3F7A5D] border border-slate-200/80 font-extrabold rounded-xl text-sm transition flex items-center gap-2 shadow-sm active:scale-95 cursor-pointer shrink-0">
-                    <svg class="w-4 h-4 text-[#3F7A5D]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="grid grid-cols-1 sm:flex sm:items-center gap-2 sm:gap-2.5 w-full sm:w-auto">
+                <button wire:click="openBulkModal" class="h-10 sm:h-11 px-3.5 sm:px-4 py-2 bg-slate-100 hover:bg-[#E3EEE8] text-[#2C3E35] hover:text-[#3F7A5D] border border-slate-200/80 font-extrabold rounded-xl text-xs sm:text-sm transition flex items-center justify-center gap-2 shadow-xs active:scale-95 cursor-pointer shrink-0">
+                    <svg class="w-4 h-4 text-[#3F7A5D] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
                     </svg>
                     <span>Hitung Banyak Barang Sekaligus</span>
                 </button>
-                <button wire:click="openCreateModal" class="h-11 px-4 py-2 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-xl text-sm transition flex items-center gap-2 shadow-sm active:scale-95 cursor-pointer shrink-0">
-                    <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <button wire:click="openCreateModal" class="h-10 sm:h-11 px-3.5 sm:px-4 py-2 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-xl text-xs sm:text-sm transition flex items-center justify-center gap-2 shadow-xs active:scale-95 cursor-pointer shrink-0">
+                    <svg class="w-4 h-4 sm:w-4.5 sm:h-4.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                     </svg>
                     <span>Hitung Cepat (1 Barang)</span>
@@ -24,14 +24,14 @@
         @endif
     </div>
 
-    <!-- Tab Switcher -->
-    <div class="border-b border-slate-200/80 flex items-center gap-2 text-sm">
-        <button wire:click="setTab('stok')" class="px-5 py-3 font-extrabold border-b-2 transition flex items-center gap-2 cursor-pointer text-sm {{ $activeTab === 'stok' ? 'border-[#3F7A5D] text-[#3F7A5D] bg-[#E3EEE8]/50 rounded-t-xl' : 'border-transparent text-[#718379] hover:text-[#2C3E35]' }}">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+    <!-- Tab Switcher (Horizontal Scrollable on Mobile) -->
+    <div class="border-b border-slate-200/80 flex items-center gap-1 sm:gap-2 text-xs sm:text-sm overflow-x-auto no-scrollbar whitespace-nowrap">
+        <button wire:click="setTab('stok')" class="px-3.5 sm:px-5 py-2.5 sm:py-3 font-extrabold border-b-2 transition flex items-center gap-1.5 sm:gap-2 cursor-pointer shrink-0 {{ $activeTab === 'stok' ? 'border-[#3F7A5D] text-[#3F7A5D] bg-[#E3EEE8]/50 rounded-t-xl' : 'border-transparent text-[#718379] hover:text-[#2C3E35]' }}">
+            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
             <span>Stok Barang Saat Ini</span>
         </button>
-        <button wire:click="setTab('opname')" class="px-5 py-3 font-extrabold border-b-2 transition flex items-center gap-2 cursor-pointer text-sm {{ $activeTab === 'opname' ? 'border-[#3F7A5D] text-[#3F7A5D] bg-[#E3EEE8]/50 rounded-t-xl' : 'border-transparent text-[#718379] hover:text-[#2C3E35]' }}">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+        <button wire:click="setTab('opname')" class="px-3.5 sm:px-5 py-2.5 sm:py-3 font-extrabold border-b-2 transition flex items-center gap-1.5 sm:gap-2 cursor-pointer shrink-0 {{ $activeTab === 'opname' ? 'border-[#3F7A5D] text-[#3F7A5D] bg-[#E3EEE8]/50 rounded-t-xl' : 'border-transparent text-[#718379] hover:text-[#2C3E35]' }}">
+            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
             <span>Riwayat Hitung Stok (Opname)</span>
         </button>
     </div>

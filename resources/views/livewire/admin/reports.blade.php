@@ -32,7 +32,7 @@
     </div>
 
     <!-- Navigation Sub-Tabs -->
-    <div class="flex flex-wrap gap-2 border-b border-slate-200/80 pb-3 text-sm font-bold print:hidden">
+    <div class="flex items-center gap-1.5 sm:gap-2 border-b border-slate-200/80 pb-3 text-xs sm:text-sm font-bold print:hidden overflow-x-auto no-scrollbar whitespace-nowrap">
         @foreach([
             'sales' => 'Penjualan & Produk Terlaris',
             'cashier' => 'Performa Kasir',
@@ -40,7 +40,7 @@
             'payment' => 'Metode Pembayaran',
             'balance' => 'Saldo Toko'
         ] as $key => $label)
-            <a href="/admin/reports/{{ $key }}" class="px-3.5 py-2.5 rounded-xl transition {{ $type === $key ? 'bg-[#3F7A5D] text-white shadow-sm' : 'text-[#52645B] hover:bg-[#F3F6F4] hover:text-[#2C3E35]' }}">{{ $label }}</a>
+            <a href="/admin/reports/{{ $key }}" class="px-3 sm:px-3.5 py-2 sm:py-2.5 rounded-xl transition shrink-0 {{ $type === $key ? 'bg-[#3F7A5D] text-white shadow-xs' : 'text-[#52645B] hover:bg-[#F3F6F4] hover:text-[#2C3E35]' }}">{{ $label }}</a>
         @endforeach
     </div>
 
@@ -48,9 +48,9 @@
     @if(in_array($type, ['sales', 'cashier', 'payment']))
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5">
             <!-- 1. Omzet -->
-            <div class="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-sm space-y-1">
-                <div class="text-[11px] text-[#718379] font-extrabold uppercase tracking-wider">Omzet Penjualan</div>
-                <div class="text-2xl font-extrabold font-mono tracking-tight text-[#2C3E35]">
+            <div class="bg-white rounded-2xl p-3.5 sm:p-4 border border-slate-200/80 shadow-xs space-y-1">
+                <div class="text-[11px] text-[#718379] font-extrabold uppercase tracking-wider truncate">Omzet Penjualan</div>
+                <div class="text-lg sm:text-xl lg:text-2xl font-extrabold font-mono tracking-tight text-[#2C3E35] truncate">
                     Rp {{ number_format($metrics['omzet'], 0, ',', '.') }}
                 </div>
                 <div class="text-[11px] text-[#718379] font-medium">Total penerimaan penjualan</div>

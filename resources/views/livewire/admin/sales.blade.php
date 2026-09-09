@@ -8,21 +8,21 @@
     </div>
 
     <!-- Search & Filter Toolbar -->
-    <div class="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200/80 shadow-sm grid grid-cols-1 sm:grid-cols-4 gap-3 text-sm">
-        <div class="relative sm:col-span-1">
+    <div class="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200/80 shadow-xs grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3 text-xs sm:text-sm">
+        <div class="relative w-full">
             <input
                 type="text"
                 wire:model.live.debounce.300ms="search"
                 placeholder="Cari No. TRX / Kasir..."
-                class="w-full h-11 pl-9 pr-3 py-2.5 border border-slate-200 rounded-xl text-sm font-semibold focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] bg-[#F3F6F4] text-[#2C3E35] placeholder:text-[#718379]"
+                class="w-full h-10 sm:h-11 pl-9 pr-3 py-2 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] bg-[#F3F6F4] text-[#2C3E35] placeholder:text-[#718379]"
             />
-            <svg class="w-4 h-4 text-slate-400 absolute left-3 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-4 h-4 text-slate-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
             </svg>
         </div>
 
         <div>
-            <select wire:model.live="paymentMethodId" class="w-full h-11 py-2.5 px-3 border border-slate-200 rounded-xl text-sm font-semibold bg-[#F3F6F4] text-[#2C3E35] focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] cursor-pointer">
+            <select wire:model.live="paymentMethodId" class="w-full h-10 sm:h-11 py-2 px-3 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold bg-[#F3F6F4] text-[#2C3E35] focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] cursor-pointer">
                 <option value="">Semua Metode Pembayaran</option>
                 @foreach($paymentMethods as $pm)
                     @php
@@ -43,7 +43,7 @@
             <input
                 type="date"
                 wire:model.live="startDate"
-                class="w-full h-11 py-2.5 px-3 border border-slate-200 rounded-xl text-sm font-semibold bg-[#F3F6F4] text-[#2C3E35] focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]"
+                class="w-full h-10 sm:h-11 py-2 px-3 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold bg-[#F3F6F4] text-[#2C3E35] focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]"
                 placeholder="Dari Tanggal"
             />
         </div>
@@ -52,7 +52,7 @@
             <input
                 type="date"
                 wire:model.live="endDate"
-                class="w-full h-11 py-2.5 px-3 border border-slate-200 rounded-xl text-sm font-semibold bg-[#F3F6F4] text-[#2C3E35] focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]"
+                class="w-full h-10 sm:h-11 py-2 px-3 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold bg-[#F3F6F4] text-[#2C3E35] focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]"
                 placeholder="Sampai Tanggal"
             />
         </div>

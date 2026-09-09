@@ -75,11 +75,11 @@
         <!-- LEFT COLUMN: Product Catalog (Golden Ratio Proportion) -->
         <div
             :class="{ 'hidden md:flex': activeTab === 'cart', 'flex': activeTab === 'catalog' }"
-            class="w-full md:w-[58%] lg:w-[61.8%] flex-col flex-shrink-0"
+            class="w-full md:w-[58%] lg:w-[61.8%] flex-col flex-shrink-0 flex-1 md:h-full overflow-hidden"
         >
 
             <!-- Streamlined Toolbar -->
-            <div class="p-3 sm:p-4 bg-white rounded-2xl border border-slate-200/80 shadow-sm space-y-3 mb-3">
+            <div class="p-3 sm:p-4 bg-white rounded-2xl border border-slate-200/80 shadow-sm space-y-3 mb-3 shrink-0">
                 <!-- Search & Jenis Dropdown Row -->
                 <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
                     <div class="relative flex-1">
@@ -88,7 +88,7 @@
                             wire:model.live.debounce.300ms="search"
                             placeholder="Cari nama produk / scan barcode..."
                             aria-label="Cari nama produk atau scan barcode"
-                            class="w-full h-11 pl-10 pr-10 py-2 text-sm font-semibold border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/30 focus:border-[#3F7A5D] bg-[#F3F6F4] placeholder:text-[#718379] transition-all"
+                            class="w-full h-11 pl-10 pr-10 py-2 text-xs sm:text-sm font-semibold border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/30 focus:border-[#3F7A5D] bg-[#F3F6F4] placeholder:text-[#718379] transition-all"
                             autofocus
                         />
                         <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -110,7 +110,7 @@
                         <select
                             wire:model.live="selectedType"
                             aria-label="Filter Jenis Produk"
-                            class="h-11 px-3 py-2 border border-slate-200 rounded-xl bg-white text-sm font-bold text-[#232E28] focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/30 focus:border-[#3F7A5D] shrink-0 cursor-pointer shadow-xs"
+                            class="h-11 px-3 py-2 border border-slate-200 rounded-xl bg-white text-xs sm:text-sm font-bold text-[#232E28] focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/30 focus:border-[#3F7A5D] shrink-0 cursor-pointer shadow-xs"
                         >
                             <option value="ALL">Semua Jenis</option>
                             <option value="PHYSICAL">Fisik</option>
@@ -118,7 +118,7 @@
                             <option value="LAYANAN">Layanan</option>
                         </select>
 
-                        <span class="h-11 px-3 flex items-center justify-center rounded-xl bg-[#E3EEE8] text-[#3F7A5D] border border-[#3F7A5D]/20 font-mono font-extrabold text-xs whitespace-nowrap shrink-0" title="Jumlah Katalog Produk">
+                        <span class="h-11 px-2.5 sm:px-3 flex items-center justify-center rounded-xl bg-[#E3EEE8] text-[#3F7A5D] border border-[#3F7A5D]/20 font-mono font-extrabold text-xs whitespace-nowrap shrink-0" title="Jumlah Katalog Produk">
                             {{ number_format($totalProductsCount, 0, ',', '.') }} Item
                         </span>
 
@@ -149,13 +149,13 @@
                 </div>
 
                 <!-- Category Tabs Row (Pure Full Width Pill Scrollbar-Free Container) -->
-                <div role="tablist" aria-label="Kategori Produk" class="flex items-center gap-2 overflow-x-auto py-0.5 px-0.5 w-full shrink-0 no-scrollbar">
+                <div role="tablist" aria-label="Kategori Produk" class="flex items-center gap-1.5 sm:gap-2 overflow-x-auto py-1 px-0.5 w-full shrink-0 no-scrollbar whitespace-nowrap">
                     <button
                         type="button"
                         role="tab"
                         aria-selected="{{ $selectedCategory === null ? 'true' : 'false' }}"
                         wire:click="$set('selectedCategory', null)"
-                        class="h-9 px-3.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all shrink-0 border cursor-pointer {{ $selectedCategory === null ? 'bg-[#3F7A5D] text-white border-[#3F7A5D] shadow-xs' : 'bg-white text-[#5F7167] border-slate-200 hover:bg-[#F3F6F4] hover:text-[#232E28]' }}"
+                        class="h-8 sm:h-9 px-3 sm:px-3.5 rounded-xl text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all shrink-0 border cursor-pointer {{ $selectedCategory === null ? 'bg-[#3F7A5D] text-white border-[#3F7A5D] shadow-xs' : 'bg-white text-[#5F7167] border-slate-200 hover:bg-[#F3F6F4] hover:text-[#232E28]' }}"
                     >
                         Semua Kategori
                     </button>
@@ -165,7 +165,7 @@
                             role="tab"
                             aria-selected="{{ $selectedCategory === $cat->id ? 'true' : 'false' }}"
                             wire:click="$set('selectedCategory', {{ $cat->id }})"
-                            class="h-9 px-3.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all shrink-0 border cursor-pointer {{ $selectedCategory === $cat->id ? 'bg-[#3F7A5D] text-white border-[#3F7A5D] shadow-xs' : 'bg-white text-[#5F7167] border-slate-200 hover:bg-[#F3F6F4] hover:text-[#232E28]' }}"
+                            class="h-8 sm:h-9 px-3 sm:px-3.5 rounded-xl text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all shrink-0 border cursor-pointer {{ $selectedCategory === $cat->id ? 'bg-[#3F7A5D] text-white border-[#3F7A5D] shadow-xs' : 'bg-white text-[#5F7167] border-slate-200 hover:bg-[#F3F6F4] hover:text-[#232E28]' }}"
                         >
                             {{ $cat->name }}
                         </button>
@@ -174,10 +174,10 @@
             </div>
 
             <!-- Product Display (Grid Cards or Aligned List Rows) -->
-            <div class="flex-1 overflow-y-auto pr-1 pb-6">
+            <div class="flex-1 overflow-y-auto pr-1 pb-6 min-h-0">
                 @if($viewMode === 'grid')
-                    <!-- Product Cards Grid (Spacious 3-Column Layout with Keyboard Accessibility) -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-3.5">
+                    <!-- Product Cards Grid (Spacious Layout with Keyboard Accessibility) -->
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2.5 sm:gap-3.5">
                         @forelse($products as $product)
                             @php
                                 $isIncomplete = $product->price_status === 'INCOMPLETE' && $product->product_type !== 'LAYANAN';
@@ -198,7 +198,7 @@
                                 wire:click="addToCart({{ $product->id }})"
                                 @keydown.enter="$wire.addToCart({{ $product->id }})"
                                 @keydown.space.prevent="$wire.addToCart({{ $product->id }})"
-                                class="bg-white rounded-2xl border border-slate-200/80 p-3.5 sm:p-4 shadow-sm hover:shadow-md hover:border-[#3F7A5D]/50 focus:border-[#3F7A5D] focus:ring-2 focus:ring-[#3F7A5D]/30 focus:outline-none transition-all duration-200 flex flex-col justify-between h-[310px] sm:h-[330px] group cursor-pointer active-press hover-lift relative {{ $isIncomplete ? 'opacity-65 bg-rose-50/20' : '' }}"
+                                class="bg-white rounded-2xl border border-slate-200/80 p-2.5 sm:p-3.5 shadow-sm hover:shadow-md hover:border-[#3F7A5D]/50 focus:border-[#3F7A5D] focus:ring-2 focus:ring-[#3F7A5D]/30 focus:outline-none transition-all duration-200 flex flex-col justify-between min-h-[270px] sm:min-h-[310px] h-auto group cursor-pointer active-press hover-lift relative {{ $isIncomplete ? 'opacity-65 bg-rose-50/20' : '' }}"
                             >
                                 <div class="space-y-2">
                                     <!-- Top Metadata & Type Badge -->

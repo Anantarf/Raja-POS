@@ -1,25 +1,25 @@
 <div class="space-y-6">
     <!-- Header -->
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
         <div>
             <h1 class="text-xl sm:text-2xl font-extrabold text-[#2C3E35] tracking-tight">Monitoring Saldo</h1>
             <p class="text-xs sm:text-sm text-[#718379] font-medium mt-0.5">Kelola saldo toko, rekening bank, mutasi transfer, dan penyesuaian saldo.</p>
         </div>
-        <div class="flex items-center gap-2.5 overflow-x-auto py-1">
-            <button type="button" wire:click="openModal('TRANSFER')" class="h-11 px-4 py-2 bg-[#F3F6F4] hover:bg-[#E3EEE8] text-[#3F7A5D] border border-slate-200/80 font-extrabold rounded-xl text-sm transition active:scale-95 flex items-center gap-1.5 shrink-0 cursor-pointer shadow-sm">
-                <svg class="w-4 h-4 text-[#3F7A5D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
+        <div class="grid grid-cols-2 sm:flex sm:items-center gap-2 sm:gap-2.5 w-full sm:w-auto overflow-x-auto no-scrollbar py-1">
+            <button type="button" wire:click="openModal('TRANSFER')" class="h-10 sm:h-11 px-3 sm:px-4 py-2 bg-[#F3F6F4] hover:bg-[#E3EEE8] text-[#3F7A5D] border border-slate-200/80 font-extrabold rounded-xl text-xs sm:text-sm transition active:scale-95 flex items-center justify-center gap-1.5 shrink-0 cursor-pointer shadow-xs">
+                <svg class="w-4 h-4 text-[#3F7A5D] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
                 <span>Transfer Saldo</span>
             </button>
-            <button type="button" wire:click="openModal('DEPOSIT')" class="h-11 px-4 py-2 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-xl text-sm transition active:scale-95 flex items-center gap-1.5 shrink-0 cursor-pointer shadow-sm">
-                <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+            <button type="button" wire:click="openModal('DEPOSIT')" class="h-10 sm:h-11 px-3 sm:px-4 py-2 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-xl text-xs sm:text-sm transition active:scale-95 flex items-center justify-center gap-1.5 shrink-0 cursor-pointer shadow-xs">
+                <svg class="w-4 h-4 sm:w-4.5 sm:h-4.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                 <span>Deposit / Setor</span>
             </button>
-            <button type="button" wire:click="openModal('WITHDRAWAL')" class="h-11 px-4 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200/80 font-extrabold rounded-xl text-sm transition active:scale-95 flex items-center gap-1.5 shrink-0 cursor-pointer shadow-sm">
-                <svg class="w-4 h-4 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path></svg>
+            <button type="button" wire:click="openModal('WITHDRAWAL')" class="h-10 sm:h-11 px-3 sm:px-4 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200/80 font-extrabold rounded-xl text-xs sm:text-sm transition active:scale-95 flex items-center justify-center gap-1.5 shrink-0 cursor-pointer shadow-xs">
+                <svg class="w-4 h-4 text-rose-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path></svg>
                 <span>Penarikan Saldo</span>
             </button>
-            <button type="button" wire:click="openModal('ADJUSTMENT')" class="h-11 px-4 py-2 bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200/80 font-extrabold rounded-xl text-sm transition active:scale-95 flex items-center gap-1.5 shrink-0 cursor-pointer shadow-sm">
-                <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
+            <button type="button" wire:click="openModal('ADJUSTMENT')" class="h-10 sm:h-11 px-3 sm:px-4 py-2 bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200/80 font-extrabold rounded-xl text-xs sm:text-sm transition active:scale-95 flex items-center justify-center gap-1.5 shrink-0 cursor-pointer shadow-xs">
+                <svg class="w-4 h-4 text-amber-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
                 <span>Koreksi Saldo</span>
             </button>
         </div>
