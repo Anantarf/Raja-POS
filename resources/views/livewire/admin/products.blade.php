@@ -83,11 +83,11 @@
 
             <!-- Jenis Stok Filter Pills -->
             <div class="flex items-center gap-1 bg-slate-100 p-1 min-h-[44px] h-auto rounded-xl shrink-0 flex-wrap max-w-full overflow-x-auto no-scrollbar">
-                <button type="button" @click="$wire.filterType('ALL')" wire:click="filterType('ALL')" class="px-2.5 sm:px-3 py-1.5 rounded-lg font-bold text-xs sm:text-sm transition cursor-pointer {{ $selectedType === 'ALL' ? 'bg-[#3F7A5D] text-white shadow-xs' : 'text-slate-600 hover:text-slate-900' }}">Semua</button>
-                <button type="button" @click="$wire.filterType('PHYSICAL')" wire:click="filterType('PHYSICAL')" class="px-2.5 sm:px-3 py-1.5 rounded-lg font-bold text-xs sm:text-sm transition cursor-pointer {{ $selectedType === 'PHYSICAL' ? 'bg-[#3F7A5D] text-white shadow-xs' : 'text-slate-600 hover:text-slate-900' }}">Fisik</button>
-                <button type="button" @click="$wire.filterType('DIGITAL')" wire:click="filterType('DIGITAL')" class="px-2.5 sm:px-3 py-1.5 rounded-lg font-bold text-xs sm:text-sm transition cursor-pointer {{ $selectedType === 'DIGITAL' ? 'bg-emerald-700 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900' }}">Digital</button>
-                <button type="button" @click="$wire.filterType('LAYANAN')" wire:click="filterType('LAYANAN')" class="px-2.5 sm:px-3 py-1.5 rounded-lg font-bold text-xs sm:text-sm transition cursor-pointer {{ $selectedType === 'LAYANAN' || $selectedType === 'SERVICE' ? 'bg-[#C2AC7C] text-white shadow-xs' : 'text-slate-600 hover:text-slate-900' }}">Layanan</button>
-                <button type="button" @click="$wire.filterType('INCOMPLETE')" wire:click="filterType('INCOMPLETE')" class="px-2.5 sm:px-3 py-1.5 rounded-lg font-bold text-xs sm:text-sm transition cursor-pointer flex items-center gap-1 {{ $selectedType === 'INCOMPLETE' ? 'bg-rose-600 text-white shadow-xs font-extrabold' : 'bg-rose-50 text-rose-700 hover:bg-rose-100 font-extrabold border border-rose-200/80' }}" title="Filter Khusus Produk yang Harganya Belum Lengkap">
+                <button type="button" wire:click="filterType('ALL')" class="px-2.5 sm:px-3 py-1.5 rounded-lg font-bold text-xs sm:text-sm transition cursor-pointer {{ $selectedType === 'ALL' ? 'bg-[#3F7A5D] text-white shadow-xs' : 'text-slate-600 hover:text-slate-900' }}">Semua</button>
+                <button type="button" wire:click="filterType('PHYSICAL')" class="px-2.5 sm:px-3 py-1.5 rounded-lg font-bold text-xs sm:text-sm transition cursor-pointer {{ $selectedType === 'PHYSICAL' ? 'bg-[#3F7A5D] text-white shadow-xs' : 'text-slate-600 hover:text-slate-900' }}">Fisik</button>
+                <button type="button" wire:click="filterType('DIGITAL')" class="px-2.5 sm:px-3 py-1.5 rounded-lg font-bold text-xs sm:text-sm transition cursor-pointer {{ $selectedType === 'DIGITAL' ? 'bg-emerald-700 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900' }}">Digital</button>
+                <button type="button" wire:click="filterType('LAYANAN')" class="px-2.5 sm:px-3 py-1.5 rounded-lg font-bold text-xs sm:text-sm transition cursor-pointer {{ $selectedType === 'LAYANAN' || $selectedType === 'SERVICE' ? 'bg-[#C2AC7C] text-white shadow-xs' : 'text-slate-600 hover:text-slate-900' }}">Layanan</button>
+                <button type="button" wire:click="filterType('INCOMPLETE')" class="px-2.5 sm:px-3 py-1.5 rounded-lg font-bold text-xs sm:text-sm transition cursor-pointer flex items-center gap-1 {{ $selectedType === 'INCOMPLETE' ? 'bg-rose-600 text-white shadow-xs font-extrabold' : 'bg-rose-50 text-rose-700 hover:bg-rose-100 font-extrabold border border-rose-200/80' }}" title="Filter Khusus Produk yang Harganya Belum Lengkap">
                     <span>Belum Lengkap</span>
                     <span class="px-1.5 py-0.2 rounded-full text-xs font-mono font-extrabold {{ $selectedType === 'INCOMPLETE' ? 'bg-white/20 text-white' : 'bg-rose-200/60 text-rose-800' }}">{{ $incompleteCount }}</span>
                 </button>
@@ -97,7 +97,6 @@
             <div class="flex items-center gap-1 bg-slate-100 p-1 h-11 rounded-xl border border-slate-200/60 shrink-0">
                 <button
                     type="button"
-                    @click="$wire.setViewMode('card')"
                     wire:click="setViewMode('card')"
                     title="Tampilan Kartu Grid"
                     class="h-9 px-2.5 rounded-lg transition cursor-pointer {{ $viewMode === 'card' ? 'bg-[#3F7A5D] text-white shadow-sm' : 'text-slate-400 hover:text-slate-700' }}"
@@ -108,7 +107,6 @@
                 </button>
                 <button
                     type="button"
-                    @click="$wire.setViewMode('table')"
                     wire:click="setViewMode('table')"
                     title="Tampilan Tabel List"
                     class="h-9 px-2.5 rounded-lg transition cursor-pointer {{ $viewMode === 'table' ? 'bg-[#3F7A5D] text-white shadow-sm' : 'text-slate-400 hover:text-slate-700' }}"

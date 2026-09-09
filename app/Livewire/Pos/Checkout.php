@@ -413,7 +413,9 @@ class Checkout extends Component
             return null;
         }
 
-        return Sale::with(['items', 'payments.paymentMethod', 'cashier'])->find($this->completedSaleId);
+        return Sale::forUserLocation()
+            ->with(['items', 'payments.paymentMethod', 'cashier'])
+            ->find($this->completedSaleId);
     }
 
     public function processCheckout()

@@ -388,6 +388,27 @@ class PosLivewireUiTest extends TestCase
             ->assertNotFound();
     }
 
+    public function test_pos_success_receipt_preview_respects_location_scope(): void
+    {
+        $saleDuren = Sale::create([
+            'invoice_number' => 'TRX-PREVIEW-DUREN',
+            'cashier_id' => $this->cashier->id,
+            'location_id' => $this->locationDuren->id,
+            'transaction_date' => now(),
+            'subtotal' => 50000,
+            'discount_amount' => 0,
+            'total_amount' => 50000,
+            'amount_paid' => 50000,
+            'status' => 'COMPLETED',
+        ]);
+
+        $this->actingAs($this->cashier);
+
+        Livewire::test(Checkout::class)
+            ->set('completedSaleId', $saleDuren->id)
+            ->assertSet('completedSale', null);
+    }
+
     public function test_product_edit_uses_current_user_location_stock(): void
     {
         $this->cashier->role->permissions()->attach(

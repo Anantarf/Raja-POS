@@ -85,7 +85,7 @@ class Products extends Component
 
     public function setViewMode($mode)
     {
-        $this->viewMode = $mode;
+        $this->viewMode = in_array($mode, ['card', 'table'], true) ? $mode : 'table';
     }
 
     public function generateAutoCode(): void
