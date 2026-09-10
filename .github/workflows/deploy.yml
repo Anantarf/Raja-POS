@@ -10,6 +10,24 @@ jobs:
     name: Deploy Laravel to cPanel
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate deployment secrets
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USERNAME: ${{ secrets.SSH_USERNAME }}
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+          TARGET_DIR: ${{ secrets.TARGET_DIR }}
+        run: |
+          set -euo pipefail
+          for secret_name in SSH_HOST SSH_USERNAME SSH_KEY TARGET_DIR; do
+            if [ -z "${!secret_name}" ]; then
+              echo "::error::Missing required GitHub secret: ${secret_name}"
+              exit 1
+            fi
+          done
+
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -17,7 +35,9 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          port: ${{ secrets.SSH_PORT }}
+          port: ${{ secrets.SSH_PORT || 22 }}
+          timeout: 60s
+          command_timeout: 20m
           script_stop: true
           script: |
             set -euo pipefail
