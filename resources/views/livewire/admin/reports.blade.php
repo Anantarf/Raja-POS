@@ -708,7 +708,7 @@
                                     <tr>
                                         <th class="py-2.5 px-3">Metode Pembayaran</th>
                                         <th class="py-2.5 px-3 text-right">Saldo Sistem</th>
-                                        <th class="py-2.5 px-3 text-center w-44">Saldo Fisik / Real</th>
+                                        <th class="py-2.5 px-3 text-center w-44">Saldo Aktual</th>
                                         <th class="py-2.5 px-3 text-right">Selisih</th>
                                         <th class="py-2.5 px-3 text-center w-28">Koreksi</th>
                                     </tr>
