@@ -322,8 +322,20 @@ class FinanceReportService
         // Setoran Tunai (Physical cash in drawer) = (Penjualan Netto - QRIS - Transfer) + Tarik Tunai
         $setoranTunai = max(0, ($subtotalNetto - $qrisPembayaran - $transferPembayaran) + $tarikTunaiKasir);
 
+        $danaSaldoAkhir = $danaAwal + $danaTopup - $danaTrx;
+        $danaSelisih = $danaAndroid - $danaSaldoAkhir;
+
+        $qrisTotal = $qrisPembayaran + $qrisTarikTunai;
+        $qrisSelisih = $qrisAndroid - $qrisTotal;
+
+        $bankmasSaldoAkhir = $bankmasAwal + $bankmasTopup - $bankmasTrx;
+        $bankmasSelisih = $bankmasAndroid - $bankmasSaldoAkhir;
+
+        $multiSaldoAkhir = $multiAwal + $multiTopup - $multiTrx;
+        $multiSelisih = $multiAndroid - $multiSaldoAkhir;
+
         $status = $savedSummary?->status ?? 'BELUM_DICEK';
-        $hasDiscrepancy = $savedSummary ? $savedSummary->has_discrepancy : ($qrisAndroid != ($qrisPembayaran + $qrisTarikTunai));
+        $hasDiscrepancy = $savedSummary ? $savedSummary->has_discrepancy : (($danaSelisih != 0) || ($qrisSelisih != 0) || ($bankmasSelisih != 0) || ($multiSelisih != 0));
 
         return [
             'summary_date' => $targetDate,
@@ -340,31 +352,35 @@ class FinanceReportService
             'dana_topup' => $danaTopup,
             'dana_total' => $danaAwal + $danaTopup,
             'dana_trx' => $danaTrx,
-            'dana_saldo_akhir' => $danaAwal + $danaTopup - $danaTrx,
+            'dana_saldo_akhir' => $danaSaldoAkhir,
             'dana_saldo_android' => $danaAndroid,
+            'dana_selisih' => $danaSelisih,
 
             // QRIS
             'qris_pembayaran' => $qrisPembayaran,
             'qris_tarik_tunai' => $qrisTarikTunai,
-            'qris_total' => $qrisPembayaran + $qrisTarikTunai,
+            'qris_total' => $qrisTotal,
             'qris_saldo_android' => $qrisAndroid,
             'qris_cek' => $qrisAndroid,
+            'qris_selisih' => $qrisSelisih,
 
             // BANK MAS
             'bankmas_saldo_awal' => $bankmasAwal,
             'bankmas_topup' => $bankmasTopup,
             'bankmas_total' => $bankmasAwal + $bankmasTopup,
             'bankmas_trx' => $bankmasTrx,
-            'bankmas_sisa' => $bankmasAwal + $bankmasTopup - $bankmasTrx,
+            'bankmas_sisa' => $bankmasSaldoAkhir,
             'bankmas_saldo_android' => $bankmasAndroid,
+            'bankmas_selisih' => $bankmasSelisih,
 
             // MULTI
             'multi_saldo_awal' => $multiAwal,
             'multi_topup' => $multiTopup,
             'multi_total' => $multiAwal + $multiTopup,
             'multi_trx' => $multiTrx,
-            'multi_sisa' => $multiAwal + $multiTopup - $multiTrx,
+            'multi_sisa' => $multiSaldoAkhir,
             'multi_saldo_android' => $multiAndroid,
+            'multi_selisih' => $multiSelisih,
 
             // Rekap Penjualan & Margin (Kanan)
             'margin' => $margin,

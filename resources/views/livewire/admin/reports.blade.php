@@ -206,7 +206,7 @@
                         <h3 class="text-base sm:text-lg font-black text-[#2C3E35] tracking-tight">Rekapitulasi Harian Belum Dimulai</h3>
                         <p class="text-xs text-[#718379] font-medium leading-relaxed">
                             Penjualan POS pada tanggal <span class="font-bold text-[#2C3E35]">{{ $formattedDate }}</span> terekam otomatis sebesar <span class="font-mono font-extrabold text-[#3F7A5D]">Rp {{ number_format($dailySummaryData['total_penjualan'], 0, ',', '.') }}</span>.
-                            Saldo awal e-wallet otomatis diwarisi dari saldo akhir kemarin. Klik tombol di bawah untuk mengisi saldo fisik aplikasi.
+                            Saldo awal e-wallet otomatis ditarik dari saldo akhir kemarin. Klik tombol di bawah untuk mengisi saldo fisik aplikasi.
                         </p>
                     </div>
                     <div>
@@ -332,6 +332,19 @@
                                         <span class="text-[11px]">Saldo Aktual Aplikasi (Fisik)</span>
                                         <span class="text-right font-mono text-xs">Rp {{ number_format($dailySummaryData['dana_saldo_android'], 0, ',', '.') }}</span>
                                     </div>
+                                    <div class="grid grid-cols-2 px-3 py-2 items-center bg-slate-50 border-t border-slate-200">
+                                        <span class="text-[11px] font-bold text-[#2C3E35]">Status Pengecekan</span>
+                                        <div class="text-right font-mono text-xs flex items-center justify-end gap-1.5">
+                                            @if($dailySummaryData['dana_selisih'] == 0)
+                                                <span class="px-1.5 py-0.5 rounded text-[9px] bg-emerald-600 text-white font-black tracking-wider uppercase">MATCH</span>
+                                            @else
+                                                <span class="font-bold {{ $dailySummaryData['dana_selisih'] > 0 ? 'text-emerald-700' : 'text-rose-700' }}">
+                                                    {{ $dailySummaryData['dana_selisih'] > 0 ? '+' : '' }}Rp {{ number_format($dailySummaryData['dana_selisih'], 0, ',', '.') }}
+                                                </span>
+                                                <span class="px-1.5 py-0.5 rounded text-[9px] bg-rose-600 text-white font-black tracking-wider uppercase">ADA SELISIH</span>
+                                            @endif
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <!-- 2. QRIS Table -->
@@ -361,10 +374,12 @@
                                     <div class="grid grid-cols-2 px-3 py-2 items-center bg-slate-50 border-t border-slate-200">
                                         <span class="text-[11px] font-bold text-[#2C3E35]">Status Pengecekan</span>
                                         <div class="text-right font-mono text-xs flex items-center justify-end gap-1.5">
-                                            <span class="font-bold text-[#2C3E35]">Rp {{ number_format($dailySummaryData['qris_cek'], 0, ',', '.') }}</span>
-                                            @if($dailySummaryData['qris_saldo_android'] == $dailySummaryData['qris_total'])
+                                            @if($dailySummaryData['qris_selisih'] == 0)
                                                 <span class="px-1.5 py-0.5 rounded text-[9px] bg-emerald-600 text-white font-black tracking-wider uppercase">MATCH</span>
                                             @else
+                                                <span class="font-bold {{ $dailySummaryData['qris_selisih'] > 0 ? 'text-emerald-700' : 'text-rose-700' }}">
+                                                    {{ $dailySummaryData['qris_selisih'] > 0 ? '+' : '' }}Rp {{ number_format($dailySummaryData['qris_selisih'], 0, ',', '.') }}
+                                                </span>
                                                 <span class="px-1.5 py-0.5 rounded text-[9px] bg-rose-600 text-white font-black tracking-wider uppercase">ADA SELISIH</span>
                                             @endif
                                         </div>
@@ -403,6 +418,19 @@
                                         <span class="text-[11px]">Saldo Aktual Aplikasi (Fisik)</span>
                                         <span class="text-right font-mono text-xs">Rp {{ number_format($dailySummaryData['bankmas_saldo_android'], 0, ',', '.') }}</span>
                                     </div>
+                                    <div class="grid grid-cols-2 px-3 py-2 items-center bg-slate-50 border-t border-slate-200">
+                                        <span class="text-[11px] font-bold text-[#2C3E35]">Status Pengecekan</span>
+                                        <div class="text-right font-mono text-xs flex items-center justify-end gap-1.5">
+                                            @if($dailySummaryData['bankmas_selisih'] == 0)
+                                                <span class="px-1.5 py-0.5 rounded text-[9px] bg-emerald-600 text-white font-black tracking-wider uppercase">MATCH</span>
+                                            @else
+                                                <span class="font-bold {{ $dailySummaryData['bankmas_selisih'] > 0 ? 'text-emerald-700' : 'text-rose-700' }}">
+                                                    {{ $dailySummaryData['bankmas_selisih'] > 0 ? '+' : '' }}Rp {{ number_format($dailySummaryData['bankmas_selisih'], 0, ',', '.') }}
+                                                </span>
+                                                <span class="px-1.5 py-0.5 rounded text-[9px] bg-rose-600 text-white font-black tracking-wider uppercase">ADA SELISIH</span>
+                                            @endif
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <!-- 4. MULTI Table -->
@@ -436,6 +464,19 @@
                                     <div class="grid grid-cols-2 px-3 py-2 items-center bg-amber-100 text-amber-950 font-black border-t border-amber-200">
                                         <span class="text-[11px]">Saldo Aktual Aplikasi (Fisik)</span>
                                         <span class="text-right font-mono text-xs">Rp {{ number_format($dailySummaryData['multi_saldo_android'], 0, ',', '.') }}</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 px-3 py-2 items-center bg-slate-50 border-t border-slate-200">
+                                        <span class="text-[11px] font-bold text-[#2C3E35]">Status Pengecekan</span>
+                                        <div class="text-right font-mono text-xs flex items-center justify-end gap-1.5">
+                                            @if($dailySummaryData['multi_selisih'] == 0)
+                                                <span class="px-1.5 py-0.5 rounded text-[9px] bg-emerald-600 text-white font-black tracking-wider uppercase">MATCH</span>
+                                            @else
+                                                <span class="font-bold {{ $dailySummaryData['multi_selisih'] > 0 ? 'text-emerald-700' : 'text-rose-700' }}">
+                                                    {{ $dailySummaryData['multi_selisih'] > 0 ? '+' : '' }}Rp {{ number_format($dailySummaryData['multi_selisih'], 0, ',', '.') }}
+                                                </span>
+                                                <span class="px-1.5 py-0.5 rounded text-[9px] bg-rose-600 text-white font-black tracking-wider uppercase">ADA SELISIH</span>
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
 
@@ -557,7 +598,7 @@
                                 </div>
                                 <div class="space-y-2 text-xs">
                                     <div>
-                                        <label class="block font-bold text-[#718379] mb-1 text-[11px]">Saldo Awal (Rp)</label>
+                                        <label class="block font-bold text-[#718379] mb-1 text-[11px]">Saldo Awal (Rp) <span class="text-[10px] font-semibold text-emerald-700">(Otomatis dari Saldo Akhir Kemarin)</span></label>
                                         <input type="number" step="1" wire:model.live="danaSaldoAwal" class="w-full p-2 border border-slate-200 rounded-xl bg-white font-mono font-bold text-right text-xs" />
                                     </div>
                                     <div>
@@ -610,7 +651,7 @@
                                 </div>
                                 <div class="space-y-2 text-xs">
                                     <div>
-                                        <label class="block font-bold text-[#718379] mb-1 text-[11px]">Saldo Awal (Rp)</label>
+                                        <label class="block font-bold text-[#718379] mb-1 text-[11px]">Saldo Awal (Rp) <span class="text-[10px] font-semibold text-emerald-700">(Otomatis dari Saldo Akhir Kemarin)</span></label>
                                         <input type="number" step="1" wire:model.live="bankmasSaldoAwal" class="w-full p-2 border border-slate-200 rounded-xl bg-white font-mono font-bold text-right text-xs" />
                                     </div>
                                     <div>
@@ -636,7 +677,7 @@
                                 </div>
                                 <div class="space-y-2 text-xs">
                                     <div>
-                                        <label class="block font-bold text-[#718379] mb-1 text-[11px]">Saldo Awal (Rp)</label>
+                                        <label class="block font-bold text-[#718379] mb-1 text-[11px]">Saldo Awal (Rp) <span class="text-[10px] font-semibold text-emerald-700">(Otomatis dari Saldo Akhir Kemarin)</span></label>
                                         <input type="number" step="1" wire:model.live="multiSaldoAwal" class="w-full p-2 border border-slate-200 rounded-xl bg-white font-mono font-bold text-right text-xs" />
                                     </div>
                                     <div>
