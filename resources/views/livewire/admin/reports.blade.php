@@ -3,7 +3,7 @@
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
         <div>
             <h1 class="text-xl sm:text-2xl font-extrabold text-[#2C3E35] tracking-tight">Laporan Toko</h1>
-            <p class="text-xs sm:text-sm text-[#718379] font-medium mt-0.5">Analisis lengkap performa penjualan, margin, kasir, rekonsiliasi harian, dan saldo toko.</p>
+            <p class="text-xs sm:text-sm text-[#718379] font-medium mt-0.5">Analisis lengkap performa penjualan, margin, kasir, rekap harian, dan saldo toko.</p>
         </div>
 
         <!-- Filter Period & Print Control -->
@@ -134,7 +134,7 @@
                     </div>
                     <div>
                         <div class="flex items-center gap-2 flex-wrap">
-                            <h2 class="text-lg font-black text-[#2C3E35] tracking-tight uppercase">REKONSILIASI SUMMARY HARIAN</h2>
+                            <h2 class="text-lg font-black text-[#2C3E35] tracking-tight uppercase">LAPORAN SUMMARY HARIAN</h2>
                             <span class="px-2.5 py-0.5 rounded-lg text-xs font-black uppercase bg-amber-200 text-amber-900 border border-amber-300">
                                 {{ strtoupper($formattedDate) }}
                             </span>
@@ -167,7 +167,7 @@
                             @if($isLocked)
                                 Terkunci oleh {{ $dailySummaryData['verifier_name'] ?? 'Supervisor' }} pada {{ \Carbon\Carbon::parse($dailySummaryData['verified_at'])->format('d/m/Y H:i') }}.
                             @else
-                                Laporan Rekonsiliasi Kasir &amp; Saldo Akun Toko.
+                                Laporan Rekap Penjualan, Saldo Aplikasi, &amp; Setoran Kasir.
                             @endif
                         </p>
                     </div>
@@ -212,7 +212,7 @@
                     <div>
                         <button wire:click="openInputModal" class="px-6 py-3 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-xs transition inline-flex items-center gap-2 cursor-pointer active-press hover-lift">
                             <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
-                            <span>Input Saldo Rekonsiliasi</span>
+                            <span>Mulai Cek Rekap Harian</span>
                         </button>
                     </div>
                 </div>
@@ -359,7 +359,7 @@
                                         </div>
                                     </div>
                                     <div class="grid grid-cols-2 px-3 py-2 items-center bg-slate-50 border-t border-slate-200">
-                                        <span class="text-[11px] font-bold text-[#2C3E35]">Hasil Rekonsiliasi</span>
+                                        <span class="text-[11px] font-bold text-[#2C3E35]">Status Pengecekan</span>
                                         <div class="text-right font-mono text-xs flex items-center justify-end gap-1.5">
                                             <span class="font-bold text-[#2C3E35]">Rp {{ number_format($dailySummaryData['qris_cek'], 0, ',', '.') }}</span>
                                             @if($dailySummaryData['qris_saldo_android'] == $dailySummaryData['qris_total'])
@@ -525,7 +525,7 @@
             @endif
         </div>
 
-        <!-- MODAL DIALOG INPUT SALDO REKONSILIASI -->
+        <!-- MODAL DIALOG INPUT SALDO FISIK & REKAP HARIAN -->
         @if($showInputModal)
             <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 overflow-y-auto">
                 <div class="bg-white rounded-3xl max-w-3xl w-full p-6 shadow-2xl border border-slate-200 space-y-5 my-8">
@@ -536,7 +536,7 @@
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                             </div>
                             <div>
-                                <h3 class="text-base font-black text-[#2C3E35] tracking-tight uppercase">INPUT SALDO FISIK REKONSILIASI</h3>
+                                <h3 class="text-base font-black text-[#2C3E35] tracking-tight uppercase">INPUT SALDO FISIK &amp; REKAP HARIAN</h3>
                                 <p class="text-xs text-[#718379] font-medium">Tanggal: <span class="font-bold text-[#2C3E35]">{{ $formattedDate }}</span></p>
                             </div>
                         </div>
