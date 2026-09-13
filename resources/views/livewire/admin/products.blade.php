@@ -43,17 +43,21 @@
 
     <!-- Filter & View Mode Toolbar (Clean Balanced Flex Layout) -->
     <div class="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200/90 shadow-2xs flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 text-sm">
-        <!-- Search Input -->
+        <!-- Search Input with Keyboard Shortcut Hint -->
         <div class="w-full md:w-72 relative shrink-0">
             <input
                 type="text"
                 wire:model.live.debounce.300ms="search"
+                data-shortcut-search
                 placeholder="Cari nama barang, barcode..."
-                class="w-full h-11 pl-9 pr-3 py-2.5 border border-slate-200 rounded-xl text-sm font-semibold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 bg-slate-50 text-slate-800 placeholder:text-slate-400"
+                class="w-full h-11 pl-9 pr-12 py-2.5 border border-slate-200 rounded-xl text-sm font-semibold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 bg-slate-50 text-slate-800 placeholder:text-slate-400 transition"
             />
             <svg class="w-4 h-4 text-slate-400 absolute left-3 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
             </svg>
+            <div class="absolute right-3 top-3 hidden sm:flex items-center gap-0.5">
+                <kbd class="px-1.5 py-0.5 text-[10px] font-mono font-bold text-slate-400 bg-white border border-slate-200 rounded shadow-2xs">⌘K</kbd>
+            </div>
         </div>
 
         <div class="w-full md:w-auto flex flex-wrap items-center justify-between md:justify-end gap-2.5">
@@ -297,7 +301,11 @@
                             <th class="py-3.5 px-4 text-center">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-100 font-medium">
+                    <!-- Loading Skeleton State -->
+                    <x-table-skeleton :cols="6" :rows="5" wire:loading.delay />
+
+                    <!-- Data Table Body -->
+                    <tbody wire:loading.remove.delay class="divide-y divide-slate-100 font-medium">
                         @forelse($products as $product)
                             <tr class="hover:bg-slate-50/80 transition">
                                 <!-- Col 1: Nama Barang/Layanan & Barcode -->
@@ -310,70 +318,60 @@
                                                 {{ strtoupper(substr($product->code, 0, 2)) }}
                                             </div>
                                         @endif
+
                                         <div>
-                                            <div class="font-bold text-slate-900 text-sm leading-snug tracking-tight">{{ $product->name }}</div>
-                                            <div class="text-xs font-mono text-slate-400 mt-0.5">
-                                                Barcode: {{ $product->effective_barcode }}
+                                            <div class="font-bold text-slate-900 leading-snug line-clamp-1">
+                                                {{ $product->name }}
+                                            </div>
+                                            <div class="text-xs font-mono text-slate-400">
+                                                {{ $product->effective_barcode }}
                                             </div>
                                         </div>
                                     </div>
                                 </td>
 
-                                <!-- Col 2: Jenis Stok Badge -->
-                                <td class="py-3.5 px-4 whitespace-nowrap">
-                                    <span class="px-2.5 py-0.5 rounded-md text-[11px] font-extrabold uppercase tracking-wider border {{ $product->product_type === 'PHYSICAL' ? 'bg-emerald-50 text-emerald-700 border-emerald-200/80' : ($product->product_type === 'DIGITAL' ? 'bg-emerald-100/90 text-emerald-800 border-emerald-300/60' : 'bg-amber-50 text-amber-800 border-amber-200/80') }}">
-                                        {{ $product->product_type === 'PHYSICAL' ? 'FISIK' : ($product->product_type === 'DIGITAL' ? 'DIGITAL' : 'LAYANAN') }}
-                                    </span>
-                                </td>
-
-                                <!-- Col 3: Kategori • Subtipe (jika ada) • Merk -->
-                                <td class="py-3.5 px-4 text-slate-500 text-xs">
-                                    <div class="flex items-center gap-1.5 flex-wrap">
-                                        <span class="text-slate-700 font-semibold">{{ $product->category?->name ?? 'Umum' }}</span>
-                                        @if(!empty($product->product_subtype) && trim($product->product_subtype) !== '-')
-                                            <span class="text-slate-300">&bull;</span>
-                                            <span class="text-emerald-700 font-bold">{{ $product->product_subtype }}</span>
-                                        @endif
-                                        @if(!empty($product->brand?->name) && trim($product->brand->name) !== '-')
-                                            <span class="text-slate-300">&bull;</span>
-                                            <span class="text-slate-600">{{ $product->brand->name }}</span>
-                                        @endif
+                                <!-- Col 2: Kategori & Subtipe -->
+                                <td class="py-3.5 px-4 text-xs whitespace-nowrap">
+                                    <div class="font-semibold text-slate-700">
+                                        {{ $product->category?->name ?? 'Umum' }}
                                     </div>
-                                </td>
-
-                                <!-- Col 4: Jumlah Stok -->
-                                <td class="py-3.5 px-4 text-center font-mono font-bold whitespace-nowrap">
-                                    @if($product->product_type === 'PHYSICAL')
-                                        @php $totalStock = $product->inventories->sum('quantity'); @endphp
-                                        <span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold {{ $totalStock > 0 ? 'bg-emerald-50 text-emerald-700 border border-emerald-200/80' : 'bg-rose-50 text-rose-700 border border-rose-200/80' }}">
-                                            {{ number_format($totalStock, 0, ',', '.') }} unit
-                                        </span>
-                                    @else
-                                        <span class="text-slate-400 text-[11px] font-normal">Tak Terbatas</span>
+                                    @if(!empty($product->product_subtype) && trim($product->product_subtype) !== '-')
+                                        <div class="text-emerald-700 font-bold text-[11px]">
+                                            {{ $product->product_subtype }}
+                                        </div>
                                     @endif
                                 </td>
 
-                                <!-- Col 4: Modal -->
+                                <!-- Col 3: Merek -->
+                                <td class="py-3.5 px-4 text-xs text-slate-600 whitespace-nowrap font-semibold">
+                                    {{ $product->brand?->name ?? '-' }}
+                                </td>
+
+                                <!-- Col 4: Harga Modal -->
                                 @if(auth()->user()->can('cost_price.view'))
-                                    <td class="py-3.5 px-4 text-right font-mono font-semibold text-xs whitespace-nowrap">
+                                    <td class="py-3.5 px-4 text-right font-mono text-xs whitespace-nowrap">
                                         @if($product->product_type === 'LAYANAN')
-                                            <span class="font-bold text-teal-600 text-[11px]">Input saat transaksi</span>
+                                            <span class="text-[11px] font-bold text-teal-600 font-sans">Input saat transaksi</span>
                                         @elseif($product->cost_price > 0)
-                                            <span class="text-slate-700">Rp {{ number_format((float) $product->cost_price, 0, ',', '.') }}</span>
+                                            <span class="font-semibold text-slate-700">Rp {{ number_format((float) $product->cost_price, 0, ',', '.') }}</span>
                                         @else
-                                            <span class="font-bold text-rose-500 text-[11px] whitespace-nowrap">*Harus dilengkapi</span>
+                                            <span class="text-[11px] font-bold text-rose-500 font-sans">*Belum diisi</span>
                                         @endif
                                     </td>
                                 @endif
 
                                 <!-- Col 5: Harga Jual -->
-                                <td class="py-3.5 px-4 text-right font-mono font-extrabold text-slate-900 text-sm whitespace-nowrap">
+                                <td class="py-3.5 px-4 text-right font-mono text-xs font-extrabold text-slate-900 whitespace-nowrap">
                                     @if($product->product_type === 'LAYANAN')
-                                        <span class="text-[11px] font-bold text-teal-600">Input saat transaksi</span>
+                                        <span class="inline-flex items-center gap-1 text-[11px] font-bold text-teal-700 bg-teal-50 border border-teal-200 rounded-md px-2 py-0.5 font-sans">
+                                            Input saat transaksi
+                                        </span>
                                     @elseif($product->selling_price > 0)
-                                        Rp {{ number_format((float) $product->selling_price, 0, ',', '.') }}
+                                        <span>Rp {{ number_format((float) $product->selling_price, 0, ',', '.') }}</span>
                                     @else
-                                        <span class="text-xs font-bold text-rose-600 whitespace-nowrap">*Harga jual belum diisi</span>
+                                        <span class="inline-flex items-center gap-1 text-[11px] font-bold text-rose-600 bg-rose-50 border border-rose-200 rounded-md px-2 py-0.5 font-sans">
+                                            Harga belum diisi
+                                        </span>
                                     @endif
                                 </td>
 
@@ -391,7 +389,15 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="py-12 text-center text-slate-400 font-medium text-xs">Tidak ada barang/layanan ditemukan.</td>
+                                <td colspan="6">
+                                    <x-empty-state
+                                        icon="box"
+                                        title="Produk Tidak Ditemukan"
+                                        description="Belum ada data produk yang terdaftar atau kata kunci pencarian Anda tidak cocok."
+                                        actionText="Tambah Produk Baru"
+                                        actionClick="openCreateModal"
+                                    />
+                                </td>
                             </tr>
                         @endforelse
                     </tbody>

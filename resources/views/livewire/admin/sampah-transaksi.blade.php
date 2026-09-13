@@ -9,16 +9,20 @@
 
     <!-- Search Toolbar -->
     <div class="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200/90 shadow-2xs flex items-center justify-between text-sm">
-        <div class="w-full sm:w-72 relative">
+        <div class="relative w-full sm:w-80">
             <input
                 type="text"
                 wire:model.live.debounce.300ms="search"
+                data-shortcut-search
                 placeholder="Cari No. TRX..."
-                class="w-full h-11 pl-9 pr-3.5 border border-slate-200 rounded-xl text-sm font-semibold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 bg-slate-50 text-slate-800 placeholder:text-slate-400"
+                class="w-full h-11 pl-9 pr-12 border border-slate-200 rounded-xl text-sm font-semibold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 bg-slate-50 text-slate-800 placeholder:text-slate-400 transition"
             />
             <svg class="w-4 h-4 text-slate-400 absolute left-3 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
             </svg>
+            <div class="absolute right-3 top-3 hidden sm:flex items-center gap-0.5">
+                <kbd class="px-1.5 py-0.5 text-[10px] font-mono font-bold text-slate-400 bg-white border border-slate-200 rounded shadow-2xs">⌘K</kbd>
+            </div>
         </div>
     </div>
 
@@ -35,7 +39,11 @@
                         <th class="py-3.5 px-4 text-center">Aksi Pemulihan</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-100 font-medium">
+                <!-- Loading Skeleton State -->
+                <x-table-skeleton :cols="5" :rows="3" wire:loading.delay />
+
+                <!-- Data Table Body -->
+                <tbody wire:loading.remove.delay class="divide-y divide-slate-100 font-medium">
                     @forelse($trashedSales as $sale)
                         <tr class="hover:bg-slate-50/80 transition">
                             <td class="py-3.5 px-4 whitespace-nowrap">
@@ -64,7 +72,13 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="py-12 text-center text-slate-400 font-medium">Sampah transaksi kosong.</td>
+                            <td colspan="5">
+                                <x-empty-state
+                                    icon="receipt"
+                                    title="Sampah Transaksi Kosong"
+                                    description="Tidak ada transaksi yang pernah dibatalkan atau kata kunci pencarian Anda tidak cocok."
+                                />
+                            </td>
                         </tr>
                     @endforelse
                 </tbody>

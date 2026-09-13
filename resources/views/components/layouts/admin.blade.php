@@ -32,7 +32,34 @@
     </style>
     @livewireStyles
 </head>
-<body x-data="{ mobileMenuOpen: false }" class="h-full bg-slate-50 flex flex-col lg:flex-row overflow-hidden text-slate-800 antialiased">
+<body
+    x-data="{
+        mobileMenuOpen: false,
+        printerStatus: 'checking',
+        printerName: '',
+        checkPrinterStatus() {
+            if (typeof window.webBluetoothThermalPrinter !== 'undefined') {
+                this.printerName = window.webBluetoothThermalPrinter.getSavedDeviceName();
+                this.printerStatus = this.printerName ? 'ready' : 'none';
+            } else {
+                this.printerStatus = 'none';
+            }
+        }
+    }"
+    x-init="checkPrinterStatus()"
+    @keydown.window="
+        if (($event.ctrlKey || $event.metaKey) && $event.key.toLowerCase() === 'k') {
+            $event.preventDefault();
+            document.querySelector('[data-shortcut-search]')?.focus();
+        } else if ($event.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+            $event.preventDefault();
+            document.querySelector('[data-shortcut-search]')?.focus();
+        } else if ($event.key === 'Escape') {
+            window.dispatchEvent(new CustomEvent('close-modal'));
+        }
+    "
+    class="h-full bg-slate-50 flex flex-col lg:flex-row overflow-hidden text-slate-800 antialiased"
+>
 
     <!-- Mobile/Tablet Drawer Backdrop Overlay -->
     <div
@@ -211,10 +238,29 @@
                 </div>
             </div>
 
-            <div class="flex items-center gap-2 sm:gap-2.5 shrink-0">
+            <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+                <!-- Bluetooth Thermal Printer Health Status Pill -->
+                <a href="/admin/settings" class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl border border-slate-200/80 bg-slate-50 hover:bg-slate-100/80 text-[11px] font-bold text-slate-600 transition" title="Status Printer Thermal">
+                    <template x-if="printerStatus === 'ready'">
+                        <span class="flex items-center gap-1.5 text-emerald-700">
+                            <span class="relative flex h-2 w-2">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-600"></span>
+                            </span>
+                            <span class="truncate max-w-[110px]" x-text="printerName || 'BT Ready'"></span>
+                        </span>
+                    </template>
+                    <template x-if="printerStatus !== 'ready'">
+                        <span class="flex items-center gap-1.5 text-slate-400">
+                            <span class="w-2 h-2 rounded-full bg-slate-300"></span>
+                            <span>Printer Off</span>
+                        </span>
+                    </template>
+                </a>
+
                 <a href="/pos" class="h-9 sm:h-11 px-3 sm:px-4 text-xs sm:text-sm bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold rounded-xl shadow-2xs transition flex items-center gap-1.5 sm:gap-2 shrink-0 cursor-pointer active-press hover-lift">
                     <svg class="w-4 h-4 sm:w-4.5 sm:h-4.5 text-white shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 002 2v14a2 2 0 002 2z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 002 2v14a2 2 0 002 2z"></path>
                     </svg>
                     <span>Kasir</span>
                 </a>
