@@ -62,6 +62,9 @@ class ProductImportTest extends TestCase
         $brand = Brand::where('name', 'Vivan')->first();
         $this->assertNotNull($brand);
 
+        $noBrandProduct = Product::where('code', 'IMP-003')->firstOrFail();
+        $this->assertSame('No Brand', $noBrandProduct->brand?->name);
+
         // Assert Physical Inventory created with stock 20
         $inv = Inventory::where('product_id', $p1->id)->first();
         $this->assertNotNull($inv);

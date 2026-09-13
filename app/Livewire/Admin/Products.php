@@ -165,7 +165,7 @@ class Products extends Component
             'barcode' => $this->barcode ?: null,
             'name' => $this->name,
             'category_id' => $this->category_id ?: null,
-            'brand_id' => $this->brand_id ?: null,
+            'brand_id' => $this->brand_id ?: Brand::where('slug', 'no-brand')->value('id'),
             'product_type' => $this->product_type,
             'product_subtype' => $this->product_subtype ?: null,
             'cost_price' => $this->cost_price,

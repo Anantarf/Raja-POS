@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\BalanceAccount;
+use App\Models\Brand;
 use App\Models\Location;
 use App\Models\PaymentMethod;
 use App\Models\Permission;
@@ -127,6 +128,11 @@ class DatabaseSeeder extends Seeder
         User::where('username', 'superadmin')->update([
             'location_id' => $defaultLocation->id,
         ]);
+
+        Brand::firstOrCreate(
+            ['slug' => 'no-brand'],
+            ['name' => 'No Brand', 'status' => 'ACTIVE']
+        );
 
         // 6. Balance Accounts
         $balanceAccounts = [

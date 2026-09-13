@@ -162,13 +162,10 @@ class ProductImportService
                     );
 
                     // Resolve Brand
-                    $brand = null;
-                    if (! empty($brandName)) {
-                        $brand = Brand::firstOrCreate(
-                            ['name' => $brandName],
-                            ['slug' => Str::slug($brandName), 'status' => 'ACTIVE']
-                        );
-                    }
+                    $brand = Brand::firstOrCreate(
+                        ['slug' => filled($brandName) ? Str::slug($brandName) : 'no-brand'],
+                        ['name' => filled($brandName) ? $brandName : 'No Brand', 'status' => 'ACTIVE']
+                    );
 
                     // Resolve Balance Account for Provider if given
                     $balanceAccount = null;
@@ -189,7 +186,7 @@ class ProductImportService
                             'name' => $name,
                             'slug' => Str::slug($name).'-'.Str::lower(Str::random(4)),
                             'category_id' => $category->id,
-                            'brand_id' => $brand?->id,
+                            'brand_id' => $brand->id,
                             'product_type' => $productType,
                             'product_subtype' => ! empty($subtypeName) ? $subtypeName : null,
                             'cost_price' => $costPrice,
