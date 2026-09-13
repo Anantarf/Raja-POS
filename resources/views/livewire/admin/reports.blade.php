@@ -572,9 +572,8 @@
                             
                             <!-- Settlement Box -->
                             <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xs">
-                                <div class="bg-[#2C3E35] text-white px-3.5 py-2.5 font-extrabold text-xs uppercase tracking-wider flex items-center justify-between">
-                                    <span>RINCIAN PENJUALAN &amp; SETORAN</span>
-                                    <span class="text-[10px] text-emerald-300 font-mono font-bold">OTOMATIS</span>
+                                <div class="bg-[#2C3E35] text-white px-3.5 py-2.5 font-extrabold text-xs uppercase tracking-wider">
+                                    RINCIAN PENJUALAN &amp; SETORAN
                                 </div>
                                 <div class="divide-y divide-slate-100 text-xs">
                                     
