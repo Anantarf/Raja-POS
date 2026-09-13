@@ -42,7 +42,7 @@
     <div class="flex items-center gap-1.5 sm:gap-2 border-b border-slate-200/80 pb-3 text-xs sm:text-sm font-bold print:hidden overflow-x-auto no-scrollbar whitespace-nowrap">
         @foreach([
             'sales' => 'Penjualan & Produk Terlaris',
-            'daily_summary' => 'Summary Harian',
+            'daily_summary' => 'Rekap Harian',
             'inventory' => 'Stok & Valuasi Barang',
             'payment' => 'Metode Pembayaran'
         ] as $key => $label)
@@ -128,7 +128,7 @@
                     </div>
                     <div>
                         <div class="flex items-center gap-2 flex-wrap">
-                            <h2 class="text-lg font-black text-[#2C3E35] tracking-tight uppercase">LAPORAN SUMMARY HARIAN</h2>
+                            <h2 class="text-lg font-black text-[#2C3E35] tracking-tight uppercase">REKAP HARIAN</h2>
                             <span class="px-2.5 py-0.5 rounded-lg text-xs font-black uppercase bg-amber-200 text-amber-900 border border-amber-300">
                                 {{ strtoupper($formattedDate) }}
                             </span>

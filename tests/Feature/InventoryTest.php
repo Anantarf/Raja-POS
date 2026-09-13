@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Livewire\Admin\Inventories;
-use App\Livewire\Admin\StockOpname as StockOpnameComponent;
 use App\Models\Inventory;
 use App\Models\Location;
 use App\Models\Product;
@@ -249,7 +248,7 @@ class InventoryTest extends TestCase
         ]);
 
         Livewire::actingAs($owner)
-            ->test(StockOpnameComponent::class)
+            ->test(Inventories::class, ['tab' => 'opname'])
             ->set('location_id', Location::where('code', 'RAJA-BANGO')->value('id'))
             ->set('product_id', $digital->id)
             ->set('physical_qty', 1)

@@ -2,7 +2,7 @@
     <!-- Header Controls -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 pb-1">
         <div>
-            <h1 class="text-xl sm:text-2xl font-extrabold text-[#2C3E35] tracking-tight">Katalog &amp; Daftar Produk</h1>
+            <h1 class="text-xl sm:text-2xl font-extrabold text-[#2C3E35] tracking-tight">Produk</h1>
             <p class="text-xs sm:text-sm text-[#718379] font-medium mt-0.5">Kelola data barang fisik, produk digital, dan daftar harga jual toko.</p>
         </div>
 

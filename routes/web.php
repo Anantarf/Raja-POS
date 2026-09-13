@@ -11,7 +11,6 @@ use App\Livewire\Admin\Reports;
 use App\Livewire\Admin\Sales;
 use App\Livewire\Admin\SampahTransaksi;
 use App\Livewire\Admin\Settings;
-use App\Livewire\Admin\StockOpname;
 use App\Livewire\Auth\Login;
 use App\Livewire\Pos\Checkout;
 use App\Models\Sale;
@@ -43,7 +42,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/trash', SampahTransaksi::class)->middleware('can:sales.restore')->name('admin.trash');
     Route::get('/admin/inventories', Inventories::class)->middleware('can:inventory.view')->name('admin.inventories');
     Route::get('/admin/inventory-movements', InventoryMovements::class)->middleware('can:inventory.view')->name('admin.inventory-movements');
-    Route::get('/admin/stock-opname', StockOpname::class)->middleware('can:stock_opname.view')->name('admin.stock-opname');
+    Route::redirect('/admin/stock-opname', '/admin/inventories?tab=opname')->middleware('can:stock_opname.view')->name('admin.stock-opname');
     Route::get('/admin/products', Products::class)->middleware('can:product.view')->name('admin.products');
     Route::get('/admin/categories', Categories::class)->middleware('can:product.view')->name('admin.categories');
     Route::get('/admin/brands', Brands::class)->middleware('can:product.view')->name('admin.brands');

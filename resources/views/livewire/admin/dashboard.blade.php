@@ -5,9 +5,6 @@
             <h1 class="text-xl sm:text-2xl font-extrabold text-[#2C3E35] tracking-tight">
                 Selamat Datang, {{ auth()->user()->name }}!
             </h1>
-            <p class="text-xs sm:text-sm text-[#34463D] max-w-2xl leading-relaxed font-medium">
-                <span class="font-bold text-[#2C3E35]">Ringkasan Operasional:</span> Anda memiliki akses penuh sebagai <span class="font-extrabold text-[#3F7A5D]">{{ auth()->user()->role?->name ?? 'Kasir' }}</span> pada sistem kasir &amp; manajemen ritel Raja Aksesoris.
-            </p>
             <div class="pt-1">
                 <a href="/pos" class="h-10 px-4 text-xs sm:text-sm bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-xl inline-flex items-center gap-2 transition shadow-sm active:scale-95">
                     <span>Buka Layar Kasir</span> &rarr;
@@ -73,7 +70,7 @@
             <div class="text-lg sm:text-xl lg:text-2xl font-extrabold text-[#2C3E35] font-mono tracking-tight truncate">
                 Rp {{ number_format($metrics['total_balance'], 0, ',', '.') }}
             </div>
-            <div class="text-[11px] sm:text-xs text-[#4F6258] mt-1 font-medium">Saldo riil seluruh akun &amp; cash</div>
+            <a href="/admin/balances" class="inline-flex mt-1 text-[11px] sm:text-xs text-[#3F7A5D] font-bold hover:text-[#32634B] hover:underline">Lihat rincian saldo</a>
         </div>
 
         <!-- 4. Total Transaksi -->
@@ -107,9 +104,7 @@
                             Visualisasi tren performa omzet penjualan ritel toko.
                         </p>
                     </div>
-                    <span class="px-3 py-1 rounded-xl text-xs font-extrabold bg-[#E3EEE8] text-[#3F7A5D] border border-[#3F7A5D]/20">
-                        Realtime
-                    </span>
+                    <a href="/admin/reports/sales" class="text-xs font-extrabold text-[#3F7A5D] hover:text-[#32634B] hover:underline">Lihat laporan</a>
                 </div>
 
                 <!-- ApexCharts Canvas -->
@@ -130,7 +125,7 @@
                             Barang paling cepat laku (Fast Moving Items).
                         </p>
                     </div>
-                    <span class="text-xs font-extrabold text-amber-700 bg-amber-50 border border-amber-200/80 px-2 py-0.5 rounded-lg">Top 5</span>
+                    <a href="/admin/reports/sales" class="text-xs font-extrabold text-amber-700 hover:text-amber-800 hover:underline">Lihat laporan</a>
                 </div>
 
                 <div class="divide-y divide-slate-100">
@@ -167,7 +162,7 @@
                             Perbandingan transaksi Tunai, Transfer Bank, QRIS, &amp; E-Wallet.
                         </p>
                     </div>
-                    <span class="text-xs font-extrabold text-[#3F7A5D] bg-[#E3EEE8] px-2.5 py-1 rounded-lg">Audit Saldo</span>
+                    <a href="/admin/reports/payment" class="text-xs font-extrabold text-[#3F7A5D] hover:text-[#32634B] hover:underline">Lihat laporan</a>
                 </div>
 
                 @php

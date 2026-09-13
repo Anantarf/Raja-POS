@@ -34,8 +34,8 @@
                 ['label' => 'Nama Toko', 'value' => $settingMap->get('store_name', 'Raja Aksesoris'), 'hint' => 'Nama resmi toko yang tampil di sistem dan struk belanja.'],
                 ['label' => 'Mata Uang', 'value' => $settingMap->get('currency', 'Rupiah (Rp)'), 'hint' => 'Format simbol mata uang untuk transaksi & laporan.'],
                 ['label' => 'Zona Waktu', 'value' => $settingMap->get('timezone', 'Asia/Jakarta (WIB)'), 'hint' => 'Acuan waktu tanggal transaksi, laporan harian, dan audit.'],
-                ['label' => 'Mode Transaksi', 'value' => 'Multi-Payment & Split Account', 'hint' => 'Mendukung Tunai, Bank, QRIS, & E-Wallet dalam 1 transaksi.'],
-                ['label' => 'Validasi Stok', 'value' => 'Server-Side Strict Guard', 'hint' => 'Mencegah transaksi jika stok barang fisik di toko kosong.'],
+                ['label' => 'Metode Pembayaran', 'value' => 'Tunai, Bank, QRIS, & E-Wallet', 'hint' => 'Metode yang dapat dipakai saat transaksi kasir.'],
+                ['label' => 'Validasi Stok', 'value' => 'Stok fisik terkendali', 'hint' => 'Mencegah transaksi jika stok barang fisik di toko kosong.'],
             ];
         @endphp
 
@@ -64,8 +64,8 @@
             <!-- Info Panel -->
             <div class="lg:col-span-2 bg-white border border-slate-200/90 rounded-2xl p-5 shadow-2xs space-y-4">
                 <div class="border-b border-slate-100 pb-3.5">
-                    <h3 class="text-base font-extrabold text-slate-900 uppercase tracking-wider">Panduan &amp; Spesifikasi Sistem</h3>
-                    <p class="text-sm text-slate-500 font-medium mt-0.5">Ringkasan status integrasi operasional toko.</p>
+                    <h3 class="text-base font-extrabold text-slate-900 uppercase tracking-wider">Status Operasional</h3>
+                    <p class="text-sm text-slate-500 font-medium mt-0.5">Ringkasan konfigurasi yang memengaruhi transaksi dan laporan.</p>
                 </div>
 
                 <div class="space-y-3.5 text-sm font-medium">

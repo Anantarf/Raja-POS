@@ -23,7 +23,7 @@
             <option value="ALL">Semua Tipe Pergerakan</option>
             @foreach($movementTypes as $type)
                 <option value="{{ $type }}">
-                    {{ $type === 'SALE' ? 'Penjualan Kasir' : ($type === 'STOCK_OPNAME' ? 'Stock Opname' : ($type === 'ADJUSTMENT' ? 'Penyesuaian Manual' : ($type === 'TRASH_RESTORE' ? 'Pemulihan Transaksi' : ($type === 'DAMAGE' ? 'Barang Rusak / Hilang' : $type)))) }}
+                    {{ $type === 'SALE' ? 'Penjualan Kasir' : ($type === 'STOCK_OPNAME' ? 'Stok Opname' : ($type === 'ADJUSTMENT' ? 'Penyesuaian Manual' : ($type === 'TRASH_RESTORE' ? 'Pemulihan Transaksi' : ($type === 'DAMAGE' ? 'Barang Rusak / Hilang' : $type)))) }}
                 </option>
             @endforeach
         </select>
@@ -75,7 +75,7 @@
                         @php
                             $typeLabel = match($movement->movement_type) {
                                 'SALE' => 'Penjualan Kasir',
-                                'STOCK_OPNAME' => 'Stock Opname',
+                                'STOCK_OPNAME' => 'Stok Opname',
                                 'ADJUSTMENT' => 'Penyesuaian Manual',
                                 'TRASH_RESTORE' => 'Pemulihan Transaksi',
                                 'DAMAGE' => 'Barang Rusak / Hilang',
