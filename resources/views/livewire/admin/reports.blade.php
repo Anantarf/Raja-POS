@@ -651,8 +651,8 @@
         </div>
         <!-- MODAL DIALOG INPUT SALDO AKTUAL & REKAP HARIAN (CLEAN ENTERPRISE POS FORM) -->
         @if($showInputModal)
-            <div class="fixed inset-0 bg-[#2C3E35]/60 backdrop-blur-xs z-50 flex items-center justify-center p-3 sm:p-4 overflow-hidden">
-                <div class="bg-white rounded-2xl max-w-5xl w-full p-4 sm:p-5 shadow-2xl border border-slate-200/90 flex flex-col max-h-[92dvh] sm:max-h-[88vh] my-auto transition-all">
+            <div class="fixed inset-0 bg-[#2C3E35]/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 sm:p-6 overflow-hidden">
+                <div class="bg-white rounded-2xl max-w-5xl w-full p-4 sm:p-5 shadow-2xl border border-slate-200/90 flex flex-col max-h-[85vh] sm:max-h-[82vh] my-auto transition-all">
                     
                     <!-- Modal Header (Fixed Top) -->
                     <div class="flex items-center justify-between border-b border-slate-100 pb-3 shrink-0">
