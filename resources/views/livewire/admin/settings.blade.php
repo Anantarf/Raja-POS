@@ -92,59 +92,59 @@
 
     <!-- Tab 2: PRINTER & STRUK SETTINGS -->
     @elseif($activeTab === 'PRINTER_SETTINGS')
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
             <!-- Form Panel -->
-            <div class="lg:col-span-7 bg-white border border-slate-200/80 rounded-2xl p-5 sm:p-6 shadow-sm space-y-6">
-                <div class="flex items-start justify-between gap-4 border-b border-slate-100 pb-3.5">
+            <div class="lg:col-span-7 bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-5 shadow-sm space-y-4">
+                <div class="flex items-center justify-between gap-4 border-b border-slate-100 pb-3">
                     <div>
-                        <h3 class="text-base font-extrabold text-[#2C3E35] uppercase tracking-wider">Konfigurasi Printer &amp; Struk Thermal</h3>
-                        <p class="text-sm text-[#718379] font-medium mt-0.5">Atur ukuran kertas, metode cetak, dan tampilan teks header/footer struk.</p>
+                        <h3 class="text-sm sm:text-base font-extrabold text-[#2C3E35] uppercase tracking-wider">Konfigurasi Printer &amp; Struk Thermal</h3>
+                        <p class="text-xs text-[#718379] font-medium mt-0.5">Atur ukuran kertas, metode cetak, dan tampilan teks header/footer struk.</p>
                     </div>
-                    <span class="px-3 py-1 rounded-lg bg-[#E3EEE8] text-[#3F7A5D] text-xs font-extrabold uppercase tracking-wider border border-[#3F7A5D]/20 shrink-0">Thermal POS</span>
+                    <span class="px-2.5 py-1 rounded-lg bg-[#E3EEE8] text-[#3F7A5D] text-[11px] font-extrabold uppercase tracking-wider border border-[#3F7A5D]/20 shrink-0">Thermal POS</span>
                 </div>
 
-                <form wire:submit.prevent="savePrinterSettings" class="space-y-6">
+                <form wire:submit.prevent="savePrinterSettings" class="space-y-4">
                     <!-- 1. Selection Card: Ukuran Kertas Thermal -->
                     <div>
-                        <label class="block text-xs font-extrabold uppercase tracking-wider text-[#2C3E35] mb-2.5">1. Pilih Ukuran Kertas Thermal *</label>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <div @click="$wire.set('receiptPaperWidth', '58mm')" class="relative flex items-center justify-between p-4 rounded-2xl border-2 cursor-pointer transition-all duration-200 {{ $receiptPaperWidth === '58mm' ? 'border-[#3F7A5D] bg-[#E3EEE8]/40 shadow-xs' : 'border-slate-200 hover:border-slate-300 bg-white' }}">
+                        <label class="block text-xs font-extrabold uppercase tracking-wider text-[#2C3E35] mb-2">1. Pilih Ukuran Kertas Thermal *</label>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                            <div @click="$wire.set('receiptPaperWidth', '58mm')" class="relative flex items-center justify-between p-3 rounded-xl border-2 cursor-pointer transition-all duration-200 {{ $receiptPaperWidth === '58mm' ? 'border-[#3F7A5D] bg-[#E3EEE8]/40 shadow-2xs' : 'border-slate-200 hover:border-slate-300 bg-white' }}">
                                 <input type="radio" wire:model.live="receiptPaperWidth" value="58mm" class="hidden">
-                                <div class="flex items-center gap-3.5 min-w-0 pr-2">
-                                    <div class="w-11 h-11 rounded-xl {{ $receiptPaperWidth === '58mm' ? 'bg-[#3F7A5D] text-white shadow-xs' : 'bg-slate-100 text-slate-500' }} flex items-center justify-center font-black text-xs shrink-0 transition-colors">
+                                <div class="flex items-center gap-3 min-w-0 pr-2">
+                                    <div class="w-9 h-9 rounded-lg {{ $receiptPaperWidth === '58mm' ? 'bg-[#3F7A5D] text-white shadow-2xs' : 'bg-slate-100 text-slate-500' }} flex items-center justify-center font-black text-xs shrink-0 transition-colors">
                                         58mm
                                     </div>
                                     <div class="min-w-0">
-                                        <div class="font-extrabold text-sm text-[#2C3E35]">Kertas Kecil (58mm)</div>
-                                        <div class="text-xs text-[#718379] font-medium leading-snug mt-0.5">Printer Bluetooth portable / mini kasir.</div>
+                                        <div class="font-extrabold text-xs sm:text-sm text-[#2C3E35]">Kertas Kecil (58mm)</div>
+                                        <div class="text-[11px] text-[#718379] font-medium leading-snug truncate">Bluetooth portable / mini kasir</div>
                                     </div>
                                 </div>
                                 @if($receiptPaperWidth === '58mm')
-                                    <div class="w-6 h-6 rounded-full bg-[#3F7A5D] text-white flex items-center justify-center shrink-0 ml-2 shadow-xs">
-                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
+                                    <div class="w-5 h-5 rounded-full bg-[#3F7A5D] text-white flex items-center justify-center shrink-0 ml-1 shadow-2xs">
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
                                     </div>
                                 @else
-                                    <div class="w-6 h-6 rounded-full border-2 border-slate-200 shrink-0 ml-2"></div>
+                                    <div class="w-5 h-5 rounded-full border-2 border-slate-200 shrink-0 ml-1"></div>
                                 @endif
                             </div>
 
-                            <div @click="$wire.set('receiptPaperWidth', '80mm')" class="relative flex items-center justify-between p-4 rounded-2xl border-2 cursor-pointer transition-all duration-200 {{ $receiptPaperWidth === '80mm' ? 'border-[#3F7A5D] bg-[#E3EEE8]/40 shadow-xs' : 'border-slate-200 hover:border-slate-300 bg-white' }}">
+                            <div @click="$wire.set('receiptPaperWidth', '80mm')" class="relative flex items-center justify-between p-3 rounded-xl border-2 cursor-pointer transition-all duration-200 {{ $receiptPaperWidth === '80mm' ? 'border-[#3F7A5D] bg-[#E3EEE8]/40 shadow-2xs' : 'border-slate-200 hover:border-slate-300 bg-white' }}">
                                 <input type="radio" wire:model.live="receiptPaperWidth" value="80mm" class="hidden">
-                                <div class="flex items-center gap-3.5 min-w-0 pr-2">
-                                    <div class="w-11 h-11 rounded-xl {{ $receiptPaperWidth === '80mm' ? 'bg-[#3F7A5D] text-white shadow-xs' : 'bg-slate-100 text-slate-500' }} flex items-center justify-center font-black text-xs shrink-0 transition-colors">
+                                <div class="flex items-center gap-3 min-w-0 pr-2">
+                                    <div class="w-9 h-9 rounded-lg {{ $receiptPaperWidth === '80mm' ? 'bg-[#3F7A5D] text-white shadow-2xs' : 'bg-slate-100 text-slate-500' }} flex items-center justify-center font-black text-xs shrink-0 transition-colors">
                                         80mm
                                     </div>
                                     <div class="min-w-0">
-                                        <div class="font-extrabold text-sm text-[#2C3E35]">Kertas Lebar (80mm)</div>
-                                        <div class="text-xs text-[#718379] font-medium leading-snug mt-0.5">Printer kasir meja / auto-cutter desktop.</div>
+                                        <div class="font-extrabold text-xs sm:text-sm text-[#2C3E35]">Kertas Lebar (80mm)</div>
+                                        <div class="text-[11px] text-[#718379] font-medium leading-snug truncate">Printer meja / auto-cutter</div>
                                     </div>
                                 </div>
                                 @if($receiptPaperWidth === '80mm')
-                                    <div class="w-6 h-6 rounded-full bg-[#3F7A5D] text-white flex items-center justify-center shrink-0 ml-2 shadow-xs">
-                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
+                                    <div class="w-5 h-5 rounded-full bg-[#3F7A5D] text-white flex items-center justify-center shrink-0 ml-1 shadow-2xs">
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
                                     </div>
                                 @else
-                                    <div class="w-6 h-6 rounded-full border-2 border-slate-200 shrink-0 ml-2"></div>
+                                    <div class="w-5 h-5 rounded-full border-2 border-slate-200 shrink-0 ml-1"></div>
                                 @endif
                             </div>
                         </div>
@@ -152,83 +152,83 @@
 
                     <!-- 2. Selection Card: Mode Cetak Utama -->
                     <div>
-                        <label class="block text-xs font-extrabold uppercase tracking-wider text-[#2C3E35] mb-2.5">2. Pilih Metode Cetak Utama *</label>
-                        <div class="grid grid-cols-1 gap-3">
+                        <label class="block text-xs font-extrabold uppercase tracking-wider text-[#2C3E35] mb-2">2. Pilih Metode Cetak Utama *</label>
+                        <div class="grid grid-cols-1 gap-2.5">
                             <!-- Option A: Browser -->
-                            <div @click="$wire.set('printMode', 'BROWSER')" class="relative flex items-center justify-between p-4 rounded-2xl border-2 cursor-pointer transition-all duration-200 {{ $printMode === 'BROWSER' ? 'border-[#3F7A5D] bg-[#E3EEE8]/40 shadow-xs' : 'border-slate-200 hover:border-slate-300 bg-white' }}">
+                            <div @click="$wire.set('printMode', 'BROWSER')" class="relative flex items-center justify-between p-3 rounded-xl border-2 cursor-pointer transition-all duration-200 {{ $printMode === 'BROWSER' ? 'border-[#3F7A5D] bg-[#E3EEE8]/40 shadow-2xs' : 'border-slate-200 hover:border-slate-300 bg-white' }}">
                                 <input type="radio" wire:model.live="printMode" value="BROWSER" class="hidden">
-                                <div class="flex items-center gap-3.5 min-w-0 pr-2">
-                                    <div class="w-11 h-11 rounded-xl {{ $printMode === 'BROWSER' ? 'bg-[#3F7A5D] text-white shadow-xs' : 'bg-slate-100 text-slate-500' }} flex items-center justify-center shrink-0 transition-colors">
-                                        <svg class="w-5.5 h-5.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                                <div class="flex items-center gap-3 min-w-0 pr-2">
+                                    <div class="w-9 h-9 rounded-lg {{ $printMode === 'BROWSER' ? 'bg-[#3F7A5D] text-white shadow-2xs' : 'bg-slate-100 text-slate-500' }} flex items-center justify-center shrink-0 transition-colors">
+                                        <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                                     </div>
                                     <div class="min-w-0">
-                                        <div class="font-extrabold text-sm text-[#2C3E35] flex items-center gap-2 flex-wrap">
+                                        <div class="font-extrabold text-xs sm:text-sm text-[#2C3E35] flex items-center gap-2 flex-wrap">
                                             <span>Browser Print Dialog</span>
-                                            <span class="px-2 py-0.5 rounded-md text-[10px] bg-slate-100 text-slate-700 font-extrabold border border-slate-200/80 uppercase tracking-wider">PC / Laptop</span>
+                                            <span class="px-1.5 py-0.5 rounded text-[9px] bg-slate-100 text-slate-700 font-extrabold border border-slate-200/80 uppercase tracking-wider">PC / Laptop</span>
                                         </div>
-                                        <div class="text-xs text-[#718379] font-medium leading-snug mt-0.5">Menggunakan dialog cetak bawaan browser Chrome/Edge/Firefox.</div>
+                                        <div class="text-[11px] text-[#718379] font-medium leading-snug mt-0.5">Dialog cetak bawaan browser Chrome/Edge/Firefox.</div>
                                     </div>
                                 </div>
                                 @if($printMode === 'BROWSER')
-                                    <div class="w-6 h-6 rounded-full bg-[#3F7A5D] text-white flex items-center justify-center shrink-0 ml-2 shadow-xs">
-                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
+                                    <div class="w-5 h-5 rounded-full bg-[#3F7A5D] text-white flex items-center justify-center shrink-0 ml-1 shadow-2xs">
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
                                     </div>
                                 @else
-                                    <div class="w-6 h-6 rounded-full border-2 border-slate-200 shrink-0 ml-2"></div>
+                                    <div class="w-5 h-5 rounded-full border-2 border-slate-200 shrink-0 ml-1"></div>
                                 @endif
                             </div>
 
                             <!-- Option B: Direct Web Bluetooth -->
-                            <div @click="$wire.set('printMode', 'WEB_BLUETOOTH')" class="relative flex items-center justify-between p-4 rounded-2xl border-2 cursor-pointer transition-all duration-200 {{ $printMode === 'WEB_BLUETOOTH' ? 'border-[#3F7A5D] bg-[#E3EEE8]/40 shadow-xs' : 'border-slate-200 hover:border-slate-300 bg-white' }}">
+                            <div @click="$wire.set('printMode', 'WEB_BLUETOOTH')" class="relative flex items-center justify-between p-3 rounded-xl border-2 cursor-pointer transition-all duration-200 {{ $printMode === 'WEB_BLUETOOTH' ? 'border-[#3F7A5D] bg-[#E3EEE8]/40 shadow-2xs' : 'border-slate-200 hover:border-slate-300 bg-white' }}">
                                 <input type="radio" wire:model.live="printMode" value="WEB_BLUETOOTH" class="hidden">
-                                <div class="flex items-center gap-3.5 min-w-0 pr-2">
-                                    <div class="w-11 h-11 rounded-xl {{ $printMode === 'WEB_BLUETOOTH' ? 'bg-[#3F7A5D] text-white shadow-xs' : 'bg-slate-100 text-slate-500' }} flex items-center justify-center shrink-0 transition-colors">
-                                        <svg class="w-5.5 h-5.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+                                <div class="flex items-center gap-3 min-w-0 pr-2">
+                                    <div class="w-9 h-9 rounded-lg {{ $printMode === 'WEB_BLUETOOTH' ? 'bg-[#3F7A5D] text-white shadow-2xs' : 'bg-slate-100 text-slate-500' }} flex items-center justify-center shrink-0 transition-colors">
+                                        <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
                                     </div>
                                     <div class="min-w-0">
-                                        <div class="font-extrabold text-sm text-[#2C3E35] flex items-center gap-2 flex-wrap">
+                                        <div class="font-extrabold text-xs sm:text-sm text-[#2C3E35] flex items-center gap-2 flex-wrap">
                                             <span>Direct Web Bluetooth</span>
-                                            <span class="px-2 py-0.5 rounded-md text-[10px] bg-emerald-100 text-emerald-800 font-extrabold border border-emerald-200/80 uppercase tracking-wider">1-Click Direct Print</span>
+                                            <span class="px-1.5 py-0.5 rounded text-[9px] bg-emerald-100 text-emerald-800 font-extrabold border border-emerald-200/80 uppercase tracking-wider">1-Click Direct Print</span>
                                         </div>
-                                        <div class="text-xs text-[#718379] font-medium leading-snug mt-0.5">Cetak langsung ke printer Bluetooth tanpa jendela pop-up dialog print.</div>
+                                        <div class="text-[11px] text-[#718379] font-medium leading-snug mt-0.5">Cetak langsung ke printer Bluetooth tanpa jendela pop-up print.</div>
                                     </div>
                                 </div>
                                 @if($printMode === 'WEB_BLUETOOTH')
-                                    <div class="w-6 h-6 rounded-full bg-[#3F7A5D] text-white flex items-center justify-center shrink-0 ml-2 shadow-xs">
-                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
+                                    <div class="w-5 h-5 rounded-full bg-[#3F7A5D] text-white flex items-center justify-center shrink-0 ml-1 shadow-2xs">
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
                                     </div>
                                 @else
-                                    <div class="w-6 h-6 rounded-full border-2 border-slate-200 shrink-0 ml-2"></div>
+                                    <div class="w-5 h-5 rounded-full border-2 border-slate-200 shrink-0 ml-1"></div>
                                 @endif
                             </div>
 
                             <!-- Option C: RawBT Android -->
-                            <div @click="$wire.set('printMode', 'RAWBT')" class="relative flex items-center justify-between p-4 rounded-2xl border-2 cursor-pointer transition-all duration-200 {{ $printMode === 'RAWBT' ? 'border-[#3F7A5D] bg-[#E3EEE8]/40 shadow-xs' : 'border-slate-200 hover:border-slate-300 bg-white' }}">
+                            <div @click="$wire.set('printMode', 'RAWBT')" class="relative flex items-center justify-between p-3 rounded-xl border-2 cursor-pointer transition-all duration-200 {{ $printMode === 'RAWBT' ? 'border-[#3F7A5D] bg-[#E3EEE8]/40 shadow-2xs' : 'border-slate-200 hover:border-slate-300 bg-white' }}">
                                 <input type="radio" wire:model.live="printMode" value="RAWBT" class="hidden">
-                                <div class="flex items-center gap-3.5 min-w-0 pr-2">
-                                    <div class="w-11 h-11 rounded-xl {{ $printMode === 'RAWBT' ? 'bg-[#3F7A5D] text-white shadow-xs' : 'bg-slate-100 text-slate-500' }} flex items-center justify-center shrink-0 transition-colors">
-                                        <svg class="w-5.5 h-5.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                                <div class="flex items-center gap-3 min-w-0 pr-2">
+                                    <div class="w-9 h-9 rounded-lg {{ $printMode === 'RAWBT' ? 'bg-[#3F7A5D] text-white shadow-2xs' : 'bg-slate-100 text-slate-500' }} flex items-center justify-center shrink-0 transition-colors">
+                                        <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
                                     </div>
                                     <div class="min-w-0">
-                                        <div class="font-extrabold text-sm text-[#2C3E35] flex items-center gap-2 flex-wrap">
+                                        <div class="font-extrabold text-xs sm:text-sm text-[#2C3E35] flex items-center gap-2 flex-wrap">
                                             <span>RawBT App Intent</span>
-                                            <span class="px-2 py-0.5 rounded-md text-[10px] bg-amber-100 text-amber-800 font-extrabold border border-amber-200/80 uppercase tracking-wider">HP / Tablet Android</span>
+                                            <span class="px-1.5 py-0.5 rounded text-[9px] bg-amber-100 text-amber-800 font-extrabold border border-amber-200/80 uppercase tracking-wider">HP / Tablet Android</span>
                                         </div>
-                                        <div class="text-xs text-[#718379] font-medium leading-snug mt-0.5">Mengirim instruksi cetak langsung ke aplikasi RawBT di Android.</div>
+                                        <div class="text-[11px] text-[#718379] font-medium leading-snug mt-0.5">Instruksi cetak ke aplikasi RawBT di Android.</div>
                                     </div>
                                 </div>
                                 @if($printMode === 'RAWBT')
-                                    <div class="w-6 h-6 rounded-full bg-[#3F7A5D] text-white flex items-center justify-center shrink-0 ml-2 shadow-xs">
-                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
+                                    <div class="w-5 h-5 rounded-full bg-[#3F7A5D] text-white flex items-center justify-center shrink-0 ml-1 shadow-2xs">
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
                                     </div>
                                 @else
-                                    <div class="w-6 h-6 rounded-full border-2 border-slate-200 shrink-0 ml-2"></div>
+                                    <div class="w-5 h-5 rounded-full border-2 border-slate-200 shrink-0 ml-1"></div>
                                 @endif
                             </div>
                         </div>
                     </div>
 
-                    <!-- Contextual Help / Setup Box based on selected mode -->
+                    <!-- Contextual Help / Setup Box -->
                     @if($printMode === 'WEB_BLUETOOTH')
                         <div x-data="{
                             printerName: window.webBluetoothThermalPrinter?.getSavedDeviceName() || '',
@@ -261,101 +261,101 @@
                                     alert('Struk percobaan berhasil dikirim ke printer Bluetooth!');
                                 }
                             }
-                        }" class="p-4 bg-emerald-50/80 rounded-2xl border border-emerald-200/80 space-y-3">
+                        }" class="p-3 bg-emerald-50/80 rounded-xl border border-emerald-200/80 space-y-2 text-xs">
                             <div class="flex items-center justify-between flex-wrap gap-2">
-                                <div class="flex items-center gap-2 text-emerald-900 font-extrabold text-xs uppercase tracking-wider">
+                                <div class="flex items-center gap-1.5 text-emerald-900 font-extrabold uppercase tracking-wider">
                                     <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
-                                    <span>Status Koneksi Web Bluetooth</span>
+                                    <span>Status Web Bluetooth</span>
                                 </div>
-                                <span x-text="printerName ? 'TERHUBUNG: ' + printerName : 'BELUM TERHUBUNG'" :class="printerName ? 'bg-emerald-200/80 text-emerald-900' : 'bg-amber-100 text-amber-900'" class="px-2.5 py-0.5 rounded-md text-[10px] font-extrabold uppercase font-mono"></span>
+                                <span x-text="printerName ? 'TERHUBUNG: ' + printerName : 'BELUM TERHUBUNG'" :class="printerName ? 'bg-emerald-200/80 text-emerald-900' : 'bg-amber-100 text-amber-900'" class="px-2 py-0.5 rounded text-[10px] font-extrabold uppercase font-mono"></span>
                             </div>
 
-                            <p class="text-xs text-emerald-800 font-medium leading-relaxed">
-                                Pastikan Bluetooth PC/Laptop/HP Anda aktif. Tekan tombol di bawah untuk memasangkan (pair) printer Bluetooth Anda 1 kali.
+                            <p class="text-[11px] text-emerald-800 font-medium leading-relaxed">
+                                Pastikan Bluetooth aktif, lalu pasangkan (pair) printer Bluetooth 1 kali di bawah.
                             </p>
 
-                            <div class="flex items-center gap-2 pt-1 flex-wrap">
-                                <button type="button" @click="pair()" :disabled="isConnecting" class="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs rounded-xl transition flex items-center gap-1.5 cursor-pointer shadow-xs active:scale-95">
+                            <div class="flex items-center gap-2 pt-0.5 flex-wrap">
+                                <button type="button" @click="pair()" :disabled="isConnecting" class="px-3 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs rounded-lg transition flex items-center gap-1.5 cursor-pointer shadow-2xs active:scale-95">
                                     <span x-text="isConnecting ? 'Menghubungkan...' : 'Sambungkan Bluetooth Printer'"></span>
                                 </button>
-                                <button type="button" @click="testPrint()" class="px-4 py-2 bg-white hover:bg-slate-50 text-emerald-800 border border-emerald-300 font-bold text-xs rounded-xl transition cursor-pointer shadow-2xs">
+                                <button type="button" @click="testPrint()" class="px-3 py-1.5 bg-white hover:bg-slate-50 text-emerald-800 border border-emerald-300 font-bold text-xs rounded-lg transition cursor-pointer shadow-2xs">
                                     Cetak Struk Percobaan
                                 </button>
                             </div>
                         </div>
                     @elseif($printMode === 'BROWSER')
-                        <div class="p-3.5 bg-slate-50 rounded-2xl border border-slate-200/80 text-xs space-y-1.5">
+                        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200/80 text-xs space-y-1">
                             <div class="font-extrabold text-[#2C3E35] flex items-center gap-1.5">
-                                <span>💡 Tips Silent Print di Google Chrome (Tanpa Pop-up):</span>
+                                <span>💡 Tips Silent Print Google Chrome (Tanpa Pop-up):</span>
                             </div>
-                            <p class="text-[#5F7167] leading-relaxed">
-                                Buka shortcut Chrome di Windows -> tambahkan <code class="bg-white px-1.5 py-0.5 rounded border border-slate-200 font-mono font-bold text-[#2C3E35]">--kiosk-printing</code> di ujung kolom Target. Struk akan otomatis keluar instan tanpa dialog Chrome!
+                            <p class="text-[11px] text-[#5F7167] leading-relaxed">
+                                Buka shortcut Chrome di Windows -> tambahkan <code class="bg-white px-1.5 py-0.5 rounded border border-slate-200 font-mono font-bold text-[#2C3E35]">--kiosk-printing</code> di ujung kolom Target.
                             </p>
                         </div>
                     @elseif($printMode === 'RAWBT')
-                        <div class="p-3.5 bg-amber-50/80 rounded-2xl border border-amber-200/80 text-xs space-y-1.5 text-amber-900">
+                        <div class="p-3 bg-amber-50/80 rounded-xl border border-amber-200/80 text-xs space-y-1 text-amber-900">
                             <div class="font-extrabold flex items-center gap-1.5">
                                 <span>📱 Kebutuhan Aplikasi RawBT:</span>
                             </div>
-                            <p class="leading-relaxed">
-                                Pastikan aplikasi <strong>RawBT Thermal Printer Driver</strong> sudah terinstall dari Google Play Store pada HP/Tablet Android kasir Anda.
+                            <p class="text-[11px] leading-relaxed">
+                                Pastikan aplikasi <strong>RawBT Thermal Printer Driver</strong> sudah terinstall dari Play Store pada Android Anda.
                             </p>
                         </div>
                     @endif
 
                     <!-- Options Toggle -->
-                    <div class="p-4 bg-[#F3F6F4]/70 rounded-2xl border border-slate-200/70 space-y-3">
-                        <label class="flex items-center gap-3 cursor-pointer">
-                            <input type="checkbox" wire:model="autoPrint" class="w-4.5 h-4.5 text-[#3F7A5D] rounded border-slate-300 focus:ring-[#3F7A5D]">
+                    <div class="p-3 bg-[#F3F6F4]/70 rounded-xl border border-slate-200/70 space-y-2.5">
+                        <label class="flex items-center gap-2.5 cursor-pointer">
+                            <input type="checkbox" wire:model="autoPrint" class="w-4 h-4 text-[#3F7A5D] rounded border-slate-300 focus:ring-[#3F7A5D]">
                             <div>
                                 <div class="text-xs font-extrabold text-[#2C3E35] uppercase tracking-wider">Otomatis Cetak (Auto-Print)</div>
-                                <div class="text-[11px] text-[#718379] font-medium mt-0.5">Otomatis membuka dialog cetak struk begitu transaksi checkout selesai dikonfirmasi.</div>
+                                <div class="text-[11px] text-[#718379] font-medium">Cetak otomatis begitu checkout transaksi selesai.</div>
                             </div>
                         </label>
 
-                        <div class="border-t border-slate-200/60 pt-3">
-                            <label class="flex items-center gap-3 cursor-pointer">
-                                <input type="checkbox" wire:model.live="showCashierName" class="w-4.5 h-4.5 text-[#3F7A5D] rounded border-slate-300 focus:ring-[#3F7A5D]">
+                        <div class="border-t border-slate-200/60 pt-2">
+                            <label class="flex items-center gap-2.5 cursor-pointer">
+                                <input type="checkbox" wire:model.live="showCashierName" class="w-4 h-4 text-[#3F7A5D] rounded border-slate-300 focus:ring-[#3F7A5D]">
                                 <div>
                                     <div class="text-xs font-extrabold text-[#2C3E35] uppercase tracking-wider">Tampilkan Nama Kasir di Struk</div>
-                                    <div class="text-[11px] text-[#718379] font-medium mt-0.5">Mencantumkan label "Kasir: [Nama User]" di bagian atas metadata struk.</div>
+                                    <div class="text-[11px] text-[#718379] font-medium">Mencantumkan "Kasir: [Nama User]" di metadata struk.</div>
                                 </div>
                             </label>
                         </div>
                     </div>
 
                     <!-- Header Inputs -->
-                    <div class="space-y-4">
+                    <div class="space-y-3">
                         <div>
-                            <label class="block text-xs font-extrabold uppercase tracking-wider text-[#2C3E35] mb-1.5">Nama Toko *</label>
-                            <input type="text" wire:model.live="storeName" class="w-full h-11 px-3.5 py-2 border border-slate-200 rounded-xl font-bold text-sm text-[#2C3E35] focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]" required />
+                            <label class="block text-xs font-extrabold uppercase tracking-wider text-[#2C3E35] mb-1">Nama Toko *</label>
+                            <input type="text" wire:model.live="storeName" class="w-full h-10 px-3 py-1.5 border border-slate-200 rounded-xl font-bold text-sm text-[#2C3E35] focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]" required />
                         </div>
 
                         <div>
-                            <label class="block text-xs font-extrabold uppercase tracking-wider text-[#2C3E35] mb-1.5">Tagline / Sub-Header Struk</label>
-                            <input type="text" wire:model.live="receiptHeaderTagline" placeholder="Retail Management System" class="w-full h-11 px-3.5 py-2 border border-slate-200 rounded-xl text-sm text-[#2C3E35] focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]" />
+                            <label class="block text-xs font-extrabold uppercase tracking-wider text-[#2C3E35] mb-1">Tagline / Sub-Header Struk</label>
+                            <input type="text" wire:model.live="receiptHeaderTagline" placeholder="Retail Management System" class="w-full h-10 px-3 py-1.5 border border-slate-200 rounded-xl text-sm text-[#2C3E35] focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]" />
                         </div>
 
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <div>
-                                <label class="block text-xs font-extrabold uppercase tracking-wider text-[#2C3E35] mb-1.5">Alamat Toko</label>
-                                <input type="text" wire:model.live="receiptAddress" placeholder="Jl. Aksesoris No. 88, Jakarta" class="w-full h-11 px-3.5 py-2 border border-slate-200 rounded-xl text-sm text-[#2C3E35] focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]" />
+                                <label class="block text-xs font-extrabold uppercase tracking-wider text-[#2C3E35] mb-1">Alamat Toko</label>
+                                <input type="text" wire:model.live="receiptAddress" placeholder="Jl. Aksesoris No. 88, Jakarta" class="w-full h-10 px-3 py-1.5 border border-slate-200 rounded-xl text-sm text-[#2C3E35] focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]" />
                             </div>
                             <div>
-                                <label class="block text-xs font-extrabold uppercase tracking-wider text-[#2C3E35] mb-1.5">No. Telp / WhatsApp</label>
-                                <input type="text" wire:model.live="receiptPhone" placeholder="0812-3456-7890" class="w-full h-11 px-3.5 py-2 border border-slate-200 rounded-xl text-sm text-[#2C3E35] focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]" />
+                                <label class="block text-xs font-extrabold uppercase tracking-wider text-[#2C3E35] mb-1">No. Telp / WhatsApp</label>
+                                <input type="text" wire:model.live="receiptPhone" placeholder="0812-3456-7890" class="w-full h-10 px-3 py-1.5 border border-slate-200 rounded-xl text-sm text-[#2C3E35] focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]" />
                             </div>
                         </div>
                     </div>
 
                     <!-- Footer Input -->
                     <div>
-                        <label class="block text-xs font-extrabold uppercase tracking-wider text-[#2C3E35] mb-1.5">Pesan Footer Struk</label>
-                        <textarea wire:model.live="receiptFooterText" rows="2.5" class="w-full p-3 border border-slate-200 rounded-xl text-sm text-[#2C3E35] focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]" placeholder="Terima kasih telah berbelanja!"></textarea>
+                        <label class="block text-xs font-extrabold uppercase tracking-wider text-[#2C3E35] mb-1">Pesan Footer Struk</label>
+                        <textarea wire:model.live="receiptFooterText" rows="2" class="w-full p-2.5 border border-slate-200 rounded-xl text-sm text-[#2C3E35] focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]" placeholder="Terima kasih telah berbelanja!"></textarea>
                     </div>
 
-                    <div class="pt-2">
-                        <button type="submit" class="w-full sm:w-auto px-6 py-3 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-xl text-xs uppercase tracking-wider transition shadow-sm cursor-pointer active:scale-95">
+                    <div class="pt-1">
+                        <button type="submit" class="w-full sm:w-auto px-5 py-2.5 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-xl text-xs uppercase tracking-wider transition shadow-sm cursor-pointer active:scale-95">
                             Simpan Pengaturan Printer
                         </button>
                     </div>
@@ -364,17 +364,17 @@
 
             <!-- Live Preview Panel -->
             <div class="lg:col-span-5 space-y-4">
-                <div class="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-sm sticky top-6">
-                    <div class="border-b border-slate-100 pb-3.5 mb-4 flex items-center justify-between gap-2">
+                <div class="bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-5 shadow-sm sticky top-6">
+                    <div class="border-b border-slate-100 pb-3 mb-3 flex items-center justify-between gap-2">
                         <div>
-                            <h3 class="text-base font-extrabold text-[#2C3E35] uppercase tracking-wider">Live Preview Struk</h3>
+                            <h3 class="text-sm sm:text-base font-extrabold text-[#2C3E35] uppercase tracking-wider">Live Preview Struk</h3>
                             <p class="text-xs text-[#718379] font-medium mt-0.5">Gambaran real-time hasil cetak struk thermal</p>
                         </div>
-                        <span class="px-3 py-1 rounded-xl bg-amber-50 text-amber-800 border border-amber-200/80 text-xs font-mono font-extrabold shrink-0 shadow-2xs">{{ $receiptPaperWidth }}</span>
+                        <span class="px-2.5 py-0.5 rounded-lg bg-amber-50 text-amber-800 border border-amber-200/80 text-xs font-mono font-extrabold shrink-0 shadow-2xs">{{ $receiptPaperWidth }}</span>
                     </div>
 
                     <!-- Simulated Paper Container -->
-                    <div class="bg-slate-100/90 p-4 sm:p-5 rounded-2xl flex justify-center items-start overflow-x-auto min-h-[420px] border border-slate-200/60">
+                    <div class="bg-slate-100/90 p-3 sm:p-4 rounded-xl flex justify-center items-start overflow-x-auto min-h-[380px] border border-slate-200/60">
                         @include('receipt._preview', [
                             'storeName' => $storeName,
                             'tagline' => $receiptHeaderTagline,
