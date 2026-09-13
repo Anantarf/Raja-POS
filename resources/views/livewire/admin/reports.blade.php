@@ -42,7 +42,7 @@
     <div class="flex items-center gap-1.5 sm:gap-2 border-b border-slate-200/80 pb-3 text-xs sm:text-sm font-bold print:hidden overflow-x-auto no-scrollbar whitespace-nowrap">
         @foreach([
             'sales' => 'Penjualan & Produk Terlaris',
-            'daily_summary' => 'Summary Harian (Tutup Kas)',
+            'daily_summary' => 'Summary Harian',
             'inventory' => 'Stok & Valuasi Barang',
             'payment' => 'Metode Pembayaran'
         ] as $key => $label)
