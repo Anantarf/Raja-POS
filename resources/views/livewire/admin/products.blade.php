@@ -265,14 +265,14 @@
     @else
         <div class="bg-white border border-slate-200/80 rounded-2xl shadow-sm overflow-hidden">
             <div class="overflow-x-auto">
-                <table class="w-full text-sm text-left">
-                    <thead class="bg-[#F3F6F4] text-[11px] font-extrabold text-[#5F7167] uppercase tracking-wider border-b border-slate-200">
+                <table class="w-full text-sm text-left border-collapse">
+                    <thead class="bg-[#F3F6F4] text-[11px] font-extrabold text-[#5F7167] uppercase tracking-wider border-b border-slate-200/80">
                         <tr>
-                            <th class="py-3.5 px-3 text-center w-8">
-                                <input type="checkbox" wire:model.live="selectAll" class="rounded border-slate-300 text-[#047857] focus:ring-[#047857]" title="Pilih Semua Produk" />
+                            <th class="py-3.5 px-3.5 text-center w-10 shrink-0">
+                                <input type="checkbox" wire:model.live="selectAll" class="w-4 h-4 rounded border-slate-300 text-[#047857] focus:ring-[#047857] cursor-pointer" title="Pilih Semua Produk (Halaman Ini)" />
                             </th>
-                            <th wire:click="sortBy('name')" class="py-3.5 px-4 text-left cursor-pointer hover:text-[#047857] transition select-none">
-                                <div class="flex items-center gap-1">
+                            <th wire:click="sortBy('name')" class="py-3.5 px-4 text-left cursor-pointer hover:text-[#047857] transition select-none whitespace-nowrap">
+                                <div class="flex items-center gap-1.5">
                                     <span>Barang / Layanan</span>
                                     @if($sortField === 'name')
                                         <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
@@ -281,8 +281,8 @@
                                     @endif
                                 </div>
                             </th>
-                            <th wire:click="sortBy('product_type')" class="py-3.5 px-4 text-left cursor-pointer hover:text-[#047857] transition select-none">
-                                <div class="flex items-center gap-1">
+                            <th wire:click="sortBy('product_type')" class="py-3.5 px-4 text-left cursor-pointer hover:text-[#047857] transition select-none whitespace-nowrap">
+                                <div class="flex items-center gap-1.5">
                                     <span>Jenis</span>
                                     @if($sortField === 'product_type')
                                         <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
@@ -291,9 +291,9 @@
                                     @endif
                                 </div>
                             </th>
-                            <th class="py-3.5 px-4 text-left">Kategori &amp; Merk</th>
-                            <th wire:click="sortBy('stock')" class="py-3.5 px-4 text-center cursor-pointer hover:text-[#047857] transition select-none">
-                                <div class="flex items-center justify-center gap-1">
+                            <th class="py-3.5 px-4 text-left whitespace-nowrap">Kategori &amp; Merk</th>
+                            <th wire:click="sortBy('stock')" class="py-3.5 px-4 text-center cursor-pointer hover:text-[#047857] transition select-none whitespace-nowrap">
+                                <div class="flex items-center justify-center gap-1.5">
                                     <span>Stok</span>
                                     @if($sortField === 'stock' || $sortField === 'quantity')
                                         <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
@@ -303,8 +303,8 @@
                                 </div>
                             </th>
                             @if(auth()->user()->can('cost_price.view'))
-                                <th wire:click="sortBy('cost_price')" class="py-3.5 px-4 text-right cursor-pointer hover:text-[#047857] transition select-none">
-                                    <div class="flex items-center justify-end gap-1">
+                                <th wire:click="sortBy('cost_price')" class="py-3.5 px-4 text-right cursor-pointer hover:text-[#047857] transition select-none whitespace-nowrap">
+                                    <div class="flex items-center justify-end gap-1.5">
                                         <span>Modal (COGS)</span>
                                         @if($sortField === 'cost_price')
                                             <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
@@ -314,8 +314,8 @@
                                     </div>
                                 </th>
                             @endif
-                            <th wire:click="sortBy('selling_price')" class="py-3.5 px-4 text-right cursor-pointer hover:text-[#047857] transition select-none">
-                                <div class="flex items-center justify-end gap-1">
+                            <th wire:click="sortBy('selling_price')" class="py-3.5 px-4 text-right cursor-pointer hover:text-[#047857] transition select-none whitespace-nowrap">
+                                <div class="flex items-center justify-end gap-1.5">
                                     <span>Harga Jual</span>
                                     @if($sortField === 'selling_price')
                                         <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
@@ -324,16 +324,16 @@
                                     @endif
                                 </div>
                             </th>
-                            <th class="py-3.5 px-4 text-center">Aksi</th>
+                            <th class="py-3.5 px-4 text-center whitespace-nowrap">Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100 font-medium">
                         @php $selectedMap = array_flip($selectedProducts); @endphp
                         @forelse($products as $product)
-                            <tr class="hover:bg-[#F3F6F4]/60 transition {{ isset($selectedMap[(string)$product->id]) || isset($selectedMap[$product->id]) ? 'bg-amber-50/50' : '' }}">
+                            <tr class="hover:bg-[#F3F6F4]/60 transition {{ isset($selectedMap[(string)$product->id]) || isset($selectedMap[$product->id]) ? 'bg-emerald-50/60' : '' }}">
                                 <!-- Col 0: Checkbox -->
-                                <td class="py-3.5 px-3 text-center">
-                                    <input type="checkbox" wire:model.live="selectedProducts" value="{{ $product->id }}" class="rounded border-slate-300 text-[#047857] focus:ring-[#047857]" />
+                                <td class="py-3.5 px-3.5 text-center w-10 shrink-0">
+                                    <input type="checkbox" wire:model.live="selectedProducts" value="{{ $product->id }}" class="w-4 h-4 rounded border-slate-300 text-[#047857] focus:ring-[#047857] cursor-pointer" />
                                 </td>
 
                                 <!-- Col 1: Nama Barang/Layanan & Barcode -->
