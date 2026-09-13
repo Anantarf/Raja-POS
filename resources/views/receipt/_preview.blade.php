@@ -68,10 +68,12 @@
                 <span>Rp{{ number_format($payment->amount, 0, ',', '.') }}</span>
             </div>
         @endforeach
-        <div class="flex justify-between gap-4 text-[11px]">
-            <span>KEMBALI</span>
-            <span>Rp{{ number_format($receiptSale?->change_amount ?? $fallbackChange, 0, ',', '.') }}</span>
-        </div>
+        @if(($receiptSale?->change_amount ?? $fallbackChange ?? 0) > 0)
+            <div class="flex justify-between gap-4 text-[11px]">
+                <span>KEMBALI</span>
+                <span>Rp{{ number_format($receiptSale?->change_amount ?? $fallbackChange, 0, ',', '.') }}</span>
+            </div>
+        @endif
     </div>
 
     <div class="border-t border-dashed border-black my-3"></div>

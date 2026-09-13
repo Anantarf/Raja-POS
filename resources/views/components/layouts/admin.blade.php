@@ -404,6 +404,10 @@
                     });
                 }
 
+                if (data.change && data.change !== 'Rp 0' && data.change !== 'Rp 0.00' && data.change !== 'Rp0') {
+                    append('KEMBALI: ' + data.change + '\n');
+                }
+
                 append('--------------------------------\n');
 
                 // Center align for footer

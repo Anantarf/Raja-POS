@@ -274,8 +274,8 @@
                 'address' => $address,
                 'phone' => $phone,
                 'invoiceNumber' => $receiptSale->invoice_number,
-                'date' => $receiptSale->created_at->timezone('Asia/Jakarta')->format('d/m/Y H:i'),
-                'cashier' => $showCashier ? ($receiptSale->user?->name ?? 'Kasir') : '',
+                'date' => ($receiptSale->transaction_date ?? $receiptSale->created_at)->timezone('Asia/Jakarta')->format('d/m/Y H:i'),
+                'cashier' => $showCashier ? ($receiptSale->cashier?->name ?? $receiptSale->user?->name ?? 'Kasir') : '',
                 'items' => $receiptSale->items->map(fn($it) => [
                     'name' => $it->product_name_snapshot,
                     'qty' => $it->quantity,
@@ -287,6 +287,7 @@
                     'method' => 'BAYAR ('.($p->paymentMethod?->name ?? 'Metode').')',
                     'amount' => 'Rp '.number_format($p->amount, 0, ',', '.'),
                 ])->values()->all(),
+                'change' => ($receiptSale->change_amount ?? 0) > 0 ? 'Rp '.number_format($receiptSale->change_amount, 0, ',', '.') : null,
                 'footer' => $footerText,
             ];
         @endphp

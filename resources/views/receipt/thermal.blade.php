@@ -95,9 +95,9 @@
 
     <div class="meta">
         <div><strong>No:</strong> {{ $sale->invoice_number }}</div>
-        <div><strong>Tgl:</strong> {{ $sale->transaction_date->timezone('Asia/Jakarta')->format('d/m/Y H:i') }}</div>
+        <div><strong>Tgl:</strong> {{ ($sale->transaction_date ?? $sale->created_at)->timezone('Asia/Jakarta')->format('d/m/Y H:i') }}</div>
         @if($showCashierName ?? true)
-            <div><strong>Kasir:</strong> {{ $sale->cashier->name ?? 'Kasir' }}</div>
+            <div><strong>Kasir:</strong> {{ $sale->cashier?->name ?? $sale->user?->name ?? 'Kasir' }}</div>
         @endif
     </div>
 
@@ -128,10 +128,12 @@
                 <td class="text-right">Rp{{ number_format($payment->amount, 0, ',', '.') }}</td>
             </tr>
         @endforeach
-        <tr>
-            <td class="text-left">KEMBALI</td>
-            <td class="text-right">Rp{{ number_format($sale->change_amount, 0, ',', '.') }}</td>
-        </tr>
+        @if(($sale->change_amount ?? 0) > 0)
+            <tr>
+                <td class="text-left">KEMBALI</td>
+                <td class="text-right">Rp{{ number_format($sale->change_amount, 0, ',', '.') }}</td>
+            </tr>
+        @endif
     </table>
 
     <div class="divider"></div>

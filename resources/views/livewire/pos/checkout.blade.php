@@ -690,8 +690,8 @@
                 'address' => $address,
                 'phone' => $phone,
                 'invoiceNumber' => $completedInvoiceNumber,
-                'date' => $completedSale ? $completedSale->created_at->timezone('Asia/Jakarta')->format('d/m/Y H:i') : now()->format('d/m/Y H:i'),
-                'cashier' => $showCashier ? ($completedSale->user?->name ?? auth()->user()->name) : '',
+                'date' => $completedSale ? ($completedSale->transaction_date ?? $completedSale->created_at)->timezone('Asia/Jakarta')->format('d/m/Y H:i') : now('Asia/Jakarta')->format('d/m/Y H:i'),
+                'cashier' => $showCashier ? ($completedSale->cashier?->name ?? $completedSale->user?->name ?? auth()->user()->name) : '',
                 'items' => $completedSale ? $completedSale->items->map(fn($it) => [
                     'name' => $it->product_name_snapshot,
                     'qty' => $it->quantity,
@@ -703,6 +703,7 @@
                     'method' => 'BAYAR ('.($p->paymentMethod?->name ?? 'Metode').')',
                     'amount' => 'Rp '.number_format($p->amount, 0, ',', '.'),
                 ])->values()->all() : [],
+                'change' => ($completedSale->change_amount ?? 0) > 0 ? 'Rp '.number_format($completedSale->change_amount, 0, ',', '.') : null,
                 'footer' => $footerText,
             ];
         @endphp
