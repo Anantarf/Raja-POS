@@ -654,10 +654,10 @@
 
                 </div>
             @endif
-        </div>        <!-- MODAL DIALOG INPUT SALDO AKTUAL & REKAP HARIAN (CLEAN ENTERPRISE FLAT FORM) -->
+        </div>        <!-- MODAL DIALOG INPUT SALDO AKTUAL & REKAP HARIAN (ENTERPRISE SYMMETRICAL FORM) -->
         @if($showInputModal)
             <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
-                <div class="bg-white rounded-2xl max-w-3xl w-full p-5 sm:p-6 shadow-2xl border border-slate-200 space-y-5 my-auto transition-all">
+                <div class="bg-white rounded-2xl max-w-3xl w-full p-5 sm:p-6 shadow-2xl border border-slate-200/90 space-y-5 my-auto transition-all">
                     
                     <!-- Modal Header -->
                     <div class="flex items-center justify-between border-b border-slate-100 pb-3.5">
@@ -670,25 +670,25 @@
                         </button>
                     </div>
 
-                    <!-- Step Navigation Tabs Bar (Clean Modern Enterprise Tabs) -->
-                    <div class="flex items-center border-b border-slate-200 text-xs font-semibold text-slate-600 overflow-x-auto whitespace-nowrap">
-                        <button type="button" wire:click="setModalStep(1)" class="py-2.5 px-4 border-b-2 transition flex items-center gap-2 cursor-pointer {{ $modalStep === 1 ? 'border-emerald-600 text-emerald-700 font-bold' : 'border-transparent text-slate-500 hover:text-slate-800' }}">
-                            <span class="w-4 h-4 rounded-full text-[10px] flex items-center justify-center font-extrabold {{ $modalStep === 1 ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-600' }}">1</span>
+                    <!-- Segmented Control Nav Header -->
+                    <div class="bg-slate-100/90 p-1 rounded-xl border border-slate-200/80 grid grid-cols-4 gap-1 text-xs font-medium text-slate-600">
+                        <button type="button" wire:click="setModalStep(1)" class="py-2 px-3 rounded-lg transition flex items-center justify-center gap-1.5 cursor-pointer {{ $modalStep === 1 ? 'bg-white text-slate-900 font-bold shadow-xs' : 'text-slate-600 hover:text-slate-900' }}">
+                            <span class="w-4 h-4 rounded-full text-[10px] flex items-center justify-center font-bold {{ $modalStep === 1 ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-600' }}">1</span>
                             <span>E-Wallet &amp; QRIS</span>
                         </button>
 
-                        <button type="button" wire:click="setModalStep(2)" class="py-2.5 px-4 border-b-2 transition flex items-center gap-2 cursor-pointer {{ $modalStep === 2 ? 'border-emerald-600 text-emerald-700 font-bold' : 'border-transparent text-slate-500 hover:text-slate-800' }}">
-                            <span class="w-4 h-4 rounded-full text-[10px] flex items-center justify-center font-extrabold {{ $modalStep === 2 ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-600' }}">2</span>
+                        <button type="button" wire:click="setModalStep(2)" class="py-2 px-3 rounded-lg transition flex items-center justify-center gap-1.5 cursor-pointer {{ $modalStep === 2 ? 'bg-white text-slate-900 font-bold shadow-xs' : 'text-slate-600 hover:text-slate-900' }}">
+                            <span class="w-4 h-4 rounded-full text-[10px] flex items-center justify-center font-bold {{ $modalStep === 2 ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-600' }}">2</span>
                             <span>BCA &amp; MAS</span>
                         </button>
 
-                        <button type="button" wire:click="setModalStep(3)" class="py-2.5 px-4 border-b-2 transition flex items-center gap-2 cursor-pointer {{ $modalStep === 3 ? 'border-emerald-600 text-emerald-700 font-bold' : 'border-transparent text-slate-500 hover:text-slate-800' }}">
-                            <span class="w-4 h-4 rounded-full text-[10px] flex items-center justify-center font-extrabold {{ $modalStep === 3 ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-600' }}">3</span>
+                        <button type="button" wire:click="setModalStep(3)" class="py-2 px-3 rounded-lg transition flex items-center justify-center gap-1.5 cursor-pointer {{ $modalStep === 3 ? 'bg-white text-slate-900 font-bold shadow-xs' : 'text-slate-600 hover:text-slate-900' }}">
+                            <span class="w-4 h-4 rounded-full text-[10px] flex items-center justify-center font-bold {{ $modalStep === 3 ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-600' }}">3</span>
                             <span>Multi &amp; Wahana</span>
                         </button>
 
-                        <button type="button" wire:click="setModalStep(4)" class="py-2.5 px-4 border-b-2 transition flex items-center gap-2 cursor-pointer {{ $modalStep === 4 ? 'border-emerald-600 text-emerald-700 font-bold' : 'border-transparent text-slate-500 hover:text-slate-800' }}">
-                            <span class="w-4 h-4 rounded-full text-[10px] flex items-center justify-center font-extrabold {{ $modalStep === 4 ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-600' }}">4</span>
+                        <button type="button" wire:click="setModalStep(4)" class="py-2 px-3 rounded-lg transition flex items-center justify-center gap-1.5 cursor-pointer {{ $modalStep === 4 ? 'bg-white text-slate-900 font-bold shadow-xs' : 'text-slate-600 hover:text-slate-900' }}">
+                            <span class="w-4 h-4 rounded-full text-[10px] flex items-center justify-center font-bold {{ $modalStep === 4 ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-600' }}">4</span>
                             <span>Kasir &amp; Catatan</span>
                         </button>
                     </div>
@@ -719,22 +719,22 @@
                     <!-- Modal Body Form Grid -->
                     <div class="space-y-4 max-h-[60vh] overflow-y-auto pr-1">
                         
-                        <!-- Sleek Audit Status Banner -->
+                        <!-- Sleek Audit Status Strip -->
                         @if(! $mHasDiscrepancy)
-                            <div class="p-3 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center justify-between text-xs text-emerald-900 font-medium">
+                            <div class="px-4 py-2.5 bg-emerald-50 border border-emerald-200/80 rounded-xl flex items-center justify-between text-xs text-emerald-900">
                                 <div class="flex items-center gap-2">
-                                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                                    <span>Status Audit: <strong class="text-emerald-700 font-semibold">Semua Saldo Sesuai (Rp 0 Selisih)</strong></span>
+                                    <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    <span>Audit Saldo: <strong class="font-bold text-emerald-800">Semua saldo sesuai (Selisih Rp 0)</strong></span>
                                 </div>
-                                <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 text-[11px] font-semibold">Siap Validasi</span>
+                                <span class="text-[11px] font-semibold text-emerald-700 bg-emerald-100/80 px-2 py-0.5 rounded">Siap Kunci</span>
                             </div>
                         @else
-                            <div class="p-3 bg-amber-50 border border-amber-200 rounded-xl flex items-center justify-between text-xs text-amber-900 font-medium">
+                            <div class="px-4 py-2.5 bg-amber-50 border border-amber-200/80 rounded-xl flex items-center justify-between text-xs text-amber-900">
                                 <div class="flex items-center gap-2">
-                                    <span class="w-2 h-2 rounded-full bg-amber-500"></span>
-                                    <span>Status Audit: <strong class="text-amber-800 font-semibold">Terdapat Selisih Saldo</strong>. Harap isi catatan pada Hal 4.</span>
+                                    <svg class="w-4 h-4 text-amber-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                                    <span>Audit Saldo: <strong class="font-bold text-amber-900">Terdapat selisih saldo</strong>. Lengkapi catatan pada Hal 4.</span>
                                 </div>
-                                <span class="px-2 py-0.5 rounded bg-amber-100 text-amber-800 text-[11px] font-semibold">Butuh Catatan</span>
+                                <span class="text-[11px] font-semibold text-amber-800 bg-amber-100/80 px-2 py-0.5 rounded">Perlu Catatan</span>
                             </div>
                         @endif
 
@@ -742,101 +742,109 @@
                         @if($modalStep === 1)
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <!-- DANA -->
-                                <div class="bg-white p-4.5 rounded-xl border border-slate-200 shadow-2xs space-y-3.5">
-                                    <div class="flex items-center justify-between pb-2.5 border-b border-slate-100">
+                                <div class="bg-white p-4.5 rounded-xl border border-slate-200 shadow-2xs space-y-4">
+                                    <div class="flex items-center justify-between pb-3 border-b border-slate-100">
                                         <div class="flex items-center gap-2">
                                             <span class="w-2.5 h-2.5 rounded-full bg-sky-500"></span>
                                             <span class="font-bold text-slate-900 text-sm">DANA</span>
                                             <span class="text-xs text-slate-400 font-normal">(E-Wallet)</span>
                                         </div>
                                         @if($mDanaSelisih == 0)
-                                            <span class="px-2 py-0.5 rounded text-xs bg-emerald-50 text-emerald-700 border border-emerald-200 font-semibold">SESUAI</span>
+                                            <span class="px-2.5 py-0.5 rounded-full text-xs bg-emerald-50 text-emerald-700 border border-emerald-200 font-medium">Sesuai</span>
                                         @else
-                                            <span class="px-2 py-0.5 rounded text-xs bg-rose-50 text-rose-700 border border-rose-200 font-semibold">{{ $mDanaSelisih > 0 ? '+' : '' }}Rp {{ number_format($mDanaSelisih, 0, ',', '.') }}</span>
+                                            <span class="px-2.5 py-0.5 rounded-full text-xs bg-rose-50 text-rose-700 border border-rose-200 font-medium">{{ $mDanaSelisih > 0 ? '+' : '' }}Rp {{ number_format($mDanaSelisih, 0, ',', '.') }}</span>
                                         @endif
                                     </div>
 
-                                    <!-- Ekspektasi Row -->
-                                    <div class="p-2.5 bg-slate-50 border border-slate-100 rounded-lg flex items-center justify-between text-xs">
-                                        <div>
-                                            <span class="font-medium text-slate-500 block">Ekspektasi Sistem</span>
-                                            <span class="text-[11px] text-slate-400 block">Awal: Rp {{ number_format((float)$danaSaldoAwal, 0, ',', '.') }}</span>
+                                    <!-- 2 Symmetrical Columns: Ekspektasi vs Input -->
+                                    <div class="grid grid-cols-2 gap-3 items-end">
+                                        <!-- Ekspektasi -->
+                                        <div class="space-y-1">
+                                            <span class="text-xs font-medium text-slate-500 block">Ekspektasi Sistem</span>
+                                            <div class="h-10 px-3 flex items-center bg-slate-50 border border-slate-200/80 rounded-lg text-slate-900 font-mono font-bold text-sm">
+                                                Rp {{ number_format($mDanaAkhir, 0, ',', '.') }}
+                                            </div>
+                                            <span class="text-[11px] text-slate-400 block truncate">Awal: Rp {{ number_format((float)$danaSaldoAwal, 0, ',', '.') }}</span>
                                         </div>
-                                        <span class="font-mono font-bold text-slate-900 text-sm">Rp {{ number_format($mDanaAkhir, 0, ',', '.') }}</span>
+
+                                        <!-- Saldo Aktual Input -->
+                                        <div class="space-y-1">
+                                            <span class="text-xs font-semibold text-slate-700 block">Saldo Aktual</span>
+                                            <div class="relative flex items-center h-10">
+                                                <span class="absolute left-3 font-mono text-xs text-slate-400 select-none">Rp</span>
+                                                <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('danaSaldoAndroid', val ? parseInt(val) : 0);" value="{{ $danaSaldoAndroid ? number_format((float)$danaSaldoAndroid, 0, ',', '.') : '' }}" wire:keydown.enter.prevent="nextModalStep" class="w-full h-full pl-8 pr-3 border border-slate-300 rounded-lg bg-white font-mono font-bold text-right text-sm text-slate-900 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition shadow-2xs" placeholder="0" />
+                                            </div>
+                                            <span class="text-[11px] text-slate-400 block truncate">(HP Toko)</span>
+                                        </div>
                                     </div>
 
-                                    <!-- Input Saldo Aktual -->
-                                    <div class="space-y-1">
-                                        <label class="block font-medium text-slate-700 text-xs">Saldo Aktual</label>
-                                        <div class="relative flex items-center">
-                                            <span class="absolute left-3 font-mono text-xs text-slate-400 pointer-events-none select-none">Rp</span>
-                                            <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('danaSaldoAndroid', val ? parseInt(val) : 0);" value="{{ $danaSaldoAndroid ? number_format((float)$danaSaldoAndroid, 0, ',', '.') : '' }}" wire:keydown.enter.prevent="nextModalStep" class="w-full pl-8 pr-3 py-2 border border-slate-300 rounded-lg bg-white font-mono font-bold text-right text-sm text-slate-900 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition shadow-2xs" placeholder="0" />
-                                        </div>
-                                    </div>
-
-                                    <!-- Optional Collapsible Adjustments -->
-                                    <div x-data="{ open: {{ ($danaTopup > 0 || $danaTrx > 0) ? 'true' : 'false' }} }" class="pt-1 border-t border-slate-100">
+                                    <!-- Optional Adjustments -->
+                                    <div x-data="{ open: {{ ($danaTopup > 0 || $danaTrx > 0) ? 'true' : 'false' }} }" class="pt-2 border-t border-slate-100">
                                         <button type="button" x-on:click="open = !open" class="text-xs text-slate-500 hover:text-slate-800 font-medium flex items-center gap-1.5 focus:outline-none cursor-pointer">
                                             <svg class="w-3.5 h-3.5 transition-transform text-slate-400" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                                             <span>Penyesuaian Top Up / Trx Manual</span>
                                         </button>
 
-                                        <div x-show="open" class="mt-2.5 grid grid-cols-2 gap-2.5 p-2.5 bg-slate-50 rounded-lg border border-slate-200 text-xs">
+                                        <div x-show="open" class="mt-2.5 grid grid-cols-2 gap-3 p-2.5 bg-slate-50 rounded-lg border border-slate-200/80 text-xs">
                                             <div>
-                                                <span class="text-slate-600 font-medium block text-xs mb-1">Top Up Manual</span>
-                                                <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('danaTopup', val ? parseInt(val) : 0);" value="{{ $danaTopup ? number_format((float)$danaTopup, 0, ',', '.') : '' }}" placeholder="0" class="w-full p-1.5 border border-slate-300 rounded-md bg-white font-mono font-semibold text-right text-xs focus:ring-1 focus:ring-emerald-500" />
+                                                <span class="text-slate-600 font-medium block mb-1">Top Up Manual</span>
+                                                <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('danaTopup', val ? parseInt(val) : 0);" value="{{ $danaTopup ? number_format((float)$danaTopup, 0, ',', '.') : '' }}" placeholder="0" class="w-full h-9 px-2.5 border border-slate-300 rounded-md bg-white font-mono font-semibold text-right text-xs focus:ring-1 focus:ring-emerald-500" />
                                             </div>
                                             <div>
-                                                <span class="text-slate-600 font-medium block text-xs mb-1">Trx Dipakai</span>
-                                                <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('danaTrx', val ? parseInt(val) : 0);" value="{{ $danaTrx ? number_format((float)$danaTrx, 0, ',', '.') : '' }}" placeholder="0" class="w-full p-1.5 border border-slate-300 rounded-md bg-white font-mono font-semibold text-right text-xs focus:ring-1 focus:ring-emerald-500" />
+                                                <span class="text-slate-600 font-medium block mb-1">Trx Dipakai</span>
+                                                <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('danaTrx', val ? parseInt(val) : 0);" value="{{ $danaTrx ? number_format((float)$danaTrx, 0, ',', '.') : '' }}" placeholder="0" class="w-full h-9 px-2.5 border border-slate-300 rounded-md bg-white font-mono font-semibold text-right text-xs focus:ring-1 focus:ring-emerald-500" />
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
                                 <!-- QRIS -->
-                                <div class="bg-white p-4.5 rounded-xl border border-slate-200 shadow-2xs space-y-3.5">
-                                    <div class="flex items-center justify-between pb-2.5 border-b border-slate-100">
+                                <div class="bg-white p-4.5 rounded-xl border border-slate-200 shadow-2xs space-y-4">
+                                    <div class="flex items-center justify-between pb-3 border-b border-slate-100">
                                         <div class="flex items-center gap-2">
                                             <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
                                             <span class="font-bold text-slate-900 text-sm">QRIS</span>
                                             <span class="text-xs text-slate-400 font-normal">(Gateway)</span>
                                         </div>
                                         @if($mQrisSelisih == 0)
-                                            <span class="px-2 py-0.5 rounded text-xs bg-emerald-50 text-emerald-700 border border-emerald-200 font-semibold">SESUAI</span>
+                                            <span class="px-2.5 py-0.5 rounded-full text-xs bg-emerald-50 text-emerald-700 border border-emerald-200 font-medium">Sesuai</span>
                                         @else
-                                            <span class="px-2 py-0.5 rounded text-xs bg-rose-50 text-rose-700 border border-rose-200 font-semibold">{{ $mQrisSelisih > 0 ? '+' : '' }}Rp {{ number_format($mQrisSelisih, 0, ',', '.') }}</span>
+                                            <span class="px-2.5 py-0.5 rounded-full text-xs bg-rose-50 text-rose-700 border border-rose-200 font-medium">{{ $mQrisSelisih > 0 ? '+' : '' }}Rp {{ number_format($mQrisSelisih, 0, ',', '.') }}</span>
                                         @endif
                                     </div>
 
-                                    <!-- Ekspektasi Row -->
-                                    <div class="p-2.5 bg-slate-50 border border-slate-100 rounded-lg flex items-center justify-between text-xs">
-                                        <div>
-                                            <span class="font-medium text-slate-500 block">Ekspektasi QRIS</span>
-                                            <span class="text-[11px] text-slate-400 block">POS Sales: Rp {{ number_format($dailySummaryData['qris_pembayaran'], 0, ',', '.') }}</span>
+                                    <!-- 2 Symmetrical Columns: Ekspektasi vs Input -->
+                                    <div class="grid grid-cols-2 gap-3 items-end">
+                                        <!-- Ekspektasi -->
+                                        <div class="space-y-1">
+                                            <span class="text-xs font-medium text-slate-500 block">Ekspektasi QRIS</span>
+                                            <div class="h-10 px-3 flex items-center bg-slate-50 border border-slate-200/80 rounded-lg text-emerald-700 font-mono font-bold text-sm">
+                                                Rp {{ number_format($mQrisExpected, 0, ',', '.') }}
+                                            </div>
+                                            <span class="text-[11px] text-slate-400 block truncate">POS: Rp {{ number_format($dailySummaryData['qris_pembayaran'], 0, ',', '.') }}</span>
                                         </div>
-                                        <span class="font-mono font-bold text-emerald-700 text-sm">Rp {{ number_format($mQrisExpected, 0, ',', '.') }}</span>
-                                    </div>
 
-                                    <!-- Input Saldo Aktual -->
-                                    <div class="space-y-1">
-                                        <label class="block font-medium text-slate-700 text-xs">Saldo Aktual EDC / HP</label>
-                                        <div class="relative flex items-center">
-                                            <span class="absolute left-3 font-mono text-xs text-slate-400 pointer-events-none select-none">Rp</span>
-                                            <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('qrisSaldoAndroid', val ? parseInt(val) : 0);" value="{{ $qrisSaldoAndroid ? number_format((float)$qrisSaldoAndroid, 0, ',', '.') : '' }}" wire:keydown.enter.prevent="nextModalStep" class="w-full pl-8 pr-3 py-2 border border-slate-300 rounded-lg bg-white font-mono font-bold text-right text-sm text-slate-900 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition shadow-2xs" placeholder="0" />
+                                        <!-- Saldo Aktual Input -->
+                                        <div class="space-y-1">
+                                            <span class="text-xs font-semibold text-slate-700 block">Saldo Aktual</span>
+                                            <div class="relative flex items-center h-10">
+                                                <span class="absolute left-3 font-mono text-xs text-slate-400 select-none">Rp</span>
+                                                <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('qrisSaldoAndroid', val ? parseInt(val) : 0);" value="{{ $qrisSaldoAndroid ? number_format((float)$qrisSaldoAndroid, 0, ',', '.') : '' }}" wire:keydown.enter.prevent="nextModalStep" class="w-full h-full pl-8 pr-3 border border-slate-300 rounded-lg bg-white font-mono font-bold text-right text-sm text-slate-900 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition shadow-2xs" placeholder="0" />
+                                            </div>
+                                            <span class="text-[11px] text-slate-400 block truncate">(EDC / HP)</span>
                                         </div>
                                     </div>
 
                                     <!-- Optional Tarik Tunai QRIS -->
-                                    <div x-data="{ open: {{ ($qrisTarikTunai > 0) ? 'true' : 'false' }} }" class="pt-1 border-t border-slate-100">
+                                    <div x-data="{ open: {{ ($qrisTarikTunai > 0) ? 'true' : 'false' }} }" class="pt-2 border-t border-slate-100">
                                         <button type="button" x-on:click="open = !open" class="text-xs text-slate-500 hover:text-slate-800 font-medium flex items-center gap-1.5 focus:outline-none cursor-pointer">
                                             <svg class="w-3.5 h-3.5 transition-transform text-slate-400" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                                             <span>Penyesuaian Tarik Tunai QRIS</span>
                                         </button>
 
-                                        <div x-show="open" class="mt-2.5 p-2.5 bg-slate-50 rounded-lg border border-slate-200 text-xs">
-                                            <span class="text-slate-600 font-medium block text-xs mb-1">Tarik Tunai QRIS</span>
-                                            <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('qrisTarikTunai', val ? parseInt(val) : 0);" value="{{ $qrisTarikTunai ? number_format((float)$qrisTarikTunai, 0, ',', '.') : '' }}" placeholder="0" class="w-full p-1.5 border border-slate-300 rounded-md bg-white font-mono font-semibold text-right text-xs focus:ring-1 focus:ring-emerald-500" />
+                                        <div x-show="open" class="mt-2.5 p-2.5 bg-slate-50 rounded-lg border border-slate-200/80 text-xs">
+                                            <span class="text-slate-600 font-medium block mb-1">Tarik Tunai QRIS</span>
+                                            <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('qrisTarikTunai', val ? parseInt(val) : 0);" value="{{ $qrisTarikTunai ? number_format((float)$qrisTarikTunai, 0, ',', '.') : '' }}" placeholder="0" class="w-full h-9 px-2.5 border border-slate-300 rounded-md bg-white font-mono font-semibold text-right text-xs focus:ring-1 focus:ring-emerald-500" />
                                         </div>
                                     </div>
                                 </div>
@@ -846,106 +854,114 @@
                         @elseif($modalStep === 2)
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <!-- BANK BCA -->
-                                <div class="bg-white p-4.5 rounded-xl border border-slate-200 shadow-2xs space-y-3.5">
-                                    <div class="flex items-center justify-between pb-2.5 border-b border-slate-100">
+                                <div class="bg-white p-4.5 rounded-xl border border-slate-200 shadow-2xs space-y-4">
+                                    <div class="flex items-center justify-between pb-3 border-b border-slate-100">
                                         <div class="flex items-center gap-2">
                                             <span class="w-2.5 h-2.5 rounded-full bg-blue-600"></span>
                                             <span class="font-bold text-slate-900 text-sm">BANK BCA</span>
                                             <span class="text-xs text-slate-400 font-normal">(Utama)</span>
                                         </div>
                                         @if($mBcaSelisih == 0)
-                                            <span class="px-2 py-0.5 rounded text-xs bg-emerald-50 text-emerald-700 border border-emerald-200 font-semibold">SESUAI</span>
+                                            <span class="px-2.5 py-0.5 rounded-full text-xs bg-emerald-50 text-emerald-700 border border-emerald-200 font-medium">Sesuai</span>
                                         @else
-                                            <span class="px-2 py-0.5 rounded text-xs bg-rose-50 text-rose-700 border border-rose-200 font-semibold">{{ $mBcaSelisih > 0 ? '+' : '' }}Rp {{ number_format($mBcaSelisih, 0, ',', '.') }}</span>
+                                            <span class="px-2.5 py-0.5 rounded-full text-xs bg-rose-50 text-rose-700 border border-rose-200 font-medium">{{ $mBcaSelisih > 0 ? '+' : '' }}Rp {{ number_format($mBcaSelisih, 0, ',', '.') }}</span>
                                         @endif
                                     </div>
 
-                                    <!-- Ekspektasi Row -->
-                                    <div class="p-2.5 bg-slate-50 border border-slate-100 rounded-lg flex items-center justify-between text-xs">
-                                        <div>
-                                            <span class="font-medium text-slate-500 block">Ekspektasi Sistem</span>
-                                            <span class="text-[11px] text-slate-400 block">Awal: Rp {{ number_format((float)$bcaSaldoAwal, 0, ',', '.') }}</span>
+                                    <!-- 2 Symmetrical Columns: Ekspektasi vs Input -->
+                                    <div class="grid grid-cols-2 gap-3 items-end">
+                                        <!-- Ekspektasi -->
+                                        <div class="space-y-1">
+                                            <span class="text-xs font-medium text-slate-500 block">Ekspektasi Sistem</span>
+                                            <div class="h-10 px-3 flex items-center bg-slate-50 border border-slate-200/80 rounded-lg text-slate-900 font-mono font-bold text-sm">
+                                                Rp {{ number_format($mBcaAkhir, 0, ',', '.') }}
+                                            </div>
+                                            <span class="text-[11px] text-slate-400 block truncate">Awal: Rp {{ number_format((float)$bcaSaldoAwal, 0, ',', '.') }}</span>
                                         </div>
-                                        <span class="font-mono font-bold text-slate-900 text-sm">Rp {{ number_format($mBcaAkhir, 0, ',', '.') }}</span>
+
+                                        <!-- Saldo BCA Input -->
+                                        <div class="space-y-1">
+                                            <span class="text-xs font-semibold text-slate-700 block">Saldo M-Banking</span>
+                                            <div class="relative flex items-center h-10">
+                                                <span class="absolute left-3 font-mono text-xs text-slate-400 select-none">Rp</span>
+                                                <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('bcaSaldoAndroid', val ? parseInt(val) : 0);" value="{{ $bcaSaldoAndroid ? number_format((float)$bcaSaldoAndroid, 0, ',', '.') : '' }}" wire:keydown.enter.prevent="nextModalStep" class="w-full h-full pl-8 pr-3 border border-slate-300 rounded-lg bg-white font-mono font-bold text-right text-sm text-slate-900 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition shadow-2xs" placeholder="0" />
+                                            </div>
+                                            <span class="text-[11px] text-slate-400 block truncate">(Rek BCA)</span>
+                                        </div>
                                     </div>
 
-                                    <!-- Input Saldo BCA -->
-                                    <div class="space-y-1">
-                                        <label class="block font-medium text-slate-700 text-xs">Saldo M-Banking BCA</label>
-                                        <div class="relative flex items-center">
-                                            <span class="absolute left-3 font-mono text-xs text-slate-400 pointer-events-none select-none">Rp</span>
-                                            <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('bcaSaldoAndroid', val ? parseInt(val) : 0);" value="{{ $bcaSaldoAndroid ? number_format((float)$bcaSaldoAndroid, 0, ',', '.') : '' }}" wire:keydown.enter.prevent="nextModalStep" class="w-full pl-8 pr-3 py-2 border border-slate-300 rounded-lg bg-white font-mono font-bold text-right text-sm text-slate-900 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition shadow-2xs" placeholder="0" />
-                                        </div>
-                                    </div>
-
-                                    <!-- Optional Collapsible Adjustments -->
-                                    <div x-data="{ open: {{ ($bcaTopup > 0 || $bcaTrx > 0) ? 'true' : 'false' }} }" class="pt-1 border-t border-slate-100">
+                                    <!-- Optional Adjustments -->
+                                    <div x-data="{ open: {{ ($bcaTopup > 0 || $bcaTrx > 0) ? 'true' : 'false' }} }" class="pt-2 border-t border-slate-100">
                                         <button type="button" x-on:click="open = !open" class="text-xs text-slate-500 hover:text-slate-800 font-medium flex items-center gap-1.5 focus:outline-none cursor-pointer">
                                             <svg class="w-3.5 h-3.5 transition-transform text-slate-400" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                                             <span>Penyesuaian Top Up / Trx Manual</span>
                                         </button>
 
-                                        <div x-show="open" class="mt-2.5 grid grid-cols-2 gap-2.5 p-2.5 bg-slate-50 rounded-lg border border-slate-200 text-xs">
+                                        <div x-show="open" class="mt-2.5 grid grid-cols-2 gap-3 p-2.5 bg-slate-50 rounded-lg border border-slate-200/80 text-xs">
                                             <div>
-                                                <span class="text-slate-600 font-medium block text-xs mb-1">Top Up Manual</span>
-                                                <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('bcaTopup', val ? parseInt(val) : 0);" value="{{ $bcaTopup ? number_format((float)$bcaTopup, 0, ',', '.') : '' }}" placeholder="0" class="w-full p-1.5 border border-slate-300 rounded-md bg-white font-mono font-semibold text-right text-xs focus:ring-1 focus:ring-emerald-500" />
+                                                <span class="text-slate-600 font-medium block mb-1">Top Up Manual</span>
+                                                <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('bcaTopup', val ? parseInt(val) : 0);" value="{{ $bcaTopup ? number_format((float)$bcaTopup, 0, ',', '.') : '' }}" placeholder="0" class="w-full h-9 px-2.5 border border-slate-300 rounded-md bg-white font-mono font-semibold text-right text-xs focus:ring-1 focus:ring-emerald-500" />
                                             </div>
                                             <div>
-                                                <span class="text-slate-600 font-medium block text-xs mb-1">Trx Dipakai</span>
-                                                <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('bcaTrx', val ? parseInt(val) : 0);" value="{{ $bcaTrx ? number_format((float)$bcaTrx, 0, ',', '.') : '' }}" placeholder="0" class="w-full p-1.5 border border-slate-300 rounded-md bg-white font-mono font-semibold text-right text-xs focus:ring-1 focus:ring-emerald-500" />
+                                                <span class="text-slate-600 font-medium block mb-1">Trx Dipakai</span>
+                                                <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('bcaTrx', val ? parseInt(val) : 0);" value="{{ $bcaTrx ? number_format((float)$bcaTrx, 0, ',', '.') : '' }}" placeholder="0" class="w-full h-9 px-2.5 border border-slate-300 rounded-md bg-white font-mono font-semibold text-right text-xs focus:ring-1 focus:ring-emerald-500" />
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
                                 <!-- BANK MAS -->
-                                <div class="bg-white p-4.5 rounded-xl border border-slate-200 shadow-2xs space-y-3.5">
-                                    <div class="flex items-center justify-between pb-2.5 border-b border-slate-100">
+                                <div class="bg-white p-4.5 rounded-xl border border-slate-200 shadow-2xs space-y-4">
+                                    <div class="flex items-center justify-between pb-3 border-b border-slate-100">
                                         <div class="flex items-center gap-2">
                                             <span class="w-2.5 h-2.5 rounded-full bg-indigo-600"></span>
                                             <span class="font-bold text-slate-900 text-sm">BANK MAS</span>
                                             <span class="text-xs text-slate-400 font-normal">(Ops)</span>
                                         </div>
                                         @if($mBankmasSelisih == 0)
-                                            <span class="px-2 py-0.5 rounded text-xs bg-emerald-50 text-emerald-700 border border-emerald-200 font-semibold">SESUAI</span>
+                                            <span class="px-2.5 py-0.5 rounded-full text-xs bg-emerald-50 text-emerald-700 border border-emerald-200 font-medium">Sesuai</span>
                                         @else
-                                            <span class="px-2 py-0.5 rounded text-xs bg-rose-50 text-rose-700 border border-rose-200 font-semibold">{{ $mBankmasSelisih > 0 ? '+' : '' }}Rp {{ number_format($mBankmasSelisih, 0, ',', '.') }}</span>
+                                            <span class="px-2.5 py-0.5 rounded-full text-xs bg-rose-50 text-rose-700 border border-rose-200 font-medium">{{ $mBankmasSelisih > 0 ? '+' : '' }}Rp {{ number_format($mBankmasSelisih, 0, ',', '.') }}</span>
                                         @endif
                                     </div>
 
-                                    <!-- Ekspektasi Row -->
-                                    <div class="p-2.5 bg-slate-50 border border-slate-100 rounded-lg flex items-center justify-between text-xs">
-                                        <div>
-                                            <span class="font-medium text-slate-500 block">Ekspektasi Sistem</span>
-                                            <span class="text-[11px] text-slate-400 block">Awal: Rp {{ number_format((float)$bankmasSaldoAwal, 0, ',', '.') }}</span>
+                                    <!-- 2 Symmetrical Columns: Ekspektasi vs Input -->
+                                    <div class="grid grid-cols-2 gap-3 items-end">
+                                        <!-- Ekspektasi -->
+                                        <div class="space-y-1">
+                                            <span class="text-xs font-medium text-slate-500 block">Ekspektasi Sistem</span>
+                                            <div class="h-10 px-3 flex items-center bg-slate-50 border border-slate-200/80 rounded-lg text-slate-900 font-mono font-bold text-sm">
+                                                Rp {{ number_format($mBankmasAkhir, 0, ',', '.') }}
+                                            </div>
+                                            <span class="text-[11px] text-slate-400 block truncate">Awal: Rp {{ number_format((float)$bankmasSaldoAwal, 0, ',', '.') }}</span>
                                         </div>
-                                        <span class="font-mono font-bold text-slate-900 text-sm">Rp {{ number_format($mBankmasAkhir, 0, ',', '.') }}</span>
+
+                                        <!-- Saldo MAS Input -->
+                                        <div class="space-y-1">
+                                            <span class="text-xs font-semibold text-slate-700 block">Saldo M-Banking</span>
+                                            <div class="relative flex items-center h-10">
+                                                <span class="absolute left-3 font-mono text-xs text-slate-400 select-none">Rp</span>
+                                                <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('bankmasSaldoAndroid', val ? parseInt(val) : 0);" value="{{ $bankmasSaldoAndroid ? number_format((float)$bankmasSaldoAndroid, 0, ',', '.') : '' }}" wire:keydown.enter.prevent="nextModalStep" class="w-full h-full pl-8 pr-3 border border-slate-300 rounded-lg bg-white font-mono font-bold text-right text-sm text-slate-900 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition shadow-2xs" placeholder="0" />
+                                            </div>
+                                            <span class="text-[11px] text-slate-400 block truncate">(Rek MAS)</span>
+                                        </div>
                                     </div>
 
-                                    <!-- Input Saldo Bank MAS -->
-                                    <div class="space-y-1">
-                                        <label class="block font-medium text-slate-700 text-xs">Saldo HP Bank MAS</label>
-                                        <div class="relative flex items-center">
-                                            <span class="absolute left-3 font-mono text-xs text-slate-400 pointer-events-none select-none">Rp</span>
-                                            <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('bankmasSaldoAndroid', val ? parseInt(val) : 0);" value="{{ $bankmasSaldoAndroid ? number_format((float)$bankmasSaldoAndroid, 0, ',', '.') : '' }}" wire:keydown.enter.prevent="nextModalStep" class="w-full pl-8 pr-3 py-2 border border-slate-300 rounded-lg bg-white font-mono font-bold text-right text-sm text-slate-900 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition shadow-2xs" placeholder="0" />
-                                        </div>
-                                    </div>
-
-                                    <!-- Optional Collapsible Adjustments -->
-                                    <div x-data="{ open: {{ ($bankmasTopup > 0 || $bankmasTrx > 0) ? 'true' : 'false' }} }" class="pt-1 border-t border-slate-100">
+                                    <!-- Optional Adjustments -->
+                                    <div x-data="{ open: {{ ($bankmasTopup > 0 || $bankmasTrx > 0) ? 'true' : 'false' }} }" class="pt-2 border-t border-slate-100">
                                         <button type="button" x-on:click="open = !open" class="text-xs text-slate-500 hover:text-slate-800 font-medium flex items-center gap-1.5 focus:outline-none cursor-pointer">
                                             <svg class="w-3.5 h-3.5 transition-transform text-slate-400" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                                             <span>Penyesuaian Top Up / Trx Manual</span>
                                         </button>
 
-                                        <div x-show="open" class="mt-2.5 grid grid-cols-2 gap-2.5 p-2.5 bg-slate-50 rounded-lg border border-slate-200 text-xs">
+                                        <div x-show="open" class="mt-2.5 grid grid-cols-2 gap-3 p-2.5 bg-slate-50 rounded-lg border border-slate-200/80 text-xs">
                                             <div>
-                                                <span class="text-slate-600 font-medium block text-xs mb-1">Top Up Manual</span>
-                                                <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('bankmasTopup', val ? parseInt(val) : 0);" value="{{ $bankmasTopup ? number_format((float)$bankmasTopup, 0, ',', '.') : '' }}" placeholder="0" class="w-full p-1.5 border border-slate-300 rounded-md bg-white font-mono font-semibold text-right text-xs focus:ring-1 focus:ring-emerald-500" />
+                                                <span class="text-slate-600 font-medium block mb-1">Top Up Manual</span>
+                                                <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('bankmasTopup', val ? parseInt(val) : 0);" value="{{ $bankmasTopup ? number_format((float)$bankmasTopup, 0, ',', '.') : '' }}" placeholder="0" class="w-full h-9 px-2.5 border border-slate-300 rounded-md bg-white font-mono font-semibold text-right text-xs focus:ring-1 focus:ring-emerald-500" />
                                             </div>
                                             <div>
-                                                <span class="text-slate-600 font-medium block text-xs mb-1">Trx Dipakai</span>
-                                                <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('bankmasTrx', val ? parseInt(val) : 0);" value="{{ $bankmasTrx ? number_format((float)$bankmasTrx, 0, ',', '.') : '' }}" placeholder="0" class="w-full p-1.5 border border-slate-300 rounded-md bg-white font-mono font-semibold text-right text-xs focus:ring-1 focus:ring-emerald-500" />
+                                                <span class="text-slate-600 font-medium block mb-1">Trx Dipakai</span>
+                                                <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('bankmasTrx', val ? parseInt(val) : 0);" value="{{ $bankmasTrx ? number_format((float)$bankmasTrx, 0, ',', '.') : '' }}" placeholder="0" class="w-full h-9 px-2.5 border border-slate-300 rounded-md bg-white font-mono font-semibold text-right text-xs focus:ring-1 focus:ring-emerald-500" />
                                             </div>
                                         </div>
                                     </div>
@@ -956,106 +972,114 @@
                         @elseif($modalStep === 3)
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <!-- MULTI -->
-                                <div class="bg-white p-4.5 rounded-xl border border-slate-200 shadow-2xs space-y-3.5">
-                                    <div class="flex items-center justify-between pb-2.5 border-b border-slate-100">
+                                <div class="bg-white p-4.5 rounded-xl border border-slate-200 shadow-2xs space-y-4">
+                                    <div class="flex items-center justify-between pb-3 border-b border-slate-100">
                                         <div class="flex items-center gap-2">
                                             <span class="w-2.5 h-2.5 rounded-full bg-purple-600"></span>
                                             <span class="font-bold text-slate-900 text-sm">MULTI</span>
                                             <span class="text-xs text-slate-400 font-normal">(PPOB)</span>
                                         </div>
                                         @if($mMultiSelisih == 0)
-                                            <span class="px-2 py-0.5 rounded text-xs bg-emerald-50 text-emerald-700 border border-emerald-200 font-semibold">SESUAI</span>
+                                            <span class="px-2.5 py-0.5 rounded-full text-xs bg-emerald-50 text-emerald-700 border border-emerald-200 font-medium">Sesuai</span>
                                         @else
-                                            <span class="px-2 py-0.5 rounded text-xs bg-rose-50 text-rose-700 border border-rose-200 font-semibold">{{ $mMultiSelisih > 0 ? '+' : '' }}Rp {{ number_format($mMultiSelisih, 0, ',', '.') }}</span>
+                                            <span class="px-2.5 py-0.5 rounded-full text-xs bg-rose-50 text-rose-700 border border-rose-200 font-medium">{{ $mMultiSelisih > 0 ? '+' : '' }}Rp {{ number_format($mMultiSelisih, 0, ',', '.') }}</span>
                                         @endif
                                     </div>
 
-                                    <!-- Ekspektasi Row -->
-                                    <div class="p-2.5 bg-slate-50 border border-slate-100 rounded-lg flex items-center justify-between text-xs">
-                                        <div>
-                                            <span class="font-medium text-slate-500 block">Ekspektasi Sistem</span>
-                                            <span class="text-[11px] text-slate-400 block">Awal: Rp {{ number_format((float)$multiSaldoAwal, 0, ',', '.') }}</span>
+                                    <!-- 2 Symmetrical Columns: Ekspektasi vs Input -->
+                                    <div class="grid grid-cols-2 gap-3 items-end">
+                                        <!-- Ekspektasi -->
+                                        <div class="space-y-1">
+                                            <span class="text-xs font-medium text-slate-500 block">Ekspektasi Sistem</span>
+                                            <div class="h-10 px-3 flex items-center bg-slate-50 border border-slate-200/80 rounded-lg text-slate-900 font-mono font-bold text-sm">
+                                                Rp {{ number_format($mMultiAkhir, 0, ',', '.') }}
+                                            </div>
+                                            <span class="text-[11px] text-slate-400 block truncate">Awal: Rp {{ number_format((float)$multiSaldoAwal, 0, ',', '.') }}</span>
                                         </div>
-                                        <span class="font-mono font-bold text-slate-900 text-sm">Rp {{ number_format($mMultiAkhir, 0, ',', '.') }}</span>
+
+                                        <!-- Saldo Multi Input -->
+                                        <div class="space-y-1">
+                                            <span class="text-xs font-semibold text-slate-700 block">Saldo Aplikasi</span>
+                                            <div class="relative flex items-center h-10">
+                                                <span class="absolute left-3 font-mono text-xs text-slate-400 select-none">Rp</span>
+                                                <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('multiSaldoAndroid', val ? parseInt(val) : 0);" value="{{ $multiSaldoAndroid ? number_format((float)$multiSaldoAndroid, 0, ',', '.') : '' }}" wire:keydown.enter.prevent="nextModalStep" class="w-full h-full pl-8 pr-3 border border-slate-300 rounded-lg bg-white font-mono font-bold text-right text-sm text-slate-900 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition shadow-2xs" placeholder="0" />
+                                            </div>
+                                            <span class="text-[11px] text-slate-400 block truncate">(Multi PPOB)</span>
+                                        </div>
                                     </div>
 
-                                    <!-- Input Saldo Multi -->
-                                    <div class="space-y-1">
-                                        <label class="block font-medium text-slate-700 text-xs">Saldo Aplikasi Multi</label>
-                                        <div class="relative flex items-center">
-                                            <span class="absolute left-3 font-mono text-xs text-slate-400 pointer-events-none select-none">Rp</span>
-                                            <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('multiSaldoAndroid', val ? parseInt(val) : 0);" value="{{ $multiSaldoAndroid ? number_format((float)$multiSaldoAndroid, 0, ',', '.') : '' }}" wire:keydown.enter.prevent="nextModalStep" class="w-full pl-8 pr-3 py-2 border border-slate-300 rounded-lg bg-white font-mono font-bold text-right text-sm text-slate-900 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition shadow-2xs" placeholder="0" />
-                                        </div>
-                                    </div>
-
-                                    <!-- Optional Collapsible Adjustments -->
-                                    <div x-data="{ open: {{ ($multiTopup > 0 || $multiTrx > 0) ? 'true' : 'false' }} }" class="pt-1 border-t border-slate-100">
+                                    <!-- Optional Adjustments -->
+                                    <div x-data="{ open: {{ ($multiTopup > 0 || $multiTrx > 0) ? 'true' : 'false' }} }" class="pt-2 border-t border-slate-100">
                                         <button type="button" x-on:click="open = !open" class="text-xs text-slate-500 hover:text-slate-800 font-medium flex items-center gap-1.5 focus:outline-none cursor-pointer">
                                             <svg class="w-3.5 h-3.5 transition-transform text-slate-400" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                                             <span>Penyesuaian Top Up / Trx Manual</span>
                                         </button>
 
-                                        <div x-show="open" class="mt-2.5 grid grid-cols-2 gap-2.5 p-2.5 bg-slate-50 rounded-lg border border-slate-200 text-xs">
+                                        <div x-show="open" class="mt-2.5 grid grid-cols-2 gap-3 p-2.5 bg-slate-50 rounded-lg border border-slate-200/80 text-xs">
                                             <div>
-                                                <span class="text-slate-600 font-medium block text-xs mb-1">Top Up Manual</span>
-                                                <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('multiTopup', val ? parseInt(val) : 0);" value="{{ $multiTopup ? number_format((float)$multiTopup, 0, ',', '.') : '' }}" placeholder="0" class="w-full p-1.5 border border-slate-300 rounded-md bg-white font-mono font-semibold text-right text-xs focus:ring-1 focus:ring-emerald-500" />
+                                                <span class="text-slate-600 font-medium block mb-1">Top Up Manual</span>
+                                                <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('multiTopup', val ? parseInt(val) : 0);" value="{{ $multiTopup ? number_format((float)$multiTopup, 0, ',', '.') : '' }}" placeholder="0" class="w-full h-9 px-2.5 border border-slate-300 rounded-md bg-white font-mono font-semibold text-right text-xs focus:ring-1 focus:ring-emerald-500" />
                                             </div>
                                             <div>
-                                                <span class="text-slate-600 font-medium block text-xs mb-1">Trx Dipakai</span>
-                                                <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('multiTrx', val ? parseInt(val) : 0);" value="{{ $multiTrx ? number_format((float)$multiTrx, 0, ',', '.') : '' }}" placeholder="0" class="w-full p-1.5 border border-slate-300 rounded-md bg-white font-mono font-semibold text-right text-xs focus:ring-1 focus:ring-emerald-500" />
+                                                <span class="text-slate-600 font-medium block mb-1">Trx Dipakai</span>
+                                                <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('multiTrx', val ? parseInt(val) : 0);" value="{{ $multiTrx ? number_format((float)$multiTrx, 0, ',', '.') : '' }}" placeholder="0" class="w-full h-9 px-2.5 border border-slate-300 rounded-md bg-white font-mono font-semibold text-right text-xs focus:ring-1 focus:ring-emerald-500" />
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
                                 <!-- WAHANA -->
-                                <div class="bg-white p-4.5 rounded-xl border border-slate-200 shadow-2xs space-y-3.5">
-                                    <div class="flex items-center justify-between pb-2.5 border-b border-slate-100">
+                                <div class="bg-white p-4.5 rounded-xl border border-slate-200 shadow-2xs space-y-4">
+                                    <div class="flex items-center justify-between pb-3 border-b border-slate-100">
                                         <div class="flex items-center gap-2">
                                             <span class="w-2.5 h-2.5 rounded-full bg-amber-600"></span>
                                             <span class="font-bold text-slate-900 text-sm">WAHANA</span>
                                             <span class="text-xs text-slate-400 font-normal">(Ekspedisi)</span>
                                         </div>
                                         @if($mWahanaSelisih == 0)
-                                            <span class="px-2 py-0.5 rounded text-xs bg-emerald-50 text-emerald-700 border border-emerald-200 font-semibold">SESUAI</span>
+                                            <span class="px-2.5 py-0.5 rounded-full text-xs bg-emerald-50 text-emerald-700 border border-emerald-200 font-medium">Sesuai</span>
                                         @else
-                                            <span class="px-2 py-0.5 rounded text-xs bg-rose-50 text-rose-700 border border-rose-200 font-semibold">{{ $mWahanaSelisih > 0 ? '+' : '' }}Rp {{ number_format($mWahanaSelisih, 0, ',', '.') }}</span>
+                                            <span class="px-2.5 py-0.5 rounded-full text-xs bg-rose-50 text-rose-700 border border-rose-200 font-medium">{{ $mWahanaSelisih > 0 ? '+' : '' }}Rp {{ number_format($mWahanaSelisih, 0, ',', '.') }}</span>
                                         @endif
                                     </div>
 
-                                    <!-- Ekspektasi Row -->
-                                    <div class="p-2.5 bg-slate-50 border border-slate-100 rounded-lg flex items-center justify-between text-xs">
-                                        <div>
-                                            <span class="font-medium text-slate-500 block">Ekspektasi Sistem</span>
-                                            <span class="text-[11px] text-slate-400 block">Awal: Rp {{ number_format((float)$wahanaSaldoAwal, 0, ',', '.') }}</span>
+                                    <!-- 2 Symmetrical Columns: Ekspektasi vs Input -->
+                                    <div class="grid grid-cols-2 gap-3 items-end">
+                                        <!-- Ekspektasi -->
+                                        <div class="space-y-1">
+                                            <span class="text-xs font-medium text-slate-500 block">Ekspektasi Sistem</span>
+                                            <div class="h-10 px-3 flex items-center bg-slate-50 border border-slate-200/80 rounded-lg text-slate-900 font-mono font-bold text-sm">
+                                                Rp {{ number_format($mWahanaAkhir, 0, ',', '.') }}
+                                            </div>
+                                            <span class="text-[11px] text-slate-400 block truncate">Awal: Rp {{ number_format((float)$wahanaSaldoAwal, 0, ',', '.') }}</span>
                                         </div>
-                                        <span class="font-mono font-bold text-slate-900 text-sm">Rp {{ number_format($mWahanaAkhir, 0, ',', '.') }}</span>
+
+                                        <!-- Saldo Wahana Input -->
+                                        <div class="space-y-1">
+                                            <span class="text-xs font-semibold text-slate-700 block">Saldo Agen</span>
+                                            <div class="relative flex items-center h-10">
+                                                <span class="absolute left-3 font-mono text-xs text-slate-400 select-none">Rp</span>
+                                                <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('wahanaSaldoAndroid', val ? parseInt(val) : 0);" value="{{ $wahanaSaldoAndroid ? number_format((float)$wahanaSaldoAndroid, 0, ',', '.') : '' }}" wire:keydown.enter.prevent="nextModalStep" class="w-full h-full pl-8 pr-3 border border-slate-300 rounded-lg bg-white font-mono font-bold text-right text-sm text-slate-900 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition shadow-2xs" placeholder="0" />
+                                            </div>
+                                            <span class="text-[11px] text-slate-400 block truncate">(Wahana Express)</span>
+                                        </div>
                                     </div>
 
-                                    <!-- Input Saldo Wahana -->
-                                    <div class="space-y-1">
-                                        <label class="block font-medium text-slate-700 text-xs">Saldo Agen Wahana</label>
-                                        <div class="relative flex items-center">
-                                            <span class="absolute left-3 font-mono text-xs text-slate-400 pointer-events-none select-none">Rp</span>
-                                            <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('wahanaSaldoAndroid', val ? parseInt(val) : 0);" value="{{ $wahanaSaldoAndroid ? number_format((float)$wahanaSaldoAndroid, 0, ',', '.') : '' }}" wire:keydown.enter.prevent="nextModalStep" class="w-full pl-8 pr-3 py-2 border border-slate-300 rounded-lg bg-white font-mono font-bold text-right text-sm text-slate-900 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition shadow-2xs" placeholder="0" />
-                                        </div>
-                                    </div>
-
-                                    <!-- Optional Collapsible Adjustments -->
-                                    <div x-data="{ open: {{ ($wahanaTopup > 0 || $wahanaTrx > 0) ? 'true' : 'false' }} }" class="pt-1 border-t border-slate-100">
+                                    <!-- Optional Adjustments -->
+                                    <div x-data="{ open: {{ ($wahanaTopup > 0 || $wahanaTrx > 0) ? 'true' : 'false' }} }" class="pt-2 border-t border-slate-100">
                                         <button type="button" x-on:click="open = !open" class="text-xs text-slate-500 hover:text-slate-800 font-medium flex items-center gap-1.5 focus:outline-none cursor-pointer">
                                             <svg class="w-3.5 h-3.5 transition-transform text-slate-400" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                                             <span>Penyesuaian Top Up / Trx Manual</span>
                                         </button>
 
-                                        <div x-show="open" class="mt-2.5 grid grid-cols-2 gap-2.5 p-2.5 bg-slate-50 rounded-lg border border-slate-200 text-xs">
+                                        <div x-show="open" class="mt-2.5 grid grid-cols-2 gap-3 p-2.5 bg-slate-50 rounded-lg border border-slate-200/80 text-xs">
                                             <div>
-                                                <span class="text-slate-600 font-medium block text-xs mb-1">Top Up Manual</span>
-                                                <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('wahanaTopup', val ? parseInt(val) : 0);" value="{{ $wahanaTopup ? number_format((float)$wahanaTopup, 0, ',', '.') : '' }}" placeholder="0" class="w-full p-1.5 border border-slate-300 rounded-md bg-white font-mono font-semibold text-right text-xs focus:ring-1 focus:ring-emerald-500" />
+                                                <span class="text-slate-600 font-medium block mb-1">Top Up Manual</span>
+                                                <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('wahanaTopup', val ? parseInt(val) : 0);" value="{{ $wahanaTopup ? number_format((float)$wahanaTopup, 0, ',', '.') : '' }}" placeholder="0" class="w-full h-9 px-2.5 border border-slate-300 rounded-md bg-white font-mono font-semibold text-right text-xs focus:ring-1 focus:ring-emerald-500" />
                                             </div>
                                             <div>
-                                                <span class="text-slate-600 font-medium block text-xs mb-1">Trx Dipakai</span>
-                                                <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('wahanaTrx', val ? parseInt(val) : 0);" value="{{ $wahanaTrx ? number_format((float)$wahanaTrx, 0, ',', '.') : '' }}" placeholder="0" class="w-full p-1.5 border border-slate-300 rounded-md bg-white font-mono font-semibold text-right text-xs focus:ring-1 focus:ring-emerald-500" />
+                                                <span class="text-slate-600 font-medium block mb-1">Trx Dipakai</span>
+                                                <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('wahanaTrx', val ? parseInt(val) : 0);" value="{{ $wahanaTrx ? number_format((float)$wahanaTrx, 0, ',', '.') : '' }}" placeholder="0" class="w-full h-9 px-2.5 border border-slate-300 rounded-md bg-white font-mono font-semibold text-right text-xs focus:ring-1 focus:ring-emerald-500" />
                                             </div>
                                         </div>
                                     </div>
@@ -1068,16 +1092,16 @@
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div class="bg-white p-4.5 rounded-xl border border-slate-200 shadow-2xs space-y-2">
                                         <label class="block font-semibold text-sm text-slate-800">Tarik Tunai Kasir Toko</label>
-                                        <div class="relative flex items-center">
+                                        <div class="relative flex items-center h-10">
                                             <span class="absolute left-3 font-mono text-xs text-slate-400 pointer-events-none select-none">Rp</span>
-                                            <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('tarikTunaiKasir', val ? parseInt(val) : 0);" value="{{ $tarikTunaiKasir ? number_format((float)$tarikTunaiKasir, 0, ',', '.') : '' }}" placeholder="0" class="w-full pl-8 pr-3 py-2 border border-slate-300 rounded-lg bg-white font-mono font-bold text-right text-sm text-slate-900 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 shadow-2xs" />
+                                            <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('tarikTunaiKasir', val ? parseInt(val) : 0);" value="{{ $tarikTunaiKasir ? number_format((float)$tarikTunaiKasir, 0, ',', '.') : '' }}" placeholder="0" class="w-full h-full pl-8 pr-3 border border-slate-300 rounded-lg bg-white font-mono font-bold text-right text-sm text-slate-900 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 shadow-2xs" />
                                         </div>
-                                        <span class="text-xs text-slate-500 font-normal block">Nominal tunai ditarik kasir untuk setoran / operasional toko.</span>
+                                        <span class="text-xs text-slate-500 font-normal block">Nominal tunai yang ditarik dari laci kasir.</span>
                                     </div>
 
                                     <div class="bg-white p-4.5 rounded-xl border border-slate-200 shadow-2xs space-y-2">
-                                        <label class="block font-semibold text-sm text-slate-800">Catatan / Penjelasan Selisih</label>
-                                        <textarea wire:model="notes" rows="3" placeholder="Tuliskan catatan atau penjelasan jika terdapat selisih saldo..." class="w-full p-2.5 border border-slate-300 rounded-lg bg-white text-xs font-normal text-slate-900 leading-normal focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition resize-none shadow-2xs"></textarea>
+                                        <label class="block font-semibold text-sm text-slate-800">Catatan Rekap</label>
+                                        <textarea wire:model="notes" rows="3" placeholder="Tulis catatan jika ada selisih saldo..." class="w-full p-2.5 border border-slate-300 rounded-lg bg-white text-xs font-normal text-slate-900 leading-normal focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition resize-none shadow-2xs"></textarea>
                                     </div>
                                 </div>
 
@@ -1085,7 +1109,7 @@
                                 <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl space-y-2.5">
                                     <div class="flex items-center justify-between text-xs border-b border-slate-200 pb-2">
                                         <span class="font-bold text-slate-800">Ringkasan Audit 6 Saldo Akun</span>
-                                        <span class="text-[11px] text-slate-500 font-medium">Status Pengecekan Owner</span>
+                                        <span class="text-[11px] text-slate-500 font-medium">Hasil Audit</span>
                                     </div>
                                     <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs font-semibold">
                                         <div class="p-2.5 rounded-lg border flex items-center justify-between {{ $mDanaSelisih == 0 ? 'bg-emerald-50 border-emerald-200 text-emerald-900' : 'bg-rose-50 border-rose-200 text-rose-900' }}">
@@ -1120,27 +1144,27 @@
                     </div>
 
                     <!-- Modal Footer Controls -->
-                    <div class="flex items-center justify-between pt-3.5 border-t border-slate-100 flex-wrap gap-2">
+                    <div class="flex items-center justify-between pt-4 border-t border-slate-100 flex-wrap gap-2">
                         <!-- Left Action: Close -->
-                        <button type="button" wire:click="closeInputModal" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs rounded-lg transition cursor-pointer">
+                        <button type="button" wire:click="closeInputModal" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs rounded-xl transition cursor-pointer">
                             Batal
                         </button>
 
                         <!-- Middle Step Pagination Controls -->
                         <div class="flex items-center gap-2">
                             @if($modalStep > 1)
-                                <button type="button" wire:click="prevModalStep" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs rounded-lg transition flex items-center gap-1 cursor-pointer">
+                                <button type="button" wire:click="prevModalStep" class="px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs rounded-lg transition flex items-center gap-1 cursor-pointer">
                                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"></path></svg>
                                     <span>Kembali</span>
                                 </button>
                             @endif
 
-                            <span class="text-xs font-mono font-semibold text-slate-500 px-1">
+                            <span class="text-xs font-mono font-medium text-slate-500 px-1">
                                 Hal {{ $modalStep }} / 4
                             </span>
 
                             @if($modalStep < 4)
-                                <button type="button" wire:click="nextModalStep" class="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white font-semibold text-xs rounded-lg transition flex items-center gap-1.5 cursor-pointer shadow-2xs">
+                                <button type="button" wire:click="nextModalStep" class="px-4 py-1.5 bg-slate-800 hover:bg-slate-900 text-white font-semibold text-xs rounded-lg transition flex items-center gap-1.5 cursor-pointer shadow-2xs">
                                     <span>Lanjut</span>
                                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
                                 </button>
@@ -1149,14 +1173,14 @@
 
                         <!-- Right Actions: Save Draft & Validate -->
                         <div class="flex items-center gap-2">
-                            <button type="button" wire:click="saveInputModal" style="background-color: #d97706 !important; color: #ffffff !important; border: 1px solid #b45309 !important;" class="px-4 py-2 font-bold text-xs rounded-lg shadow-2xs transition flex items-center gap-1.5 cursor-pointer active-press">
+                            <button type="button" wire:click="saveInputModal" class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs rounded-xl shadow-2xs transition flex items-center gap-1.5 cursor-pointer active-press">
                                 <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
-                                <span class="text-white">Simpan Draf</span>
+                                <span>Simpan Draf</span>
                             </button>
 
-                            <button type="button" wire:click="validateAndLock" wire:loading.attr="disabled" style="background-color: #3F7A5D !important; color: #ffffff !important; border: 1px solid #32634B !important;" class="px-4 py-2 font-bold text-xs rounded-lg shadow-2xs transition flex items-center gap-1.5 cursor-pointer active-press">
+                            <button type="button" wire:click="validateAndLock" wire:loading.attr="disabled" class="px-4 py-2 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-bold text-xs rounded-xl shadow-2xs transition flex items-center gap-1.5 cursor-pointer active-press">
                                 <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                <span class="text-white">Validasi &amp; Kunci</span>
+                                <span>Validasi &amp; Kunci</span>
                             </button>
                         </div>
                     </div>
