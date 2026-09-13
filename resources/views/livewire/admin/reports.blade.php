@@ -171,7 +171,12 @@
 
                 <!-- Action Controls -->
                 <div class="flex items-center gap-2 w-full lg:w-auto justify-end flex-wrap">
-                    @if($isLocked)
+                    @if($status === 'BELUM_DICEK')
+                        <button wire:click="startChecking" wire:loading.attr="disabled" class="px-5 py-2.5 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold text-xs rounded-xl shadow-xs transition flex items-center gap-2 cursor-pointer active-press">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                            <span>Mulai Cek Rekap Harian</span>
+                        </button>
+                    @elseif($isLocked)
                         @if(auth()->user()->can('balance.adjust') || auth()->user()->role?->name === 'OWNER')
                             <button wire:click="unlockReport" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 font-extrabold text-xs rounded-xl shadow-xs transition flex items-center gap-1.5 cursor-pointer active-press">
                                 <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"></path></svg>
@@ -192,8 +197,29 @@
                 </div>
             </div>
 
-            <!-- Main Grid: 2 Columns (Digital E-Wallet Left, Settlement Right) -->
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6">
+            @if($status === 'BELUM_DICEK')
+                <!-- Unstarted Placeholder Card -->
+                <div class="bg-white border-2 border-dashed border-slate-200/90 rounded-2xl p-8 sm:p-12 text-center space-y-4 shadow-xs">
+                    <div class="w-16 h-16 rounded-2xl bg-[#E3EEE8] text-[#3F7A5D] font-black flex items-center justify-center border border-[#3F7A5D]/20 mx-auto">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+                    </div>
+                    <div class="max-w-md mx-auto space-y-1">
+                        <h3 class="text-base sm:text-lg font-black text-[#2C3E35] tracking-tight">Rekapitulasi Harian Belum Dimulai</h3>
+                        <p class="text-xs text-[#718379] font-medium leading-relaxed">
+                            Penjualan POS pada tanggal <span class="font-bold text-[#2C3E35]">{{ $formattedDate }}</span> terekam otomatis sebesar <span class="font-mono font-extrabold text-[#3F7A5D]">Rp {{ number_format($dailySummaryData['total_penjualan'], 0, ',', '.') }}</span>.
+                            Klik tombol di bawah untuk membuka pencatatan saldo e-wallet dan setoran kasir.
+                        </p>
+                    </div>
+                    <div>
+                        <button wire:click="startChecking" class="px-6 py-3 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-xs transition inline-flex items-center gap-2 cursor-pointer active-press hover-lift">
+                            <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                            <span>Mulai Cek Rekap Harian</span>
+                        </button>
+                    </div>
+                </div>
+            @else
+                <!-- Main Grid: 2 Columns (Digital E-Wallet Left, Settlement Right) -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6">
                 <!-- Left Column: E-Wallet & Bank Tables (8 cols) -->
                 <div class="lg:col-span-7 xl:col-span-8 space-y-5">
                     
@@ -416,6 +442,7 @@
 
                 </div>
             </div>
+            @endif
         </div>
 
     <!-- Tab 1: Sales, Trend, Top Products, & Categories -->

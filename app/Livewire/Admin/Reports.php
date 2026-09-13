@@ -101,6 +101,26 @@ class Reports extends Component
         $this->notes = $data['saved_model']?->notes;
     }
 
+    public function startChecking(FinanceReportService $reportService): void
+    {
+        $user = auth()->user();
+        $locationId = $user->location_id ?? 1;
+
+        DailySummary::updateOrCreate(
+            [
+                'location_id' => $locationId,
+                'summary_date' => $this->summaryDate,
+            ],
+            [
+                'status' => 'SEDANG_DICEK',
+                'created_by' => $user->id,
+            ]
+        );
+
+        $this->loadDailySummaryForm($reportService);
+        $this->dispatch('notify', message: 'Pencatatan Rekap Harian dimulai. Silakan isi saldo fisik.', type: 'info');
+    }
+
     public function saveDraft(FinanceReportService $reportService): void
     {
         $user = auth()->user();
