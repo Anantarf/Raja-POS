@@ -19,6 +19,9 @@ class SaleItem extends Model
         'product_subtype_snapshot',
         'modal_account_snapshot',
         'quantity',
+        'original_unit_price',
+        'unit_discount',
+        'total_discount',
         'cost_price',
         'selling_price',
         'discount_amount',
@@ -27,6 +30,9 @@ class SaleItem extends Model
 
     protected $casts = [
         'quantity' => 'integer',
+        'original_unit_price' => 'decimal:2',
+        'unit_discount' => 'decimal:2',
+        'total_discount' => 'decimal:2',
         'cost_price' => 'decimal:2',
         'selling_price' => 'decimal:2',
         'discount_amount' => 'decimal:2',

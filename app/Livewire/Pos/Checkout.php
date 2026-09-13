@@ -279,8 +279,10 @@ class Checkout extends Component
                 'product_id' => $product->id,
                 'name' => $product->name,
                 'code' => $product->code,
-                'price' => Rupiah::value($product->selling_price, 'Harga jual'),
-                'cost_price' => Rupiah::value($product->cost_price, 'Harga modal'),
+                'original_price' => (float) $product->selling_price,
+                'unit_discount' => (float) $product->unit_discount_amount,
+                'price' => (float) $product->effective_selling_price,
+                'cost_price' => (float) $product->cost_price,
                 'quantity' => 1,
                 'stock' => $currentStock,
                 'price_status' => $product->price_status,
@@ -520,7 +522,8 @@ class Checkout extends Component
                 $cartPayload[] = [
                     'product' => $product,
                     'quantity' => $item['quantity'],
-                    'price' => $item['price'] ?? $product->selling_price,
+                    'price' => $item['original_price'] ?? $product->selling_price,
+                    'unit_discount' => $item['unit_discount'] ?? $product->unit_discount_amount,
                     'cost_price' => $item['cost_price'] ?? $product->cost_price,
                     'name' => $item['name'] ?? $product->name,
                 ];

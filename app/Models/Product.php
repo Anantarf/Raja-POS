@@ -26,6 +26,9 @@ class Product extends Model
         'default_balance_account_id',
         'cost_price',
         'selling_price',
+        'discount_type',
+        'discount_value',
+        'is_discount_active',
         'minimum_stock',
         'status',
         'price_status',
@@ -35,8 +38,38 @@ class Product extends Model
     protected $casts = [
         'cost_price' => 'decimal:2',
         'selling_price' => 'decimal:2',
+        'discount_value' => 'decimal:2',
+        'is_discount_active' => 'boolean',
         'minimum_stock' => 'integer',
     ];
+
+    public function getUnitDiscountAmountAttribute(): float
+    {
+        if (! $this->is_discount_active || $this->discount_type === 'NONE' || (float) $this->discount_value <= 0) {
+            return 0.0;
+        }
+
+        $selling = (float) $this->selling_price;
+
+        if ($this->discount_type === 'PERCENTAGE') {
+            return round($selling * ((float) $this->discount_value / 100), 2);
+        }
+
+        return min($selling, (float) $this->discount_value);
+    }
+
+    public function getEffectiveSellingPriceAttribute(): float
+    {
+        $selling = (float) $this->selling_price;
+        $discount = $this->unit_discount_amount;
+
+        return max(0.0, round($selling - $discount, 2));
+    }
+
+    public function getHasActiveDiscountAttribute(): bool
+    {
+        return $this->is_discount_active && $this->discount_type !== 'NONE' && $this->unit_discount_amount > 0;
+    }
 
     protected static function boot()
     {

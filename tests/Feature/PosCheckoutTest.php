@@ -462,4 +462,49 @@ class PosCheckoutTest extends TestCase
         $this->assertEquals(50000, $drawerCash->fresh()->current_balance);
         $this->assertEquals(0, Inventory::where('product_id', $product->id)->value('quantity'));
     }
+
+    public function test_pos_checkout_with_product_level_discount(): void
+    {
+        $cashier = User::where('username', 'superadmin')->first();
+        $location = $cashier->location;
+
+        $discountedProduct = Product::create([
+            'code' => 'PROMO-001',
+            'name' => 'Stok Lama Case HP',
+            'product_type' => 'PHYSICAL',
+            'cost_price' => 10000,
+            'selling_price' => 50000,
+            'discount_type' => 'FIXED',
+            'discount_value' => 15000, // Effective selling price = 35000
+            'is_discount_active' => true,
+        ]);
+        app(InventoryService::class)->adjustStock($discountedProduct, $location, 5, 'ADJUSTMENT_IN', 'Stok Promo', $cashier);
+
+        $cashPm = PaymentMethod::where('code', 'CASH')->first();
+        $cashAccount = BalanceAccount::where('code', 'CASH')->first();
+
+        $sale = app(PosService::class)->processCheckout(
+            cashier: $cashier,
+            cartItems: [
+                ['product' => $discountedProduct, 'quantity' => 2],
+            ],
+            paymentsData: [
+                ['payment_method_id' => $cashPm->id, 'balance_account_id' => $cashAccount->id, 'amount' => 70000],
+            ]
+        );
+
+        $this->assertEquals(100000, $sale->subtotal); // 2 * 50000
+        $this->assertEquals(30000, $sale->total_discount_amount); // 2 * 15000
+        $this->assertEquals(70000, $sale->total_amount); // 100000 - 30000
+
+        $item = $sale->items->first();
+        $this->assertEquals(50000, $item->original_unit_price);
+        $this->assertEquals(15000, $item->unit_discount);
+        $this->assertEquals(30000, $item->total_discount);
+        $this->assertEquals(35000, $item->selling_price);
+        $this->assertEquals(70000, $item->subtotal);
+
+        // Profit test: 70000 total_amount - (2 * 10000 cost) = 50000 gross profit
+        $this->assertEquals(50000, $sale->gross_profit);
+    }
 }

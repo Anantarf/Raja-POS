@@ -53,9 +53,28 @@ class Products extends Component
 
     public $selling_price = 0;
 
+    public $discount_type = 'NONE';
+
+    public $discount_value = 0;
+
+    public $is_discount_active = true;
+
     public $description = '';
 
     public $initial_stock = 0;
+
+    // Bulk Discount Properties
+    public $selectedProducts = [];
+
+    public $selectAll = false;
+
+    public $showBulkDiscountModal = false;
+
+    public $bulkDiscountType = 'FIXED';
+
+    public $bulkDiscountValue = 0;
+
+    public $bulkIsDiscountActive = true;
 
     // Import file
     public $importFile = null;
@@ -136,6 +155,9 @@ class Products extends Component
         $this->product_subtype = $product->product_subtype;
         $this->cost_price = $product->cost_price;
         $this->selling_price = $product->selling_price;
+        $this->discount_type = $product->discount_type ?? 'NONE';
+        $this->discount_value = $product->discount_value ?? 0;
+        $this->is_discount_active = (bool) ($product->is_discount_active ?? true);
         $this->description = $product->description;
 
         $inv = Inventory::forUserLocation()
@@ -157,6 +179,8 @@ class Products extends Component
             'product_subtype' => 'nullable|string|max:255',
             'selling_price' => 'required|numeric|min:0',
             'cost_price' => 'required|numeric|min:0',
+            'discount_type' => 'required|in:NONE,FIXED,PERCENTAGE',
+            'discount_value' => 'required|numeric|min:0',
         ]);
 
         $priceStatus = ($this->product_type === 'LAYANAN' || ($this->cost_price > 0 && $this->selling_price > 0)) ? 'COMPLETE' : 'INCOMPLETE';
@@ -171,6 +195,9 @@ class Products extends Component
             'product_subtype' => $this->product_subtype ?: null,
             'cost_price' => $this->cost_price,
             'selling_price' => $this->selling_price,
+            'discount_type' => $this->discount_type,
+            'discount_value' => $this->discount_value,
+            'is_discount_active' => (bool) $this->is_discount_active,
             'price_status' => $priceStatus,
             'description' => $this->description,
         ];
@@ -239,6 +266,66 @@ class Products extends Component
         $this->dispatch('notify', message: 'Produk berhasil dihapus.', type: 'danger');
     }
 
+    public function toggleDiscountStatus($productId)
+    {
+        abort_unless(auth()->user()->can('product.update'), 403);
+        $product = Product::findOrFail($productId);
+        $product->update([
+            'is_discount_active' => ! $product->is_discount_active,
+        ]);
+        app(CatalogCacheService::class)->clearCatalogCache();
+        $statusMsg = $product->is_discount_active ? 'Diskon produk diaktifkan.' : 'Diskon produk dinonaktifkan.';
+        $this->dispatch('notify', message: $statusMsg, type: 'success');
+    }
+
+    public function updatedSelectAll($value)
+    {
+        if ($value) {
+            $this->selectedProducts = Product::pluck('id')->map(fn ($id) => (string) $id)->toArray();
+        } else {
+            $this->selectedProducts = [];
+        }
+    }
+
+    public function openBulkDiscountModal()
+    {
+        if (empty($this->selectedProducts)) {
+            $this->dispatch('notify', message: 'Pilih minimal 1 produk terlebih dahulu.', type: 'warning');
+
+            return;
+        }
+        $this->showBulkDiscountModal = true;
+    }
+
+    public function applyBulkDiscount()
+    {
+        abort_unless(auth()->user()->can('product.update'), 403);
+        if (empty($this->selectedProducts)) {
+            $this->dispatch('notify', message: 'Pilih minimal 1 produk terlebih dahulu.', type: 'warning');
+
+            return;
+        }
+
+        $this->validate([
+            'bulkDiscountType' => 'required|in:NONE,FIXED,PERCENTAGE',
+            'bulkDiscountValue' => 'required|numeric|min:0',
+        ]);
+
+        Product::whereIn('id', $this->selectedProducts)->update([
+            'discount_type' => $this->bulkDiscountType,
+            'discount_value' => $this->bulkDiscountValue,
+            'is_discount_active' => (bool) $this->bulkIsDiscountActive,
+        ]);
+
+        $count = count($this->selectedProducts);
+        $this->showBulkDiscountModal = false;
+        $this->selectedProducts = [];
+        $this->selectAll = false;
+        app(CatalogCacheService::class)->clearCatalogCache();
+
+        $this->dispatch('notify', message: "Diskon berhasil diterapkan ke {$count} produk.", type: 'success');
+    }
+
     private function resetForm()
     {
         $this->editingProductId = null;
@@ -251,6 +338,9 @@ class Products extends Component
         $this->product_subtype = '';
         $this->cost_price = 0;
         $this->selling_price = 0;
+        $this->discount_type = 'NONE';
+        $this->discount_value = 0;
+        $this->is_discount_active = true;
         $this->description = '';
         $this->initial_stock = 0;
     }

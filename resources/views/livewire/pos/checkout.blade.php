@@ -252,6 +252,11 @@
 
                                     <!-- Product Image / Soft Avatar Container -->
                                     <div class="h-28 rounded-xl relative flex items-center justify-center overflow-hidden transition-all duration-300 {{ $avatarTheme }}">
+                                        @if($product->has_active_discount)
+                                            <span class="absolute top-2 right-2 px-2 py-0.5 rounded-md text-[10px] font-extrabold text-white bg-rose-600 shadow-md uppercase tracking-wider z-10">
+                                                DISC {{ $product->discount_type === 'PERCENTAGE' ? (float)$product->discount_value.'%' : '-Rp '.number_format($product->unit_discount_amount, 0, ',', '.') }}
+                                            </span>
+                                        @endif
                                         @if(!empty($product->image_path) && Illuminate\Support\Facades\Storage::disk('public')->exists($product->image_path))
                                             <img src="{{ Illuminate\Support\Facades\Storage::url($product->image_path) }}" alt="{{ $product->name }}" class="w-full h-full object-cover rounded-xl group-hover:scale-105 transition-transform duration-300">
                                         @else
@@ -301,6 +306,13 @@
                                             <span class="text-xs uppercase tracking-tight font-extrabold text-rose-700 bg-rose-50 px-1.5 py-0.5 rounded">
                                                 INCOMPLETE
                                             </span>
+                                        @elseif($product->has_active_discount)
+                                            <div>
+                                                <span class="text-[11px] text-slate-400 line-through font-normal">Rp {{ number_format((float) $product->selling_price, 0, ',', '.') }}</span>
+                                                <div class="text-sm sm:text-base font-black text-emerald-700 font-mono tracking-tight whitespace-nowrap">
+                                                    Rp {{ number_format((float) $product->effective_selling_price, 0, ',', '.') }}
+                                                </div>
+                                            </div>
                                         @else
                                             <div class="text-sm sm:text-base font-black text-slate-900 font-mono tracking-tight whitespace-nowrap">
                                                 Rp {{ number_format((float) $product->selling_price, 0, ',', '.') }}
@@ -415,6 +427,13 @@
                                                 <span class="text-xs uppercase font-extrabold text-rose-700 bg-rose-50 px-1.5 py-0.5 rounded whitespace-nowrap">
                                                     INCOMPLETE
                                                 </span>
+                                            @elseif($product->has_active_discount)
+                                                <div>
+                                                    <span class="text-[11px] text-slate-400 line-through font-normal">Rp {{ number_format((float) $product->selling_price, 0, ',', '.') }}</span>
+                                                    <div class="text-base sm:text-lg font-black text-emerald-700 font-mono whitespace-nowrap">
+                                                        Rp {{ number_format((float) $product->effective_selling_price, 0, ',', '.') }}
+                                                    </div>
+                                                </div>
                                             @else
                                                 <div class="text-base sm:text-lg font-black text-slate-900 font-mono whitespace-nowrap">
                                                     Rp {{ number_format((float) $product->selling_price, 0, ',', '.') }}
@@ -517,7 +536,13 @@
                                 {{ $item['name'] }}
                             </div>
                             <div class="text-[0.78rem] text-slate-500 font-mono font-semibold mt-0.5">
-                                @ Rp {{ number_format($item['price'], 0, ',', '.') }}
+                                @if(isset($item['unit_discount']) && $item['unit_discount'] > 0)
+                                    <span class="line-through text-slate-400">Rp {{ number_format($item['original_price'] ?? ($item['price'] + $item['unit_discount']), 0, ',', '.') }}</span>
+                                    <span class="text-emerald-700 font-bold">Rp {{ number_format($item['price'], 0, ',', '.') }}</span>
+                                    <span class="text-rose-600 text-[10px] font-extrabold bg-rose-50 px-1 py-0.2 rounded">(-Rp {{ number_format($item['unit_discount'], 0, ',', '.') }})</span>
+                                @else
+                                    @ Rp {{ number_format($item['price'], 0, ',', '.') }}
+                                @endif
                             </div>
                         </div>
 

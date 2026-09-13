@@ -101,4 +101,9 @@ class Sale extends Model
     {
         return $this->attributes['amount_paid'] ?? 0;
     }
+
+    public function getTotalDiscountAmountAttribute()
+    {
+        return $this->attributes['discount_amount'] ?? 0;
+    }
 }

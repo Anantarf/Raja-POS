@@ -100,11 +100,16 @@ class PosService
 
             $isService = $product->product_type === 'LAYANAN';
             $costPrice = Rupiah::value($isService ? ($item['cost_price'] ?? 0) : $product->cost_price, 'Harga modal');
-            $sellingPrice = Rupiah::value($isService ? ($item['price'] ?? 0) : $product->selling_price, 'Harga jual');
+            $originalSellingPrice = Rupiah::value($isService ? ($item['price'] ?? 0) : $product->selling_price, 'Harga jual');
+            $unitDiscount = isset($item['unit_discount']) ? Rupiah::value($item['unit_discount'], 'Diskon item') : Rupiah::value($product->unit_discount_amount, 'Diskon produk');
+            $unitDiscount = min($originalSellingPrice, max(0, $unitDiscount));
+            $sellingPrice = max(0, $originalSellingPrice - $unitDiscount);
+            $totalItemDiscount = $unitDiscount * $qty;
+
             $nameSnapshot = $isService && ! empty($item['name']) ? $item['name'] : $product->name;
 
             // Block INCOMPLETE price status if no valid custom price provided
-            if ($product->price_status === 'INCOMPLETE' && $sellingPrice <= 0) {
+            if ($product->price_status === 'INCOMPLETE' && $originalSellingPrice <= 0) {
                 throw new InvalidArgumentException("Produk '{$product->name}' memiliki status harga INCOMPLETE (modal/jual 0). Harap lengkapi harga sebelum checkout.");
             }
 
@@ -138,13 +143,16 @@ class PosService
             $itemSubtotal = $sellingPrice * $qty;
             $itemCostSubtotal = $costPrice * $qty;
 
-            $subtotal += $itemSubtotal;
+            $subtotal += ($originalSellingPrice * $qty);
             $totalCost += $itemCostSubtotal;
 
             $validatedItems[] = [
                 'product' => $product,
                 'quantity' => $qty,
                 'name' => $nameSnapshot,
+                'original_unit_price' => $originalSellingPrice,
+                'unit_discount' => $unitDiscount,
+                'total_discount' => $totalItemDiscount,
                 'cost_price' => $costPrice,
                 'selling_price' => $sellingPrice,
                 'subtotal' => $itemSubtotal,
@@ -155,7 +163,8 @@ class PosService
             throw new InvalidArgumentException('Keranjang belanja tidak memiliki item valid.');
         }
 
-        $totalAmount = $subtotal;
+        $totalDiscountAmount = (float) array_sum(array_column($validatedItems, 'total_discount'));
+        $totalAmount = max(0, $subtotal - $totalDiscountAmount);
         $validatedPayments = [];
         $totalPaid = 0;
 
@@ -264,6 +273,7 @@ class PosService
             $validatedItems,
             $validatedPayments,
             $subtotal,
+            $totalDiscountAmount,
             $totalAmount,
             $totalPaid,
             $changeAmount,
@@ -317,7 +327,7 @@ class PosService
                 'location_id' => $location->id,
                 'transaction_date' => now(),
                 'subtotal' => $subtotal,
-                'discount_amount' => 0,
+                'discount_amount' => $totalDiscountAmount,
                 'total_amount' => $totalAmount,
                 'amount_paid' => $totalPaid,
                 'change_amount' => $changeAmount,
@@ -342,9 +352,12 @@ class PosService
                     'product_subtype_snapshot' => $product->product_subtype,
                     'modal_account_snapshot' => $product->defaultBalanceAccount?->code,
                     'quantity' => $qty,
+                    'original_unit_price' => $vItem['original_unit_price'],
+                    'unit_discount' => $vItem['unit_discount'],
+                    'total_discount' => $vItem['total_discount'],
                     'cost_price' => $vItem['cost_price'],
                     'selling_price' => $vItem['selling_price'],
-                    'discount_amount' => 0,
+                    'discount_amount' => $vItem['total_discount'],
                     'subtotal' => $vItem['subtotal'],
                 ]);
 

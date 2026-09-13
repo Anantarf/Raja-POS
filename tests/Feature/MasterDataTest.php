@@ -121,4 +121,43 @@ class MasterDataTest extends TestCase
         $this->assertTrue($owner->hasPermission('cost_price.view'));
         $this->assertFalse($cashier->hasPermission('cost_price.view'));
     }
+
+    public function test_product_discount_calculations_and_accessors(): void
+    {
+        // Fixed discount test
+        $p1 = Product::create([
+            'code' => 'DISC-001',
+            'name' => 'Charger Original 20W',
+            'selling_price' => 100000,
+            'cost_price' => 50000,
+            'discount_type' => 'FIXED',
+            'discount_value' => 20000,
+            'is_discount_active' => true,
+        ]);
+
+        $this->assertEquals(20000, $p1->unit_discount_amount);
+        $this->assertEquals(80000, $p1->effective_selling_price);
+        $this->assertTrue($p1->has_active_discount);
+
+        // Percentage discount test
+        $p2 = Product::create([
+            'code' => 'DISC-002',
+            'name' => 'Tempered Glass Curved',
+            'selling_price' => 50000,
+            'cost_price' => 20000,
+            'discount_type' => 'PERCENTAGE',
+            'discount_value' => 10, // 10%
+            'is_discount_active' => true,
+        ]);
+
+        $this->assertEquals(5000, $p2->unit_discount_amount);
+        $this->assertEquals(45000, $p2->effective_selling_price);
+        $this->assertTrue($p2->has_active_discount);
+
+        // Disabled discount test
+        $p2->update(['is_discount_active' => false]);
+        $this->assertEquals(0, $p2->fresh()->unit_discount_amount);
+        $this->assertEquals(50000, $p2->fresh()->effective_selling_price);
+        $this->assertFalse($p2->fresh()->has_active_discount);
+    }
 }

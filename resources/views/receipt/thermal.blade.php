@@ -124,7 +124,12 @@
                 <td colspan="2" class="bold">{{ str_replace(['(Rp ', '(Rp. ', 'Rp '], ["(Rp\u00A0", "(Rp.\u00A0", "Rp\u00A0"], $item->product_name_snapshot) }}</td>
             </tr>
             <tr>
-                <td class="text-left">{{ $item->quantity }} x Rp{{ number_format($item->selling_price, 0, ',', '.') }}</td>
+                <td class="text-left">
+                    {{ $item->quantity }} x Rp{{ number_format($item->original_unit_price ?? $item->selling_price, 0, ',', '.') }}
+                    @if(($item->unit_discount ?? 0) > 0)
+                        <br><span style="font-size: 10px;">(Disc: -Rp{{ number_format($item->unit_discount, 0, ',', '.') }}/unit)</span>
+                    @endif
+                </td>
                 <td class="text-right">Rp{{ number_format($item->subtotal, 0, ',', '.') }}</td>
             </tr>
         @endforeach
@@ -133,6 +138,16 @@
     <div class="divider"></div>
 
     <table class="totals-table">
+        @if(($sale->total_discount_amount ?? 0) > 0)
+            <tr>
+                <td class="text-left label">SUBTOTAL</td>
+                <td class="text-right amount">Rp{{ number_format($sale->subtotal, 0, ',', '.') }}</td>
+            </tr>
+            <tr>
+                <td class="text-left label">TOTAL DISKON</td>
+                <td class="text-right amount">-Rp{{ number_format($sale->total_discount_amount, 0, ',', '.') }}</td>
+            </tr>
+        @endif
         <tr class="bold">
             <td class="text-left">TOTAL</td>
             <td class="text-right">Rp{{ number_format($sale->total_amount, 0, ',', '.') }}</td>

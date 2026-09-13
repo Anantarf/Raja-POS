@@ -31,6 +31,16 @@
                 <span>Impor Excel</span>
             </button>
 
+            <!-- Bulk Set Discount Button -->
+            @if(count($selectedProducts) > 0)
+                <button type="button" wire:click="openBulkDiscountModal" class="h-10 sm:h-11 px-3 sm:px-3.5 py-2 bg-amber-600 hover:bg-amber-700 text-white font-extrabold rounded-xl text-xs sm:text-sm shadow-xs transition flex items-center justify-center gap-1.5 active:scale-95 shrink-0 cursor-pointer animate-pulse">
+                    <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h10M7 12h10m-7 5h7"></path>
+                    </svg>
+                    <span>Set Diskon ({{ count($selectedProducts) }})</span>
+                </button>
+            @endif
+
             <!-- Tambah Produk Baru -->
             <button wire:click="openCreateModal" class="h-10 sm:h-11 px-3 sm:px-4 py-2 bg-[#047857] hover:bg-[#065F46] text-white font-extrabold rounded-xl text-xs sm:text-sm shadow-xs transition flex items-center justify-center gap-1.5 active:scale-95 shrink-0 cursor-pointer">
                 <svg class="w-4 h-4 sm:w-4.5 sm:h-4.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -152,6 +162,11 @@
 
                         <!-- Product Image / Initials Banner -->
                         <div class="h-28 bg-[#F3F6F4]/80 rounded-xl relative flex items-center justify-center overflow-hidden border border-slate-100/80">
+                            @if($product->has_active_discount)
+                                <span class="absolute top-2 right-2 px-2 py-0.5 rounded-md text-[10px] font-extrabold text-white bg-rose-600 shadow-md uppercase tracking-wider z-10">
+                                    DISC {{ $product->discount_type === 'PERCENTAGE' ? (float)$product->discount_value.'%' : '-Rp '.number_format($product->unit_discount_amount, 0, ',', '.') }}
+                                </span>
+                            @endif
                             @if(!empty($product->image_path) && Illuminate\Support\Facades\Storage::disk('public')->exists($product->image_path))
                                 <img src="{{ Illuminate\Support\Facades\Storage::url($product->image_path) }}" alt="{{ $product->name }}" class="w-full h-full object-cover rounded-xl group-hover:scale-105 transition-transform duration-300">
                             @else
@@ -207,7 +222,14 @@
                                         Input saat transaksi
                                     </span>
                                 @elseif($product->selling_price > 0)
-                                    <span class="text-base">Rp {{ number_format((float) $product->selling_price, 0, ',', '.') }}</span>
+                                    @if($product->has_active_discount)
+                                        <div>
+                                            <span class="text-[11px] text-slate-400 line-through font-normal">Rp {{ number_format((float) $product->selling_price, 0, ',', '.') }}</span>
+                                            <div class="text-[#047857] font-extrabold text-base">Rp {{ number_format((float) $product->effective_selling_price, 0, ',', '.') }}</div>
+                                        </div>
+                                    @else
+                                        <span class="text-base">Rp {{ number_format((float) $product->selling_price, 0, ',', '.') }}</span>
+                                    @endif
                                 @else
                                     <span class="inline-flex items-center gap-1 text-[10px] font-bold text-rose-600 bg-rose-50 border border-rose-200 rounded-md px-1.5 py-0.5 whitespace-nowrap">
                                         Harga jual belum diisi
@@ -216,11 +238,16 @@
                             </div>
                         </div>
 
-                        <div class="flex items-center gap-1.5 shrink-0">
-                            <button wire:click="openEditModal({{ $product->id }})" class="px-3 py-1.5 bg-slate-100 hover:bg-indigo-50 hover:text-indigo-600 text-slate-700 rounded-lg text-xs font-bold transition">
+                        <div class="flex items-center gap-1 shrink-0">
+                            @if($product->discount_type !== 'NONE' && (float)$product->discount_value > 0)
+                                <button type="button" wire:click="toggleDiscountStatus({{ $product->id }})" title="Aktifkan/Nonaktifkan Diskon 1-Klik" class="px-1.5 py-1 rounded-md text-[10px] font-extrabold border transition {{ $product->is_discount_active ? 'bg-emerald-50 text-emerald-700 border-emerald-300' : 'bg-slate-100 text-slate-500 border-slate-300' }}">
+                                    {{ $product->is_discount_active ? 'ON' : 'OFF' }}
+                                </button>
+                            @endif
+                            <button wire:click="openEditModal({{ $product->id }})" class="px-2.5 py-1.5 bg-slate-100 hover:bg-indigo-50 hover:text-indigo-600 text-slate-700 rounded-lg text-xs font-bold transition cursor-pointer">
                                 Edit
                             </button>
-                            <button wire:click="deleteProduct({{ $product->id }})" wire:confirm="Yakin ingin menghapus barang/layanan ini?" class="px-2.5 py-1.5 bg-slate-100 hover:bg-rose-50 hover:text-rose-600 text-slate-400 rounded-lg text-xs font-bold transition">
+                            <button wire:click="deleteProduct({{ $product->id }})" wire:confirm="Yakin ingin menghapus barang/layanan ini?" class="px-2 py-1.5 bg-slate-100 hover:bg-rose-50 hover:text-rose-600 text-slate-400 rounded-lg text-xs font-bold transition cursor-pointer">
                                 Hapus
                             </button>
                         </div>
@@ -239,11 +266,14 @@
         <div class="bg-white border border-slate-200/80 rounded-2xl shadow-sm overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="w-full text-sm text-left">
-                    <thead class="bg-[#F3F6F4] border-b border-slate-200/80 text-[#718379] uppercase text-xs font-extrabold tracking-wider">
+                    <thead class="bg-[#F3F6F4] text-[11px] font-extrabold text-[#5F7167] uppercase tracking-wider border-b border-slate-200">
                         <tr>
-                            <th wire:click="sortBy('name')" class="py-3.5 px-4 cursor-pointer hover:text-[#047857] transition select-none">
+                            <th class="py-3.5 px-3 text-center w-8">
+                                <input type="checkbox" wire:model.live="selectAll" class="rounded border-slate-300 text-[#047857] focus:ring-[#047857]" title="Pilih Semua Produk" />
+                            </th>
+                            <th wire:click="sortBy('name')" class="py-3.5 px-4 text-left cursor-pointer hover:text-[#047857] transition select-none">
                                 <div class="flex items-center gap-1">
-                                    <span>Nama Barang / Layanan</span>
+                                    <span>Barang / Layanan</span>
                                     @if($sortField === 'name')
                                         <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
                                     @else
@@ -251,9 +281,9 @@
                                     @endif
                                 </div>
                             </th>
-                            <th wire:click="sortBy('product_type')" class="py-3.5 px-4 cursor-pointer hover:text-[#047857] transition select-none">
+                            <th wire:click="sortBy('product_type')" class="py-3.5 px-4 text-left cursor-pointer hover:text-[#047857] transition select-none">
                                 <div class="flex items-center gap-1">
-                                    <span>Jenis Stok</span>
+                                    <span>Jenis</span>
                                     @if($sortField === 'product_type')
                                         <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
                                     @else
@@ -261,10 +291,10 @@
                                     @endif
                                 </div>
                             </th>
-                            <th class="py-3.5 px-4">Kategori &bull; Jenis &bull; Merk</th>
+                            <th class="py-3.5 px-4 text-left">Kategori &amp; Merk</th>
                             <th wire:click="sortBy('stock')" class="py-3.5 px-4 text-center cursor-pointer hover:text-[#047857] transition select-none">
                                 <div class="flex items-center justify-center gap-1">
-                                    <span>Jumlah Stok</span>
+                                    <span>Stok</span>
                                     @if($sortField === 'stock' || $sortField === 'quantity')
                                         <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
                                     @else
@@ -275,7 +305,7 @@
                             @if(auth()->user()->can('cost_price.view'))
                                 <th wire:click="sortBy('cost_price')" class="py-3.5 px-4 text-right cursor-pointer hover:text-[#047857] transition select-none">
                                     <div class="flex items-center justify-end gap-1">
-                                        <span>Modal</span>
+                                        <span>Modal (COGS)</span>
                                         @if($sortField === 'cost_price')
                                             <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
                                         @else
@@ -299,7 +329,12 @@
                     </thead>
                     <tbody class="divide-y divide-slate-100 font-medium">
                         @forelse($products as $product)
-                            <tr class="hover:bg-[#F3F6F4]/60 transition">
+                            <tr class="hover:bg-[#F3F6F4]/60 transition {{ in_array((string)$product->id, $selectedProducts) ? 'bg-amber-50/50' : '' }}">
+                                <!-- Col 0: Checkbox -->
+                                <td class="py-3.5 px-3 text-center">
+                                    <input type="checkbox" wire:model.live="selectedProducts" value="{{ $product->id }}" class="rounded border-slate-300 text-[#047857] focus:ring-[#047857]" />
+                                </td>
+
                                 <!-- Col 1: Nama Barang/Layanan & Barcode -->
                                 <td class="py-3.5 px-4">
                                     <div class="flex items-center gap-3">
@@ -311,7 +346,14 @@
                                             </div>
                                         @endif
                                         <div>
-                                            <div class="font-bold text-[#2C3E35] text-sm leading-snug tracking-tight">{{ $product->name }}</div>
+                                            <div class="font-bold text-[#2C3E35] text-sm leading-snug tracking-tight flex items-center gap-1.5 flex-wrap">
+                                                <span>{{ $product->name }}</span>
+                                                @if($product->has_active_discount)
+                                                    <span class="px-2 py-0.5 rounded-md text-[10px] font-extrabold text-white bg-rose-600 shadow-2xs uppercase tracking-wider">
+                                                        DISCOUNT {{ $product->discount_type === 'PERCENTAGE' ? (float)$product->discount_value.'%' : '-Rp '.number_format($product->unit_discount_amount, 0, ',', '.') }}
+                                                    </span>
+                                                @endif
+                                            </div>
                                             <div class="text-xs font-mono text-slate-400 mt-0.5">
                                                 Barcode: {{ $product->effective_barcode }}
                                             </div>
@@ -367,11 +409,18 @@
                                 @endif
 
                                 <!-- Col 5: Harga Jual -->
-                                <td class="py-3.5 px-4 text-right font-mono font-extrabold text-[#2C3E35] text-sm whitespace-nowrap">
+                                <td class="py-3.5 px-4 text-right font-mono font-extrabold text-sm whitespace-nowrap">
                                     @if($product->product_type === 'LAYANAN')
                                         <span class="text-[11px] font-bold text-teal-600">Input saat transaksi</span>
                                     @elseif($product->selling_price > 0)
-                                        Rp {{ number_format((float) $product->selling_price, 0, ',', '.') }}
+                                        @if($product->has_active_discount)
+                                            <div>
+                                                <span class="text-xs text-slate-400 line-through font-normal">Rp {{ number_format((float) $product->selling_price, 0, ',', '.') }}</span>
+                                                <div class="text-[#047857] font-extrabold text-sm">Rp {{ number_format((float) $product->effective_selling_price, 0, ',', '.') }}</div>
+                                            </div>
+                                        @else
+                                            <span class="text-[#2C3E35]">Rp {{ number_format((float) $product->selling_price, 0, ',', '.') }}</span>
+                                        @endif
                                     @else
                                         <span class="text-xs font-bold text-rose-600 whitespace-nowrap">*Harga jual belum diisi</span>
                                     @endif
@@ -380,6 +429,11 @@
                                 <!-- Col 6: Aksi -->
                                 <td class="py-3.5 px-4 text-center whitespace-nowrap">
                                     <div class="flex items-center justify-center gap-1.5">
+                                        @if($product->discount_type !== 'NONE' && (float)$product->discount_value > 0)
+                                            <button type="button" wire:click="toggleDiscountStatus({{ $product->id }})" title="Aktifkan/Nonaktifkan Diskon 1-Klik" class="px-2 py-1 rounded-lg text-[10px] font-extrabold border transition {{ $product->is_discount_active ? 'bg-emerald-50 text-emerald-700 border-emerald-300' : 'bg-slate-100 text-slate-500 border-slate-300' }}">
+                                                {{ $product->is_discount_active ? 'Disc ON' : 'Disc OFF' }}
+                                            </button>
+                                        @endif
                                         <button wire:click="openEditModal({{ $product->id }})" class="px-3 py-1.5 bg-slate-100 hover:bg-indigo-50 hover:text-indigo-600 text-slate-700 rounded-lg text-xs font-bold transition cursor-pointer">
                                             Edit
                                         </button>
@@ -391,7 +445,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="py-12 text-center text-slate-400 font-medium text-xs">Tidak ada barang/layanan ditemukan.</td>
+                                <td colspan="7" class="py-12 text-center text-slate-400 font-medium text-xs">Tidak ada barang/layanan ditemukan.</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -517,6 +571,65 @@
                         </div>
                     </div>
 
+                    <!-- Discount Section / Promo Cuci Gudang -->
+                    <div class="p-3.5 bg-[#F3F6F4] rounded-2xl border border-slate-200/80 space-y-3">
+                        <div class="font-extrabold text-[#2C3E35] text-xs flex items-center justify-between">
+                            <span>Pengaturan Diskon / Promo Cuci Gudang</span>
+                            @if($discount_type !== 'NONE' && (float)$discount_value > 0)
+                                <span class="px-2 py-0.5 rounded text-[10px] font-extrabold uppercase {{ $is_discount_active ? 'bg-emerald-600 text-white' : 'bg-slate-300 text-slate-700' }}">
+                                    {{ $is_discount_active ? 'Diskon Aktif' : 'Diskon Nonaktif' }}
+                                </span>
+                            @endif
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <div>
+                                <label class="block text-slate-700 font-bold mb-1 text-[11px]">Tipe Diskon</label>
+                                <select wire:model.live="discount_type" class="w-full p-2.5 border border-slate-300 rounded-xl bg-white font-bold text-xs cursor-pointer">
+                                    <option value="NONE">Tanpa Diskon</option>
+                                    <option value="FIXED">Nominal Tetap (Rp)</option>
+                                    <option value="PERCENTAGE">Persentase (%)</option>
+                                </select>
+                            </div>
+
+                            @if($discount_type !== 'NONE')
+                                <div>
+                                    <label class="block text-slate-700 font-bold mb-1 text-[11px]">Nilai Diskon</label>
+                                    <input type="number" step="any" wire:model.live="discount_value" placeholder="0" class="w-full p-2.5 border border-slate-300 rounded-xl font-mono font-bold text-xs focus:ring-2 focus:ring-[#047857]/20 focus:border-[#047857]" />
+                                </div>
+                                <div class="flex items-end pb-1">
+                                    <label class="flex items-center gap-2 font-bold text-xs text-[#2C3E35] cursor-pointer">
+                                        <input type="checkbox" wire:model.live="is_discount_active" class="w-4 h-4 rounded border-slate-300 text-[#047857] focus:ring-[#047857]" />
+                                        <span>Diskon Aktif</span>
+                                    </label>
+                                </div>
+                            @endif
+                        </div>
+
+                        @php
+                            $calcDisc = ($discount_type === 'PERCENTAGE') ? ($selling_price * $discount_value / 100) : ($discount_type === 'FIXED' ? $discount_value : 0);
+                            $effPrice = max(0, $selling_price - $calcDisc);
+                            $isLoss = ($discount_type !== 'NONE' && (float)$discount_value > 0 && $cost_price > 0 && $effPrice < $cost_price);
+                        @endphp
+
+                        @if($isLoss)
+                            <div class="bg-amber-50 border-l-4 border-amber-500 p-3 rounded-xl text-amber-900 text-[11px] font-medium flex items-start gap-2">
+                                <svg class="w-4 h-4 text-amber-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                                </svg>
+                                <div>
+                                    <strong class="font-extrabold text-amber-900">Peringatan Harga Jual Rugi:</strong>
+                                    Harga setelah diskon (<strong>Rp {{ number_format($effPrice, 0, ',', '.') }}</strong>) lebih rendah dari modal COGS (<strong>Rp {{ number_format($cost_price, 0, ',', '.') }}</strong>). Rugi Rp {{ number_format($cost_price - $effPrice, 0, ',', '.') }} per unit.
+                                </div>
+                            </div>
+                        @elseif($discount_type !== 'NONE' && (float)$discount_value > 0)
+                            <div class="text-[11px] text-emerald-700 font-semibold bg-emerald-50/80 p-2 rounded-xl border border-emerald-200/60 flex items-center justify-between">
+                                <span>Harga Setelah Diskon: <strong>Rp {{ number_format($effPrice, 0, ',', '.') }}</strong></span>
+                                <span>Potongan: Rp {{ number_format($calcDisc, 0, ',', '.') }}</span>
+                            </div>
+                        @endif
+                    </div>
+
                     @if(!$editingProductId && $product_type === 'PHYSICAL')
                         <div>
                             <label class="block text-[#2C3E35] font-bold mb-1">Stok Awal Fisik</label>
@@ -564,6 +677,65 @@
                             Mulai Import Data
                         </button>
                         <button type="button" wire:click="$set('showImportModal', false)" class="py-3.5 px-5 bg-slate-100 text-slate-700 font-semibold rounded-2xl text-xs">
+                            Batal
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    @endif
+
+    <!-- Bulk Discount Modal -->
+    @if($showBulkDiscountModal)
+        <div class="fixed inset-0 bg-[#2C3E35]/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+            <div class="bg-white rounded-3xl p-6 sm:p-7 max-w-lg w-full shadow-2xl space-y-4 border border-slate-100">
+                <div class="flex items-center justify-between border-b pb-3.5">
+                    <div>
+                        <h3 class="text-lg font-extrabold text-[#2C3E35]">Set Diskon Masal</h3>
+                        <p class="text-xs text-slate-500 font-medium">Terapkan promo / diskon sekaligus ke {{ count($selectedProducts) }} produk terpilih.</p>
+                    </div>
+                    <button wire:click="$set('showBulkDiscountModal', false)" class="text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
+                </div>
+
+                <form wire:submit.prevent="applyBulkDiscount" class="space-y-4 text-xs font-semibold">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-[#2C3E35] font-bold mb-1">Tipe Diskon *</label>
+                            <select wire:model="bulkDiscountType" class="w-full p-3 border border-slate-300 rounded-2xl bg-white font-bold cursor-pointer">
+                                <option value="NONE">Tanpa Diskon (Hapus Diskon)</option>
+                                <option value="FIXED">Nominal Tetap (Rp)</option>
+                                <option value="PERCENTAGE">Persentase (%)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[#2C3E35] font-bold mb-1">Nilai Diskon *</label>
+                            <input
+                                type="number"
+                                step="any"
+                                wire:model="bulkDiscountValue"
+                                placeholder="0"
+                                class="w-full p-3 border border-slate-300 rounded-2xl font-mono font-bold focus:ring-2 focus:ring-[#047857]/20 focus:border-[#047857]"
+                                required
+                            />
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-3 bg-[#F3F6F4] p-3.5 rounded-2xl border border-slate-200/80">
+                        <input type="checkbox" id="bulkIsDiscountActive" wire:model="bulkIsDiscountActive" class="w-4 h-4 rounded border-slate-300 text-[#047857] focus:ring-[#047857] cursor-pointer" />
+                        <label for="bulkIsDiscountActive" class="text-[#2C3E35] font-bold cursor-pointer">
+                            Langsung Aktifkan Status Diskon (Disc ON)
+                        </label>
+                    </div>
+
+                    <div class="bg-emerald-50 border border-emerald-200 text-emerald-800 p-3.5 rounded-2xl text-xs font-medium">
+                        Diskon ini akan diterapkan pada {{ count($selectedProducts) }} produk yang Anda centang.
+                    </div>
+
+                    <div class="pt-2 flex gap-3">
+                        <button type="submit" class="flex-1 py-3.5 bg-[#047857] hover:bg-[#065F46] text-white font-bold rounded-2xl transition shadow-sm text-xs uppercase tracking-wider">
+                            Terapkan Diskon ke {{ count($selectedProducts) }} Produk
+                        </button>
+                        <button type="button" wire:click="$set('showBulkDiscountModal', false)" class="py-3.5 px-5 bg-slate-100 text-slate-700 font-semibold rounded-2xl text-xs">
                             Batal
                         </button>
                     </div>
