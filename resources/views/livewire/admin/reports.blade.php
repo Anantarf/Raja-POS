@@ -709,8 +709,8 @@
                                     <tr>
                                         <th class="py-2.5 px-3.5 text-left w-[24%]">Metode Pembayaran</th>
                                         <th class="py-2.5 px-3.5 text-right w-[20%]">Saldo Sistem</th>
-                                        <th class="py-2.5 px-3.5 text-center w-[26%]">Saldo Aktual</th>
-                                        <th class="py-2.5 px-3.5 text-right w-[20%]">Selisih</th>
+                                        <th class="py-2.5 px-3.5 text-right w-[24%]">Saldo Aktual</th>
+                                        <th class="py-2.5 px-3.5 text-right w-[22%]">Selisih</th>
                                         <th class="py-2.5 px-3.5 text-center w-[10%] min-w-[90px]">Koreksi</th>
                                     </tr>
                                 </thead>
@@ -724,8 +724,8 @@
                                             <div class="font-mono font-extrabold text-[#2C3E35] text-xs sm:text-sm truncate" title="Rp {{ number_format($mDanaAkhir, 0, ',', '.') }}">Rp {{ number_format($mDanaAkhir, 0, ',', '.') }}</div>
                                             <div class="text-[10px] text-[#718379] font-mono truncate" title="Awal: Rp {{ number_format((float)$danaSaldoAwal, 0, ',', '.') }}">Awal: Rp {{ number_format((float)$danaSaldoAwal, 0, ',', '.') }}</div>
                                         </td>
-                                        <td class="py-2.5 px-3.5 text-center">
-                                            <div class="relative flex items-center h-9 w-36 sm:w-44 mx-auto">
+                                        <td class="py-2.5 px-3.5 text-right">
+                                            <div class="relative flex items-center h-9 w-36 sm:w-40 ml-auto">
                                                 <span class="absolute left-2.5 font-mono text-xs text-slate-400 select-none pointer-events-none font-bold z-10">Rp</span>
                                                 <input type="text" maxlength="17" x-data x-on:input="let val = $el.value.replace(/\D/g, '').slice(0, 13); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('danaSaldoAndroid', val ? parseInt(val) : 0);" value="{{ $danaSaldoAndroid ? number_format((float)$danaSaldoAndroid, 0, ',', '.') : '' }}" class="w-full h-9 pl-8 pr-2.5 border border-slate-300/80 rounded-lg bg-[#F3F6F4] font-mono font-extrabold text-right text-xs sm:text-sm text-[#2C3E35] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] transition shadow-2xs truncate" placeholder="0" />
                                             </div>
@@ -769,8 +769,8 @@
                                             <div class="font-mono font-extrabold text-[#2C3E35] text-xs sm:text-sm truncate" title="Rp {{ number_format($mQrisExpected, 0, ',', '.') }}">Rp {{ number_format($mQrisExpected, 0, ',', '.') }}</div>
                                             <div class="text-[10px] text-[#718379] font-mono truncate" title="Awal: Rp {{ number_format($dailySummaryData['qris_pembayaran'], 0, ',', '.') }}">Awal: Rp {{ number_format($dailySummaryData['qris_pembayaran'], 0, ',', '.') }}</div>
                                         </td>
-                                        <td class="py-2.5 px-3.5 text-center">
-                                            <div class="relative flex items-center h-9 w-36 sm:w-44 mx-auto">
+                                        <td class="py-2.5 px-3.5 text-right">
+                                            <div class="relative flex items-center h-9 w-36 sm:w-40 ml-auto">
                                                 <span class="absolute left-2.5 font-mono text-xs text-slate-400 select-none pointer-events-none font-bold z-10">Rp</span>
                                                 <input type="text" maxlength="17" x-data x-on:input="let val = $el.value.replace(/\D/g, '').slice(0, 13); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('qrisSaldoAndroid', val ? parseInt(val) : 0);" value="{{ $qrisSaldoAndroid ? number_format((float)$qrisSaldoAndroid, 0, ',', '.') : '' }}" class="w-full h-9 pl-8 pr-2.5 border border-slate-300/80 rounded-lg bg-[#F3F6F4] font-mono font-extrabold text-right text-xs sm:text-sm text-[#2C3E35] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] transition shadow-2xs truncate" placeholder="0" />
                                             </div>
@@ -808,8 +808,8 @@
                                             <div class="font-mono font-extrabold text-[#2C3E35] text-xs sm:text-sm truncate" title="Rp {{ number_format($mBcaAkhir, 0, ',', '.') }}">Rp {{ number_format($mBcaAkhir, 0, ',', '.') }}</div>
                                             <div class="text-[10px] text-[#718379] font-mono truncate" title="Awal: Rp {{ number_format((float)$bcaSaldoAwal, 0, ',', '.') }}">Awal: Rp {{ number_format((float)$bcaSaldoAwal, 0, ',', '.') }}</div>
                                         </td>
-                                        <td class="py-2.5 px-3.5 text-center">
-                                            <div class="relative flex items-center h-9 w-36 sm:w-44 mx-auto">
+                                        <td class="py-2.5 px-3.5 text-right">
+                                            <div class="relative flex items-center h-9 w-36 sm:w-40 ml-auto">
                                                 <span class="absolute left-2.5 font-mono text-xs text-slate-400 select-none pointer-events-none font-bold z-10">Rp</span>
                                                 <input type="text" maxlength="17" x-data x-on:input="let val = $el.value.replace(/\D/g, '').slice(0, 13); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('bcaSaldoAndroid', val ? parseInt(val) : 0);" value="{{ $bcaSaldoAndroid ? number_format((float)$bcaSaldoAndroid, 0, ',', '.') : '' }}" class="w-full h-9 pl-8 pr-2.5 border border-slate-300/80 rounded-lg bg-[#F3F6F4] font-mono font-extrabold text-right text-xs sm:text-sm text-[#2C3E35] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] transition shadow-2xs truncate" placeholder="0" />
                                             </div>
@@ -853,8 +853,8 @@
                                             <div class="font-mono font-extrabold text-[#2C3E35] text-xs sm:text-sm truncate" title="Rp {{ number_format($mBankmasAkhir, 0, ',', '.') }}">Rp {{ number_format($mBankmasAkhir, 0, ',', '.') }}</div>
                                             <div class="text-[10px] text-[#718379] font-mono truncate" title="Awal: Rp {{ number_format((float)$bankmasSaldoAwal, 0, ',', '.') }}">Awal: Rp {{ number_format((float)$bankmasSaldoAwal, 0, ',', '.') }}</div>
                                         </td>
-                                        <td class="py-2.5 px-3.5 text-center">
-                                            <div class="relative flex items-center h-9 w-36 sm:w-44 mx-auto">
+                                        <td class="py-2.5 px-3.5 text-right">
+                                            <div class="relative flex items-center h-9 w-36 sm:w-40 ml-auto">
                                                 <span class="absolute left-2.5 font-mono text-xs text-slate-400 select-none pointer-events-none font-bold z-10">Rp</span>
                                                 <input type="text" maxlength="17" x-data x-on:input="let val = $el.value.replace(/\D/g, '').slice(0, 13); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('bankmasSaldoAndroid', val ? parseInt(val) : 0);" value="{{ $bankmasSaldoAndroid ? number_format((float)$bankmasSaldoAndroid, 0, ',', '.') : '' }}" class="w-full h-9 pl-8 pr-2.5 border border-slate-300/80 rounded-lg bg-[#F3F6F4] font-mono font-extrabold text-right text-xs sm:text-sm text-[#2C3E35] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] transition shadow-2xs truncate" placeholder="0" />
                                             </div>
@@ -898,8 +898,8 @@
                                             <div class="font-mono font-extrabold text-[#2C3E35] text-xs sm:text-sm truncate" title="Rp {{ number_format($mMultiAkhir, 0, ',', '.') }}">Rp {{ number_format($mMultiAkhir, 0, ',', '.') }}</div>
                                             <div class="text-[10px] text-[#718379] font-mono truncate" title="Awal: Rp {{ number_format((float)$multiSaldoAwal, 0, ',', '.') }}">Awal: Rp {{ number_format((float)$multiSaldoAwal, 0, ',', '.') }}</div>
                                         </td>
-                                        <td class="py-2.5 px-3.5 text-center">
-                                            <div class="relative flex items-center h-9 w-36 sm:w-44 mx-auto">
+                                        <td class="py-2.5 px-3.5 text-right">
+                                            <div class="relative flex items-center h-9 w-36 sm:w-40 ml-auto">
                                                 <span class="absolute left-2.5 font-mono text-xs text-slate-400 select-none pointer-events-none font-bold z-10">Rp</span>
                                                 <input type="text" maxlength="17" x-data x-on:input="let val = $el.value.replace(/\D/g, '').slice(0, 13); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('multiSaldoAndroid', val ? parseInt(val) : 0);" value="{{ $multiSaldoAndroid ? number_format((float)$multiSaldoAndroid, 0, ',', '.') : '' }}" class="w-full h-9 pl-8 pr-2.5 border border-slate-300/80 rounded-lg bg-[#F3F6F4] font-mono font-extrabold text-right text-xs sm:text-sm text-[#2C3E35] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] transition shadow-2xs truncate" placeholder="0" />
                                             </div>
@@ -943,8 +943,8 @@
                                             <div class="font-mono font-extrabold text-[#2C3E35] text-xs sm:text-sm truncate" title="Rp {{ number_format($mWahanaAkhir, 0, ',', '.') }}">Rp {{ number_format($mWahanaAkhir, 0, ',', '.') }}</div>
                                             <div class="text-[10px] text-[#718379] font-mono truncate" title="Awal: Rp {{ number_format((float)$wahanaSaldoAwal, 0, ',', '.') }}">Awal: Rp {{ number_format((float)$wahanaSaldoAwal, 0, ',', '.') }}</div>
                                         </td>
-                                        <td class="py-2.5 px-3.5 text-center">
-                                            <div class="relative flex items-center h-9 w-36 sm:w-44 mx-auto">
+                                        <td class="py-2.5 px-3.5 text-right">
+                                            <div class="relative flex items-center h-9 w-36 sm:w-40 ml-auto">
                                                 <span class="absolute left-2.5 font-mono text-xs text-slate-400 select-none pointer-events-none font-bold z-10">Rp</span>
                                                 <input type="text" maxlength="17" x-data x-on:input="let val = $el.value.replace(/\D/g, '').slice(0, 13); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('wahanaSaldoAndroid', val ? parseInt(val) : 0);" value="{{ $wahanaSaldoAndroid ? number_format((float)$wahanaSaldoAndroid, 0, ',', '.') : '' }}" class="w-full h-9 pl-8 pr-2.5 border border-slate-300/80 rounded-lg bg-[#F3F6F4] font-mono font-extrabold text-right text-xs sm:text-sm text-[#2C3E35] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] transition shadow-2xs truncate" placeholder="0" />
                                             </div>
