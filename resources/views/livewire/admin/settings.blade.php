@@ -103,29 +103,97 @@
                     <span class="px-3 py-1 rounded-lg bg-[#E3EEE8] text-[#3F7A5D] text-xs font-extrabold uppercase tracking-wider border border-[#3F7A5D]/20">Thermal POS</span>
                 </div>
 
-                <form wire:submit.prevent="savePrinterSettings" class="space-y-4">
-                    <!-- Grid 1: Ukuran Kertas & Mode Cetak -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-xs font-bold uppercase tracking-wider text-[#2C3E35] mb-1.5">Ukuran Kertas Thermal *</label>
-                            <select wire:model.live="receiptPaperWidth" class="w-full h-11 px-3 py-2 border border-slate-200 rounded-xl font-bold text-sm text-[#2C3E35] focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]">
-                                <option value="58mm">58mm (Kertas Struk Kecil Standard)</option>
-                                <option value="80mm">80mm (Kertas Struk Lebar Desktop)</option>
-                            </select>
-                            <p class="text-[11px] text-[#718379] mt-1">Pilih `58mm` untuk printer Bluetooth portable atau `80mm` untuk printer kasir besar.</p>
-                        </div>
+                <form wire:submit.prevent="savePrinterSettings" class="space-y-5">
+                    <!-- 1. Selection Card: Ukuran Kertas Thermal -->
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-[#2C3E35] mb-2">1. Pilih Ukuran Kertas Thermal *</label>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <label @click="$wire.set('receiptPaperWidth', '58mm')" class="relative flex items-start p-3.5 rounded-2xl border-2 cursor-pointer transition-all {{ $receiptPaperWidth === '58mm' ? 'border-[#3F7A5D] bg-[#E3EEE8]/50 shadow-sm' : 'border-slate-200 hover:border-slate-300 bg-white' }}">
+                                <input type="radio" wire:model.live="receiptPaperWidth" value="58mm" class="sr-only">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-xl {{ $receiptPaperWidth === '58mm' ? 'bg-[#3F7A5D] text-white' : 'bg-slate-100 text-slate-500' }} flex items-center justify-center font-bold text-xs shrink-0">
+                                        58mm
+                                    </div>
+                                    <div>
+                                        <div class="font-extrabold text-xs sm:text-sm text-[#2C3E35]">Kertas Struk Kecil (58mm)</div>
+                                        <div class="text-[11px] text-[#718379] font-medium leading-snug">Standar printer Bluetooth portable / mini kasir.</div>
+                                    </div>
+                                </div>
+                            </label>
 
-                        <div>
-                            <label class="block text-xs font-bold uppercase tracking-wider text-[#2C3E35] mb-1.5">Mode Cetak Utama *</label>
-                            <select wire:model.live="printMode" class="w-full h-11 px-3 py-2 border border-slate-200 rounded-xl font-bold text-sm text-[#2C3E35] focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]">
-                                <option value="BROWSER">Browser Native Dialog (PC / Laptop)</option>
-                                <option value="WEB_BLUETOOTH">Web Bluetooth Direct (1-Click Direct Print PC/Android)</option>
-                                <option value="RAWBT">RawBT App Intent (Android Bluetooth Direct)</option>
-                            </select>
-                            <p class="text-[11px] text-[#718379] mt-1">Metode utama yang dipicu saat kasir menekan tombol cetak.</p>
+                            <label @click="$wire.set('receiptPaperWidth', '80mm')" class="relative flex items-start p-3.5 rounded-2xl border-2 cursor-pointer transition-all {{ $receiptPaperWidth === '80mm' ? 'border-[#3F7A5D] bg-[#E3EEE8]/50 shadow-sm' : 'border-slate-200 hover:border-slate-300 bg-white' }}">
+                                <input type="radio" wire:model.live="receiptPaperWidth" value="80mm" class="sr-only">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-xl {{ $receiptPaperWidth === '80mm' ? 'bg-[#3F7A5D] text-white' : 'bg-slate-100 text-slate-500' }} flex items-center justify-center font-bold text-xs shrink-0">
+                                        80mm
+                                    </div>
+                                    <div>
+                                        <div class="font-extrabold text-xs sm:text-sm text-[#2C3E35]">Kertas Struk Lebar (80mm)</div>
+                                        <div class="text-[11px] text-[#718379] font-medium leading-snug">Printer kasir meja besar / auto-cutter desktop.</div>
+                                    </div>
+                                </div>
+                            </label>
                         </div>
                     </div>
 
+                    <!-- 2. Selection Card: Mode Cetak Utama -->
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-[#2C3E35] mb-2">2. Pilih Metode Cetak Utama *</label>
+                        <div class="grid grid-cols-1 gap-2.5">
+                            <!-- Option A: Browser -->
+                            <label @click="$wire.set('printMode', 'BROWSER')" class="relative flex items-center justify-between p-3.5 rounded-2xl border-2 cursor-pointer transition-all {{ $printMode === 'BROWSER' ? 'border-[#3F7A5D] bg-[#E3EEE8]/50 shadow-sm' : 'border-slate-200 hover:border-slate-300 bg-white' }}">
+                                <div class="flex items-center gap-3 min-w-0">
+                                    <input type="radio" wire:model.live="printMode" value="BROWSER" class="sr-only">
+                                    <div class="w-10 h-10 rounded-xl {{ $printMode === 'BROWSER' ? 'bg-[#3F7A5D] text-white' : 'bg-slate-100 text-slate-500' }} flex items-center justify-center shrink-0">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                                    </div>
+                                    <div class="min-w-0">
+                                        <div class="font-extrabold text-xs sm:text-sm text-[#2C3E35] flex items-center gap-2">
+                                            <span>Browser Print Dialog</span>
+                                            <span class="px-2 py-0.5 rounded text-[10px] bg-slate-100 text-slate-700 font-bold border border-slate-200">PC / Laptop</span>
+                                        </div>
+                                        <div class="text-[11px] text-[#718379] font-medium leading-snug">Menggunakan dialog cetak bawaan browser Chrome/Edge/Firefox.</div>
+                                    </div>
+                                </div>
+                            </label>
+
+                            <!-- Option B: Direct Web Bluetooth -->
+                            <label @click="$wire.set('printMode', 'WEB_BLUETOOTH')" class="relative flex items-center justify-between p-3.5 rounded-2xl border-2 cursor-pointer transition-all {{ $printMode === 'WEB_BLUETOOTH' ? 'border-[#3F7A5D] bg-[#E3EEE8]/50 shadow-sm' : 'border-slate-200 hover:border-slate-300 bg-white' }}">
+                                <div class="flex items-center gap-3 min-w-0">
+                                    <input type="radio" wire:model.live="printMode" value="WEB_BLUETOOTH" class="sr-only">
+                                    <div class="w-10 h-10 rounded-xl {{ $printMode === 'WEB_BLUETOOTH' ? 'bg-[#3F7A5D] text-white' : 'bg-slate-100 text-slate-500' }} flex items-center justify-center shrink-0">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+                                    </div>
+                                    <div class="min-w-0">
+                                        <div class="font-extrabold text-xs sm:text-sm text-[#2C3E35] flex items-center gap-2">
+                                            <span>Direct Web Bluetooth</span>
+                                            <span class="px-2 py-0.5 rounded text-[10px] bg-emerald-100 text-emerald-800 font-bold border border-emerald-200">1-Click Direct Print</span>
+                                        </div>
+                                        <div class="text-[11px] text-[#718379] font-medium leading-snug">Cetak langsung ke printer Bluetooth tanpa jendela pop-up dialog print.</div>
+                                    </div>
+                                </div>
+                            </label>
+
+                            <!-- Option C: RawBT Android -->
+                            <label @click="$wire.set('printMode', 'RAWBT')" class="relative flex items-center justify-between p-3.5 rounded-2xl border-2 cursor-pointer transition-all {{ $printMode === 'RAWBT' ? 'border-[#3F7A5D] bg-[#E3EEE8]/50 shadow-sm' : 'border-slate-200 hover:border-slate-300 bg-white' }}">
+                                <div class="flex items-center gap-3 min-w-0">
+                                    <input type="radio" wire:model.live="printMode" value="RAWBT" class="sr-only">
+                                    <div class="w-10 h-10 rounded-xl {{ $printMode === 'RAWBT' ? 'bg-[#3F7A5D] text-white' : 'bg-slate-100 text-slate-500' }} flex items-center justify-center shrink-0">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                                    </div>
+                                    <div class="min-w-0">
+                                        <div class="font-extrabold text-xs sm:text-sm text-[#2C3E35] flex items-center gap-2">
+                                            <span>RawBT App Intent</span>
+                                            <span class="px-2 py-0.5 rounded text-[10px] bg-amber-100 text-amber-800 font-bold border border-amber-200">HP / Tablet Android</span>
+                                        </div>
+                                        <div class="text-[11px] text-[#718379] font-medium leading-snug">Mengirim instruksi cetak langsung ke aplikasi RawBT di Android.</div>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Contextual Help / Setup Box based on selected mode -->
                     @if($printMode === 'WEB_BLUETOOTH')
                         <div x-data="{
                             printerName: window.webBluetoothThermalPrinter?.getSavedDeviceName() || '',
@@ -155,30 +223,48 @@
                                     footer: '{{ $receiptFooterText }}'
                                 });
                                 if (success) {
-                                    alert('Struk percoban berhasil dikirim ke printer!');
+                                    alert('Struk percobaan berhasil dikirim ke printer Bluetooth!');
                                 }
                             }
-                        }" class="p-4 bg-emerald-50/80 rounded-xl border border-emerald-200/80 space-y-3">
+                        }" class="p-4 bg-emerald-50/80 rounded-2xl border border-emerald-200/80 space-y-3">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-2 text-emerald-900 font-extrabold text-xs uppercase tracking-wider">
                                     <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
-                                    <span>Koneksi Direct Web Bluetooth</span>
+                                    <span>Status Koneksi Web Bluetooth</span>
                                 </div>
-                                <span x-text="printerName ? 'TERPASANG: ' + printerName : 'BELUM TERHUBUNG'" :class="printerName ? 'bg-emerald-200/80 text-emerald-800' : 'bg-amber-100 text-amber-800'" class="px-2.5 py-0.5 rounded-md text-[10px] font-extrabold uppercase font-mono"></span>
+                                <span x-text="printerName ? 'TERHUBUNG: ' + printerName : 'BELUM TERHUBUNG'" :class="printerName ? 'bg-emerald-200/80 text-emerald-900' : 'bg-amber-100 text-amber-900'" class="px-2.5 py-0.5 rounded-md text-[10px] font-extrabold uppercase font-mono"></span>
                             </div>
 
-                            <p class="text-xs text-emerald-800 font-medium">
-                                Mode Web Bluetooth memungkinkan cetak struk <strong>1-click tanpa jendela dialog Chrome</strong>. Pastikan Bluetooth PC/Laptop atau HP Anda sudah menyala.
+                            <p class="text-xs text-emerald-800 font-medium leading-relaxed">
+                                Pastikan Bluetooth PC/Laptop/HP Anda aktif. Tekan tombol di bawah untuk memasangkan (pair) printer Bluetooth Anda 1 kali.
                             </p>
 
-                            <div class="flex items-center gap-2 pt-1">
-                                <button type="button" @click="pair()" :disabled="isConnecting" class="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs rounded-xl transition flex items-center gap-1.5 cursor-pointer shadow-xs">
+                            <div class="flex items-center gap-2 pt-1 flex-wrap">
+                                <button type="button" @click="pair()" :disabled="isConnecting" class="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs rounded-xl transition flex items-center gap-1.5 cursor-pointer shadow-xs active:scale-95">
                                     <span x-text="isConnecting ? 'Menghubungkan...' : 'Sambungkan Bluetooth Printer'"></span>
                                 </button>
-                                <button type="button" @click="testPrint()" class="px-4 py-2 bg-white hover:bg-slate-50 text-emerald-800 border border-emerald-300 font-bold text-xs rounded-xl transition cursor-pointer">
+                                <button type="button" @click="testPrint()" class="px-4 py-2 bg-white hover:bg-slate-50 text-emerald-800 border border-emerald-300 font-bold text-xs rounded-xl transition cursor-pointer shadow-2xs">
                                     Cetak Struk Percobaan
                                 </button>
                             </div>
+                        </div>
+                    @elseif($printMode === 'BROWSER')
+                        <div class="p-3.5 bg-slate-50 rounded-2xl border border-slate-200/80 text-xs space-y-1.5">
+                            <div class="font-extrabold text-[#2C3E35] flex items-center gap-1.5">
+                                <span>💡 Tips Silent Print di Google Chrome (Tanpa Pop-up):</span>
+                            </div>
+                            <p class="text-[#5F7167] leading-relaxed">
+                                Buka shortcut Chrome di Windows -> tambahkan <code class="bg-white px-1.5 py-0.5 rounded border border-slate-200 font-mono font-bold text-[#2C3E35]">--kiosk-printing</code> di ujung kolom Target. Struk akan otomatis keluar instan tanpa dialog Chrome!
+                            </p>
+                        </div>
+                    @elseif($printMode === 'RAWBT')
+                        <div class="p-3.5 bg-amber-50/80 rounded-2xl border border-amber-200/80 text-xs space-y-1.5 text-amber-900">
+                            <div class="font-extrabold flex items-center gap-1.5">
+                                <span>📱 Kebutuhan Aplikasi RawBT:</span>
+                            </div>
+                            <p class="leading-relaxed">
+                                Pastikan aplikasi <strong>RawBT Thermal Printer Driver</strong> sudah terinstall dari Google Play Store pada HP/Tablet Android kasir Anda.
+                            </p>
                         </div>
                     @endif
 
