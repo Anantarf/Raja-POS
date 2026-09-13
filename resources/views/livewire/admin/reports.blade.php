@@ -213,229 +213,310 @@
                     </div>
                 </div>
             @else
-                <!-- PURE READ-ONLY REPORT DOCUMENT VIEW -->
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6">
-                    <!-- Left Column: E-Wallet & Bank Tables (8 cols) -->
-                    <div class="lg:col-span-7 xl:col-span-8 space-y-5">
-                        
-                        <!-- 1. DANA Table -->
-                        <div class="bg-white border-2 border-slate-200/90 rounded-2xl overflow-hidden shadow-xs">
-                            <div class="bg-[#F3F6F4] px-4 py-2.5 border-b border-slate-200 flex items-center justify-between font-extrabold text-xs text-[#2C3E35]">
-                                <span class="uppercase tracking-wider">DANA (E-Wallet)</span>
-                                <span class="text-[10px] text-[#718379] font-semibold">Saldo Digital</span>
+                <!-- PURE READ-ONLY REPORT DOCUMENT VIEW (ENTERPRISE COMPACT) -->
+                <div class="space-y-5">
+                    
+                    <!-- TOP KPI SUMMARY STRIP (4 Executive Cards) -->
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
+                        <!-- Card 1: Total Omzet POS -->
+                        <div class="bg-white border border-slate-200 rounded-2xl p-3.5 sm:p-4 shadow-xs flex flex-col justify-between space-y-2">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[11px] font-extrabold text-[#718379] uppercase tracking-wider">OMZET POS</span>
+                                <span class="p-1.5 rounded-lg bg-[#E3EEE8] text-[#3F7A5D]">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                </span>
                             </div>
-                            <div class="divide-y divide-slate-100 text-xs font-medium">
-                                <div class="grid grid-cols-2 p-3 items-center hover:bg-slate-50">
-                                    <span class="font-bold text-[#2C3E35]">SALDO AWAL</span>
-                                    <span class="text-right font-mono font-extrabold text-[#2C3E35]">Rp {{ number_format($dailySummaryData['dana_saldo_awal'], 0, ',', '.') }}</span>
+                            <div>
+                                <div class="text-base sm:text-lg font-black font-mono text-[#2C3E35] tracking-tight">
+                                    Rp {{ number_format($dailySummaryData['total_penjualan'], 0, ',', '.') }}
                                 </div>
-                                <div class="grid grid-cols-2 p-3 items-center hover:bg-slate-50">
-                                    <span class="font-bold text-[#2C3E35]">TOP UP SALDO</span>
-                                    <span class="text-right font-mono font-extrabold text-[#2C3E35]">Rp {{ number_format($dailySummaryData['dana_topup'], 0, ',', '.') }}</span>
-                                </div>
-                                <div class="grid grid-cols-2 p-3 items-center bg-slate-50 font-bold text-[#2C3E35]">
-                                    <span>TOTAL SALDO</span>
-                                    <span class="text-right font-mono font-black text-sm">Rp {{ number_format($dailySummaryData['dana_total'], 0, ',', '.') }}</span>
-                                </div>
-                                <div class="grid grid-cols-2 p-3 items-center hover:bg-slate-50">
-                                    <span class="font-bold text-[#2C3E35]">TRANSAKSI TERPAKAI (TRX)</span>
-                                    <span class="text-right font-mono font-extrabold text-[#2C3E35]">Rp {{ number_format($dailySummaryData['dana_trx'], 0, ',', '.') }}</span>
-                                </div>
-                                <div class="grid grid-cols-2 p-3 items-center bg-amber-200 text-amber-950 font-black">
-                                    <span>SALDO AKHIR</span>
-                                    <span class="text-right font-mono text-sm">Rp {{ number_format($dailySummaryData['dana_saldo_akhir'], 0, ',', '.') }}</span>
-                                </div>
-                                <div class="grid grid-cols-2 p-3 items-center bg-amber-200 text-amber-950 font-black border-t border-amber-300">
-                                    <span>SALDO ANDROID</span>
-                                    <span class="text-right font-mono text-sm">Rp {{ number_format($dailySummaryData['dana_saldo_android'], 0, ',', '.') }}</span>
-                                </div>
+                                <span class="text-[10px] text-[#718379] font-medium">Auto POS Sales</span>
                             </div>
                         </div>
 
-                        <!-- 2. QRIS Table -->
-                        <div class="bg-white border-2 border-slate-200/90 rounded-2xl overflow-hidden shadow-xs">
-                            <div class="bg-[#F3F6F4] px-4 py-2.5 border-b border-slate-200 flex items-center justify-between font-extrabold text-xs text-[#2C3E35]">
-                                <span class="uppercase tracking-wider">QRIS</span>
-                                <span class="text-[10px] text-[#718379] font-semibold">Payment Gateway</span>
+                        <!-- Card 2: Margin Profit -->
+                        <div class="bg-white border border-slate-200 rounded-2xl p-3.5 sm:p-4 shadow-xs flex flex-col justify-between space-y-2">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[11px] font-extrabold text-[#718379] uppercase tracking-wider">MARGIN PROFIT</span>
+                                <span class="p-1.5 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                                </span>
                             </div>
-                            <div class="divide-y divide-slate-100 text-xs font-medium">
-                                <div class="grid grid-cols-2 p-3 items-center hover:bg-slate-50">
-                                    <span class="font-bold text-[#2C3E35]">PEMBAYARAN (POS AUTOMATED)</span>
-                                    <span class="text-right font-mono font-extrabold text-[#3F7A5D]">Rp {{ number_format($dailySummaryData['qris_pembayaran'], 0, ',', '.') }}</span>
+                            <div>
+                                <div class="text-base sm:text-lg font-black font-mono text-[#3F7A5D] tracking-tight">
+                                    Rp {{ number_format($dailySummaryData['margin'], 0, ',', '.') }}
                                 </div>
-                                <div class="grid grid-cols-2 p-3 items-center hover:bg-slate-50">
-                                    <span class="font-bold text-[#2C3E35]">TARIK TUNAI</span>
-                                    <span class="text-right font-mono font-extrabold text-[#2C3E35]">Rp {{ number_format($dailySummaryData['qris_tarik_tunai'], 0, ',', '.') }}</span>
-                                </div>
-                                <div class="grid grid-cols-2 p-3 items-center bg-slate-50 font-bold text-[#2C3E35]">
-                                    <span>TOTAL</span>
-                                    <span class="text-right font-mono font-black text-sm">Rp {{ number_format($dailySummaryData['qris_total'], 0, ',', '.') }}</span>
-                                </div>
-                                <div class="grid grid-cols-2 p-3 items-center bg-amber-200 text-amber-950 font-black">
-                                    <span>SALDO ANDROID</span>
-                                    <span class="text-right font-mono text-sm">Rp {{ number_format($dailySummaryData['qris_saldo_android'], 0, ',', '.') }}</span>
-                                </div>
-                                <div class="grid grid-cols-2 p-3 items-center bg-amber-200 text-amber-950 font-black border-t border-amber-300">
-                                    <span>CEK STATUS SELISIH</span>
-                                    <div class="text-right font-mono text-xs flex items-center justify-end gap-1.5">
-                                        <span>Rp {{ number_format($dailySummaryData['qris_cek'], 0, ',', '.') }}</span>
-                                        @if($dailySummaryData['qris_saldo_android'] == $dailySummaryData['qris_total'])
-                                            <span class="px-1.5 py-0.5 rounded text-[10px] bg-emerald-600 text-white font-bold uppercase">SESUAI</span>
-                                        @else
-                                            <span class="px-1.5 py-0.5 rounded text-[10px] bg-rose-600 text-white font-bold uppercase">ADA SELISIH</span>
-                                        @endif
-                                    </div>
-                                </div>
+                                <span class="text-[10px] text-emerald-700 font-medium">Profit Toko</span>
                             </div>
                         </div>
 
-                        <!-- 3. BANK MAS Table -->
-                        <div class="bg-white border-2 border-slate-200/90 rounded-2xl overflow-hidden shadow-xs">
-                            <div class="bg-[#F3F6F4] px-4 py-2.5 border-b border-slate-200 flex items-center justify-between font-extrabold text-xs text-[#2C3E35]">
-                                <span class="uppercase tracking-wider">BANK MAS</span>
-                                <span class="text-[10px] text-[#718379] font-semibold">Rekening Operasional</span>
+                        <!-- Card 3: Setoran Tunai Laci Kasir -->
+                        <div class="bg-white border border-slate-200 rounded-2xl p-3.5 sm:p-4 shadow-xs flex flex-col justify-between space-y-2">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[11px] font-extrabold text-[#718379] uppercase tracking-wider">SETORAN LACI</span>
+                                <span class="p-1.5 rounded-lg bg-amber-50 text-amber-800 border border-amber-200">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                                </span>
                             </div>
-                            <div class="divide-y divide-slate-100 text-xs font-medium">
-                                <div class="grid grid-cols-2 p-3 items-center hover:bg-slate-50">
-                                    <span class="font-bold text-[#2C3E35]">SALDO AWAL</span>
-                                    <span class="text-right font-mono font-extrabold text-rose-700">Rp {{ number_format($dailySummaryData['bankmas_saldo_awal'], 0, ',', '.') }}</span>
+                            <div>
+                                <div class="text-base sm:text-lg font-black font-mono text-amber-950 tracking-tight">
+                                    Rp {{ number_format($dailySummaryData['setoran_tunai'], 0, ',', '.') }}
                                 </div>
-                                <div class="grid grid-cols-2 p-3 items-center hover:bg-slate-50">
-                                    <span class="font-bold text-[#2C3E35]">TOP UP SALDO</span>
-                                    <span class="text-right font-mono font-extrabold text-[#2C3E35]">Rp {{ number_format($dailySummaryData['bankmas_topup'], 0, ',', '.') }}</span>
-                                </div>
-                                <div class="grid grid-cols-2 p-3 items-center bg-slate-50 font-bold text-[#2C3E35]">
-                                    <span>TOTAL SALDO</span>
-                                    <span class="text-right font-mono font-black text-sm">Rp {{ number_format($dailySummaryData['bankmas_total'], 0, ',', '.') }}</span>
-                                </div>
-                                <div class="grid grid-cols-2 p-3 items-center hover:bg-slate-50">
-                                    <span class="font-bold text-[#2C3E35]">TRANSAKSI TERPAKAI (TRX)</span>
-                                    <span class="text-right font-mono font-extrabold text-rose-700">Rp {{ number_format($dailySummaryData['bankmas_trx'], 0, ',', '.') }}</span>
-                                </div>
-                                <div class="grid grid-cols-2 p-3 items-center bg-amber-200 text-amber-950 font-black">
-                                    <span>SALDO AKHIR</span>
-                                    <span class="text-right font-mono text-sm">Rp {{ number_format($dailySummaryData['bankmas_sisa'], 0, ',', '.') }}</span>
-                                </div>
-                                <div class="grid grid-cols-2 p-3 items-center bg-amber-200 text-amber-950 font-black border-t border-amber-300">
-                                    <span>SALDO ANDROID</span>
-                                    <span class="text-right font-mono text-sm">Rp {{ number_format($dailySummaryData['bankmas_saldo_android'], 0, ',', '.') }}</span>
-                                </div>
+                                <span class="text-[10px] text-amber-800 font-semibold">Uang Fisik Kasir</span>
                             </div>
                         </div>
 
-                        <!-- 4. MULTI Table -->
-                        <div class="bg-white border-2 border-slate-200/90 rounded-2xl overflow-hidden shadow-xs">
-                            <div class="bg-[#F3F6F4] px-4 py-2.5 border-b border-slate-200 flex items-center justify-between font-extrabold text-xs text-[#2C3E35]">
-                                <span class="uppercase tracking-wider">MULTI</span>
-                                <span class="text-[10px] text-[#718379] font-semibold">Distributor Pulsa/Kuota</span>
+                        <!-- Card 4: Total Saldo Digital -->
+                        @php
+                            $totalSaldoDigital = ($dailySummaryData['dana_saldo_android'] ?? 0) 
+                                               + ($dailySummaryData['qris_saldo_android'] ?? 0) 
+                                               + ($dailySummaryData['bankmas_saldo_android'] ?? 0) 
+                                               + ($dailySummaryData['multi_saldo_android'] ?? 0);
+                        @endphp
+                        <div class="bg-white border border-slate-200 rounded-2xl p-3.5 sm:p-4 shadow-xs flex flex-col justify-between space-y-2">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[11px] font-extrabold text-[#718379] uppercase tracking-wider">TOTAL SALDO DIGITAL</span>
+                                <span class="p-1.5 rounded-lg bg-sky-50 text-sky-700 border border-sky-200">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                                </span>
                             </div>
-                            <div class="divide-y divide-slate-100 text-xs font-medium">
-                                <div class="grid grid-cols-2 p-3 items-center hover:bg-slate-50">
-                                    <span class="font-bold text-[#2C3E35]">SALDO AWAL</span>
-                                    <span class="text-right font-mono font-extrabold text-[#2C3E35]">Rp {{ number_format($dailySummaryData['multi_saldo_awal'], 0, ',', '.') }}</span>
+                            <div>
+                                <div class="text-base sm:text-lg font-black font-mono text-slate-800 tracking-tight">
+                                    Rp {{ number_format($totalSaldoDigital, 0, ',', '.') }}
                                 </div>
-                                <div class="grid grid-cols-2 p-3 items-center hover:bg-slate-50">
-                                    <span class="font-bold text-[#2C3E35]">TOP UP SALDO</span>
-                                    <span class="text-right font-mono font-extrabold text-[#2C3E35]">Rp {{ number_format($dailySummaryData['multi_topup'], 0, ',', '.') }}</span>
-                                </div>
-                                <div class="grid grid-cols-2 p-3 items-center bg-slate-50 font-bold text-[#2C3E35]">
-                                    <span>TOTAL SALDO</span>
-                                    <span class="text-right font-mono font-black text-sm">Rp {{ number_format($dailySummaryData['multi_total'], 0, ',', '.') }}</span>
-                                </div>
-                                <div class="grid grid-cols-2 p-3 items-center hover:bg-slate-50">
-                                    <span class="font-bold text-[#2C3E35]">TRANSAKSI TERPAKAI (TRX)</span>
-                                    <span class="text-right font-mono font-extrabold text-[#2C3E35]">Rp {{ number_format($dailySummaryData['multi_trx'], 0, ',', '.') }}</span>
-                                </div>
-                                <div class="grid grid-cols-2 p-3 items-center bg-amber-200 text-amber-950 font-black">
-                                    <span>SALDO AKHIR</span>
-                                    <span class="text-right font-mono text-sm">Rp {{ number_format($dailySummaryData['multi_sisa'], 0, ',', '.') }}</span>
-                                </div>
-                                <div class="grid grid-cols-2 p-3 items-center bg-amber-200 text-amber-950 font-black border-t border-amber-300">
-                                    <span>SALDO ANDROID</span>
-                                    <span class="text-right font-mono text-sm">Rp {{ number_format($dailySummaryData['multi_saldo_android'], 0, ',', '.') }}</span>
-                                </div>
+                                <span class="text-[10px] text-[#718379] font-medium">DANA + QRIS + Bank + Multi</span>
                             </div>
                         </div>
-
                     </div>
 
-                    <!-- Right Column: Sales, Profit, & Physical Cash Settlement (4/5 cols) -->
-                    <div class="lg:col-span-5 xl:col-span-4 space-y-5">
+                    <!-- MAIN CONTENT GRID (8 cols left / 4 cols right) -->
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
                         
-                        <!-- Settlement Box -->
-                        <div class="bg-white border-2 border-slate-200/90 rounded-2xl overflow-hidden shadow-sm">
-                            <div class="bg-[#2C3E35] text-white px-4 py-3 font-extrabold text-xs uppercase tracking-wider flex items-center justify-between">
-                                <span>REKAPITULASI PENJUALAN</span>
-                                <span class="text-[10px] text-emerald-400 font-mono">AUTOMATED</span>
-                            </div>
-                            <div class="divide-y divide-slate-100 text-xs">
+                        <!-- Left Column: E-Wallet & Bank Tables Grid (8 cols desktop, 2x2 grid inside) -->
+                        <div class="lg:col-span-7 xl:col-span-8">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 
-                                <!-- MARGIN -->
-                                <div class="flex items-center justify-between p-3 bg-slate-50">
-                                    <span class="font-extrabold text-[#2C3E35]">MARGIN (PROFIT TOKO)</span>
-                                    <span class="font-mono font-black text-sm text-[#3F7A5D]">Rp {{ number_format($dailySummaryData['margin'], 0, ',', '.') }}</span>
-                                </div>
-
-                                <!-- PENJUALAN (Kuning Highlight) -->
-                                <div class="flex items-center justify-between p-3 bg-amber-200 text-amber-950 font-black">
-                                    <span>TOTAL PENJUALAN</span>
-                                    <span class="font-mono text-sm">Rp {{ number_format($dailySummaryData['total_penjualan'], 0, ',', '.') }}</span>
-                                </div>
-
-                                <!-- TARIK TUNAI -->
-                                <div class="flex items-center justify-between p-3 bg-amber-200 text-amber-950 font-black border-t border-amber-300">
-                                    <span>TARIK TUNAI KASIR</span>
-                                    <span class="font-mono text-sm">Rp {{ number_format($dailySummaryData['tarik_tunai_kasir'], 0, ',', '.') }}</span>
-                                </div>
-
-                                <!-- SUBTOTAL MERAH -->
-                                <div class="flex items-center justify-between p-3 bg-white font-extrabold text-rose-700">
-                                    <span>SUBTOTAL NETTO</span>
-                                    <span class="font-mono text-sm">Rp {{ number_format($dailySummaryData['subtotal_netto'], 0, ',', '.') }}</span>
-                                </div>
-
-                                <!-- QRIS -->
-                                <div class="flex items-center justify-between p-3 bg-slate-50 font-bold text-[#2C3E35]">
-                                    <span>PEMBAYARAN QRIS</span>
-                                    <span class="font-mono text-sm font-extrabold text-slate-700">Rp {{ number_format($dailySummaryData['qris_pembayaran_pos'], 0, ',', '.') }}</span>
-                                </div>
-
-                                <!-- TUNAI POS -->
-                                <div class="flex items-center justify-between p-3 bg-white font-bold text-[#2C3E35]">
-                                    <span>PEMBAYARAN TUNAI</span>
-                                    <span class="font-mono text-sm font-extrabold text-slate-700">Rp {{ number_format($dailySummaryData['tunai_pembayaran_pos'], 0, ',', '.') }}</span>
-                                </div>
-
-                                <!-- TRANSFER -->
-                                <div class="flex items-center justify-between p-3 bg-white font-bold text-[#2C3E35]">
-                                    <span>PEMBAYARAN TRANSFER</span>
-                                    <span class="font-mono text-sm font-extrabold text-slate-700">Rp {{ number_format($dailySummaryData['transfer_pembayaran_pos'], 0, ',', '.') }}</span>
-                                </div>
-
-                                <!-- SETORAN TUNAI FISIK (BOX HIJAU EMERALD) -->
-                                <div class="p-4 bg-emerald-600 text-white space-y-1">
-                                    <div class="text-[11px] font-extrabold uppercase tracking-wider text-emerald-100 flex items-center justify-between">
-                                        <span>SETORAN TUNAI LACI KASIR</span>
-                                        <span class="px-1.5 py-0.5 rounded text-[9px] bg-emerald-800 text-emerald-200 font-bold">UANG FISIK</span>
+                                <!-- 1. DANA Table -->
+                                <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xs flex flex-col justify-between">
+                                    <div class="bg-[#F3F6F4] px-3.5 py-2 border-b border-slate-200 flex items-center justify-between font-extrabold text-xs text-[#2C3E35]">
+                                        <span class="uppercase tracking-wider">DANA</span>
+                                        <span class="text-[10px] text-[#718379] font-semibold">E-Wallet</span>
                                     </div>
-                                    <div class="text-2xl font-black font-mono tracking-tight">
-                                        Rp {{ number_format($dailySummaryData['setoran_tunai'], 0, ',', '.') }}
+                                    <div class="divide-y divide-slate-100 text-xs font-medium flex-1">
+                                        <div class="grid grid-cols-2 px-3 py-2 items-center hover:bg-slate-50">
+                                            <span class="text-[#718379]">SALDO AWAL</span>
+                                            <span class="text-right font-mono font-bold text-[#2C3E35]">Rp {{ number_format($dailySummaryData['dana_saldo_awal'], 0, ',', '.') }}</span>
+                                        </div>
+                                        <div class="grid grid-cols-2 px-3 py-2 items-center hover:bg-slate-50">
+                                            <span class="text-[#718379]">TOP UP SALDO</span>
+                                            <span class="text-right font-mono font-bold text-[#2C3E35]">Rp {{ number_format($dailySummaryData['dana_topup'], 0, ',', '.') }}</span>
+                                        </div>
+                                        <div class="grid grid-cols-2 px-3 py-2 items-center bg-slate-50/80 font-bold text-[#2C3E35]">
+                                            <span>TOTAL SALDO</span>
+                                            <span class="text-right font-mono font-black">Rp {{ number_format($dailySummaryData['dana_total'], 0, ',', '.') }}</span>
+                                        </div>
+                                        <div class="grid grid-cols-2 px-3 py-2 items-center hover:bg-slate-50">
+                                            <span class="text-[#718379]">TERPAKAI (TRX)</span>
+                                            <span class="text-right font-mono font-bold text-[#2C3E35]">Rp {{ number_format($dailySummaryData['dana_trx'], 0, ',', '.') }}</span>
+                                        </div>
+                                        <div class="grid grid-cols-2 px-3 py-2 items-center bg-slate-100/70 font-extrabold text-[#2C3E35]">
+                                            <span>SALDO AKHIR</span>
+                                            <span class="text-right font-mono">Rp {{ number_format($dailySummaryData['dana_saldo_akhir'], 0, ',', '.') }}</span>
+                                        </div>
                                     </div>
-                                    <p class="text-[10px] text-emerald-100 font-medium">Uang fisik tunai yang harus disetorkan dari laci kasir pada akhir hari.</p>
+                                    <div class="grid grid-cols-2 px-3 py-2 items-center bg-amber-100 text-amber-950 font-black border-t border-amber-200">
+                                        <span class="text-[11px]">SALDO ANDROID</span>
+                                        <span class="text-right font-mono text-xs">Rp {{ number_format($dailySummaryData['dana_saldo_android'], 0, ',', '.') }}</span>
+                                    </div>
+                                </div>
+
+                                <!-- 2. QRIS Table -->
+                                <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xs flex flex-col justify-between">
+                                    <div class="bg-[#F3F6F4] px-3.5 py-2 border-b border-slate-200 flex items-center justify-between font-extrabold text-xs text-[#2C3E35]">
+                                        <span class="uppercase tracking-wider">QRIS</span>
+                                        <span class="text-[10px] text-[#718379] font-semibold">Payment Gateway</span>
+                                    </div>
+                                    <div class="divide-y divide-slate-100 text-xs font-medium flex-1">
+                                        <div class="grid grid-cols-2 px-3 py-2 items-center hover:bg-slate-50">
+                                            <span class="text-[#718379]">PEMBAYARAN POS</span>
+                                            <span class="text-right font-mono font-bold text-[#3F7A5D]">Rp {{ number_format($dailySummaryData['qris_pembayaran'], 0, ',', '.') }}</span>
+                                        </div>
+                                        <div class="grid grid-cols-2 px-3 py-2 items-center hover:bg-slate-50">
+                                            <span class="text-[#718379]">TARIK TUNAI</span>
+                                            <span class="text-right font-mono font-bold text-[#2C3E35]">Rp {{ number_format($dailySummaryData['qris_tarik_tunai'], 0, ',', '.') }}</span>
+                                        </div>
+                                        <div class="grid grid-cols-2 px-3 py-2 items-center bg-slate-50/80 font-bold text-[#2C3E35]">
+                                            <span>TOTAL QRIS</span>
+                                            <span class="text-right font-mono font-black">Rp {{ number_format($dailySummaryData['qris_total'], 0, ',', '.') }}</span>
+                                        </div>
+                                        <div class="grid grid-cols-2 px-3 py-2 items-center bg-amber-100 text-amber-950 font-black border-t border-amber-200">
+                                            <span class="text-[11px]">SALDO ANDROID</span>
+                                            <span class="text-right font-mono text-xs">Rp {{ number_format($dailySummaryData['qris_saldo_android'], 0, ',', '.') }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-2 px-3 py-2 items-center bg-slate-50 border-t border-slate-200">
+                                        <span class="text-[11px] font-bold text-[#2C3E35]">STATUS SELISIH</span>
+                                        <div class="text-right font-mono text-xs flex items-center justify-end gap-1.5">
+                                            <span class="font-bold text-[#2C3E35]">Rp {{ number_format($dailySummaryData['qris_cek'], 0, ',', '.') }}</span>
+                                            @if($dailySummaryData['qris_saldo_android'] == $dailySummaryData['qris_total'])
+                                                <span class="px-1.5 py-0.5 rounded text-[9px] bg-emerald-600 text-white font-black tracking-wider uppercase">MATCH</span>
+                                            @else
+                                                <span class="px-1.5 py-0.5 rounded text-[9px] bg-rose-600 text-white font-black tracking-wider uppercase">SELISIH</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 3. BANK MAS Table -->
+                                <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xs flex flex-col justify-between">
+                                    <div class="bg-[#F3F6F4] px-3.5 py-2 border-b border-slate-200 flex items-center justify-between font-extrabold text-xs text-[#2C3E35]">
+                                        <span class="uppercase tracking-wider">BANK MAS</span>
+                                        <span class="text-[10px] text-[#718379] font-semibold">Rek. Operasional</span>
+                                    </div>
+                                    <div class="divide-y divide-slate-100 text-xs font-medium flex-1">
+                                        <div class="grid grid-cols-2 px-3 py-2 items-center hover:bg-slate-50">
+                                            <span class="text-[#718379]">SALDO AWAL</span>
+                                            <span class="text-right font-mono font-bold text-[#2C3E35]">Rp {{ number_format($dailySummaryData['bankmas_saldo_awal'], 0, ',', '.') }}</span>
+                                        </div>
+                                        <div class="grid grid-cols-2 px-3 py-2 items-center hover:bg-slate-50">
+                                            <span class="text-[#718379]">TOP UP SALDO</span>
+                                            <span class="text-right font-mono font-bold text-[#2C3E35]">Rp {{ number_format($dailySummaryData['bankmas_topup'], 0, ',', '.') }}</span>
+                                        </div>
+                                        <div class="grid grid-cols-2 px-3 py-2 items-center bg-slate-50/80 font-bold text-[#2C3E35]">
+                                            <span>TOTAL SALDO</span>
+                                            <span class="text-right font-mono font-black">Rp {{ number_format($dailySummaryData['bankmas_total'], 0, ',', '.') }}</span>
+                                        </div>
+                                        <div class="grid grid-cols-2 px-3 py-2 items-center hover:bg-slate-50">
+                                            <span class="text-[#718379]">TERPAKAI (TRX)</span>
+                                            <span class="text-right font-mono font-bold text-[#2C3E35]">Rp {{ number_format($dailySummaryData['bankmas_trx'], 0, ',', '.') }}</span>
+                                        </div>
+                                        <div class="grid grid-cols-2 px-3 py-2 items-center bg-slate-100/70 font-extrabold text-[#2C3E35]">
+                                            <span>SALDO AKHIR</span>
+                                            <span class="text-right font-mono">Rp {{ number_format($dailySummaryData['bankmas_sisa'], 0, ',', '.') }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-2 px-3 py-2 items-center bg-amber-100 text-amber-950 font-black border-t border-amber-200">
+                                        <span class="text-[11px]">SALDO ANDROID</span>
+                                        <span class="text-right font-mono text-xs">Rp {{ number_format($dailySummaryData['bankmas_saldo_android'], 0, ',', '.') }}</span>
+                                    </div>
+                                </div>
+
+                                <!-- 4. MULTI Table -->
+                                <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xs flex flex-col justify-between">
+                                    <div class="bg-[#F3F6F4] px-3.5 py-2 border-b border-slate-200 flex items-center justify-between font-extrabold text-xs text-[#2C3E35]">
+                                        <span class="uppercase tracking-wider">MULTI</span>
+                                        <span class="text-[10px] text-[#718379] font-semibold">Distributor Pulsa</span>
+                                    </div>
+                                    <div class="divide-y divide-slate-100 text-xs font-medium flex-1">
+                                        <div class="grid grid-cols-2 px-3 py-2 items-center hover:bg-slate-50">
+                                            <span class="text-[#718379]">SALDO AWAL</span>
+                                            <span class="text-right font-mono font-bold text-[#2C3E35]">Rp {{ number_format($dailySummaryData['multi_saldo_awal'], 0, ',', '.') }}</span>
+                                        </div>
+                                        <div class="grid grid-cols-2 px-3 py-2 items-center hover:bg-slate-50">
+                                            <span class="text-[#718379]">TOP UP SALDO</span>
+                                            <span class="text-right font-mono font-bold text-[#2C3E35]">Rp {{ number_format($dailySummaryData['multi_topup'], 0, ',', '.') }}</span>
+                                        </div>
+                                        <div class="grid grid-cols-2 px-3 py-2 items-center bg-slate-50/80 font-bold text-[#2C3E35]">
+                                            <span>TOTAL SALDO</span>
+                                            <span class="text-right font-mono font-black">Rp {{ number_format($dailySummaryData['multi_total'], 0, ',', '.') }}</span>
+                                        </div>
+                                        <div class="grid grid-cols-2 px-3 py-2 items-center hover:bg-slate-50">
+                                            <span class="text-[#718379]">TERPAKAI (TRX)</span>
+                                            <span class="text-right font-mono font-bold text-[#2C3E35]">Rp {{ number_format($dailySummaryData['multi_trx'], 0, ',', '.') }}</span>
+                                        </div>
+                                        <div class="grid grid-cols-2 px-3 py-2 items-center bg-slate-100/70 font-extrabold text-[#2C3E35]">
+                                            <span>SALDO AKHIR</span>
+                                            <span class="text-right font-mono">Rp {{ number_format($dailySummaryData['multi_sisa'], 0, ',', '.') }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-2 px-3 py-2 items-center bg-amber-100 text-amber-950 font-black border-t border-amber-200">
+                                        <span class="text-[11px]">SALDO ANDROID</span>
+                                        <span class="text-right font-mono text-xs">Rp {{ number_format($dailySummaryData['multi_saldo_android'], 0, ',', '.') }}</span>
+                                    </div>
                                 </div>
 
                             </div>
                         </div>
 
-                        <!-- Notes Box -->
-                        <div class="bg-white border-2 border-slate-200/90 rounded-2xl p-4 space-y-2 shadow-xs">
-                            <label class="text-xs font-extrabold text-[#2C3E35] uppercase tracking-wider block">Catatan Rekap / Penjelasan Selisih</label>
-                            <p class="text-xs text-[#2C3E35] bg-[#F3F6F4] p-3 rounded-xl min-h-[70px] border border-slate-200 font-medium italic">
-                                {{ $notes ? $notes : 'Tidak ada catatan tambahan.' }}
-                            </p>
-                        </div>
+                        <!-- Right Column: Sales, Profit, & Settlement (4 cols desktop) -->
+                        <div class="lg:col-span-5 xl:col-span-4 space-y-4">
+                            
+                            <!-- Settlement Box -->
+                            <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xs">
+                                <div class="bg-[#2C3E35] text-white px-3.5 py-2.5 font-extrabold text-xs uppercase tracking-wider flex items-center justify-between">
+                                    <span>REKAPITULASI PENJUALAN</span>
+                                    <span class="text-[10px] text-emerald-300 font-mono font-bold">AUTOMATED</span>
+                                </div>
+                                <div class="divide-y divide-slate-100 text-xs">
+                                    
+                                    <!-- MARGIN -->
+                                    <div class="flex items-center justify-between px-3.5 py-2.5 bg-emerald-50/60">
+                                        <span class="font-extrabold text-[#2C3E35]">MARGIN (PROFIT TOKO)</span>
+                                        <span class="font-mono font-black text-xs sm:text-sm text-[#3F7A5D]">Rp {{ number_format($dailySummaryData['margin'], 0, ',', '.') }}</span>
+                                    </div>
 
+                                    <!-- PENJUALAN -->
+                                    <div class="flex items-center justify-between px-3.5 py-2.5 bg-amber-100/80 text-amber-950 font-extrabold">
+                                        <span>TOTAL PENJUALAN</span>
+                                        <span class="font-mono text-xs sm:text-sm">Rp {{ number_format($dailySummaryData['total_penjualan'], 0, ',', '.') }}</span>
+                                    </div>
+
+                                    <!-- TARIK TUNAI -->
+                                    <div class="flex items-center justify-between px-3.5 py-2 bg-slate-50 font-bold text-[#2C3E35]">
+                                        <span>TARIK TUNAI KASIR</span>
+                                        <span class="font-mono text-xs">Rp {{ number_format($dailySummaryData['tarik_tunai_kasir'], 0, ',', '.') }}</span>
+                                    </div>
+
+                                    <!-- SUBTOTAL NETTO -->
+                                    <div class="flex items-center justify-between px-3.5 py-2 bg-white font-extrabold text-rose-700">
+                                        <span>SUBTOTAL NETTO</span>
+                                        <span class="font-mono text-xs">Rp {{ number_format($dailySummaryData['subtotal_netto'], 0, ',', '.') }}</span>
+                                    </div>
+
+                                    <!-- QRIS POS -->
+                                    <div class="flex items-center justify-between px-3.5 py-2 bg-slate-50 font-medium text-[#2C3E35]">
+                                        <span class="text-[#718379]">PEMBAYARAN QRIS</span>
+                                        <span class="font-mono text-xs font-bold text-slate-700">Rp {{ number_format($dailySummaryData['qris_pembayaran_pos'], 0, ',', '.') }}</span>
+                                    </div>
+
+                                    <!-- TUNAI POS -->
+                                    <div class="flex items-center justify-between px-3.5 py-2 bg-white font-medium text-[#2C3E35]">
+                                        <span class="text-[#718379]">PEMBAYARAN TUNAI</span>
+                                        <span class="font-mono text-xs font-bold text-slate-700">Rp {{ number_format($dailySummaryData['tunai_pembayaran_pos'], 0, ',', '.') }}</span>
+                                    </div>
+
+                                    <!-- TRANSFER POS -->
+                                    <div class="flex items-center justify-between px-3.5 py-2 bg-white font-medium text-[#2C3E35]">
+                                        <span class="text-[#718379]">PEMBAYARAN TRANSFER</span>
+                                        <span class="font-mono text-xs font-bold text-slate-700">Rp {{ number_format($dailySummaryData['transfer_pembayaran_pos'], 0, ',', '.') }}</span>
+                                    </div>
+
+                                    <!-- SETORAN TUNAI FISIK (BOX HIJAU ENTERPRISE) -->
+                                    <div class="p-4 bg-[#3F7A5D] text-white space-y-1">
+                                        <div class="text-[10px] font-extrabold uppercase tracking-wider text-emerald-100 flex items-center justify-between">
+                                            <span>SETORAN TUNAI LACI KASIR</span>
+                                            <span class="px-1.5 py-0.5 rounded text-[9px] bg-[#2C3E35] text-emerald-200 font-bold uppercase tracking-wider">FISIK KASIR</span>
+                                        </div>
+                                        <div class="text-xl sm:text-2xl font-black font-mono tracking-tight text-white">
+                                            Rp {{ number_format($dailySummaryData['setoran_tunai'], 0, ',', '.') }}
+                                        </div>
+                                        <p class="text-[10px] text-emerald-100/90 font-medium">Uang fisik tunai yang wajib disetorkan kasir dari laci akhir hari.</p>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <!-- Notes Box -->
+                            <div class="bg-white border border-slate-200 rounded-2xl p-3.5 space-y-1.5 shadow-xs">
+                                <label class="text-[11px] font-extrabold text-[#2C3E35] uppercase tracking-wider block">Catatan Rekap / Penjelasan Selisih</label>
+                                <p class="text-xs text-[#2C3E35] bg-[#F3F6F4] p-3 rounded-xl min-h-[60px] border border-slate-200/80 font-medium italic leading-relaxed">
+                                    {{ $notes ? $notes : 'Tidak ada catatan tambahan.' }}
+                                </p>
+                            </div>
+
+                        </div>
                     </div>
+
                 </div>
             @endif
         </div>
