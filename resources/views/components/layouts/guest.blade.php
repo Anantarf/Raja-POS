@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full bg-[#F3F6F4] font-sans antialiased">
+<html lang="id" class="h-full bg-[#121B17] font-sans antialiased">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,17 +17,17 @@
         input:-webkit-autofill:hover, 
         input:-webkit-autofill:focus, 
         input:-webkit-autofill:active {
-            -webkit-box-shadow: 0 0 0px 1000px #F3F6F4 inset !important;
-            -webkit-text-fill-color: #232E28 !important;
+            -webkit-box-shadow: 0 0 0px 1000px #1C2621 inset !important;
+            -webkit-text-fill-color: #FFFFFF !important;
             transition: background-color 5000s ease-in-out 0s;
         }
         input:focus:-webkit-autofill {
-            -webkit-box-shadow: 0 0 0px 1000px #FFFFFF inset !important;
+            -webkit-box-shadow: 0 0 0px 1000px #232E28 inset !important;
         }
     </style>
     @livewireStyles
 </head>
-<body class="h-full bg-[#F3F6F4] flex items-center justify-center p-4 text-[#232E28] relative overflow-hidden">
+<body class="h-full bg-[#121B17] flex items-center justify-center p-4 text-slate-100 relative overflow-hidden">
     <!-- Google Antigravity Inspired Interactive Particle Canvas -->
     <canvas id="antigravity-canvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
 

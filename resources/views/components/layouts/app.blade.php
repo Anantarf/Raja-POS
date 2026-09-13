@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full bg-[#F3F6F4] font-sans antialiased selection:bg-[#3F7A5D] selection:text-white">
+<html lang="id" class="h-full bg-[#121B17] font-sans antialiased selection:bg-[#3F7A5D] selection:text-white">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,7 +12,8 @@
     <style>
         body {
             font-family: 'Inter', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background-color: #F3F6F4;
+            background-color: #121B17;
+            color: #F8FAFC;
             line-height: 1.5;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
@@ -22,19 +23,19 @@
             height: 7px;
         }
         ::-webkit-scrollbar-track {
-            background: transparent;
+            background: #121B17;
         }
         ::-webkit-scrollbar-thumb {
-            background: #CBD5E1;
+            background: #232E28;
             border-radius: 9999px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #94A3B8;
+            background: #3F7A5D;
         }
     </style>
     @livewireStyles
 </head>
-<body class="h-full bg-[#F3F6F4] flex flex-col text-[#232E28] overflow-hidden">
+<body class="h-full bg-[#121B17] flex flex-col text-slate-100 overflow-hidden">
 
     {{ $slot }}
 
