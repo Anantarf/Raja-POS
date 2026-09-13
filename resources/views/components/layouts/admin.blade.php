@@ -313,10 +313,26 @@
             async connect() {
                 if (!this.device) {
                     if (!this.isSupported()) return false;
-                    try {
-                        return await this.pairDevice();
-                    } catch (e) {
-                        return false;
+                    if (navigator.bluetooth && typeof navigator.bluetooth.getDevices === 'function') {
+                        try {
+                            const devices = await navigator.bluetooth.getDevices();
+                            if (devices && devices.length > 0) {
+                                const savedId = localStorage.getItem('web_bt_printer_id');
+                                const found = savedId ? devices.find(d => d.id === savedId) : devices[0];
+                                if (found) {
+                                    this.device = found;
+                                }
+                            }
+                        } catch (e) {
+                            console.warn('getDevices auto-reconnect error:', e);
+                        }
+                    }
+                    if (!this.device) {
+                        try {
+                            return await this.pairDevice();
+                        } catch (e) {
+                            return false;
+                        }
                     }
                 }
                 try {
