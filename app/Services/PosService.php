@@ -172,12 +172,23 @@ class PosService
             }
 
             $balanceAccountId = $paymentData['balance_account_id'] ?? null;
-            if (! $balanceAccountId && $paymentMethod->type === 'CASH') {
-                $balanceAccountId = BalanceAccount::forUserLocation($cashier)->where('code', 'CASH')->where('status', 'ACTIVE')->value('id')
-                    ?? BalanceAccount::forUserLocation($cashier)->where('account_type', 'CASH')->where('status', 'ACTIVE')->value('id');
-            } elseif (! $balanceAccountId && $paymentMethod->type === 'QRIS') {
-                $balanceAccountId = BalanceAccount::forUserLocation($cashier)->where('code', 'QRIS')->where('status', 'ACTIVE')->value('id')
-                    ?? BalanceAccount::forUserLocation($cashier)->where('account_type', 'QRIS')->where('status', 'ACTIVE')->value('id');
+            if (! $balanceAccountId) {
+                $targetCode = match ($paymentMethod->type) {
+                    'CASH' => 'CASH',
+                    'QRIS' => 'QRIS',
+                    'TRANSFER' => 'BANK',
+                    'E_WALLET' => 'E_WALLET',
+                    default => 'CASH',
+                };
+                $validTypes = match ($paymentMethod->type) {
+                    'CASH' => ['CASH'],
+                    'QRIS' => ['QRIS'],
+                    'TRANSFER' => ['BANK'],
+                    'E_WALLET' => ['E_WALLET'],
+                    default => [],
+                };
+                $balanceAccountId = BalanceAccount::forUserLocation($cashier)->where('code', $targetCode)->where('status', 'ACTIVE')->value('id')
+                    ?? BalanceAccount::forUserLocation($cashier)->whereIn('account_type', $validTypes)->where('status', 'ACTIVE')->value('id');
             }
 
             if (! $balanceAccountId) {

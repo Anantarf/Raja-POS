@@ -347,6 +347,29 @@ class Checkout extends Component
 
     public function updatedPayments($value, $key)
     {
+        if (str_contains($key, 'payment_method_id')) {
+            $parts = explode('.', $key);
+            $index = (int) $parts[0];
+            $pmId = (int) $value;
+            $pm = PaymentMethod::find($pmId);
+            if ($pm) {
+                $user = auth()->user();
+                $targetAccountType = match ($pm->type) {
+                    'CASH' => 'CASH',
+                    'QRIS' => 'QRIS',
+                    'TRANSFER' => 'BANK',
+                    'E_WALLET' => 'E_WALLET',
+                    default => 'CASH',
+                };
+                $account = BalanceAccount::forUserLocation($user)->where('code', $targetAccountType)->where('status', 'ACTIVE')->first()
+                    ?? BalanceAccount::forUserLocation($user)->where('account_type', $targetAccountType)->where('status', 'ACTIVE')->first()
+                    ?? BalanceAccount::forUserLocation($user)->where('status', 'ACTIVE')->first();
+                if ($account) {
+                    $this->payments[$index]['balance_account_id'] = $account->id;
+                }
+            }
+        }
+
         foreach ($this->payments as $idx => $pay) {
             if (isset($pay['amount']) && (float) $pay['amount'] > 1000000000) {
                 $this->payments[$idx]['amount'] = 1000000000;
