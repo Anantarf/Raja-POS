@@ -177,7 +177,7 @@
                             <span>Input / Edit Saldo Fisik</span>
                         </button>
 
-                        <button wire:click="validateAndLock" wire:loading.attr="disabled" class="px-5 py-2.5 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold text-xs rounded-xl shadow-xs transition flex items-center gap-2 cursor-pointer active-press">
+                        <button wire:click="openInputModal" wire:loading.attr="disabled" class="px-5 py-2.5 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold text-xs rounded-xl shadow-xs transition flex items-center gap-2 cursor-pointer active-press">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                             <span>Validasi &amp; Kunci Rekap</span>
                         </button>
@@ -595,14 +595,54 @@
                     </div>
 
                     <!-- Modal Body Form Grid -->
+                    @php
+                        $mDanaAkhir = (float)($danaSaldoAwal ?? 0) + (float)($danaTopup ?? 0) - (float)($danaTrx ?? 0);
+                        $mDanaSelisih = (float)($danaSaldoAndroid ?? 0) - $mDanaAkhir;
+
+                        $mQrisExpected = (float)($dailySummaryData['qris_pembayaran'] ?? 0) + (float)($qrisTarikTunai ?? 0);
+                        $mQrisSelisih = (float)($qrisSaldoAndroid ?? 0) - $mQrisExpected;
+
+                        $mBankmasAkhir = (float)($bankmasSaldoAwal ?? 0) + (float)($bankmasTopup ?? 0) - (float)($bankmasTrx ?? 0);
+                        $mBankmasSelisih = (float)($bankmasSaldoAndroid ?? 0) - $mBankmasAkhir;
+
+                        $mMultiAkhir = (float)($multiSaldoAwal ?? 0) + (float)($multiTopup ?? 0) - (float)($multiTrx ?? 0);
+                        $mMultiSelisih = (float)($multiSaldoAndroid ?? 0) - $mMultiAkhir;
+
+                        $mHasDiscrepancy = ($mDanaSelisih != 0 || $mQrisSelisih != 0 || $mBankmasSelisih != 0 || $mMultiSelisih != 0);
+                    @endphp
+
                     <div class="space-y-4 max-h-[65vh] overflow-y-auto pr-1">
+                        
+                        <!-- Live Owner Match Status Banner -->
+                        @if(! $mHasDiscrepancy)
+                            <div class="p-3.5 bg-emerald-50 border border-emerald-200 rounded-2xl flex items-center justify-between text-xs text-emerald-950 font-bold">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                    <span>Status Pencocokan Owner: <strong class="text-emerald-700">SEMUA SALDO MATCH (Rp 0 Selisih)</strong></span>
+                                </div>
+                                <span class="px-2 py-0.5 rounded bg-emerald-600 text-white text-[10px] font-black uppercase">SIAP VALIDASI</span>
+                            </div>
+                        @else
+                            <div class="p-3.5 bg-amber-50 border border-amber-300 rounded-2xl flex items-center justify-between text-xs text-amber-950 font-bold">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse"></span>
+                                    <span>Status Pencocokan Owner: <strong class="text-amber-900">TERDAPAT SELISIH SALDO</strong> &mdash; Harap cantumkan penjelasan di kolom catatan.</span>
+                                </div>
+                                <span class="px-2 py-0.5 rounded bg-amber-600 text-white text-[10px] font-black uppercase">BUTUH CATATAN</span>
+                            </div>
+                        @endif
+
                         <!-- DANA & QRIS Grid -->
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <!-- DANA -->
                             <div class="bg-[#F3F6F4]/80 p-4 rounded-2xl border border-slate-200 space-y-3">
-                                <div class="text-xs font-black text-[#2C3E35] uppercase tracking-wider border-b border-slate-200 pb-1.5 flex justify-between">
+                                <div class="text-xs font-black text-[#2C3E35] uppercase tracking-wider border-b border-slate-200 pb-1.5 flex items-center justify-between">
                                     <span>DANA (E-Wallet)</span>
-                                    <span class="text-[#718379] font-mono text-[10px]">FISIK HP</span>
+                                    @if($mDanaSelisih == 0)
+                                        <span class="px-2 py-0.5 rounded text-[9px] bg-emerald-600 text-white font-black tracking-wider">MATCH</span>
+                                    @else
+                                        <span class="px-2 py-0.5 rounded text-[9px] bg-rose-600 text-white font-black tracking-wider">{{ $mDanaSelisih > 0 ? '+' : '' }}Rp {{ number_format($mDanaSelisih, 0, ',', '.') }}</span>
+                                    @endif
                                 </div>
                                 <div class="space-y-2 text-xs">
                                     <div>
@@ -626,9 +666,13 @@
 
                             <!-- QRIS -->
                             <div class="bg-[#F3F6F4]/80 p-4 rounded-2xl border border-slate-200 space-y-3">
-                                <div class="text-xs font-black text-[#2C3E35] uppercase tracking-wider border-b border-slate-200 pb-1.5 flex justify-between">
+                                <div class="text-xs font-black text-[#2C3E35] uppercase tracking-wider border-b border-slate-200 pb-1.5 flex items-center justify-between">
                                     <span>QRIS Gateway</span>
-                                    <span class="text-[#718379] font-mono text-[10px]">SETTLEMENT</span>
+                                    @if($mQrisSelisih == 0)
+                                        <span class="px-2 py-0.5 rounded text-[9px] bg-emerald-600 text-white font-black tracking-wider">MATCH</span>
+                                    @else
+                                        <span class="px-2 py-0.5 rounded text-[9px] bg-rose-600 text-white font-black tracking-wider">{{ $mQrisSelisih > 0 ? '+' : '' }}Rp {{ number_format($mQrisSelisih, 0, ',', '.') }}</span>
+                                    @endif
                                 </div>
                                 <div class="space-y-2 text-xs">
                                     <div>
@@ -653,9 +697,13 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <!-- BANK MAS -->
                             <div class="bg-[#F3F6F4]/80 p-4 rounded-2xl border border-slate-200 space-y-3">
-                                <div class="text-xs font-black text-[#2C3E35] uppercase tracking-wider border-b border-slate-200 pb-1.5 flex justify-between">
+                                <div class="text-xs font-black text-[#2C3E35] uppercase tracking-wider border-b border-slate-200 pb-1.5 flex items-center justify-between">
                                     <span>BANK MAS</span>
-                                    <span class="text-[#718379] font-mono text-[10px]">REKENING</span>
+                                    @if($mBankmasSelisih == 0)
+                                        <span class="px-2 py-0.5 rounded text-[9px] bg-emerald-600 text-white font-black tracking-wider">MATCH</span>
+                                    @else
+                                        <span class="px-2 py-0.5 rounded text-[9px] bg-rose-600 text-white font-black tracking-wider">{{ $mBankmasSelisih > 0 ? '+' : '' }}Rp {{ number_format($mBankmasSelisih, 0, ',', '.') }}</span>
+                                    @endif
                                 </div>
                                 <div class="space-y-2 text-xs">
                                     <div>
@@ -679,9 +727,13 @@
 
                             <!-- MULTI -->
                             <div class="bg-[#F3F6F4]/80 p-4 rounded-2xl border border-slate-200 space-y-3">
-                                <div class="text-xs font-black text-[#2C3E35] uppercase tracking-wider border-b border-slate-200 pb-1.5 flex justify-between">
+                                <div class="text-xs font-black text-[#2C3E35] uppercase tracking-wider border-b border-slate-200 pb-1.5 flex items-center justify-between">
                                     <span>MULTI</span>
-                                    <span class="text-[#718379] font-mono text-[10px]">DISTRIBUTOR</span>
+                                    @if($mMultiSelisih == 0)
+                                        <span class="px-2 py-0.5 rounded text-[9px] bg-emerald-600 text-white font-black tracking-wider">MATCH</span>
+                                    @else
+                                        <span class="px-2 py-0.5 rounded text-[9px] bg-rose-600 text-white font-black tracking-wider">{{ $mMultiSelisih > 0 ? '+' : '' }}Rp {{ number_format($mMultiSelisih, 0, ',', '.') }}</span>
+                                    @endif
                                 </div>
                                 <div class="space-y-2 text-xs">
                                     <div>
@@ -718,14 +770,22 @@
                     </div>
 
                     <!-- Modal Footer -->
-                    <div class="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-100">
+                    <div class="flex items-center justify-between pt-3 border-t border-slate-100 flex-wrap gap-2">
                         <button type="button" wire:click="closeInputModal" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-[#2C3E35] font-bold text-xs rounded-xl transition cursor-pointer">
                             Batal
                         </button>
-                        <button type="button" wire:click="saveInputModal" class="px-6 py-2.5 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold text-xs rounded-xl shadow-xs transition flex items-center gap-2 cursor-pointer active-press">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                            <span>Simpan &amp; Terapkan</span>
-                        </button>
+
+                        <div class="flex items-center gap-2">
+                            <button type="button" wire:click="saveInputModal" class="px-4 py-2.5 bg-[#D97706] hover:bg-[#B45309] text-white font-extrabold text-xs rounded-xl shadow-xs transition flex items-center gap-1.5 cursor-pointer active-press">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
+                                <span>Simpan Draf (Belum Kunci)</span>
+                            </button>
+
+                            <button type="button" wire:click="validateAndLock" wire:loading.attr="disabled" class="px-5 py-2.5 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold text-xs rounded-xl shadow-xs transition flex items-center gap-2 cursor-pointer active-press">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                <span>Validasi &amp; Kunci Rekap</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

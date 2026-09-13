@@ -197,8 +197,20 @@ class Reports extends Component
         $locationId = $user->location_id ?? 1;
 
         $data = $reportService->getDailySummaryReportData($this->summaryDate, $user);
-        $qrisExpected = $data['qris_total'];
-        $hasDiscrepancy = (float) $this->qrisSaldoAndroid != (float) $qrisExpected;
+
+        $danaAkhir = (float) $this->danaSaldoAwal + (float) $this->danaTopup - (float) $this->danaTrx;
+        $danaSelisih = (float) $this->danaSaldoAndroid - $danaAkhir;
+
+        $qrisExpected = (float) ($data['qris_pembayaran'] ?? 0) + (float) $this->qrisTarikTunai;
+        $qrisSelisih = (float) $this->qrisSaldoAndroid - $qrisExpected;
+
+        $bankmasAkhir = (float) $this->bankmasSaldoAwal + (float) $this->bankmasTopup - (float) $this->bankmasTrx;
+        $bankmasSelisih = (float) $this->bankmasSaldoAndroid - $bankmasAkhir;
+
+        $multiAkhir = (float) $this->multiSaldoAwal + (float) $this->multiTopup - (float) $this->multiTrx;
+        $multiSelisih = (float) $this->multiSaldoAndroid - $multiAkhir;
+
+        $hasDiscrepancy = ($danaSelisih != 0 || $qrisSelisih != 0 || $bankmasSelisih != 0 || $multiSelisih != 0);
 
         if ($hasDiscrepancy && empty(trim($this->notes ?? ''))) {
             $this->dispatch('notify', message: 'Terdapat selisih pada saldo. Harap cantumkan penjelasan selisih di kolom catatan sebelum memvalidasi.', type: 'amber');
@@ -234,6 +246,8 @@ class Reports extends Component
                 'verified_by' => $user->id,
             ]
         );
+
+        $this->showInputModal = false;
 
         $msg = $hasDiscrepancy ? 'Laporan berhasil divalidasi dan dikunci (Catatan Selisih Terekam).' : 'Laporan berhasil divalidasi & dikunci. Seluruh saldo sesuai!';
         $this->dispatch('notify', message: $msg, type: $hasDiscrepancy ? 'amber' : 'success');
