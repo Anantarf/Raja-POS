@@ -718,10 +718,7 @@
                                     <!-- 1. DANA -->
                                     <tr class="hover:bg-[#F3F6F4]/60 transition">
                                         <td class="py-2.5 px-3.5">
-                                            <div class="font-extrabold text-[#2C3E35] text-xs sm:text-sm flex items-center gap-1.5 truncate">
-                                                <span class="w-2 h-2 rounded-full bg-sky-500 shrink-0"></span>
-                                                <span class="truncate">DANA</span>
-                                            </div>
+                                            <div class="font-extrabold text-[#2C3E35] text-xs sm:text-sm truncate">DANA</div>
                                         </td>
                                         <td class="py-2.5 px-3.5 text-right overflow-hidden max-w-[140px]">
                                             <div class="font-mono font-extrabold text-[#2C3E35] text-xs sm:text-sm truncate" title="Rp {{ number_format($mDanaAkhir, 0, ',', '.') }}">Rp {{ number_format($mDanaAkhir, 0, ',', '.') }}</div>
@@ -766,10 +763,7 @@
                                     <!-- 2. QRIS -->
                                     <tr class="hover:bg-[#F3F6F4]/60 transition">
                                         <td class="py-2.5 px-3.5">
-                                            <div class="font-extrabold text-[#2C3E35] text-xs sm:text-sm flex items-center gap-1.5 truncate">
-                                                <span class="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>
-                                                <span class="truncate">QRIS</span>
-                                            </div>
+                                            <div class="font-extrabold text-[#2C3E35] text-xs sm:text-sm truncate">QRIS</div>
                                         </td>
                                         <td class="py-2.5 px-3.5 text-right overflow-hidden max-w-[140px]">
                                             <div class="font-mono font-extrabold text-[#2C3E35] text-xs sm:text-sm truncate" title="Rp {{ number_format($mQrisExpected, 0, ',', '.') }}">Rp {{ number_format($mQrisExpected, 0, ',', '.') }}</div>
@@ -808,10 +802,7 @@
                                     <!-- 3. BCA -->
                                     <tr class="hover:bg-[#F3F6F4]/60 transition">
                                         <td class="py-2.5 px-3.5">
-                                            <div class="font-extrabold text-[#2C3E35] text-xs sm:text-sm flex items-center gap-1.5 truncate">
-                                                <span class="w-2 h-2 rounded-full bg-blue-600 shrink-0"></span>
-                                                <span class="truncate">BCA</span>
-                                            </div>
+                                            <div class="font-extrabold text-[#2C3E35] text-xs sm:text-sm truncate">BCA</div>
                                         </td>
                                         <td class="py-2.5 px-3.5 text-right overflow-hidden max-w-[140px]">
                                             <div class="font-mono font-extrabold text-[#2C3E35] text-xs sm:text-sm truncate" title="Rp {{ number_format($mBcaAkhir, 0, ',', '.') }}">Rp {{ number_format($mBcaAkhir, 0, ',', '.') }}</div>
@@ -856,10 +847,7 @@
                                     <!-- 4. BANK MAS -->
                                     <tr class="hover:bg-[#F3F6F4]/60 transition">
                                         <td class="py-2.5 px-3.5">
-                                            <div class="font-extrabold text-[#2C3E35] text-xs sm:text-sm flex items-center gap-1.5 truncate">
-                                                <span class="w-2 h-2 rounded-full bg-indigo-600 shrink-0"></span>
-                                                <span class="truncate">Bank MAS</span>
-                                            </div>
+                                            <div class="font-extrabold text-[#2C3E35] text-xs sm:text-sm truncate">Bank MAS</div>
                                         </td>
                                         <td class="py-2.5 px-3.5 text-right overflow-hidden max-w-[140px]">
                                             <div class="font-mono font-extrabold text-[#2C3E35] text-xs sm:text-sm truncate" title="Rp {{ number_format($mBankmasAkhir, 0, ',', '.') }}">Rp {{ number_format($mBankmasAkhir, 0, ',', '.') }}</div>
@@ -904,10 +892,7 @@
                                     <!-- 5. MULTI -->
                                     <tr class="hover:bg-[#F3F6F4]/60 transition">
                                         <td class="py-2.5 px-3.5">
-                                            <div class="font-extrabold text-[#2C3E35] text-xs sm:text-sm flex items-center gap-1.5 truncate">
-                                                <span class="w-2 h-2 rounded-full bg-purple-600 shrink-0"></span>
-                                                <span class="truncate">Multi</span>
-                                            </div>
+                                            <div class="font-extrabold text-[#2C3E35] text-xs sm:text-sm truncate">Multi</div>
                                         </td>
                                         <td class="py-2.5 px-3.5 text-right overflow-hidden max-w-[140px]">
                                             <div class="font-mono font-extrabold text-[#2C3E35] text-xs sm:text-sm truncate" title="Rp {{ number_format($mMultiAkhir, 0, ',', '.') }}">Rp {{ number_format($mMultiAkhir, 0, ',', '.') }}</div>
@@ -952,10 +937,7 @@
                                     <!-- 6. WAHANA -->
                                     <tr class="hover:bg-[#F3F6F4]/60 transition">
                                         <td class="py-2.5 px-3.5">
-                                            <div class="font-extrabold text-[#2C3E35] text-xs sm:text-sm flex items-center gap-1.5 truncate">
-                                                <span class="w-2 h-2 rounded-full bg-amber-600 shrink-0"></span>
-                                                <span class="truncate">Wahana</span>
-                                            </div>
+                                            <div class="font-extrabold text-[#2C3E35] text-xs sm:text-sm truncate">Wahana</div>
                                         </td>
                                         <td class="py-2.5 px-3.5 text-right overflow-hidden max-w-[140px]">
                                             <div class="font-mono font-extrabold text-[#2C3E35] text-xs sm:text-sm truncate" title="Rp {{ number_format($mWahanaAkhir, 0, ',', '.') }}">Rp {{ number_format($mWahanaAkhir, 0, ',', '.') }}</div>
