@@ -10,13 +10,15 @@
         }
         body {
             font-family: 'Courier New', Courier, monospace;
-            font-size: {{ ($paperWidth ?? '58mm') === '80mm' ? '13px' : '12px' }};
+            font-size: {{ ($paperWidth ?? '58mm') === '80mm' ? '13px' : '11px' }};
             color: #000;
             background: #fff;
-            margin: 0;
-            padding: 8px;
-            width: {{ $paperWidth ?? '58mm' }};
+            margin: 0 auto;
+            padding: 2px 4px;
+            width: {{ ($paperWidth ?? '58mm') === '80mm' ? '72mm' : '48mm' }};
             box-sizing: border-box;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
         .text-center { text-align: center; }
         .text-right { text-align: right; }

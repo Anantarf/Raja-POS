@@ -170,7 +170,8 @@
             encodeEscPos(data) {
                 const encoder = new TextEncoder();
                 const bytes = [];
-                const maxCols = (data.paperWidth === '80mm') ? 48 : 32;
+                // 58mm thermal printers physically print 30 chars/line in Font A; 80mm supports 48 chars.
+                const maxCols = (data.paperWidth === '80mm') ? 48 : 30;
 
                 const append = (str) => {
                     const arr = encoder.encode(str);
@@ -180,24 +181,25 @@
                     for (let b of rawBytes) bytes.push(b);
                 };
 
-                const wordWrap = (str) => {
+                const wordWrap = (str, overrideCols) => {
                     if (!str) return '';
+                    const cols = overrideCols || maxCols;
                     const paragraphs = String(str).split('\n');
                     const resultLines = [];
 
                     paragraphs.forEach(para => {
-                        const words = para.split(' ');
+                        const words = para.trim().split(/\s+/);
                         let currentLine = '';
 
                         words.forEach(word => {
                             if (!word) return;
-                            if ((currentLine + (currentLine ? ' ' : '') + word).length <= maxCols) {
+                            if ((currentLine + (currentLine ? ' ' : '') + word).length <= cols) {
                                 currentLine += (currentLine ? ' ' : '') + word;
                             } else {
                                 if (currentLine) resultLines.push(currentLine);
-                                while (word.length > maxCols) {
-                                    resultLines.push(word.substring(0, maxCols));
-                                    word = word.substring(maxCols);
+                                while (word.length > cols) {
+                                    resultLines.push(word.substring(0, cols));
+                                    word = word.substring(cols);
                                 }
                                 currentLine = word;
                             }
@@ -221,9 +223,9 @@
                 // Center align
                 raw(0x1B, 0x61, 0x01);
 
-                // Store Name (Bold + Double Height)
+                // Store Name (Bold + Double Height/Width) -> Double Width half capacity (15 cols for 58mm)
                 raw(0x1B, 0x45, 0x01, 0x1D, 0x21, 0x11);
-                append(wordWrap(data.storeName || 'RAJA AKSESORIS') + '\n');
+                append(wordWrap(data.storeName || 'RAJA AKSESORIS', Math.floor(maxCols / 2)) + '\n');
 
                 // Reset Text Size & Bold
                 raw(0x1D, 0x21, 0x00, 0x1B, 0x45, 0x00);
