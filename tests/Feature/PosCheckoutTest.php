@@ -243,7 +243,7 @@ class PosCheckoutTest extends TestCase
         $response->assertSee($sale->invoice_number);
     }
 
-    public function test_pos_checkout_rejects_change_without_cash_payment(): void
+    public function test_pos_checkout_supports_cash_change_for_non_cash_overpayment(): void
     {
         $owner = User::where('username', 'superadmin')->first();
         $location = Location::where('code', 'RAJA-BANGO')->first();
@@ -256,16 +256,29 @@ class PosCheckoutTest extends TestCase
         ]);
         app(InventoryService::class)->adjustStock($product, $location, 1, 'ADJUSTMENT_IN', 'Stok uji', $owner);
 
-        $this->expectException(\InvalidArgumentException::class);
-        app(PosService::class)->processCheckout(
+        $qrisAccount = BalanceAccount::where('code', 'QRIS')->first();
+        $cashAccount = BalanceAccount::where('code', 'CASH')->first();
+
+        $initialQris = (float) $qrisAccount->current_balance;
+        $initialCash = (float) $cashAccount->current_balance;
+
+        $sale = app(PosService::class)->processCheckout(
             cashier: $owner,
             cartItems: [['product' => $product, 'quantity' => 1]],
             paymentsData: [[
                 'payment_method_id' => PaymentMethod::where('code', 'QRIS')->value('id'),
-                'balance_account_id' => BalanceAccount::where('code', 'QRIS')->value('id'),
+                'balance_account_id' => $qrisAccount->id,
                 'amount' => 15000,
             ]]
         );
+
+        $this->assertEquals(10000, $sale->total_amount);
+        $this->assertEquals(15000, $sale->amount_paid);
+        $this->assertEquals(5000, $sale->change_amount);
+
+        // QRIS account increases by 15,000; Kas Tunai decreases by 5,000 change
+        $this->assertEquals($initialQris + 15000, (float) $qrisAccount->fresh()->current_balance);
+        $this->assertEquals($initialCash - 5000, (float) $cashAccount->fresh()->current_balance);
     }
 
     public function test_pos_checkout_ignores_client_price_for_regular_products(): void

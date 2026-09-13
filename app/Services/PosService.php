@@ -227,13 +227,10 @@ class PosService
         }
 
         $changeAmount = $totalPaid - $totalAmount;
-        $cashPayments = collect($validatedPayments)->filter(fn ($payment) => $payment['payment_method']->type === 'CASH');
-        $cashTendered = $cashPayments->sum('amount');
-        if ($changeAmount > 0 && $cashTendered < $changeAmount) {
-            throw new InvalidArgumentException('Kembalian hanya dapat diberikan dari pembayaran tunai.');
-        }
         if ($changeAmount > 0) {
             $remainingChange = $changeAmount;
+
+            // 1. Allocate change to CASH payments first
             foreach ($validatedPayments as $index => $payment) {
                 if ($payment['payment_method']->type !== 'CASH' || $remainingChange <= 0) {
                     continue;
@@ -244,8 +241,17 @@ class PosService
                 $remainingChange -= $allocatedChange;
             }
 
+            // 2. If change still remains (e.g. overpaid via Transfer / QRIS / Non-Cash for cash exchange), allocate remaining change to non-cash payments
             if ($remainingChange > 0) {
-                throw new InvalidArgumentException('Akun kas untuk kembalian tidak tersedia.');
+                foreach ($validatedPayments as $index => $payment) {
+                    if ($payment['payment_method']->type === 'CASH' || $remainingChange <= 0) {
+                        continue;
+                    }
+
+                    $allocatedChange = min($payment['amount'], $remainingChange);
+                    $validatedPayments[$index]['change_amount'] = $allocatedChange;
+                    $remainingChange -= $allocatedChange;
+                }
             }
         }
         $grossProfit = $totalAmount - $totalCost;
@@ -369,32 +375,40 @@ class PosService
                 }
             }
 
-            // Handle change exits from the same CASH payment accounts recorded above.
+            // Handle change exits: for CASH payment accounts, deduct from their balance account.
+            // For NON-CASH payment accounts that issued cash change, deduct from the Cashier's active CASH balance account!
+            $cashAccountDefault = BalanceAccount::forUserLocation($cashier)->where('code', 'CASH')->where('status', 'ACTIVE')->first()
+                ?? BalanceAccount::forUserLocation($cashier)->where('account_type', 'CASH')->where('status', 'ACTIVE')->first();
+
             foreach ($validatedPayments as $pData) {
                 if ($pData['change_amount'] <= 0) {
                     continue;
                 }
 
-                $cashAccount = BalanceAccount::whereKey($pData['balance_account_id'])->where('status', 'ACTIVE')->lockForUpdate()->first();
-                if (! $cashAccount) {
-                    throw new InvalidArgumentException('Akun kas untuk kembalian tidak valid atau tidak aktif.');
+                $pmType = $pData['payment_method']->type;
+                $targetAccount = ($pmType === 'CASH')
+                    ? BalanceAccount::whereKey($pData['balance_account_id'])->where('status', 'ACTIVE')->lockForUpdate()->first()
+                    : ($cashAccountDefault ? BalanceAccount::whereKey($cashAccountDefault->id)->where('status', 'ACTIVE')->lockForUpdate()->first() : null);
+
+                if (! $targetAccount) {
+                    throw new InvalidArgumentException('Akun kas tunai untuk penyerahan kembalian tidak valid atau tidak aktif.');
                 }
 
-                $beforeCash = $cashAccount->current_balance;
+                $beforeCash = $targetAccount->current_balance;
                 $afterCash = $beforeCash - $pData['change_amount'];
 
-                $cashAccount->update(['current_balance' => $afterCash]);
+                $targetAccount->update(['current_balance' => $afterCash]);
 
                 BalanceTransaction::create([
                     'transaction_number' => BalanceTransaction::generateTransactionNumber('TRX'),
                     'transaction_type' => 'WITHDRAWAL',
-                    'source_account_id' => $cashAccount->id,
+                    'source_account_id' => $targetAccount->id,
                     'amount' => $pData['change_amount'],
                     'balance_before' => $beforeCash,
                     'balance_after' => $afterCash,
                     'reference_type' => Sale::class,
                     'reference_id' => $sale->id,
-                    'description' => "Kembalian kasir untuk POS #{$invoiceNumber}",
+                    'description' => "Kembalian tunai kasir (dari {$pData['payment_method']->name}) untuk POS #{$invoiceNumber}",
                     'created_by' => $cashier->id,
                     'transaction_date' => now(),
                 ]);
