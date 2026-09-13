@@ -333,7 +333,7 @@
                                         <span class="text-[11px] font-bold text-[#2C3E35]">Status Pengecekan</span>
                                         <div class="text-right font-mono text-xs flex items-center justify-end gap-1.5">
                                             @if($dailySummaryData['dana_selisih'] == 0)
-                                                <span class="px-1.5 py-0.5 rounded text-[9px] bg-emerald-600 text-white font-black tracking-wider uppercase">MATCH</span>
+                                                <span class="px-1.5 py-0.5 rounded text-[9px] bg-emerald-600 text-white font-black tracking-wider uppercase">SESUAI</span>
                                             @else
                                                 <span class="font-bold {{ $dailySummaryData['dana_selisih'] > 0 ? 'text-emerald-700' : 'text-rose-700' }}">
                                                     {{ $dailySummaryData['dana_selisih'] > 0 ? '+' : '' }}Rp {{ number_format($dailySummaryData['dana_selisih'], 0, ',', '.') }}
@@ -372,7 +372,7 @@
                                         <span class="text-[11px] font-bold text-[#2C3E35]">Status Pengecekan</span>
                                         <div class="text-right font-mono text-xs flex items-center justify-end gap-1.5">
                                             @if($dailySummaryData['qris_selisih'] == 0)
-                                                <span class="px-1.5 py-0.5 rounded text-[9px] bg-emerald-600 text-white font-black tracking-wider uppercase">MATCH</span>
+                                                <span class="px-1.5 py-0.5 rounded text-[9px] bg-emerald-600 text-white font-black tracking-wider uppercase">SESUAI</span>
                                             @else
                                                 <span class="font-bold {{ $dailySummaryData['qris_selisih'] > 0 ? 'text-emerald-700' : 'text-rose-700' }}">
                                                     {{ $dailySummaryData['qris_selisih'] > 0 ? '+' : '' }}Rp {{ number_format($dailySummaryData['qris_selisih'], 0, ',', '.') }}
@@ -419,7 +419,7 @@
                                         <span class="text-[11px] font-bold text-[#2C3E35]">Status Pengecekan</span>
                                         <div class="text-right font-mono text-xs flex items-center justify-end gap-1.5">
                                             @if($dailySummaryData['bca_selisih'] == 0)
-                                                <span class="px-1.5 py-0.5 rounded text-[9px] bg-emerald-600 text-white font-black tracking-wider uppercase">MATCH</span>
+                                                <span class="px-1.5 py-0.5 rounded text-[9px] bg-emerald-600 text-white font-black tracking-wider uppercase">SESUAI</span>
                                             @else
                                                 <span class="font-bold {{ $dailySummaryData['bca_selisih'] > 0 ? 'text-emerald-700' : 'text-rose-700' }}">
                                                     {{ $dailySummaryData['bca_selisih'] > 0 ? '+' : '' }}Rp {{ number_format($dailySummaryData['bca_selisih'], 0, ',', '.') }}
@@ -466,7 +466,7 @@
                                         <span class="text-[11px] font-bold text-[#2C3E35]">Status Pengecekan</span>
                                         <div class="text-right font-mono text-xs flex items-center justify-end gap-1.5">
                                             @if($dailySummaryData['bankmas_selisih'] == 0)
-                                                <span class="px-1.5 py-0.5 rounded text-[9px] bg-emerald-600 text-white font-black tracking-wider uppercase">MATCH</span>
+                                                <span class="px-1.5 py-0.5 rounded text-[9px] bg-emerald-600 text-white font-black tracking-wider uppercase">SESUAI</span>
                                             @else
                                                 <span class="font-bold {{ $dailySummaryData['bankmas_selisih'] > 0 ? 'text-emerald-700' : 'text-rose-700' }}">
                                                     {{ $dailySummaryData['bankmas_selisih'] > 0 ? '+' : '' }}Rp {{ number_format($dailySummaryData['bankmas_selisih'], 0, ',', '.') }}
@@ -513,7 +513,7 @@
                                         <span class="text-[11px] font-bold text-[#2C3E35]">Status Pengecekan</span>
                                         <div class="text-right font-mono text-xs flex items-center justify-end gap-1.5">
                                             @if($dailySummaryData['multi_selisih'] == 0)
-                                                <span class="px-1.5 py-0.5 rounded text-[9px] bg-emerald-600 text-white font-black tracking-wider uppercase">MATCH</span>
+                                                <span class="px-1.5 py-0.5 rounded text-[9px] bg-emerald-600 text-white font-black tracking-wider uppercase">SESUAI</span>
                                             @else
                                                 <span class="font-bold {{ $dailySummaryData['multi_selisih'] > 0 ? 'text-emerald-700' : 'text-rose-700' }}">
                                                     {{ $dailySummaryData['multi_selisih'] > 0 ? '+' : '' }}Rp {{ number_format($dailySummaryData['multi_selisih'], 0, ',', '.') }}
@@ -560,7 +560,7 @@
                                         <span class="text-[11px] font-bold text-[#2C3E35]">Status Pengecekan</span>
                                         <div class="text-right font-mono text-xs flex items-center justify-end gap-1.5">
                                             @if($dailySummaryData['wahana_selisih'] == 0)
-                                                <span class="px-1.5 py-0.5 rounded text-[9px] bg-emerald-600 text-white font-black tracking-wider uppercase">MATCH</span>
+                                                <span class="px-1.5 py-0.5 rounded text-[9px] bg-emerald-600 text-white font-black tracking-wider uppercase">SESUAI</span>
                                             @else
                                                 <span class="font-bold {{ $dailySummaryData['wahana_selisih'] > 0 ? 'text-emerald-700' : 'text-rose-700' }}">
                                                     {{ $dailySummaryData['wahana_selisih'] > 0 ? '+' : '' }}Rp {{ number_format($dailySummaryData['wahana_selisih'], 0, ',', '.') }}
@@ -732,7 +732,7 @@
                             <div class="p-3.5 bg-emerald-50 border border-emerald-200 rounded-2xl flex items-center justify-between text-xs text-emerald-950 font-bold shadow-xs">
                                 <div class="flex items-center gap-2">
                                     <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                                    <span>Status Owner: <strong class="text-emerald-700">SEMUA SALDO MATCH (Rp 0 Selisih)</strong></span>
+                                    <span>Status Owner: <strong class="text-emerald-700">SEMUA SALDO SESUAI (Rp 0 Selisih)</strong></span>
                                 </div>
                                 <span class="px-2.5 py-1 rounded-lg bg-emerald-600 text-white text-[10px] font-black uppercase tracking-wider shadow-xs">SIAP VALIDASI</span>
                             </div>
@@ -762,7 +762,7 @@
                                                 <span class="text-[10px] text-[#718379] font-medium uppercase">(E-Wallet)</span>
                                             </div>
                                             @if($mDanaSelisih == 0)
-                                                <span class="px-2 py-0.5 rounded-md text-[10px] bg-emerald-100 text-emerald-800 font-black">MATCH</span>
+                                                <span class="px-2 py-0.5 rounded-md text-[10px] bg-emerald-100 text-emerald-800 font-black">SESUAI</span>
                                             @else
                                                 <span class="px-2 py-0.5 rounded-md text-[10px] bg-rose-100 text-rose-800 font-black">{{ $mDanaSelisih > 0 ? '+' : '' }}Rp {{ number_format($mDanaSelisih, 0, ',', '.') }}</span>
                                             @endif
@@ -806,7 +806,7 @@
                                                 <span class="text-[10px] text-[#718379] font-medium uppercase">(Gateway)</span>
                                             </div>
                                             @if($mQrisSelisih == 0)
-                                                <span class="px-2 py-0.5 rounded-md text-[10px] bg-emerald-100 text-emerald-800 font-black">MATCH</span>
+                                                <span class="px-2 py-0.5 rounded-md text-[10px] bg-emerald-100 text-emerald-800 font-black">SESUAI</span>
                                             @else
                                                 <span class="px-2 py-0.5 rounded-md text-[10px] bg-rose-100 text-rose-800 font-black">{{ $mQrisSelisih > 0 ? '+' : '' }}Rp {{ number_format($mQrisSelisih, 0, ',', '.') }}</span>
                                             @endif
@@ -856,7 +856,7 @@
                                                 <span class="font-extrabold text-sm text-[#2C3E35]">BANK BCA</span>
                                             </div>
                                             @if($mBcaSelisih == 0)
-                                                <span class="px-2 py-0.5 rounded-md text-[10px] bg-emerald-100 text-emerald-800 font-black">MATCH</span>
+                                                <span class="px-2 py-0.5 rounded-md text-[10px] bg-emerald-100 text-emerald-800 font-black">SESUAI</span>
                                             @else
                                                 <span class="px-2 py-0.5 rounded-md text-[10px] bg-rose-100 text-rose-800 font-black">{{ $mBcaSelisih > 0 ? '+' : '' }}Rp {{ number_format($mBcaSelisih, 0, ',', '.') }}</span>
                                             @endif
@@ -899,7 +899,7 @@
                                                 <span class="font-extrabold text-sm text-[#2C3E35]">BANK MAS</span>
                                             </div>
                                             @if($mBankmasSelisih == 0)
-                                                <span class="px-2 py-0.5 rounded-md text-[10px] bg-emerald-100 text-emerald-800 font-black">MATCH</span>
+                                                <span class="px-2 py-0.5 rounded-md text-[10px] bg-emerald-100 text-emerald-800 font-black">SESUAI</span>
                                             @else
                                                 <span class="px-2 py-0.5 rounded-md text-[10px] bg-rose-100 text-rose-800 font-black">{{ $mBankmasSelisih > 0 ? '+' : '' }}Rp {{ number_format($mBankmasSelisih, 0, ',', '.') }}</span>
                                             @endif
@@ -951,7 +951,7 @@
                                                 <span class="font-extrabold text-sm text-[#2C3E35]">MULTI</span>
                                             </div>
                                             @if($mMultiSelisih == 0)
-                                                <span class="px-2 py-0.5 rounded-md text-[10px] bg-emerald-100 text-emerald-800 font-black">MATCH</span>
+                                                <span class="px-2 py-0.5 rounded-md text-[10px] bg-emerald-100 text-emerald-800 font-black">SESUAI</span>
                                             @else
                                                 <span class="px-2 py-0.5 rounded-md text-[10px] bg-rose-100 text-rose-800 font-black">{{ $mMultiSelisih > 0 ? '+' : '' }}Rp {{ number_format($mMultiSelisih, 0, ',', '.') }}</span>
                                             @endif
@@ -994,7 +994,7 @@
                                                 <span class="font-extrabold text-sm text-[#2C3E35]">WAHANA</span>
                                             </div>
                                             @if($mWahanaSelisih == 0)
-                                                <span class="px-2 py-0.5 rounded-md text-[10px] bg-emerald-100 text-emerald-800 font-black">MATCH</span>
+                                                <span class="px-2 py-0.5 rounded-md text-[10px] bg-emerald-100 text-emerald-800 font-black">SESUAI</span>
                                             @else
                                                 <span class="px-2 py-0.5 rounded-md text-[10px] bg-rose-100 text-rose-800 font-black">{{ $mWahanaSelisih > 0 ? '+' : '' }}Rp {{ number_format($mWahanaSelisih, 0, ',', '.') }}</span>
                                             @endif
@@ -1068,27 +1068,27 @@
                                     <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs font-extrabold">
                                         <div class="p-2.5 rounded-xl border flex items-center justify-between shadow-2xs {{ $mDanaSelisih == 0 ? 'bg-emerald-50 border-emerald-200 text-emerald-900' : 'bg-rose-50 border-rose-200 text-rose-900' }}">
                                             <span>DANA:</span>
-                                            <span class="font-mono text-xs">{{ $mDanaSelisih == 0 ? 'MATCH' : ($mDanaSelisih > 0 ? '+' : '').'Rp '.number_format($mDanaSelisih,0,',','.') }}</span>
+                                            <span class="font-mono text-xs">{{ $mDanaSelisih == 0 ? 'SESUAI' : ($mDanaSelisih > 0 ? '+' : '').'Rp '.number_format($mDanaSelisih,0,',','.') }}</span>
                                         </div>
                                         <div class="p-2.5 rounded-xl border flex items-center justify-between shadow-2xs {{ $mQrisSelisih == 0 ? 'bg-emerald-50 border-emerald-200 text-emerald-900' : 'bg-rose-50 border-rose-200 text-rose-900' }}">
                                             <span>QRIS:</span>
-                                            <span class="font-mono text-xs">{{ $mQrisSelisih == 0 ? 'MATCH' : ($mQrisSelisih > 0 ? '+' : '').'Rp '.number_format($mQrisSelisih,0,',','.') }}</span>
+                                            <span class="font-mono text-xs">{{ $mQrisSelisih == 0 ? 'SESUAI' : ($mQrisSelisih > 0 ? '+' : '').'Rp '.number_format($mQrisSelisih,0,',','.') }}</span>
                                         </div>
                                         <div class="p-2.5 rounded-xl border flex items-center justify-between shadow-2xs {{ $mBcaSelisih == 0 ? 'bg-emerald-50 border-emerald-200 text-emerald-900' : 'bg-rose-50 border-rose-200 text-rose-900' }}">
                                             <span>BCA:</span>
-                                            <span class="font-mono text-xs">{{ $mBcaSelisih == 0 ? 'MATCH' : ($mBcaSelisih > 0 ? '+' : '').'Rp '.number_format($mBcaSelisih,0,',','.') }}</span>
+                                            <span class="font-mono text-xs">{{ $mBcaSelisih == 0 ? 'SESUAI' : ($mBcaSelisih > 0 ? '+' : '').'Rp '.number_format($mBcaSelisih,0,',','.') }}</span>
                                         </div>
                                         <div class="p-2.5 rounded-xl border flex items-center justify-between shadow-2xs {{ $mBankmasSelisih == 0 ? 'bg-emerald-50 border-emerald-200 text-emerald-900' : 'bg-rose-50 border-rose-200 text-rose-900' }}">
                                             <span>MAS:</span>
-                                            <span class="font-mono text-xs">{{ $mBankmasSelisih == 0 ? 'MATCH' : ($mBankmasSelisih > 0 ? '+' : '').'Rp '.number_format($mBankmasSelisih,0,',','.') }}</span>
+                                            <span class="font-mono text-xs">{{ $mBankmasSelisih == 0 ? 'SESUAI' : ($mBankmasSelisih > 0 ? '+' : '').'Rp '.number_format($mBankmasSelisih,0,',','.') }}</span>
                                         </div>
                                         <div class="p-2.5 rounded-xl border flex items-center justify-between shadow-2xs {{ $mMultiSelisih == 0 ? 'bg-emerald-50 border-emerald-200 text-emerald-900' : 'bg-rose-50 border-rose-200 text-rose-900' }}">
                                             <span>MULTI:</span>
-                                            <span class="font-mono text-xs">{{ $mMultiSelisih == 0 ? 'MATCH' : ($mMultiSelisih > 0 ? '+' : '').'Rp '.number_format($mMultiSelisih,0,',','.') }}</span>
+                                            <span class="font-mono text-xs">{{ $mMultiSelisih == 0 ? 'SESUAI' : ($mMultiSelisih > 0 ? '+' : '').'Rp '.number_format($mMultiSelisih,0,',','.') }}</span>
                                         </div>
                                         <div class="p-2.5 rounded-xl border flex items-center justify-between shadow-2xs {{ $mWahanaSelisih == 0 ? 'bg-emerald-50 border-emerald-200 text-emerald-900' : 'bg-rose-50 border-rose-200 text-rose-900' }}">
                                             <span>WAHANA:</span>
-                                            <span class="font-mono text-xs">{{ $mWahanaSelisih == 0 ? 'MATCH' : ($mWahanaSelisih > 0 ? '+' : '').'Rp '.number_format($mWahanaSelisih,0,',','.') }}</span>
+                                            <span class="font-mono text-xs">{{ $mWahanaSelisih == 0 ? 'SESUAI' : ($mWahanaSelisih > 0 ? '+' : '').'Rp '.number_format($mWahanaSelisih,0,',','.') }}</span>
                                         </div>
                                     </div>
                                 </div>
