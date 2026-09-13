@@ -651,8 +651,8 @@
         </div>
         <!-- MODAL DIALOG INPUT SALDO AKTUAL & REKAP HARIAN (CLEAN ENTERPRISE POS FORM) -->
         @if($showInputModal)
-            <div class="fixed inset-0 bg-[#2C3E35]/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 sm:p-6 overflow-hidden">
-                <div class="bg-white rounded-2xl max-w-5xl w-full p-4 sm:p-5 shadow-2xl border border-slate-200/90 flex flex-col max-h-[85vh] sm:max-h-[82vh] my-auto transition-all">
+            <div class="fixed inset-0 bg-[#2C3E35]/60 backdrop-blur-xs z-50 flex items-center justify-center p-3 sm:p-5 overflow-y-auto">
+                <div class="bg-white rounded-2xl max-w-5xl w-full p-4 sm:p-5 shadow-2xl border border-slate-200/90 flex flex-col max-h-[92vh] sm:max-h-[90vh] my-auto transition-all">
                     
                     <!-- Modal Header (Fixed Top) -->
                     <div class="flex items-center justify-between border-b border-slate-100 pb-3 shrink-0">
@@ -689,7 +689,7 @@
                     @endphp
 
                     <!-- Modal Body: Scrollable Middle Content -->
-                    <div class="flex-1 overflow-y-auto min-h-0 py-3 space-y-3 pr-1" x-data="{ openAdj: null }">
+                    <div class="flex-1 overflow-y-auto min-h-0 pt-2.5 pb-4 space-y-3 pr-1" x-data="{ openAdj: null }">
                         
                         <!-- Clean Notice Bar -->
                         @if(! $mHasDiscrepancy)
@@ -984,8 +984,8 @@
                         </div>
 
                         <!-- Penarikan Tunai Kasir & Catatan Rekap -->
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 items-stretch">
-                            <div class="bg-[#F3F6F4] p-3.5 rounded-2xl border border-slate-200/80 flex flex-col justify-between space-y-2">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-stretch">
+                            <div class="bg-[#F3F6F4] p-3 rounded-2xl border border-slate-200/80 flex flex-col justify-between space-y-2">
                                 <div>
                                     <label class="block font-extrabold text-xs text-[#2C3E35] uppercase tracking-wider">Penarikan Tunai Kasir</label>
                                     <span class="text-[11px] text-[#718379] font-medium block mt-0.5">Nominal uang tunai ditarik dari laci kasir.</span>
@@ -996,7 +996,7 @@
                                 </div>
                             </div>
 
-                            <div class="bg-[#F3F6F4] p-3.5 rounded-2xl border border-slate-200/80 flex flex-col justify-between space-y-2">
+                            <div class="bg-[#F3F6F4] p-3 rounded-2xl border border-slate-200/80 flex flex-col justify-between space-y-2">
                                 <div>
                                     <label class="block font-extrabold text-xs text-[#2C3E35] uppercase tracking-wider">Catatan Rekap</label>
                                     <span class="text-[11px] text-[#718379] font-medium block mt-0.5">Penjelasan jika terdapat selisih saldo.</span>
@@ -1008,7 +1008,7 @@
                     </div>
 
                     <!-- Modal Footer Actions (Fixed Bottom) -->
-                    <div class="flex items-center justify-between pt-3.5 border-t border-slate-100 shrink-0 mt-auto">
+                    <div class="flex items-center justify-between pt-3 border-t border-slate-100 shrink-0 mt-auto bg-white z-10">
                         <button type="button" wire:click="closeInputModal" class="h-10 px-5 inline-flex items-center justify-center bg-slate-100 hover:bg-slate-200 text-[#2C3E35] font-extrabold text-xs sm:text-sm rounded-xl transition cursor-pointer">
                             Batal
                         </button>
