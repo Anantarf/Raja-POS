@@ -281,7 +281,28 @@ class Products extends Component
     public function updatedSelectAll($value)
     {
         if ($value) {
-            $this->selectedProducts = Product::pluck('id')->map(fn ($id) => (string) $id)->toArray();
+            $query = Product::query();
+            if ($this->search) {
+                $query->where(function ($q) {
+                    $q->where('name', 'like', '%'.$this->search.'%')
+                        ->orWhere('code', 'like', '%'.$this->search.'%')
+                        ->orWhere('barcode', 'like', '%'.$this->search.'%');
+                });
+            }
+            if ($this->selectedCategory) {
+                $query->where('category_id', $this->selectedCategory);
+            }
+            if ($this->selectedType === 'INCOMPLETE') {
+                $query->where('product_type', '!=', 'LAYANAN')
+                    ->where(function ($q) {
+                        $q->where('price_status', 'INCOMPLETE')
+                            ->orWhere('cost_price', '<=', 0)
+                            ->orWhere('selling_price', '<=', 0);
+                    });
+            } elseif ($this->selectedType !== 'ALL') {
+                $query->where('product_type', $this->selectedType);
+            }
+            $this->selectedProducts = $query->pluck('id')->map(fn ($id) => (string) $id)->toArray();
         } else {
             $this->selectedProducts = [];
         }
@@ -396,8 +417,8 @@ class Products extends Component
         return view('livewire.admin.products', [
             'products' => $products,
             'incompleteCount' => $incompleteCount,
-            'categories' => Category::orderBy('name')->get(),
-            'brands' => Brand::orderBy('name')->get(),
+            'categories' => app(CatalogCacheService::class)->getCachedCategories(),
+            'brands' => \Illuminate\Support\Facades\Cache::remember('active_brands', 3600, fn () => Brand::orderBy('name')->get()),
         ])->layout('components.layouts.admin', ['title' => 'Master Produk']);
     }
 }

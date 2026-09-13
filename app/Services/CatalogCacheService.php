@@ -40,10 +40,22 @@ class CatalogCacheService
     }
 
     /**
+     * Get active categories cached.
+     */
+    public function getCachedCategories(): Collection
+    {
+        return Cache::remember('pos_active_categories', self::CACHE_TTL, function () {
+            return \App\Models\Category::where('status', 'ACTIVE')->orderBy('name')->get();
+        });
+    }
+
+    /**
      * Clear catalog cache across all locations or for a specific location.
      */
     public function clearCatalogCache(?int $locationId = null): void
     {
+        Cache::forget('pos_active_categories');
+
         if ($locationId) {
             Cache::forget("pos_catalog_products_loc_{$locationId}");
         } else {

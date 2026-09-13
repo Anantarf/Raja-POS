@@ -593,7 +593,7 @@ class Checkout extends Component
         $products = $query->orderBy('name')->take($this->perPage)->get();
 
         $user = auth()->user();
-        $categories = Category::where('status', 'ACTIVE')->orderBy('name')->get();
+        $categories = app(\App\Services\CatalogCacheService::class)->getCachedCategories();
         $paymentMethods = PaymentMethod::where('status', 'ACTIVE')->get();
         $balanceAccounts = BalanceAccount::forUserLocation($user)->where('status', 'ACTIVE')->get();
         $cashAccount = BalanceAccount::forUserLocation($user)->where('code', 'CASH')->first()

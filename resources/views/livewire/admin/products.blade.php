@@ -328,8 +328,9 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100 font-medium">
+                        @php $selectedMap = array_flip($selectedProducts); @endphp
                         @forelse($products as $product)
-                            <tr class="hover:bg-[#F3F6F4]/60 transition {{ in_array((string)$product->id, $selectedProducts) ? 'bg-amber-50/50' : '' }}">
+                            <tr class="hover:bg-[#F3F6F4]/60 transition {{ isset($selectedMap[(string)$product->id]) || isset($selectedMap[$product->id]) ? 'bg-amber-50/50' : '' }}">
                                 <!-- Col 0: Checkbox -->
                                 <td class="py-3.5 px-3 text-center">
                                     <input type="checkbox" wire:model.live="selectedProducts" value="{{ $product->id }}" class="rounded border-slate-300 text-[#047857] focus:ring-[#047857]" />
