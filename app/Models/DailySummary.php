@@ -14,6 +14,8 @@ class DailySummary extends Model
     protected $fillable = [
         'location_id',
         'summary_date',
+        'status', // 'BELUM_DICEK', 'SEDANG_DICEK', 'SUDAH_DICEK'
+        'has_discrepancy',
         'dana_saldo_awal',
         'dana_topup',
         'dana_trx',
@@ -31,10 +33,14 @@ class DailySummary extends Model
         'tarik_tunai_kasir',
         'notes',
         'created_by',
+        'verified_at',
+        'verified_by',
     ];
 
     protected $casts = [
         'summary_date' => 'date:Y-m-d',
+        'has_discrepancy' => 'boolean',
+        'verified_at' => 'datetime',
         'dana_saldo_awal' => 'decimal:2',
         'dana_topup' => 'decimal:2',
         'dana_trx' => 'decimal:2',
@@ -60,5 +66,10 @@ class DailySummary extends Model
     public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function verifier(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'verified_by');
     }
 }

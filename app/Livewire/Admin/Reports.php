@@ -101,10 +101,20 @@ class Reports extends Component
         $this->notes = $data['saved_model']?->notes;
     }
 
-    public function saveDailySummary(FinanceReportService $reportService): void
+    public function saveDraft(FinanceReportService $reportService): void
     {
         $user = auth()->user();
         $locationId = $user->location_id ?? 1;
+
+        $existing = DailySummary::forUserLocation($user)->whereDate('summary_date', $this->summaryDate)->first();
+        if ($existing && $existing->status === 'SUDAH_DICEK' && ! $user->can('balance.adjust')) {
+            $this->dispatch('notify', message: 'Laporan tanggal ini sudah terkunci dan tidak dapat diubah.', type: 'danger');
+            return;
+        }
+
+        $data = $reportService->getDailySummaryReportData($this->summaryDate, $user);
+        $qrisExpected = $data['qris_total'];
+        $hasDiscrepancy = (float) $this->qrisSaldoAndroid != (float) $qrisExpected;
 
         DailySummary::updateOrCreate(
             [
@@ -112,6 +122,8 @@ class Reports extends Component
                 'summary_date' => $this->summaryDate,
             ],
             [
+                'status' => 'SEDANG_DICEK',
+                'has_discrepancy' => $hasDiscrepancy,
                 'dana_saldo_awal' => (float) $this->danaSaldoAwal,
                 'dana_topup' => (float) $this->danaTopup,
                 'dana_trx' => (float) $this->danaTrx,
@@ -132,7 +144,67 @@ class Reports extends Component
             ]
         );
 
-        $this->dispatch('notify', message: 'Laporan Summary Harian berhasil disimpan.', type: 'success');
+        $this->dispatch('notify', message: 'Draf Rekap Harian berhasil disimpan (Status: Sedang Di-Cek).', type: 'success');
+    }
+
+    public function validateAndLock(FinanceReportService $reportService): void
+    {
+        $user = auth()->user();
+        $locationId = $user->location_id ?? 1;
+
+        $data = $reportService->getDailySummaryReportData($this->summaryDate, $user);
+        $qrisExpected = $data['qris_total'];
+        $hasDiscrepancy = (float) $this->qrisSaldoAndroid != (float) $qrisExpected;
+
+        if ($hasDiscrepancy && empty(trim($this->notes ?? ''))) {
+            $this->dispatch('notify', message: 'Terdapat selisih pada saldo. Harap cantumkan penjelasan selisih di kolom catatan sebelum memvalidasi.', type: 'amber');
+            return;
+        }
+
+        DailySummary::updateOrCreate(
+            [
+                'location_id' => $locationId,
+                'summary_date' => $this->summaryDate,
+            ],
+            [
+                'status' => 'SUDAH_DICEK',
+                'has_discrepancy' => $hasDiscrepancy,
+                'dana_saldo_awal' => (float) $this->danaSaldoAwal,
+                'dana_topup' => (float) $this->danaTopup,
+                'dana_trx' => (float) $this->danaTrx,
+                'dana_saldo_android' => (float) $this->danaSaldoAndroid,
+                'qris_tarik_tunai' => (float) $this->qrisTarikTunai,
+                'qris_saldo_android' => (float) $this->qrisSaldoAndroid,
+                'bankmas_saldo_awal' => (float) $this->bankmasSaldoAwal,
+                'bankmas_topup' => (float) $this->bankmasTopup,
+                'bankmas_trx' => (float) $this->bankmasTrx,
+                'bankmas_saldo_android' => (float) $this->bankmasSaldoAndroid,
+                'multi_saldo_awal' => (float) $this->multiSaldoAwal,
+                'multi_topup' => (float) $this->multiTopup,
+                'multi_trx' => (float) $this->multiTrx,
+                'multi_saldo_android' => (float) $this->multiSaldoAndroid,
+                'tarik_tunai_kasir' => (float) $this->tarikTunaiKasir,
+                'notes' => $this->notes,
+                'created_by' => $user->id,
+                'verified_at' => now(),
+                'verified_by' => $user->id,
+            ]
+        );
+
+        $msg = $hasDiscrepancy ? 'Laporan berhasil divalidasi dan dikunci (Catatan Selisih Terekam).' : 'Laporan berhasil divalidasi & dikunci. Seluruh saldo sesuai!';
+        $this->dispatch('notify', message: $msg, type: $hasDiscrepancy ? 'amber' : 'success');
+    }
+
+    public function unlockReport(): void
+    {
+        $user = auth()->user();
+        abort_unless($user->can('balance.adjust') || $user->role?->name === 'OWNER', 403);
+
+        $record = DailySummary::forUserLocation($user)->whereDate('summary_date', $this->summaryDate)->first();
+        if ($record) {
+            $record->update(['status' => 'SEDANG_DICEK']);
+            $this->dispatch('notify', message: 'Kunci laporan dibuka. Laporan kini dapat direvisi.', type: 'info');
+        }
     }
 
     public function render(FinanceReportService $reportService)

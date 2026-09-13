@@ -280,6 +280,7 @@ class FinanceReportService
         // 3. Saved Daily Summary snapshot from database
         $savedSummary = DailySummary::forUserLocation($user)
             ->whereDate('summary_date', $targetDate)
+            ->with(['verifier', 'creator'])
             ->first();
 
         // Defaults or saved values
@@ -307,13 +308,20 @@ class FinanceReportService
         $subtotalNetto = $totalPenjualan - $tarikTunaiKasir;
 
         // Setoran Tunai (Physical cash in drawer) = (Penjualan Netto - QRIS - Transfer) + Tarik Tunai
-        // If tunaiPembayaran was recorded directly in POS, setoranTunai will align.
         $setoranTunai = max(0, ($subtotalNetto - $qrisPembayaran - $transferPembayaran) + $tarikTunaiKasir);
+
+        $status = $savedSummary?->status ?? 'BELUM_DICEK';
+        $hasDiscrepancy = $savedSummary ? $savedSummary->has_discrepancy : ($qrisAndroid != ($qrisPembayaran + $qrisTarikTunai));
 
         return [
             'summary_date' => $targetDate,
             'is_saved' => $savedSummary !== null,
             'saved_model' => $savedSummary,
+            'status' => $status,
+            'has_discrepancy' => $hasDiscrepancy,
+            'verified_at' => $savedSummary?->verified_at,
+            'verifier_name' => $savedSummary?->verifier?->name,
+            'creator_name' => $savedSummary?->creator?->name,
 
             // DANA
             'dana_saldo_awal' => $danaAwal,

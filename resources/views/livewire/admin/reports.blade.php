@@ -117,41 +117,78 @@
     @if($type === 'daily_summary')
         @php
             $formattedDate = \Carbon\Carbon::parse($dailySummaryData['summary_date'])->locale('id')->translatedFormat('l, d F Y');
+            $status = $dailySummaryData['status'];
+            $isLocked = ($status === 'SUDAH_DICEK');
+            $hasDiscrepancy = $dailySummaryData['has_discrepancy'];
         @endphp
         <div class="space-y-6">
             <!-- Header Toolbar for Daily Summary -->
-            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-xs">
+            <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-xs">
                 <div class="flex items-center gap-3">
                     <div class="w-10 h-10 rounded-xl bg-[#E3EEE8] text-[#3F7A5D] font-extrabold flex items-center justify-center border border-[#3F7A5D]/20 shrink-0">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h55.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                     </div>
                     <div>
-                        <div class="flex items-center gap-2">
+                        <div class="flex items-center gap-2 flex-wrap">
                             <h2 class="text-lg font-black text-[#2C3E35] tracking-tight uppercase">SUMMARY REPORT</h2>
                             <span class="px-2.5 py-0.5 rounded-lg text-xs font-black uppercase bg-amber-200 text-amber-900 border border-amber-300">
                                 {{ strtoupper($formattedDate) }}
                             </span>
+
+                            <!-- Status Badge -->
+                            @if($status === 'SUDAH_DICEK')
+                                @if($hasDiscrepancy)
+                                    <span class="px-3 py-1 rounded-xl bg-rose-100 text-rose-800 text-xs font-black border border-rose-300 flex items-center gap-1">
+                                        <span class="w-2 h-2 rounded-full bg-rose-600"></span>
+                                        SUDAH DI-CEK (ADA SELISIH)
+                                    </span>
+                                @else
+                                    <span class="px-3 py-1 rounded-xl bg-emerald-100 text-emerald-800 text-xs font-black border border-emerald-300 flex items-center gap-1">
+                                        <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                                        SUDAH DI-CEK (SESUAI)
+                                    </span>
+                                @endif
+                            @elseif($status === 'SEDANG_DICEK')
+                                <span class="px-3 py-1 rounded-xl bg-amber-100 text-amber-900 text-xs font-extrabold border border-amber-300 flex items-center gap-1">
+                                    <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+                                    SEDANG DI-CEK (DRAFT)
+                                </span>
+                            @else
+                                <span class="px-3 py-1 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold border border-slate-200">
+                                    ⚪ BELUM DI-CEK
+                                </span>
+                            @endif
                         </div>
-                        <p class="text-xs text-[#718379] font-medium">Rekapitulasi transaksi kasir, saldo digital, margin, &amp; setoran uang fisik harian.</p>
+                        <p class="text-xs text-[#718379] font-medium mt-0.5">
+                            @if($isLocked)
+                                Terkunci oleh {{ $dailySummaryData['verifier_name'] ?? 'Supervisor' }} pada {{ \Carbon\Carbon::parse($dailySummaryData['verified_at'])->format('d/m/Y H:i') }}.
+                            @else
+                                Rekapitulasi kasir, saldo e-wallet, &amp; setoran uang fisik harian.
+                            @endif
+                        </p>
                     </div>
                 </div>
 
-                <div class="flex items-center gap-2 w-full sm:w-auto">
-                    @if($dailySummaryData['is_saved'])
-                        <span class="px-3 py-1.5 rounded-xl bg-emerald-100 text-emerald-800 text-xs font-extrabold border border-emerald-200 flex items-center gap-1">
-                            <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
-                            Tersimpan
-                        </span>
+                <!-- Action Controls -->
+                <div class="flex items-center gap-2 w-full lg:w-auto justify-end flex-wrap">
+                    @if($isLocked)
+                        @if(auth()->user()->can('balance.adjust') || auth()->user()->role?->name === 'OWNER')
+                            <button wire:click="unlockReport" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 font-extrabold text-xs rounded-xl shadow-xs transition flex items-center gap-1.5 cursor-pointer active-press">
+                                <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"></path></svg>
+                                <span>Buka Kunci (Revisi)</span>
+                            </button>
+                        @endif
                     @else
-                        <span class="px-3 py-1.5 rounded-xl bg-slate-100 text-slate-600 text-xs font-bold border border-slate-200">
-                            Draft
-                        </span>
-                    @endif
+                        <button wire:click="saveDraft" wire:loading.attr="disabled" class="px-4 py-2.5 bg-amber-500 hover:bg-amber-600 text-white font-extrabold text-xs rounded-xl shadow-xs transition flex items-center gap-1.5 cursor-pointer active-press">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
+                            <span>Simpan Draf</span>
+                        </button>
 
-                    <button wire:click="saveDailySummary" wire:loading.attr="disabled" class="px-5 py-2.5 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold text-xs rounded-xl shadow-xs transition flex items-center gap-2 cursor-pointer active-press">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
-                        <span>Simpan Rekap</span>
-                    </button>
+                        <button wire:click="validateAndLock" wire:loading.attr="disabled" class="px-5 py-2.5 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold text-xs rounded-xl shadow-xs transition flex items-center gap-2 cursor-pointer active-press">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            <span>Validasi &amp; Kunci Rekap</span>
+                        </button>
+                    @endif
                 </div>
             </div>
 
@@ -169,11 +206,11 @@
                         <div class="divide-y divide-slate-100 text-xs font-medium">
                             <div class="grid grid-cols-2 p-2.5 items-center hover:bg-slate-50">
                                 <span class="font-bold text-[#2C3E35]">SALDO AWAL</span>
-                                <input type="number" step="1" wire:model.live="danaSaldoAwal" class="w-full text-right font-mono font-extrabold px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs" />
+                                <input type="number" step="1" wire:model.live="danaSaldoAwal" {{ $isLocked ? 'disabled' : '' }} class="w-full text-right font-mono font-extrabold px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs disabled:opacity-75 disabled:bg-slate-100 disabled:cursor-not-allowed" />
                             </div>
                             <div class="grid grid-cols-2 p-2.5 items-center hover:bg-slate-50">
                                 <span class="font-bold text-[#2C3E35]">TOP UP SALDO</span>
-                                <input type="number" step="1" wire:model.live="danaTopup" class="w-full text-right font-mono font-extrabold px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs" />
+                                <input type="number" step="1" wire:model.live="danaTopup" {{ $isLocked ? 'disabled' : '' }} class="w-full text-right font-mono font-extrabold px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs disabled:opacity-75 disabled:bg-slate-100 disabled:cursor-not-allowed" />
                             </div>
                             <div class="grid grid-cols-2 p-2.5 items-center bg-slate-50 font-bold text-[#2C3E35]">
                                 <span>TOTAL SALDO</span>
@@ -181,7 +218,7 @@
                             </div>
                             <div class="grid grid-cols-2 p-2.5 items-center hover:bg-slate-50">
                                 <span class="font-bold text-[#2C3E35]">TRANSAKSI TERPAKAI (TRX)</span>
-                                <input type="number" step="1" wire:model.live="danaTrx" class="w-full text-right font-mono font-extrabold px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs" />
+                                <input type="number" step="1" wire:model.live="danaTrx" {{ $isLocked ? 'disabled' : '' }} class="w-full text-right font-mono font-extrabold px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs disabled:opacity-75 disabled:bg-slate-100 disabled:cursor-not-allowed" />
                             </div>
                             <div class="grid grid-cols-2 p-2.5 items-center bg-amber-200 text-amber-950 font-black">
                                 <span>SALDO AKHIR</span>
@@ -189,7 +226,7 @@
                             </div>
                             <div class="grid grid-cols-2 p-2.5 items-center bg-amber-200 text-amber-950 font-black border-t border-amber-300">
                                 <span>SALDO ANDROID</span>
-                                <input type="number" step="1" wire:model.live="danaSaldoAndroid" class="w-full text-right font-mono font-black px-2 py-1 bg-amber-100 border border-amber-300 rounded-lg text-xs text-amber-950" />
+                                <input type="number" step="1" wire:model.live="danaSaldoAndroid" {{ $isLocked ? 'disabled' : '' }} class="w-full text-right font-mono font-black px-2 py-1 bg-amber-100 border border-amber-300 rounded-lg text-xs text-amber-950 disabled:opacity-85 disabled:bg-amber-100 disabled:cursor-not-allowed" />
                             </div>
                         </div>
                     </div>
@@ -207,7 +244,7 @@
                             </div>
                             <div class="grid grid-cols-2 p-2.5 items-center hover:bg-slate-50">
                                 <span class="font-bold text-[#2C3E35]">TARIK TUNAI</span>
-                                <input type="number" step="1" wire:model.live="qrisTarikTunai" class="w-full text-right font-mono font-extrabold px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs" />
+                                <input type="number" step="1" wire:model.live="qrisTarikTunai" {{ $isLocked ? 'disabled' : '' }} class="w-full text-right font-mono font-extrabold px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs disabled:opacity-75 disabled:bg-slate-100 disabled:cursor-not-allowed" />
                             </div>
                             <div class="grid grid-cols-2 p-2.5 items-center bg-slate-50 font-bold text-[#2C3E35]">
                                 <span>TOTAL</span>
@@ -215,7 +252,7 @@
                             </div>
                             <div class="grid grid-cols-2 p-2.5 items-center bg-amber-200 text-amber-950 font-black">
                                 <span>SALDO ANDROID</span>
-                                <input type="number" step="1" wire:model.live="qrisSaldoAndroid" class="w-full text-right font-mono font-black px-2 py-1 bg-amber-100 border border-amber-300 rounded-lg text-xs text-amber-950" />
+                                <input type="number" step="1" wire:model.live="qrisSaldoAndroid" {{ $isLocked ? 'disabled' : '' }} class="w-full text-right font-mono font-black px-2 py-1 bg-amber-100 border border-amber-300 rounded-lg text-xs text-amber-950 disabled:opacity-85 disabled:bg-amber-100 disabled:cursor-not-allowed" />
                             </div>
                             <div class="grid grid-cols-2 p-2.5 items-center bg-amber-200 text-amber-950 font-black border-t border-amber-300">
                                 <span>CEK STATUS SELISIH</span>
@@ -240,11 +277,11 @@
                         <div class="divide-y divide-slate-100 text-xs font-medium">
                             <div class="grid grid-cols-2 p-2.5 items-center hover:bg-slate-50">
                                 <span class="font-bold text-[#2C3E35]">SALDO AWAL</span>
-                                <input type="number" step="1" wire:model.live="bankmasSaldoAwal" class="w-full text-right font-mono font-extrabold px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs text-rose-700" />
+                                <input type="number" step="1" wire:model.live="bankmasSaldoAwal" {{ $isLocked ? 'disabled' : '' }} class="w-full text-right font-mono font-extrabold px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs text-rose-700 disabled:opacity-75 disabled:bg-slate-100 disabled:cursor-not-allowed" />
                             </div>
                             <div class="grid grid-cols-2 p-2.5 items-center hover:bg-slate-50">
                                 <span class="font-bold text-[#2C3E35]">TOP UP SALDO</span>
-                                <input type="number" step="1" wire:model.live="bankmasTopup" class="w-full text-right font-mono font-extrabold px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs" />
+                                <input type="number" step="1" wire:model.live="bankmasTopup" {{ $isLocked ? 'disabled' : '' }} class="w-full text-right font-mono font-extrabold px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs disabled:opacity-75 disabled:bg-slate-100 disabled:cursor-not-allowed" />
                             </div>
                             <div class="grid grid-cols-2 p-2.5 items-center bg-slate-50 font-bold text-[#2C3E35]">
                                 <span>TOTAL SALDO</span>
@@ -252,7 +289,7 @@
                             </div>
                             <div class="grid grid-cols-2 p-2.5 items-center hover:bg-slate-50">
                                 <span class="font-bold text-[#2C3E35]">TRANSAKSI TERPAKAI (TRX)</span>
-                                <input type="number" step="1" wire:model.live="bankmasTrx" class="w-full text-right font-mono font-extrabold px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs text-rose-700" />
+                                <input type="number" step="1" wire:model.live="bankmasTrx" {{ $isLocked ? 'disabled' : '' }} class="w-full text-right font-mono font-extrabold px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs text-rose-700 disabled:opacity-75 disabled:bg-slate-100 disabled:cursor-not-allowed" />
                             </div>
                             <div class="grid grid-cols-2 p-2.5 items-center bg-amber-200 text-amber-950 font-black">
                                 <span>SALDO AKHIR</span>
@@ -260,7 +297,7 @@
                             </div>
                             <div class="grid grid-cols-2 p-2.5 items-center bg-amber-200 text-amber-950 font-black border-t border-amber-300">
                                 <span>SALDO ANDROID</span>
-                                <input type="number" step="1" wire:model.live="bankmasSaldoAndroid" class="w-full text-right font-mono font-black px-2 py-1 bg-amber-100 border border-amber-300 rounded-lg text-xs text-amber-950" />
+                                <input type="number" step="1" wire:model.live="bankmasSaldoAndroid" {{ $isLocked ? 'disabled' : '' }} class="w-full text-right font-mono font-black px-2 py-1 bg-amber-100 border border-amber-300 rounded-lg text-xs text-amber-950 disabled:opacity-85 disabled:bg-amber-100 disabled:cursor-not-allowed" />
                             </div>
                         </div>
                     </div>
@@ -274,11 +311,11 @@
                         <div class="divide-y divide-slate-100 text-xs font-medium">
                             <div class="grid grid-cols-2 p-2.5 items-center hover:bg-slate-50">
                                 <span class="font-bold text-[#2C3E35]">SALDO AWAL</span>
-                                <input type="number" step="1" wire:model.live="multiSaldoAwal" class="w-full text-right font-mono font-extrabold px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs" />
+                                <input type="number" step="1" wire:model.live="multiSaldoAwal" {{ $isLocked ? 'disabled' : '' }} class="w-full text-right font-mono font-extrabold px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs disabled:opacity-75 disabled:bg-slate-100 disabled:cursor-not-allowed" />
                             </div>
                             <div class="grid grid-cols-2 p-2.5 items-center hover:bg-slate-50">
                                 <span class="font-bold text-[#2C3E35]">TOP UP SALDO</span>
-                                <input type="number" step="1" wire:model.live="multiTopup" class="w-full text-right font-mono font-extrabold px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs" />
+                                <input type="number" step="1" wire:model.live="multiTopup" {{ $isLocked ? 'disabled' : '' }} class="w-full text-right font-mono font-extrabold px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs disabled:opacity-75 disabled:bg-slate-100 disabled:cursor-not-allowed" />
                             </div>
                             <div class="grid grid-cols-2 p-2.5 items-center bg-slate-50 font-bold text-[#2C3E35]">
                                 <span>TOTAL SALDO</span>
@@ -286,7 +323,7 @@
                             </div>
                             <div class="grid grid-cols-2 p-2.5 items-center hover:bg-slate-50">
                                 <span class="font-bold text-[#2C3E35]">TRANSAKSI TERPAKAI (TRX)</span>
-                                <input type="number" step="1" wire:model.live="multiTrx" class="w-full text-right font-mono font-extrabold px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs" />
+                                <input type="number" step="1" wire:model.live="multiTrx" {{ $isLocked ? 'disabled' : '' }} class="w-full text-right font-mono font-extrabold px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs disabled:opacity-75 disabled:bg-slate-100 disabled:cursor-not-allowed" />
                             </div>
                             <div class="grid grid-cols-2 p-2.5 items-center bg-amber-200 text-amber-950 font-black">
                                 <span>SALDO AKHIR</span>
@@ -294,7 +331,7 @@
                             </div>
                             <div class="grid grid-cols-2 p-2.5 items-center bg-amber-200 text-amber-950 font-black border-t border-amber-300">
                                 <span>SALDO ANDROID</span>
-                                <input type="number" step="1" wire:model.live="multiSaldoAndroid" class="w-full text-right font-mono font-black px-2 py-1 bg-amber-100 border border-amber-300 rounded-lg text-xs text-amber-950" />
+                                <input type="number" step="1" wire:model.live="multiSaldoAndroid" {{ $isLocked ? 'disabled' : '' }} class="w-full text-right font-mono font-black px-2 py-1 bg-amber-100 border border-amber-300 rounded-lg text-xs text-amber-950 disabled:opacity-85 disabled:bg-amber-100 disabled:cursor-not-allowed" />
                             </div>
                         </div>
                     </div>
@@ -320,7 +357,7 @@
 
                             <!-- PENJUALAN (Kuning Highlight) -->
                             <div class="flex items-center justify-between p-3 bg-amber-200 text-amber-950 font-black">
-                                <span>PENJUALAN</span>
+                                <span>TOTAL PENJUALAN</span>
                                 <span class="font-mono text-sm">Rp {{ number_format($dailySummaryData['total_penjualan'], 0, ',', '.') }}</span>
                             </div>
 
@@ -328,7 +365,7 @@
                             <div class="flex items-center justify-between p-3 bg-amber-200 text-amber-950 font-black border-t border-amber-300">
                                 <span>TARIK TUNAI KASIR</span>
                                 <div class="w-36">
-                                    <input type="number" step="1" wire:model.live="tarikTunaiKasir" class="w-full text-right font-mono font-black px-2 py-1 bg-amber-100 border border-amber-300 rounded-lg text-xs text-amber-950" />
+                                    <input type="number" step="1" wire:model.live="tarikTunaiKasir" {{ $isLocked ? 'disabled' : '' }} class="w-full text-right font-mono font-black px-2 py-1 bg-amber-100 border border-amber-300 rounded-lg text-xs text-amber-950 disabled:opacity-85 disabled:bg-amber-100 disabled:cursor-not-allowed" />
                                 </div>
                             </div>
 
@@ -340,19 +377,19 @@
 
                             <!-- QRIS -->
                             <div class="flex items-center justify-between p-3 bg-slate-50 font-bold text-[#2C3E35]">
-                                <span>QRIS (NONTUNAI)</span>
+                                <span>PEMBAYARAN QRIS</span>
                                 <span class="font-mono text-sm font-extrabold text-slate-700">Rp {{ number_format($dailySummaryData['qris_pembayaran_pos'], 0, ',', '.') }}</span>
                             </div>
 
                             <!-- TUNAI POS -->
                             <div class="flex items-center justify-between p-3 bg-white font-bold text-[#2C3E35]">
-                                <span>TUNAI (DITERIMA POS)</span>
+                                <span>PEMBAYARAN TUNAI</span>
                                 <span class="font-mono text-sm font-extrabold text-slate-700">Rp {{ number_format($dailySummaryData['tunai_pembayaran_pos'], 0, ',', '.') }}</span>
                             </div>
 
                             <!-- TRANSFER -->
                             <div class="flex items-center justify-between p-3 bg-white font-bold text-[#2C3E35]">
-                                <span>TRANSFER BANK</span>
+                                <span>PEMBAYARAN TRANSFER</span>
                                 <span class="font-mono text-sm font-extrabold text-slate-700">Rp {{ number_format($dailySummaryData['transfer_pembayaran_pos'], 0, ',', '.') }}</span>
                             </div>
 
@@ -373,8 +410,8 @@
 
                     <!-- Notes Box -->
                     <div class="bg-white border-2 border-slate-200/90 rounded-2xl p-4 space-y-2 shadow-xs">
-                        <label class="text-xs font-extrabold text-[#2C3E35] uppercase tracking-wider block">Catatan Rekap / Keterangan Shift</label>
-                        <textarea wire:model="notes" rows="3" placeholder="Masukkan catatan tambahan atau penjelas selisih kas..." class="w-full p-2.5 border border-slate-200 rounded-xl text-xs bg-[#F3F6F4] text-[#2C3E35] font-medium focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]"></textarea>
+                        <label class="text-xs font-extrabold text-[#2C3E35] uppercase tracking-wider block">Catatan Rekap / Penjelasan Selisih</label>
+                        <textarea wire:model="notes" {{ $isLocked ? 'disabled' : '' }} rows="3" placeholder="Masukkan catatan tambahan atau penjelasan jika terdapat selisih kas..." class="w-full p-2.5 border border-slate-200 rounded-xl text-xs bg-[#F3F6F4] text-[#2C3E35] font-medium focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] disabled:opacity-75 disabled:bg-slate-100 disabled:cursor-not-allowed"></textarea>
                     </div>
 
                 </div>
