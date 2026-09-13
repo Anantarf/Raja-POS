@@ -39,6 +39,10 @@
     --text-4xl--line-height: 3.45rem;
 }
 @layer base {
+    *, ::before, ::after {
+        border-color: #e2e8f0;
+    }
+
     html {
         font-size: 15px;
     }
