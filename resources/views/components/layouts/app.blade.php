@@ -187,24 +187,43 @@
                     const paragraphs = String(str).split('\n');
                     const resultLines = [];
 
+                    const isOrphanPrefix = (w) => /^(\(?rp\.?|\(?idr\.?|\(?no\.?)$/i.test(w);
+
                     paragraphs.forEach(para => {
                         const words = para.trim().split(/\s+/);
-                        let currentLine = '';
+                        let currentLine = [];
 
                         words.forEach(word => {
                             if (!word) return;
-                            if ((currentLine + (currentLine ? ' ' : '') + word).length <= cols) {
-                                currentLine += (currentLine ? ' ' : '') + word;
+                            const lineStr = currentLine.join(' ');
+                            const candidate = lineStr ? lineStr + ' ' + word : word;
+
+                            if (candidate.length <= cols) {
+                                currentLine.push(word);
                             } else {
-                                if (currentLine) resultLines.push(currentLine);
-                                while (word.length > cols) {
-                                    resultLines.push(word.substring(0, cols));
-                                    word = word.substring(cols);
+                                if (currentLine.length > 1 && isOrphanPrefix(currentLine[currentLine.length - 1])) {
+                                    const orphan = currentLine.pop();
+                                    resultLines.push(currentLine.join(' '));
+                                    currentLine = [orphan, word];
+                                } else if (currentLine.length > 0) {
+                                    resultLines.push(currentLine.join(' '));
+                                    while (word.length > cols) {
+                                        resultLines.push(word.substring(0, cols));
+                                        word = word.substring(cols);
+                                    }
+                                    currentLine = [word];
+                                } else {
+                                    while (word.length > cols) {
+                                        resultLines.push(word.substring(0, cols));
+                                        word = word.substring(cols);
+                                    }
+                                    currentLine = [word];
                                 }
-                                currentLine = word;
                             }
                         });
-                        if (currentLine) resultLines.push(currentLine);
+                        if (currentLine.length > 0) {
+                            resultLines.push(currentLine.join(' '));
+                        }
                     });
 
                     return resultLines.join('\n');

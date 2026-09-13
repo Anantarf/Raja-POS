@@ -42,7 +42,7 @@
     <table class="w-full text-xs text-left border-separate border-spacing-y-1">
         @forelse($receiptSale?->items ?? [] as $item)
             <tr>
-                <td colspan="2" class="font-bold pt-1 leading-snug break-words">{{ $item->product_name_snapshot }}</td>
+                <td colspan="2" class="font-bold pt-1 leading-snug break-words">{{ str_replace(['(Rp ', '(Rp. ', 'Rp '], ["(Rp\u00A0", "(Rp.\u00A0", "Rp\u00A0"], $item->product_name_snapshot) }}</td>
             </tr>
             <tr>
                 <td class="text-left text-[11px] text-slate-700 pb-1">{{ $item->quantity }} x Rp {{ number_format($item->selling_price, 0, ',', '.') }}</td>

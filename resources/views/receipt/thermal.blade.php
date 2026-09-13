@@ -108,7 +108,7 @@
     <table class="table-items">
         @foreach($sale->items as $item)
             <tr>
-                <td colspan="2" class="bold">{{ $item->product_name_snapshot }}</td>
+                <td colspan="2" class="bold">{{ str_replace(['(Rp ', '(Rp. ', 'Rp '], ["(Rp\u00A0", "(Rp.\u00A0", "Rp\u00A0"], $item->product_name_snapshot) }}</td>
             </tr>
             <tr>
                 <td class="text-left">{{ $item->quantity }} x Rp{{ number_format($item->selling_price, 0, ',', '.') }}</td>
