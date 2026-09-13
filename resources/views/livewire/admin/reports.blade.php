@@ -163,8 +163,8 @@
                     <!-- 1. DANA Table -->
                     <div class="bg-white border-2 border-slate-200/90 rounded-2xl overflow-hidden shadow-xs">
                         <div class="bg-[#F3F6F4] px-4 py-2.5 border-b border-slate-200 flex items-center justify-between font-extrabold text-xs text-[#2C3E35]">
-                            <span class="uppercase tracking-wider">DANA</span>
-                            <span class="text-[10px] text-[#718379] font-semibold">E-Wallet Saldo</span>
+                            <span class="uppercase tracking-wider">DANA (E-Wallet)</span>
+                            <span class="text-[10px] text-[#718379] font-semibold">Saldo Digital</span>
                         </div>
                         <div class="divide-y divide-slate-100 text-xs font-medium">
                             <div class="grid grid-cols-2 p-2.5 items-center hover:bg-slate-50">
@@ -172,15 +172,15 @@
                                 <input type="number" step="1" wire:model.live="danaSaldoAwal" class="w-full text-right font-mono font-extrabold px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs" />
                             </div>
                             <div class="grid grid-cols-2 p-2.5 items-center hover:bg-slate-50">
-                                <span class="font-bold text-[#2C3E35]">TOP UP</span>
+                                <span class="font-bold text-[#2C3E35]">TOP UP SALDO</span>
                                 <input type="number" step="1" wire:model.live="danaTopup" class="w-full text-right font-mono font-extrabold px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs" />
                             </div>
                             <div class="grid grid-cols-2 p-2.5 items-center bg-slate-50 font-bold text-[#2C3E35]">
-                                <span>TOTAL</span>
+                                <span>TOTAL SALDO</span>
                                 <span class="text-right font-mono font-black text-sm">Rp {{ number_format($dailySummaryData['dana_total'], 0, ',', '.') }}</span>
                             </div>
                             <div class="grid grid-cols-2 p-2.5 items-center hover:bg-slate-50">
-                                <span class="font-bold text-[#2C3E35]">TERPAKAI TRX</span>
+                                <span class="font-bold text-[#2C3E35]">TRANSAKSI TERPAKAI (TRX)</span>
                                 <input type="number" step="1" wire:model.live="danaTrx" class="w-full text-right font-mono font-extrabold px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs" />
                             </div>
                             <div class="grid grid-cols-2 p-2.5 items-center bg-amber-200 text-amber-950 font-black">
@@ -202,7 +202,7 @@
                         </div>
                         <div class="divide-y divide-slate-100 text-xs font-medium">
                             <div class="grid grid-cols-2 p-2.5 items-center hover:bg-slate-50">
-                                <span class="font-bold text-[#2C3E35]">Pembayaran (POS Auto)</span>
+                                <span class="font-bold text-[#2C3E35]">PEMBAYARAN (POS AUTOMATED)</span>
                                 <span class="text-right font-mono font-extrabold text-[#3F7A5D]">Rp {{ number_format($dailySummaryData['qris_pembayaran'], 0, ',', '.') }}</span>
                             </div>
                             <div class="grid grid-cols-2 p-2.5 items-center hover:bg-slate-50">
@@ -218,13 +218,13 @@
                                 <input type="number" step="1" wire:model.live="qrisSaldoAndroid" class="w-full text-right font-mono font-black px-2 py-1 bg-amber-100 border border-amber-300 rounded-lg text-xs text-amber-950" />
                             </div>
                             <div class="grid grid-cols-2 p-2.5 items-center bg-amber-200 text-amber-950 font-black border-t border-amber-300">
-                                <span>CEK SELISIH</span>
+                                <span>CEK STATUS SELISIH</span>
                                 <div class="text-right font-mono text-xs flex items-center justify-end gap-1.5">
                                     <span>Rp {{ number_format($dailySummaryData['qris_cek'], 0, ',', '.') }}</span>
                                     @if($dailySummaryData['qris_saldo_android'] == $dailySummaryData['qris_total'])
-                                        <span class="px-1.5 py-0.5 rounded text-[10px] bg-emerald-600 text-white font-bold">MATCH</span>
+                                        <span class="px-1.5 py-0.5 rounded text-[10px] bg-emerald-600 text-white font-bold uppercase">SESUAI</span>
                                     @else
-                                        <span class="px-1.5 py-0.5 rounded text-[10px] bg-rose-600 text-white font-bold">SELISIH</span>
+                                        <span class="px-1.5 py-0.5 rounded text-[10px] bg-rose-600 text-white font-bold uppercase">ADA SELISIH</span>
                                     @endif
                                 </div>
                             </div>
@@ -247,15 +247,15 @@
                                 <input type="number" step="1" wire:model.live="bankmasTopup" class="w-full text-right font-mono font-extrabold px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs" />
                             </div>
                             <div class="grid grid-cols-2 p-2.5 items-center bg-slate-50 font-bold text-[#2C3E35]">
-                                <span>TOTAL</span>
+                                <span>TOTAL SALDO</span>
                                 <span class="text-right font-mono font-black text-sm">Rp {{ number_format($dailySummaryData['bankmas_total'], 0, ',', '.') }}</span>
                             </div>
                             <div class="grid grid-cols-2 p-2.5 items-center hover:bg-slate-50">
-                                <span class="font-bold text-[#2C3E35]">TRX</span>
+                                <span class="font-bold text-[#2C3E35]">TRANSAKSI TERPAKAI (TRX)</span>
                                 <input type="number" step="1" wire:model.live="bankmasTrx" class="w-full text-right font-mono font-extrabold px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs text-rose-700" />
                             </div>
                             <div class="grid grid-cols-2 p-2.5 items-center bg-amber-200 text-amber-950 font-black">
-                                <span>SISA SALDO</span>
+                                <span>SALDO AKHIR</span>
                                 <span class="text-right font-mono text-sm">Rp {{ number_format($dailySummaryData['bankmas_sisa'], 0, ',', '.') }}</span>
                             </div>
                             <div class="grid grid-cols-2 p-2.5 items-center bg-amber-200 text-amber-950 font-black border-t border-amber-300">
@@ -281,15 +281,15 @@
                                 <input type="number" step="1" wire:model.live="multiTopup" class="w-full text-right font-mono font-extrabold px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs" />
                             </div>
                             <div class="grid grid-cols-2 p-2.5 items-center bg-slate-50 font-bold text-[#2C3E35]">
-                                <span>TOTAL</span>
+                                <span>TOTAL SALDO</span>
                                 <span class="text-right font-mono font-black text-sm">Rp {{ number_format($dailySummaryData['multi_total'], 0, ',', '.') }}</span>
                             </div>
                             <div class="grid grid-cols-2 p-2.5 items-center hover:bg-slate-50">
-                                <span class="font-bold text-[#2C3E35]">TRX</span>
+                                <span class="font-bold text-[#2C3E35]">TRANSAKSI TERPAKAI (TRX)</span>
                                 <input type="number" step="1" wire:model.live="multiTrx" class="w-full text-right font-mono font-extrabold px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs" />
                             </div>
                             <div class="grid grid-cols-2 p-2.5 items-center bg-amber-200 text-amber-950 font-black">
-                                <span>SISA SALDO</span>
+                                <span>SALDO AKHIR</span>
                                 <span class="text-right font-mono text-sm">Rp {{ number_format($dailySummaryData['multi_sisa'], 0, ',', '.') }}</span>
                             </div>
                             <div class="grid grid-cols-2 p-2.5 items-center bg-amber-200 text-amber-950 font-black border-t border-amber-300">
