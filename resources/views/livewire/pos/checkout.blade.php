@@ -906,6 +906,63 @@
         </div>
     @endif
 
+    <!-- Non-Cash Change Confirmation Modal -->
+    @if($showNonCashChangeConfirmModal)
+        <div class="fixed inset-0 bg-[#232E28]/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 overflow-y-auto">
+            <div class="bg-white rounded-2xl p-5 sm:p-6 max-w-md w-full shadow-2xl space-y-4 border border-slate-100 my-auto">
+                <div class="flex items-center gap-3 border-b border-slate-100 pb-3">
+                    <div class="w-10 h-10 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center shrink-0">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-extrabold text-[#232E28]">Konfirmasi Kembalian Tunai</h3>
+                        <p class="text-xs text-[#718379] font-medium">Pembayaran non-tunai memiliki nilai lebih (tukar cash).</p>
+                    </div>
+                </div>
+
+                <div class="space-y-2.5 text-xs">
+                    <div class="bg-amber-50/80 border border-amber-200/80 rounded-xl p-3 text-amber-900 font-medium leading-relaxed">
+                        Metode <strong class="font-extrabold">{{ $pendingNonCashMethodName }}</strong> dimasukkan lebih dari total belanja. Uang kembalian tunai akan diserahkan kasir kepada pelanggan.
+                    </div>
+
+                    <div class="bg-[#F3F6F4] p-3 rounded-xl border border-slate-200/70 space-y-2">
+                        <div class="flex justify-between items-center text-slate-600">
+                            <span>Total Belanja:</span>
+                            <span class="font-mono font-bold text-slate-800">Rp {{ number_format($this->grand_total, 0, ',', '.') }}</span>
+                        </div>
+                        <div class="flex justify-between items-center text-slate-600">
+                            <span>Total Pembayaran Diterima:</span>
+                            <span class="font-mono font-bold text-slate-800">Rp {{ number_format($this->total_paid, 0, ',', '.') }}</span>
+                        </div>
+                        <div class="flex justify-between items-center text-sm font-extrabold text-amber-800 pt-1.5 border-t border-slate-200">
+                            <span>Kembalian Tunai Diserahkan:</span>
+                            <span class="font-mono text-base font-black">Rp {{ number_format($pendingNonCashChangeAmount, 0, ',', '.') }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-2 pt-1">
+                    <button
+                        type="button"
+                        wire:click="processCheckout(true)"
+                        class="flex-1 h-11 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold rounded-xl text-xs uppercase tracking-wider transition cursor-pointer shadow-xs active:scale-95 text-center flex items-center justify-center gap-1.5"
+                    >
+                        <span>Ya, Serahkan Kembalian (Rp {{ number_format($pendingNonCashChangeAmount, 0, ',', '.') }})</span>
+                    </button>
+                    <button
+                        type="button"
+                        wire:click="cancelNonCashChangeConfirmModal"
+                        class="h-11 py-2.5 px-4 bg-slate-100 hover:bg-slate-200 text-[#232E28] font-bold rounded-xl text-xs transition cursor-pointer text-center"
+                    >
+                        Batal / Koreksi
+                    </button>
+                </div>
+            </div>
+        </div>
+    @endif
+
     <!-- MOBILE STICKY FLOATING CART BAR (md:hidden) -->
     <div class="md:hidden fixed bottom-3 left-3 right-3 z-40 bg-[#232E28]/95 backdrop-blur-md text-white px-4 py-3 rounded-2xl shadow-xl border border-emerald-500/30 flex items-center justify-between gap-2.5 transition-all duration-300">
         <div class="flex items-center gap-2.5 min-w-0 flex-1">

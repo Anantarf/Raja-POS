@@ -104,6 +104,13 @@ class Checkout extends Component
 
     public float $ppobVendorAdminFee = 1500;
 
+    // Non-Cash Change Confirmation Modal Properties
+    public bool $showNonCashChangeConfirmModal = false;
+
+    public float $pendingNonCashChangeAmount = 0;
+
+    public string $pendingNonCashMethodName = '';
+
     public function mount()
     {
         $this->checkoutIdempotencyKey = (string) Str::uuid();
@@ -442,10 +449,10 @@ class Checkout extends Component
             ->find($this->completedSaleId);
     }
 
-    public function processCheckout()
+    public function processCheckout(bool $confirmedNonCashChange = false)
     {
         if (empty($this->cart)) {
-            $this->dispatch('notify', message: 'Keranjang belanja masih kosong.', type: 'danger');
+            $this->dispatch('notify', message: 'Keranjang belanja masih kosong.', type: 'warning');
 
             return;
         }
@@ -455,6 +462,33 @@ class Checkout extends Component
 
             return;
         }
+
+        $change = $this->total_paid - $this->grand_total;
+
+        // Check if change > 0 and non-cash payment is involved with change
+        if ($change > 0 && ! $confirmedNonCashChange) {
+            $cashPaid = 0;
+            $nonCashMethods = [];
+            foreach ($this->payments as $p) {
+                $pm = PaymentMethod::find($p['payment_method_id'] ?? null);
+                if ($pm && $pm->type === 'CASH') {
+                    $cashPaid += (float) ($p['amount'] ?? 0);
+                } elseif ($pm && (float) ($p['amount'] ?? 0) > 0) {
+                    $nonCashMethods[] = $pm->name ?? 'Non-Tunai';
+                }
+            }
+
+            // If cash paid is less than total change, part or all of change comes from non-cash overpayment
+            if ($cashPaid < $change && ! empty($nonCashMethods)) {
+                $this->pendingNonCashChangeAmount = $change;
+                $this->pendingNonCashMethodName = implode(', ', array_unique($nonCashMethods));
+                $this->showNonCashChangeConfirmModal = true;
+
+                return;
+            }
+        }
+
+        $this->showNonCashChangeConfirmModal = false;
 
         try {
             $cartPayload = [];
@@ -511,6 +545,11 @@ class Checkout extends Component
         } catch (\Exception $e) {
             $this->dispatch('notify', message: $e->getMessage(), type: 'danger');
         }
+    }
+
+    public function cancelNonCashChangeConfirmModal()
+    {
+        $this->showNonCashChangeConfirmModal = false;
     }
 
     public function closeSuccessModal()
