@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin;
 
 use App\Models\BalanceAccount;
+use App\Models\DailySummary;
 use App\Models\Inventory;
 use App\Models\Product;
 use App\Services\FinanceReportService;
@@ -19,10 +20,41 @@ class Reports extends Component
 
     public ?string $endDate = null;
 
+    // Daily Summary specific properties
+    public string $summaryDate = '';
+
+    public $danaSaldoAwal = 0;
+    public $danaTopup = 0;
+    public $danaTrx = 0;
+    public $danaSaldoAndroid = 0;
+
+    public $qrisTarikTunai = 0;
+    public $qrisSaldoAndroid = 0;
+
+    public $bankmasSaldoAwal = 0;
+    public $bankmasTopup = 0;
+    public $bankmasTrx = 0;
+    public $bankmasSaldoAndroid = 0;
+
+    public $multiSaldoAwal = 0;
+    public $multiTopup = 0;
+    public $multiTrx = 0;
+    public $multiSaldoAndroid = 0;
+
+    public $tarikTunaiKasir = 0;
+    public ?string $notes = null;
+
     public function mount(string $type = 'sales'): void
     {
-        $allowed = ['sales', 'cashier', 'inventory', 'payment', 'balance', 'product'];
+        $allowed = ['sales', 'daily_summary', 'cashier', 'inventory', 'payment', 'balance', 'product'];
         $this->type = in_array($type, $allowed, true) ? $type : 'sales';
+
+        $this->summaryDate = Carbon::today()->toDateString();
+    }
+
+    public function updatedSummaryDate(FinanceReportService $reportService): void
+    {
+        $this->loadDailySummaryForm($reportService);
     }
 
     public function updatedPeriod(): void
@@ -42,6 +74,67 @@ class Reports extends Component
         }
     }
 
+    public function loadDailySummaryForm(FinanceReportService $reportService): void
+    {
+        $user = auth()->user();
+        $data = $reportService->getDailySummaryReportData($this->summaryDate, $user);
+
+        $this->danaSaldoAwal = $data['dana_saldo_awal'];
+        $this->danaTopup = $data['dana_topup'];
+        $this->danaTrx = $data['dana_trx'];
+        $this->danaSaldoAndroid = $data['dana_saldo_android'];
+
+        $this->qrisTarikTunai = $data['qris_tarik_tunai'];
+        $this->qrisSaldoAndroid = $data['qris_saldo_android'];
+
+        $this->bankmasSaldoAwal = $data['bankmas_saldo_awal'];
+        $this->bankmasTopup = $data['bankmas_topup'];
+        $this->bankmasTrx = $data['bankmas_trx'];
+        $this->bankmasSaldoAndroid = $data['bankmas_saldo_android'];
+
+        $this->multiSaldoAwal = $data['multi_saldo_awal'];
+        $this->multiTopup = $data['multi_topup'];
+        $this->multiTrx = $data['multi_trx'];
+        $this->multiSaldoAndroid = $data['multi_saldo_android'];
+
+        $this->tarikTunaiKasir = $data['tarik_tunai_kasir'];
+        $this->notes = $data['saved_model']?->notes;
+    }
+
+    public function saveDailySummary(FinanceReportService $reportService): void
+    {
+        $user = auth()->user();
+        $locationId = $user->location_id ?? 1;
+
+        DailySummary::updateOrCreate(
+            [
+                'location_id' => $locationId,
+                'summary_date' => $this->summaryDate,
+            ],
+            [
+                'dana_saldo_awal' => (float) $this->danaSaldoAwal,
+                'dana_topup' => (float) $this->danaTopup,
+                'dana_trx' => (float) $this->danaTrx,
+                'dana_saldo_android' => (float) $this->danaSaldoAndroid,
+                'qris_tarik_tunai' => (float) $this->qrisTarikTunai,
+                'qris_saldo_android' => (float) $this->qrisSaldoAndroid,
+                'bankmas_saldo_awal' => (float) $this->bankmasSaldoAwal,
+                'bankmas_topup' => (float) $this->bankmasTopup,
+                'bankmas_trx' => (float) $this->bankmasTrx,
+                'bankmas_saldo_android' => (float) $this->bankmasSaldoAndroid,
+                'multi_saldo_awal' => (float) $this->multiSaldoAwal,
+                'multi_topup' => (float) $this->multiTopup,
+                'multi_trx' => (float) $this->multiTrx,
+                'multi_saldo_android' => (float) $this->multiSaldoAndroid,
+                'tarik_tunai_kasir' => (float) $this->tarikTunaiKasir,
+                'notes' => $this->notes,
+                'created_by' => $user->id,
+            ]
+        );
+
+        $this->dispatch('notify', message: 'Laporan Summary Harian berhasil disimpan.', type: 'success');
+    }
+
     public function render(FinanceReportService $reportService)
     {
         $user = auth()->user();
@@ -52,6 +145,7 @@ class Reports extends Component
         $inventoryValuation = $reportService->getInventoryValuation($user);
         $categoryBreakdown = $reportService->getCategoryBreakdown($this->startDate, $this->endDate, $user);
         $dailyTrend = $reportService->getDailySalesTrend(7, $user);
+        $dailySummaryData = $reportService->getDailySummaryReportData($this->summaryDate ?: Carbon::today()->toDateString(), $user);
 
         return view('livewire.admin.reports', [
             'metrics' => $metrics,
@@ -61,12 +155,13 @@ class Reports extends Component
             'inventoryValuation' => $inventoryValuation,
             'categoryBreakdown' => $categoryBreakdown,
             'dailyTrend' => $dailyTrend,
+            'dailySummaryData' => $dailySummaryData,
             'salesCount' => $metrics['sales_count'] ?? 0,
             'inventoryCount' => Inventory::forUserLocation($user)->count(),
             'lowStockCount' => Inventory::forUserLocation($user)->with('product')->get()->filter(fn ($inventory) => $inventory->stock_status !== 'AVAILABLE')->count(),
             'balanceAccounts' => BalanceAccount::forUserLocation($user)->where('status', 'ACTIVE')->orderBy('name')->get(),
             'productCount' => Product::count(),
             'incompleteProductCount' => Product::where('price_status', 'INCOMPLETE')->count(),
-        ])->layout('components.layouts.admin', ['title' => 'Laporan']);
+        ])->layout('components.layouts.admin', ['title' => 'Laporan Toko']);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\BalanceAccount;
+use App\Models\DailySummary;
 use App\Models\Inventory;
 use App\Models\Payment;
 use App\Models\Sale;
@@ -232,4 +233,129 @@ class FinanceReportService
                 ];
             })->sortByDesc('total_omzet')->values();
     }
+
+    /**
+     * Get detailed daily summary reconciliation report for a specific date.
+     */
+    public function getDailySummaryReportData(?string $date = null, ?User $user = null): array
+    {
+        $user = $user ?? auth()->user();
+        $targetDate = $date ?: Carbon::today()->toDateString();
+
+        // 1. Sales & Profit from POS
+        $salesQuery = Sale::forUserLocation($user)
+            ->where('status', 'COMPLETED')
+            ->whereDate('transaction_date', $targetDate);
+
+        $totalPenjualan = (float) $salesQuery->sum('total_amount');
+        $totalCost = (float) $salesQuery->sum('total_cost');
+        $margin = $totalPenjualan - $totalCost;
+
+        // 2. Payment Method distribution for targetDate
+        $payments = Payment::query()
+            ->whereHas('sale', function ($sq) use ($targetDate, $user) {
+                $sq->forUserLocation($user)->where('status', 'COMPLETED')->whereDate('transaction_date', $targetDate);
+            })
+            ->with('paymentMethod')
+            ->get();
+
+        $qrisPembayaran = 0.0;
+        $tunaiPembayaran = 0.0;
+        $transferPembayaran = 0.0;
+
+        foreach ($payments as $payment) {
+            $type = strtoupper($payment->paymentMethod?->type ?? '');
+            $code = strtoupper($payment->paymentMethod?->code ?? '');
+            $amount = (float) $payment->amount;
+
+            if ($type === 'QRIS' || str_contains($code, 'QRIS')) {
+                $qrisPembayaran += $amount;
+            } elseif ($type === 'CASH' || str_contains($code, 'CASH')) {
+                $tunaiPembayaran += $amount;
+            } else {
+                $transferPembayaran += $amount;
+            }
+        }
+
+        // 3. Saved Daily Summary snapshot from database
+        $savedSummary = DailySummary::forUserLocation($user)
+            ->whereDate('summary_date', $targetDate)
+            ->first();
+
+        // Defaults or saved values
+        $danaAwal = (float) ($savedSummary?->dana_saldo_awal ?? 0);
+        $danaTopup = (float) ($savedSummary?->dana_topup ?? 0);
+        $danaTrx = (float) ($savedSummary?->dana_trx ?? 0);
+        $danaAndroid = (float) ($savedSummary?->dana_saldo_android ?? ($danaAwal + $danaTopup - $danaTrx));
+
+        $qrisTarikTunai = (float) ($savedSummary?->qris_tarik_tunai ?? 0);
+        $qrisAndroid = (float) ($savedSummary?->qris_saldo_android ?? ($qrisPembayaran + $qrisTarikTunai));
+
+        $bankmasAwal = (float) ($savedSummary?->bankmas_saldo_awal ?? 0);
+        $bankmasTopup = (float) ($savedSummary?->bankmas_topup ?? 0);
+        $bankmasTrx = (float) ($savedSummary?->bankmas_trx ?? 0);
+        $bankmasAndroid = (float) ($savedSummary?->bankmas_saldo_android ?? ($bankmasAwal + $bankmasTopup - $bankmasTrx));
+
+        $multiAwal = (float) ($savedSummary?->multi_saldo_awal ?? 0);
+        $multiTopup = (float) ($savedSummary?->multi_topup ?? 0);
+        $multiTrx = (float) ($savedSummary?->multi_trx ?? 0);
+        $multiAndroid = (float) ($savedSummary?->multi_saldo_android ?? ($multiAwal + $multiTopup - $multiTrx));
+
+        $tarikTunaiKasir = (float) ($savedSummary?->tarik_tunai_kasir ?? $qrisTarikTunai);
+
+        // Subtotal Netto = Penjualan - Tarik Tunai
+        $subtotalNetto = $totalPenjualan - $tarikTunaiKasir;
+
+        // Setoran Tunai (Physical cash in drawer) = (Penjualan Netto - QRIS - Transfer) + Tarik Tunai
+        // If tunaiPembayaran was recorded directly in POS, setoranTunai will align.
+        $setoranTunai = max(0, ($subtotalNetto - $qrisPembayaran - $transferPembayaran) + $tarikTunaiKasir);
+
+        return [
+            'summary_date' => $targetDate,
+            'is_saved' => $savedSummary !== null,
+            'saved_model' => $savedSummary,
+
+            // DANA
+            'dana_saldo_awal' => $danaAwal,
+            'dana_topup' => $danaTopup,
+            'dana_total' => $danaAwal + $danaTopup,
+            'dana_trx' => $danaTrx,
+            'dana_saldo_akhir' => $danaAwal + $danaTopup - $danaTrx,
+            'dana_saldo_android' => $danaAndroid,
+
+            // QRIS
+            'qris_pembayaran' => $qrisPembayaran,
+            'qris_tarik_tunai' => $qrisTarikTunai,
+            'qris_total' => $qrisPembayaran + $qrisTarikTunai,
+            'qris_saldo_android' => $qrisAndroid,
+            'qris_cek' => $qrisAndroid,
+
+            // BANK MAS
+            'bankmas_saldo_awal' => $bankmasAwal,
+            'bankmas_topup' => $bankmasTopup,
+            'bankmas_total' => $bankmasAwal + $bankmasTopup,
+            'bankmas_trx' => $bankmasTrx,
+            'bankmas_sisa' => $bankmasAwal + $bankmasTopup - $bankmasTrx,
+            'bankmas_saldo_android' => $bankmasAndroid,
+
+            // MULTI
+            'multi_saldo_awal' => $multiAwal,
+            'multi_topup' => $multiTopup,
+            'multi_total' => $multiAwal + $multiTopup,
+            'multi_trx' => $multiTrx,
+            'multi_sisa' => $multiAwal + $multiTopup - $multiTrx,
+            'multi_saldo_android' => $multiAndroid,
+
+            // Rekap Penjualan & Margin (Kanan)
+            'margin' => $margin,
+            'total_penjualan' => $totalPenjualan,
+            'tarik_tunai_kasir' => $tarikTunaiKasir,
+            'subtotal_netto' => $subtotalNetto,
+            'qris_pembayaran_pos' => $qrisPembayaran,
+            'tunai_pembayaran_pos' => $tunaiPembayaran,
+            'transfer_pembayaran_pos' => $transferPembayaran,
+            'setoran_tunai' => $setoranTunai,
+        ];
+    }
 }
+

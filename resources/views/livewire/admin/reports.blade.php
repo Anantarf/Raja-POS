@@ -3,28 +3,35 @@
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
         <div>
             <h1 class="text-xl sm:text-2xl font-extrabold text-[#2C3E35] tracking-tight">Laporan Toko</h1>
-            <p class="text-xs sm:text-sm text-[#718379] font-medium mt-0.5">Analisis lengkap performa penjualan, margin, kasir, stok barang, dan saldo toko.</p>
+            <p class="text-xs sm:text-sm text-[#718379] font-medium mt-0.5">Analisis lengkap performa penjualan, margin, kasir, rekonsiliasi harian, dan saldo toko.</p>
         </div>
 
         <!-- Filter Period & Print Control -->
         <div class="flex items-center gap-2 flex-wrap text-sm">
-            <select wire:model.live="period" class="h-11 px-3 py-2.5 border border-slate-200 rounded-xl bg-[#F3F6F4] text-[#2C3E35] font-bold focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] cursor-pointer">
-                <option value="all_time">Semua Waktu</option>
-                <option value="today">Hari Ini</option>
-                <option value="7_days">7 Hari Terakhir</option>
-                <option value="this_month">Bulan Ini</option>
-                <option value="custom">Kustom Tanggal</option>
-            </select>
-
-            @if($period === 'custom')
-                <div class="flex items-center gap-1">
-                    <input type="date" wire:model.live="startDate" class="h-11 px-3 py-2.5 border border-slate-200 rounded-xl text-sm font-semibold bg-[#F3F6F4]" />
-                    <span class="text-slate-400 font-bold">&rarr;</span>
-                    <input type="date" wire:model.live="endDate" class="h-11 px-3 py-2.5 border border-slate-200 rounded-xl text-sm font-semibold bg-[#F3F6F4]" />
+            @if($type === 'daily_summary')
+                <div class="flex items-center gap-2">
+                    <label class="text-xs font-bold text-[#718379] uppercase tracking-wider">Tanggal Rekap:</label>
+                    <input type="date" wire:model.live="summaryDate" class="h-11 px-3.5 py-2 border border-slate-200 rounded-xl bg-[#F3F6F4] text-[#2C3E35] font-extrabold focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] cursor-pointer text-sm" />
                 </div>
+            @else
+                <select wire:model.live="period" class="h-11 px-3 py-2.5 border border-slate-200 rounded-xl bg-[#F3F6F4] text-[#2C3E35] font-bold focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] cursor-pointer">
+                    <option value="all_time">Semua Waktu</option>
+                    <option value="today">Hari Ini</option>
+                    <option value="7_days">7 Hari Terakhir</option>
+                    <option value="this_month">Bulan Ini</option>
+                    <option value="custom">Kustom Tanggal</option>
+                </select>
+
+                @if($period === 'custom')
+                    <div class="flex items-center gap-1">
+                        <input type="date" wire:model.live="startDate" class="h-11 px-3 py-2.5 border border-slate-200 rounded-xl text-sm font-semibold bg-[#F3F6F4]" />
+                        <span class="text-slate-400 font-bold">&rarr;</span>
+                        <input type="date" wire:model.live="endDate" class="h-11 px-3 py-2.5 border border-slate-200 rounded-xl text-sm font-semibold bg-[#F3F6F4]" />
+                    </div>
+                @endif
             @endif
 
-            <button onclick="window.print()" class="h-11 px-4 py-2 bg-[#F3F6F4] hover:bg-[#E3EEE8] text-[#3F7A5D] border border-slate-200 font-extrabold rounded-xl transition flex items-center gap-1.5 cursor-pointer">
+            <button onclick="window.print()" class="h-11 px-4 py-2 bg-[#F3F6F4] hover:bg-[#E3EEE8] text-[#3F7A5D] border border-slate-200 font-extrabold rounded-xl transition flex items-center gap-1.5 cursor-pointer active-press">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
                 <span>Cetak / Export</span>
             </button>
@@ -35,6 +42,7 @@
     <div class="flex items-center gap-1.5 sm:gap-2 border-b border-slate-200/80 pb-3 text-xs sm:text-sm font-bold print:hidden overflow-x-auto no-scrollbar whitespace-nowrap">
         @foreach([
             'sales' => 'Penjualan & Produk Terlaris',
+            'daily_summary' => 'Summary Harian (Tutup Kas)',
             'cashier' => 'Performa Kasir',
             'inventory' => 'Stok & Valuasi Barang',
             'payment' => 'Metode Pembayaran',
@@ -105,8 +113,276 @@
 
     <!-- TAB CONTENT SECTIONS -->
 
+    <!-- Tab 0: Daily Summary (Summary Harian / Tutup Kas) -->
+    @if($type === 'daily_summary')
+        @php
+            $formattedDate = \Carbon\Carbon::parse($dailySummaryData['summary_date'])->locale('id')->translatedFormat('l, d F Y');
+        @endphp
+        <div class="space-y-6">
+            <!-- Header Toolbar for Daily Summary -->
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-xs">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-[#E3EEE8] text-[#3F7A5D] font-extrabold flex items-center justify-center border border-[#3F7A5D]/20 shrink-0">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h55.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h2 class="text-lg font-black text-[#2C3E35] tracking-tight uppercase">SUMMARY REPORT</h2>
+                            <span class="px-2.5 py-0.5 rounded-lg text-xs font-black uppercase bg-amber-200 text-amber-900 border border-amber-300">
+                                {{ strtoupper($formattedDate) }}
+                            </span>
+                        </div>
+                        <p class="text-xs text-[#718379] font-medium">Rekapitulasi transaksi kasir, saldo digital, margin, &amp; setoran uang fisik harian.</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2 w-full sm:w-auto">
+                    @if($dailySummaryData['is_saved'])
+                        <span class="px-3 py-1.5 rounded-xl bg-emerald-100 text-emerald-800 text-xs font-extrabold border border-emerald-200 flex items-center gap-1">
+                            <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                            Tersimpan
+                        </span>
+                    @else
+                        <span class="px-3 py-1.5 rounded-xl bg-slate-100 text-slate-600 text-xs font-bold border border-slate-200">
+                            Draft
+                        </span>
+                    @endif
+
+                    <button wire:click="saveDailySummary" wire:loading.attr="disabled" class="px-5 py-2.5 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold text-xs rounded-xl shadow-xs transition flex items-center gap-2 cursor-pointer active-press">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
+                        <span>Simpan Rekap</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Main Grid: 2 Columns (Digital E-Wallet Left, Settlement Right) -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6">
+                <!-- Left Column: E-Wallet & Bank Tables (8 cols) -->
+                <div class="lg:col-span-7 xl:col-span-8 space-y-5">
+                    
+                    <!-- 1. DANA Table -->
+                    <div class="bg-white border-2 border-slate-200/90 rounded-2xl overflow-hidden shadow-xs">
+                        <div class="bg-[#F3F6F4] px-4 py-2.5 border-b border-slate-200 flex items-center justify-between font-extrabold text-xs text-[#2C3E35]">
+                            <span class="uppercase tracking-wider">DANA</span>
+                            <span class="text-[10px] text-[#718379] font-semibold">E-Wallet Saldo</span>
+                        </div>
+                        <div class="divide-y divide-slate-100 text-xs font-medium">
+                            <div class="grid grid-cols-2 p-2.5 items-center hover:bg-slate-50">
+                                <span class="font-bold text-[#2C3E35]">SALDO AWAL</span>
+                                <input type="number" step="1" wire:model.live="danaSaldoAwal" class="w-full text-right font-mono font-extrabold px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs" />
+                            </div>
+                            <div class="grid grid-cols-2 p-2.5 items-center hover:bg-slate-50">
+                                <span class="font-bold text-[#2C3E35]">TOP UP</span>
+                                <input type="number" step="1" wire:model.live="danaTopup" class="w-full text-right font-mono font-extrabold px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs" />
+                            </div>
+                            <div class="grid grid-cols-2 p-2.5 items-center bg-slate-50 font-bold text-[#2C3E35]">
+                                <span>TOTAL</span>
+                                <span class="text-right font-mono font-black text-sm">Rp {{ number_format($dailySummaryData['dana_total'], 0, ',', '.') }}</span>
+                            </div>
+                            <div class="grid grid-cols-2 p-2.5 items-center hover:bg-slate-50">
+                                <span class="font-bold text-[#2C3E35]">TERPAKAI TRX</span>
+                                <input type="number" step="1" wire:model.live="danaTrx" class="w-full text-right font-mono font-extrabold px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs" />
+                            </div>
+                            <div class="grid grid-cols-2 p-2.5 items-center bg-amber-200 text-amber-950 font-black">
+                                <span>SALDO AKHIR</span>
+                                <span class="text-right font-mono text-sm">Rp {{ number_format($dailySummaryData['dana_saldo_akhir'], 0, ',', '.') }}</span>
+                            </div>
+                            <div class="grid grid-cols-2 p-2.5 items-center bg-amber-200 text-amber-950 font-black border-t border-amber-300">
+                                <span>SALDO ANDROID</span>
+                                <input type="number" step="1" wire:model.live="danaSaldoAndroid" class="w-full text-right font-mono font-black px-2 py-1 bg-amber-100 border border-amber-300 rounded-lg text-xs text-amber-950" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. QRIS Table -->
+                    <div class="bg-white border-2 border-slate-200/90 rounded-2xl overflow-hidden shadow-xs">
+                        <div class="bg-[#F3F6F4] px-4 py-2.5 border-b border-slate-200 flex items-center justify-between font-extrabold text-xs text-[#2C3E35]">
+                            <span class="uppercase tracking-wider">QRIS</span>
+                            <span class="text-[10px] text-[#718379] font-semibold">Payment Gateway</span>
+                        </div>
+                        <div class="divide-y divide-slate-100 text-xs font-medium">
+                            <div class="grid grid-cols-2 p-2.5 items-center hover:bg-slate-50">
+                                <span class="font-bold text-[#2C3E35]">Pembayaran (POS Auto)</span>
+                                <span class="text-right font-mono font-extrabold text-[#3F7A5D]">Rp {{ number_format($dailySummaryData['qris_pembayaran'], 0, ',', '.') }}</span>
+                            </div>
+                            <div class="grid grid-cols-2 p-2.5 items-center hover:bg-slate-50">
+                                <span class="font-bold text-[#2C3E35]">TARIK TUNAI</span>
+                                <input type="number" step="1" wire:model.live="qrisTarikTunai" class="w-full text-right font-mono font-extrabold px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs" />
+                            </div>
+                            <div class="grid grid-cols-2 p-2.5 items-center bg-slate-50 font-bold text-[#2C3E35]">
+                                <span>TOTAL</span>
+                                <span class="text-right font-mono font-black text-sm">Rp {{ number_format($dailySummaryData['qris_total'], 0, ',', '.') }}</span>
+                            </div>
+                            <div class="grid grid-cols-2 p-2.5 items-center bg-amber-200 text-amber-950 font-black">
+                                <span>SALDO ANDROID</span>
+                                <input type="number" step="1" wire:model.live="qrisSaldoAndroid" class="w-full text-right font-mono font-black px-2 py-1 bg-amber-100 border border-amber-300 rounded-lg text-xs text-amber-950" />
+                            </div>
+                            <div class="grid grid-cols-2 p-2.5 items-center bg-amber-200 text-amber-950 font-black border-t border-amber-300">
+                                <span>CEK SELISIH</span>
+                                <div class="text-right font-mono text-xs flex items-center justify-end gap-1.5">
+                                    <span>Rp {{ number_format($dailySummaryData['qris_cek'], 0, ',', '.') }}</span>
+                                    @if($dailySummaryData['qris_saldo_android'] == $dailySummaryData['qris_total'])
+                                        <span class="px-1.5 py-0.5 rounded text-[10px] bg-emerald-600 text-white font-bold">MATCH</span>
+                                    @else
+                                        <span class="px-1.5 py-0.5 rounded text-[10px] bg-rose-600 text-white font-bold">SELISIH</span>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3. BANK MAS Table -->
+                    <div class="bg-white border-2 border-slate-200/90 rounded-2xl overflow-hidden shadow-xs">
+                        <div class="bg-[#F3F6F4] px-4 py-2.5 border-b border-slate-200 flex items-center justify-between font-extrabold text-xs text-[#2C3E35]">
+                            <span class="uppercase tracking-wider">BANK MAS</span>
+                            <span class="text-[10px] text-[#718379] font-semibold">Rekening Operasional</span>
+                        </div>
+                        <div class="divide-y divide-slate-100 text-xs font-medium">
+                            <div class="grid grid-cols-2 p-2.5 items-center hover:bg-slate-50">
+                                <span class="font-bold text-[#2C3E35]">SALDO AWAL</span>
+                                <input type="number" step="1" wire:model.live="bankmasSaldoAwal" class="w-full text-right font-mono font-extrabold px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs text-rose-700" />
+                            </div>
+                            <div class="grid grid-cols-2 p-2.5 items-center hover:bg-slate-50">
+                                <span class="font-bold text-[#2C3E35]">TOP UP SALDO</span>
+                                <input type="number" step="1" wire:model.live="bankmasTopup" class="w-full text-right font-mono font-extrabold px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs" />
+                            </div>
+                            <div class="grid grid-cols-2 p-2.5 items-center bg-slate-50 font-bold text-[#2C3E35]">
+                                <span>TOTAL</span>
+                                <span class="text-right font-mono font-black text-sm">Rp {{ number_format($dailySummaryData['bankmas_total'], 0, ',', '.') }}</span>
+                            </div>
+                            <div class="grid grid-cols-2 p-2.5 items-center hover:bg-slate-50">
+                                <span class="font-bold text-[#2C3E35]">TRX</span>
+                                <input type="number" step="1" wire:model.live="bankmasTrx" class="w-full text-right font-mono font-extrabold px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs text-rose-700" />
+                            </div>
+                            <div class="grid grid-cols-2 p-2.5 items-center bg-amber-200 text-amber-950 font-black">
+                                <span>SISA SALDO</span>
+                                <span class="text-right font-mono text-sm">Rp {{ number_format($dailySummaryData['bankmas_sisa'], 0, ',', '.') }}</span>
+                            </div>
+                            <div class="grid grid-cols-2 p-2.5 items-center bg-amber-200 text-amber-950 font-black border-t border-amber-300">
+                                <span>SALDO ANDROID</span>
+                                <input type="number" step="1" wire:model.live="bankmasSaldoAndroid" class="w-full text-right font-mono font-black px-2 py-1 bg-amber-100 border border-amber-300 rounded-lg text-xs text-amber-950" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 4. MULTI Table -->
+                    <div class="bg-white border-2 border-slate-200/90 rounded-2xl overflow-hidden shadow-xs">
+                        <div class="bg-[#F3F6F4] px-4 py-2.5 border-b border-slate-200 flex items-center justify-between font-extrabold text-xs text-[#2C3E35]">
+                            <span class="uppercase tracking-wider">MULTI (PPOB / SERVER)</span>
+                            <span class="text-[10px] text-[#718379] font-semibold">Distributor Pulsa/Kuota</span>
+                        </div>
+                        <div class="divide-y divide-slate-100 text-xs font-medium">
+                            <div class="grid grid-cols-2 p-2.5 items-center hover:bg-slate-50">
+                                <span class="font-bold text-[#2C3E35]">SALDO AWAL</span>
+                                <input type="number" step="1" wire:model.live="multiSaldoAwal" class="w-full text-right font-mono font-extrabold px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs" />
+                            </div>
+                            <div class="grid grid-cols-2 p-2.5 items-center hover:bg-slate-50">
+                                <span class="font-bold text-[#2C3E35]">TOP UP SALDO</span>
+                                <input type="number" step="1" wire:model.live="multiTopup" class="w-full text-right font-mono font-extrabold px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs" />
+                            </div>
+                            <div class="grid grid-cols-2 p-2.5 items-center bg-slate-50 font-bold text-[#2C3E35]">
+                                <span>TOTAL</span>
+                                <span class="text-right font-mono font-black text-sm">Rp {{ number_format($dailySummaryData['multi_total'], 0, ',', '.') }}</span>
+                            </div>
+                            <div class="grid grid-cols-2 p-2.5 items-center hover:bg-slate-50">
+                                <span class="font-bold text-[#2C3E35]">TRX</span>
+                                <input type="number" step="1" wire:model.live="multiTrx" class="w-full text-right font-mono font-extrabold px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs" />
+                            </div>
+                            <div class="grid grid-cols-2 p-2.5 items-center bg-amber-200 text-amber-950 font-black">
+                                <span>SISA SALDO</span>
+                                <span class="text-right font-mono text-sm">Rp {{ number_format($dailySummaryData['multi_sisa'], 0, ',', '.') }}</span>
+                            </div>
+                            <div class="grid grid-cols-2 p-2.5 items-center bg-amber-200 text-amber-950 font-black border-t border-amber-300">
+                                <span>SALDO ANDROID</span>
+                                <input type="number" step="1" wire:model.live="multiSaldoAndroid" class="w-full text-right font-mono font-black px-2 py-1 bg-amber-100 border border-amber-300 rounded-lg text-xs text-amber-950" />
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Right Column: Sales, Profit, & Physical Cash Settlement (4/5 cols) -->
+                <div class="lg:col-span-5 xl:col-span-4 space-y-5">
+                    
+                    <!-- Settlement Box -->
+                    <div class="bg-white border-2 border-slate-200/90 rounded-2xl overflow-hidden shadow-sm">
+                        <div class="bg-[#2C3E35] text-white px-4 py-3 font-extrabold text-xs uppercase tracking-wider flex items-center justify-between">
+                            <span>REKAPITULASI PENJUALAN</span>
+                            <span class="text-[10px] text-emerald-400 font-mono">AUTOMATED</span>
+                        </div>
+                        <div class="divide-y divide-slate-100 text-xs">
+                            
+                            <!-- MARGIN -->
+                            <div class="flex items-center justify-between p-3 bg-slate-50">
+                                <span class="font-extrabold text-[#2C3E35]">MARGIN (PROFIT TOKO)</span>
+                                <span class="font-mono font-black text-sm text-[#3F7A5D]">Rp {{ number_format($dailySummaryData['margin'], 0, ',', '.') }}</span>
+                            </div>
+
+                            <!-- PENJUALAN (Kuning Highlight) -->
+                            <div class="flex items-center justify-between p-3 bg-amber-200 text-amber-950 font-black">
+                                <span>PENJUALAN</span>
+                                <span class="font-mono text-sm">Rp {{ number_format($dailySummaryData['total_penjualan'], 0, ',', '.') }}</span>
+                            </div>
+
+                            <!-- TARIK TUNAI -->
+                            <div class="flex items-center justify-between p-3 bg-amber-200 text-amber-950 font-black border-t border-amber-300">
+                                <span>TARIK TUNAI KASIR</span>
+                                <div class="w-36">
+                                    <input type="number" step="1" wire:model.live="tarikTunaiKasir" class="w-full text-right font-mono font-black px-2 py-1 bg-amber-100 border border-amber-300 rounded-lg text-xs text-amber-950" />
+                                </div>
+                            </div>
+
+                            <!-- SUBTOTAL MERAH -->
+                            <div class="flex items-center justify-between p-3 bg-white font-extrabold text-rose-700">
+                                <span>SUBTOTAL NETTO</span>
+                                <span class="font-mono text-sm">Rp {{ number_format($dailySummaryData['subtotal_netto'], 0, ',', '.') }}</span>
+                            </div>
+
+                            <!-- QRIS -->
+                            <div class="flex items-center justify-between p-3 bg-slate-50 font-bold text-[#2C3E35]">
+                                <span>QRIS (NONTUNAI)</span>
+                                <span class="font-mono text-sm font-extrabold text-slate-700">Rp {{ number_format($dailySummaryData['qris_pembayaran_pos'], 0, ',', '.') }}</span>
+                            </div>
+
+                            <!-- TUNAI POS -->
+                            <div class="flex items-center justify-between p-3 bg-white font-bold text-[#2C3E35]">
+                                <span>TUNAI (DITERIMA POS)</span>
+                                <span class="font-mono text-sm font-extrabold text-slate-700">Rp {{ number_format($dailySummaryData['tunai_pembayaran_pos'], 0, ',', '.') }}</span>
+                            </div>
+
+                            <!-- TRANSFER -->
+                            <div class="flex items-center justify-between p-3 bg-white font-bold text-[#2C3E35]">
+                                <span>TRANSFER BANK</span>
+                                <span class="font-mono text-sm font-extrabold text-slate-700">Rp {{ number_format($dailySummaryData['transfer_pembayaran_pos'], 0, ',', '.') }}</span>
+                            </div>
+
+                            <!-- SETORAN TUNAI FISIK (BOX HIJAU EMERALD) -->
+                            <div class="p-4 bg-emerald-600 text-white space-y-1">
+                                <div class="text-[11px] font-extrabold uppercase tracking-wider text-emerald-100 flex items-center justify-between">
+                                    <span>SETORAN TUNAI LACI KASIR</span>
+                                    <span class="px-1.5 py-0.5 rounded text-[9px] bg-emerald-800 text-emerald-200 font-bold">UANG FISIK</span>
+                                </div>
+                                <div class="text-2xl font-black font-mono tracking-tight">
+                                    Rp {{ number_format($dailySummaryData['setoran_tunai'], 0, ',', '.') }}
+                                </div>
+                                <p class="text-[10px] text-emerald-100 font-medium">Uang fisik tunai yang harus disetorkan dari laci kasir pada akhir hari.</p>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Notes Box -->
+                    <div class="bg-white border-2 border-slate-200/90 rounded-2xl p-4 space-y-2 shadow-xs">
+                        <label class="text-xs font-extrabold text-[#2C3E35] uppercase tracking-wider block">Catatan Rekap / Keterangan Shift</label>
+                        <textarea wire:model="notes" rows="3" placeholder="Masukkan catatan tambahan atau penjelas selisih kas..." class="w-full p-2.5 border border-slate-200 rounded-xl text-xs bg-[#F3F6F4] text-[#2C3E35] font-medium focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]"></textarea>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
     <!-- Tab 1: Sales, Trend, Top Products, & Categories -->
-    @if($type === 'sales')
+    @elseif($type === 'sales')
         <div class="space-y-6">
             <!-- Daily Sales Trend Chart Bar (7 Days) -->
             <div class="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-sm space-y-4">
