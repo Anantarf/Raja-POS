@@ -326,7 +326,7 @@
                         <!-- 4. MULTI Table -->
                         <div class="bg-white border-2 border-slate-200/90 rounded-2xl overflow-hidden shadow-xs">
                             <div class="bg-[#F3F6F4] px-4 py-2.5 border-b border-slate-200 flex items-center justify-between font-extrabold text-xs text-[#2C3E35]">
-                                <span class="uppercase tracking-wider">MULTI (PPOB / SERVER)</span>
+                                <span class="uppercase tracking-wider">MULTI</span>
                                 <span class="text-[10px] text-[#718379] font-semibold">Distributor Pulsa/Kuota</span>
                             </div>
                             <div class="divide-y divide-slate-100 text-xs font-medium">
@@ -543,10 +543,10 @@
                                 </div>
                             </div>
 
-                            <!-- MULTI PPOB -->
+                            <!-- MULTI -->
                             <div class="bg-[#F3F6F4]/80 p-4 rounded-2xl border border-slate-200 space-y-3">
                                 <div class="text-xs font-black text-[#2C3E35] uppercase tracking-wider border-b border-slate-200 pb-1.5 flex justify-between">
-                                    <span>MULTI (PPOB / SERVER)</span>
+                                    <span>MULTI</span>
                                     <span class="text-[#718379] font-mono text-[10px]">DISTRIBUTOR</span>
                                 </div>
                                 <div class="space-y-2 text-xs">
