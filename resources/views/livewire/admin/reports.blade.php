@@ -652,7 +652,7 @@
         <!-- MODAL DIALOG INPUT SALDO AKTUAL & REKAP HARIAN (CLEAN ENTERPRISE POS FORM) -->
         @if($showInputModal)
             <div class="fixed inset-0 bg-[#2C3E35]/60 backdrop-blur-xs z-50 flex items-center justify-center p-3 sm:p-4 overflow-hidden">
-                <div class="bg-white rounded-2xl max-w-4xl w-full p-4 sm:p-5 shadow-2xl border border-slate-200/90 flex flex-col max-h-[88vh] my-auto transition-all">
+                <div class="bg-white rounded-2xl max-w-5xl w-full p-4 sm:p-5 shadow-2xl border border-slate-200/90 flex flex-col max-h-[92dvh] sm:max-h-[88vh] my-auto transition-all">
                     
                     <!-- Modal Header (Fixed Top) -->
                     <div class="flex items-center justify-between border-b border-slate-100 pb-3 shrink-0">
@@ -703,7 +703,8 @@
                         @endif
 
                         <div class="border border-slate-200/80 rounded-2xl overflow-hidden shadow-xs bg-white">
-                            <table class="w-full text-xs text-left">
+                            <div class="overflow-x-auto">
+                                <table class="w-full min-w-[860px] text-xs text-left">
                                 <thead class="bg-[#F3F6F4] border-b border-slate-200/80 text-[#718379] uppercase text-[11px] font-extrabold tracking-wider">
                                     <tr>
                                         <th class="py-2.5 px-3.5 text-left w-[24%]">Metode Pembayaran</th>
@@ -996,7 +997,8 @@
                                         </td>
                                     </tr>
                                 </tbody>
-                            </table>
+                                </table>
+                            </div>
                         </div>
 
                         <!-- Penarikan Tunai Kasir & Catatan Rekap -->
@@ -1025,16 +1027,16 @@
 
                     <!-- Modal Footer Actions (Fixed Bottom) -->
                     <div class="flex items-center justify-between pt-3.5 border-t border-slate-100 shrink-0 mt-auto">
-                        <button type="button" wire:click="closeInputModal" class="h-9.5 px-4.5 bg-slate-100 hover:bg-slate-200 text-[#2C3E35] font-extrabold text-xs sm:text-sm rounded-xl transition cursor-pointer">
+                        <button type="button" wire:click="closeInputModal" class="h-10 px-5 inline-flex items-center justify-center bg-slate-100 hover:bg-slate-200 text-[#2C3E35] font-extrabold text-xs sm:text-sm rounded-xl transition cursor-pointer">
                             Batal
                         </button>
 
-                        <div class="flex items-center gap-2.5">
-                            <button type="button" wire:click="saveInputModal" class="h-9.5 px-4.5 bg-white border border-slate-300 hover:bg-slate-50 text-[#2C3E35] font-extrabold text-xs sm:text-sm rounded-xl shadow-xs transition cursor-pointer active:scale-95">
+                        <div class="flex items-center gap-3">
+                            <button type="button" wire:click="saveInputModal" class="h-10 px-5 inline-flex items-center justify-center bg-white border border-slate-300 hover:bg-slate-50 text-[#2C3E35] font-extrabold text-xs sm:text-sm rounded-xl shadow-xs transition cursor-pointer active:scale-95">
                                 Simpan Draf
                             </button>
 
-                            <button type="button" wire:click="validateAndLock" wire:loading.attr="disabled" class="h-9.5 px-4.5 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-xs transition cursor-pointer active:scale-95">
+                            <button type="button" wire:click="validateAndLock" wire:loading.attr="disabled" class="h-10 px-5 inline-flex items-center justify-center bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-xs transition cursor-pointer active:scale-95">
                                 Validasi &amp; Kunci
                             </button>
                         </div>
