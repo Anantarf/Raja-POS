@@ -134,6 +134,26 @@ class Reports extends Component
     }
 
     public bool $showInputModal = false;
+    public int $modalStep = 1;
+
+    public function setModalStep(int $step): void
+    {
+        $this->modalStep = max(1, min(4, $step));
+    }
+
+    public function nextModalStep(): void
+    {
+        if ($this->modalStep < 4) {
+            $this->modalStep++;
+        }
+    }
+
+    public function prevModalStep(): void
+    {
+        if ($this->modalStep > 1) {
+            $this->modalStep--;
+        }
+    }
 
     public function openInputModal(FinanceReportService $reportService): void
     {
@@ -146,6 +166,7 @@ class Reports extends Component
         }
 
         $this->loadDailySummaryForm($reportService);
+        $this->modalStep = 1;
         $this->showInputModal = true;
     }
 
