@@ -344,6 +344,7 @@
             encodeEscPos(data) {
                 const encoder = new TextEncoder();
                 const bytes = [];
+                const maxCols = (data.paperWidth === '80mm') ? 48 : 32;
 
                 const append = (str) => {
                     const arr = encoder.encode(str);
@@ -351,6 +352,41 @@
                 };
                 const raw = (...rawBytes) => {
                     for (let b of rawBytes) bytes.push(b);
+                };
+
+                const wordWrap = (str) => {
+                    if (!str) return '';
+                    const paragraphs = String(str).split('\n');
+                    const resultLines = [];
+
+                    paragraphs.forEach(para => {
+                        const words = para.split(' ');
+                        let currentLine = '';
+
+                        words.forEach(word => {
+                            if (!word) return;
+                            if ((currentLine + (currentLine ? ' ' : '') + word).length <= maxCols) {
+                                currentLine += (currentLine ? ' ' : '') + word;
+                            } else {
+                                if (currentLine) resultLines.push(currentLine);
+                                while (word.length > maxCols) {
+                                    resultLines.push(word.substring(0, maxCols));
+                                    word = word.substring(maxCols);
+                                }
+                                currentLine = word;
+                            }
+                        });
+                        if (currentLine) resultLines.push(currentLine);
+                    });
+
+                    return resultLines.join('\n');
+                };
+
+                const formatRow = (left, right) => {
+                    left = String(left || '');
+                    right = String(right || '');
+                    let spaceCount = Math.max(1, maxCols - left.length - right.length);
+                    return left + ' '.repeat(spaceCount) + right;
                 };
 
                 // Initialize printer
@@ -361,58 +397,55 @@
 
                 // Store Name (Bold + Double Height)
                 raw(0x1B, 0x45, 0x01, 0x1D, 0x21, 0x11);
-                append((data.storeName || 'RAJA AKSESORIS') + '\n');
+                append(wordWrap(data.storeName || 'RAJA AKSESORIS') + '\n');
 
                 // Reset Text Size & Bold
                 raw(0x1D, 0x21, 0x00, 0x1B, 0x45, 0x00);
 
-                if (data.tagline) append(data.tagline + '\n');
-                if (data.address) append(data.address + '\n');
-                if (data.phone) append('Telp: ' + data.phone + '\n');
+                if (data.tagline) append(wordWrap(data.tagline) + '\n');
+                if (data.address) append(wordWrap(data.address) + '\n');
+                if (data.phone) append(wordWrap('Telp: ' + data.phone) + '\n');
 
-                append('--------------------------------\n');
+                append('-'.repeat(maxCols) + '\n');
 
                 // Left align
                 raw(0x1B, 0x61, 0x00);
-                append('No  : ' + (data.invoiceNumber || '-') + '\n');
-                append('Tgl : ' + (data.date || '-') + '\n');
-                if (data.cashier) append('Kasir: ' + data.cashier + '\n');
+                append(wordWrap('No  : ' + (data.invoiceNumber || '-')) + '\n');
+                append(wordWrap('Tgl : ' + (data.date || '-')) + '\n');
+                if (data.cashier) append(wordWrap('Kasir: ' + data.cashier) + '\n');
 
-                append('--------------------------------\n');
+                append('-'.repeat(maxCols) + '\n');
 
                 if (data.items && data.items.length) {
                     data.items.forEach(item => {
-                        append((item.name || '') + '\n');
-                        let line2 = ' ' + item.qty + ' x ' + item.price;
-                        let subtotalStr = item.subtotal;
-                        let spaceCount = Math.max(1, 32 - line2.length - subtotalStr.length);
-                        append(line2 + ' '.repeat(spaceCount) + subtotalStr + '\n');
+                        append(wordWrap(item.name || '') + '\n');
+                        let lineQtyPrice = ' ' + item.qty + ' x ' + item.price;
+                        append(formatRow(lineQtyPrice, item.subtotal) + '\n');
                     });
                 }
 
-                append('--------------------------------\n');
+                append('-'.repeat(maxCols) + '\n');
 
-                // Right align for totals
-                raw(0x1B, 0x61, 0x02);
+                // Totals section (Left-Right 2-column format)
                 raw(0x1B, 0x45, 0x01); // Bold on
-                append('TOTAL: ' + (data.total || '0') + '\n');
+                append(formatRow('TOTAL', data.total || '0') + '\n');
                 raw(0x1B, 0x45, 0x00); // Bold off
 
                 if (data.payments) {
                     data.payments.forEach(p => {
-                        append(p.method + ': ' + p.amount + '\n');
+                        append(formatRow(p.method, p.amount) + '\n');
                     });
                 }
 
                 if (data.change && data.change !== 'Rp 0' && data.change !== 'Rp 0.00' && data.change !== 'Rp0') {
-                    append('KEMBALI: ' + data.change + '\n');
+                    append(formatRow('KEMBALI', data.change) + '\n');
                 }
 
-                append('--------------------------------\n');
+                append('-'.repeat(maxCols) + '\n');
 
                 // Center align for footer
                 raw(0x1B, 0x61, 0x01);
-                append((data.footer || 'Terima Kasih!') + '\n\n\n\n');
+                append(wordWrap(data.footer || 'Terima Kasih!') + '\n\n\n\n');
 
                 // Paper Feed & Cut
                 raw(0x1B, 0x64, 0x04);

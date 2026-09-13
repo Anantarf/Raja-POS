@@ -273,6 +273,7 @@
                 'tagline' => $tagline,
                 'address' => $address,
                 'phone' => $phone,
+                'paperWidth' => $paperWidth,
                 'invoiceNumber' => $receiptSale->invoice_number,
                 'date' => ($receiptSale->transaction_date ?? $receiptSale->created_at)->timezone('Asia/Jakarta')->format('d/m/Y H:i'),
                 'cashier' => $showCashier ? ($receiptSale->cashier?->name ?? $receiptSale->user?->name ?? 'Kasir') : '',

@@ -689,6 +689,7 @@
                 'tagline' => $tagline,
                 'address' => $address,
                 'phone' => $phone,
+                'paperWidth' => $paperWidth,
                 'invoiceNumber' => $completedInvoiceNumber,
                 'date' => $completedSale ? ($completedSale->transaction_date ?? $completedSale->created_at)->timezone('Asia/Jakarta')->format('d/m/Y H:i') : now('Asia/Jakarta')->format('d/m/Y H:i'),
                 'cashier' => $showCashier ? ($completedSale->cashier?->name ?? $completedSale->user?->name ?? auth()->user()->name) : '',
