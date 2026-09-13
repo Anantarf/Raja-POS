@@ -917,14 +917,14 @@
                         </svg>
                     </div>
                     <div>
-                        <h3 class="text-base font-extrabold text-[#232E28]">Konfirmasi Kembalian Tunai</h3>
-                        <p class="text-xs text-[#718379] font-medium">Pembayaran non-tunai memiliki nilai lebih (tukar cash).</p>
+                        <h3 class="text-base font-extrabold text-[#232E28]">Konfirmasi Tukar Cash / Kembalian</h3>
+                        <p class="text-xs text-[#718379] font-medium">Pembayaran non-tunai dimasukkan lebih dari total belanja.</p>
                     </div>
                 </div>
 
                 <div class="space-y-2.5 text-xs">
                     <div class="bg-amber-50/80 border border-amber-200/80 rounded-xl p-3 text-amber-900 font-medium leading-relaxed">
-                        Metode <strong class="font-extrabold">{{ $pendingNonCashMethodName }}</strong> dimasukkan lebih dari total belanja. Uang kembalian tunai akan diserahkan kasir kepada pelanggan.
+                        Pembayaran via <strong class="font-extrabold">{{ $pendingNonCashMethodName }}</strong> berlebih <strong>Rp {{ number_format($pendingNonCashChangeAmount, 0, ',', '.') }}</strong>. Serahkan uang tunai dari laci kasir?
                     </div>
 
                     <div class="bg-[#F3F6F4] p-3 rounded-xl border border-slate-200/70 space-y-2">
@@ -933,11 +933,11 @@
                             <span class="font-mono font-bold text-slate-800">Rp {{ number_format($this->grand_total, 0, ',', '.') }}</span>
                         </div>
                         <div class="flex justify-between items-center text-slate-600">
-                            <span>Total Pembayaran Diterima:</span>
+                            <span>Total Non-Tunai Diterima:</span>
                             <span class="font-mono font-bold text-slate-800">Rp {{ number_format($this->total_paid, 0, ',', '.') }}</span>
                         </div>
                         <div class="flex justify-between items-center text-sm font-extrabold text-amber-800 pt-1.5 border-t border-slate-200">
-                            <span>Kembalian Tunai Diserahkan:</span>
+                            <span>Kembalian Cash Diserahkan:</span>
                             <span class="font-mono text-base font-black">Rp {{ number_format($pendingNonCashChangeAmount, 0, ',', '.') }}</span>
                         </div>
                     </div>
@@ -947,9 +947,9 @@
                     <button
                         type="button"
                         wire:click="processCheckout(true)"
-                        class="flex-1 h-11 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold rounded-xl text-xs uppercase tracking-wider transition cursor-pointer shadow-xs active:scale-95 text-center flex items-center justify-center gap-1.5"
+                        class="flex-1 h-11 py-2.5 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-xl text-xs uppercase tracking-wider transition cursor-pointer shadow-xs active:scale-95 text-center flex items-center justify-center gap-1.5"
                     >
-                        <span>Ya, Serahkan Kembalian (Rp {{ number_format($pendingNonCashChangeAmount, 0, ',', '.') }})</span>
+                        <span>Ya, Serahkan Rp {{ number_format($pendingNonCashChangeAmount, 0, ',', '.') }} Cash</span>
                     </button>
                     <button
                         type="button"
