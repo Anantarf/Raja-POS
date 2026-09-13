@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full bg-[#121B17] font-sans antialiased selection:bg-[#3F7A5D] selection:text-white">
+<html lang="id" class="h-full bg-[#F3F6F4] font-sans antialiased selection:bg-[#3F7A5D] selection:text-white">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,8 +12,7 @@
     <style>
         body {
             font-family: 'Inter', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background-color: #121B17;
-            color: #F8FAFC;
+            background-color: #F3F6F4;
             line-height: 1.5;
         }
         ::-webkit-scrollbar {
@@ -21,20 +20,19 @@
             height: 8px;
         }
         ::-webkit-scrollbar-track {
-            background: #121B17;
+            background: transparent;
         }
         ::-webkit-scrollbar-thumb {
-            background: #232E28;
+            background: #CBD5E1;
             border-radius: 9999px;
-            border: 2px solid #121B17;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #3F7A5D;
+            background: #94A3B8;
         }
     </style>
     @livewireStyles
 </head>
-<body x-data="{ mobileMenuOpen: false }" class="h-full bg-[#121B17] flex flex-col lg:flex-row overflow-hidden text-slate-100 antialiased">
+<body x-data="{ mobileMenuOpen: false }" class="h-full bg-[#F3F6F4] flex flex-col lg:flex-row overflow-hidden text-[#2C3E35] antialiased">
 
     <!-- Mobile/Tablet Drawer Backdrop Overlay -->
     <div
@@ -46,28 +44,28 @@
         x-transition:leave-start="opacity-100"
         x-transition:leave-end="opacity-0"
         @click="mobileMenuOpen = false"
-        class="fixed inset-0 bg-black/70 backdrop-blur-xs z-40 lg:hidden"
+        class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-40 lg:hidden"
         style="display: none;"
     ></div>
 
     <!-- Responsive Sidebar Navigation (Desktop Fixed, Tablet/Mobile Slide-Over Drawer) -->
     <aside
         :class="mobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'"
-        class="fixed lg:static inset-y-0 left-0 w-64 bg-[#1C2621] border-r border-emerald-500/20 flex flex-col flex-shrink-0 z-50 transition-transform duration-300 ease-in-out h-full shadow-2xl lg:shadow-none"
+        class="fixed lg:static inset-y-0 left-0 w-64 bg-white border-r border-[#E3EEE8] flex flex-col flex-shrink-0 z-50 transition-transform duration-300 ease-in-out h-full shadow-2xl lg:shadow-none"
     >
         <!-- Sidebar Brand Header -->
-        <div class="h-16 px-4 flex items-center justify-between border-b border-emerald-500/20">
+        <div class="h-16 px-4 flex items-center justify-between border-b border-[#E3EEE8]">
             <div class="flex items-center gap-2.5">
                 <img src="{{ asset('favicon.svg') }}" alt="Raja POS" class="w-8 h-8 rounded-xl shadow-sm shrink-0">
                 <div>
-                    <div class="font-extrabold text-sm text-white tracking-tight">
+                    <div class="font-extrabold text-sm text-[#2C3E35] tracking-tight">
                         RAJA AKSESORIS
                     </div>
-                    <div class="text-[11px] text-emerald-400 font-semibold leading-tight">Retail Management System</div>
+                    <div class="text-[11px] text-[#5F7167] font-semibold leading-tight">Retail Management System</div>
                 </div>
             </div>
             <!-- Close Button for Mobile -->
-            <button @click="mobileMenuOpen = false" class="lg:hidden text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-[#232E28] transition" title="Tutup Menu">
+            <button @click="mobileMenuOpen = false" class="lg:hidden text-slate-400 hover:text-slate-600 p-1.5 rounded-lg hover:bg-slate-100 transition" title="Tutup Menu">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
@@ -78,40 +76,40 @@
         <div class="flex-1 overflow-y-auto px-3 py-4 space-y-5">
             <!-- Operasional Kasir Group -->
             <div>
-                <div class="px-2.5 text-[10px] font-extrabold text-emerald-400/80 uppercase tracking-widest mb-1.5">Operasional Kasir</div>
+                <div class="px-2.5 text-[10px] font-extrabold text-[#5F7167] uppercase tracking-widest mb-1.5">Operasional Kasir</div>
                 <nav class="space-y-0.5">
-                    <a href="/admin/dashboard" @click="mobileMenuOpen = false" class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-bold transition-all duration-200 hover:translate-x-1 {{ request()->is('admin', 'admin/dashboard') ? 'bg-[#3F7A5D] text-white shadow-lg border border-emerald-400/30' : 'text-slate-300 hover:bg-[#232E28] hover:text-white' }}">
+                    <a href="/admin/dashboard" @click="mobileMenuOpen = false" class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-bold transition-all duration-200 hover:translate-x-1 {{ request()->is('admin', 'admin/dashboard') ? 'bg-[#3F7A5D] text-white shadow-emco-primary' : 'text-[#52645B] hover:bg-[#F3F6F4] hover:text-[#2C3E35]' }}">
                         <svg class="w-4.5 h-4.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
                         </svg>
                         <span>Dashboard</span>
                     </a>
-                    <a href="/pos" class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-bold text-emerald-300 bg-emerald-950/60 hover:bg-emerald-900/80 transition-all duration-200 hover:translate-x-1 border border-emerald-500/30 active-press">
-                        <svg class="w-4.5 h-4.5 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <a href="/pos" class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 transition-all duration-200 hover:translate-x-1 border border-emerald-200/80 active-press">
+                        <svg class="w-4.5 h-4.5 text-emerald-700 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 002 2v14a2 2 0 002 2z"></path>
                         </svg>
-                        <span>Kasir POS</span>
+                        <span>Kasir</span>
                     </a>
                 </nav>
             </div>
 
             <!-- Katalog & Stok Barang Group -->
             <div>
-                <div class="px-2.5 text-[10px] font-extrabold text-emerald-400/80 uppercase tracking-widest mb-1.5">Katalog &amp; Stok Barang</div>
+                <div class="px-2.5 text-[10px] font-extrabold text-[#5F7167] uppercase tracking-widest mb-1.5">Katalog &amp; Stok Barang</div>
                 <nav class="space-y-0.5">
-                    <a href="/admin/products" @click="mobileMenuOpen = false" class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-bold transition-all duration-200 hover:translate-x-1 {{ request()->is('admin/products*') ? 'bg-[#3F7A5D] text-white shadow-lg border border-emerald-400/30' : 'text-slate-300 hover:bg-[#232E28] hover:text-white' }}">
+                    <a href="/admin/products" @click="mobileMenuOpen = false" class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-bold transition-all duration-200 hover:translate-x-1 {{ request()->is('admin/products*') ? 'bg-[#3F7A5D] text-white shadow-emco-primary' : 'text-[#52645B] hover:bg-[#F3F6F4] hover:text-[#2C3E35]' }}">
                         <svg class="w-4.5 h-4.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
                         </svg>
                         <span>Daftar Produk</span>
                     </a>
-                    <a href="/admin/inventories" @click="mobileMenuOpen = false" class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-bold transition-all duration-200 hover:translate-x-1 {{ request()->is('admin/inventories*') || request()->is('admin/stock-opname*') ? 'bg-[#3F7A5D] text-white shadow-lg border border-emerald-400/30' : 'text-slate-300 hover:bg-[#232E28] hover:text-white' }}">
+                    <a href="/admin/inventories" @click="mobileMenuOpen = false" class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-bold transition-all duration-200 hover:translate-x-1 {{ request()->is('admin/inventories*') || request()->is('admin/stock-opname*') ? 'bg-[#3F7A5D] text-white shadow-emco-primary' : 'text-[#52645B] hover:bg-[#F3F6F4] hover:text-[#2C3E35]' }}">
                         <svg class="w-4.5 h-4.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
                         </svg>
                         <span>Stok &amp; Opname</span>
                     </a>
-                    <a href="/admin/inventory-movements" @click="mobileMenuOpen = false" class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-bold transition-all duration-200 hover:translate-x-1 {{ request()->is('admin/inventory-movements*') ? 'bg-[#3F7A5D] text-white shadow-lg border border-emerald-400/30' : 'text-slate-300 hover:bg-[#232E28] hover:text-white' }}">
+                    <a href="/admin/inventory-movements" @click="mobileMenuOpen = false" class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-bold transition-all duration-200 hover:translate-x-1 {{ request()->is('admin/inventory-movements*') ? 'bg-[#3F7A5D] text-white shadow-emco-primary' : 'text-[#52645B] hover:bg-[#F3F6F4] hover:text-[#2C3E35]' }}">
                         <svg class="w-4.5 h-4.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
                         </svg>
@@ -122,22 +120,22 @@
 
             <!-- Transaksi & Saldo Group -->
             <div>
-                <div class="px-2.5 text-[10px] font-extrabold text-emerald-400/80 uppercase tracking-widest mb-1.5">Transaksi &amp; Saldo</div>
+                <div class="px-2.5 text-[10px] font-extrabold text-[#5F7167] uppercase tracking-widest mb-1.5">Transaksi &amp; Saldo</div>
                 <nav class="space-y-0.5">
-                    <a href="/admin/sales" @click="mobileMenuOpen = false" class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-bold transition-all duration-200 hover:translate-x-1 {{ request()->is('admin/sales*') ? 'bg-[#3F7A5D] text-white shadow-lg border border-emerald-400/30' : 'text-slate-300 hover:bg-[#232E28] hover:text-white' }}">
+                    <a href="/admin/sales" @click="mobileMenuOpen = false" class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-bold transition-all duration-200 hover:translate-x-1 {{ request()->is('admin/sales*') ? 'bg-[#3F7A5D] text-white shadow-emco-primary' : 'text-[#52645B] hover:bg-[#F3F6F4] hover:text-[#2C3E35]' }}">
                         <svg class="w-4.5 h-4.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
                         </svg>
                         <span>Riwayat Transaksi</span>
                     </a>
-                    <a href="/admin/balances" @click="mobileMenuOpen = false" class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-bold transition-all duration-200 hover:translate-x-1 {{ request()->is('admin/balances*') ? 'bg-[#3F7A5D] text-white shadow-lg border border-emerald-400/30' : 'text-slate-300 hover:bg-[#232E28] hover:text-white' }}">
+                    <a href="/admin/balances" @click="mobileMenuOpen = false" class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-bold transition-all duration-200 hover:translate-x-1 {{ request()->is('admin/balances*') ? 'bg-[#3F7A5D] text-white shadow-emco-primary' : 'text-[#52645B] hover:bg-[#F3F6F4] hover:text-[#2C3E35]' }}">
                         <svg class="w-4.5 h-4.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
                         <span>Monitoring Saldo</span>
                     </a>
-                    <a href="/admin/trash" @click="mobileMenuOpen = false" class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-bold text-rose-300 bg-rose-950/40 hover:bg-rose-900/60 transition-all duration-200 hover:translate-x-1 border border-rose-500/30 active-press">
-                        <svg class="w-4.5 h-4.5 text-rose-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <a href="/admin/trash" @click="mobileMenuOpen = false" class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-bold text-rose-700 bg-rose-50 hover:bg-rose-100 transition-all duration-200 hover:translate-x-1 border border-rose-200/60 active-press">
+                        <svg class="w-4.5 h-4.5 text-rose-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                         </svg>
                         <span>Transaksi Dibatalkan</span>
@@ -147,9 +145,9 @@
 
             <!-- Laporan Group -->
             <div>
-                <div class="px-2.5 text-[10px] font-extrabold text-emerald-400/80 uppercase tracking-widest mb-1.5">Laporan</div>
+                <div class="px-2.5 text-[10px] font-extrabold text-[#5F7167] uppercase tracking-widest mb-1.5">Laporan</div>
                 <nav class="space-y-0.5">
-                    <a href="/admin/reports" @click="mobileMenuOpen = false" class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-bold transition-all duration-200 hover:translate-x-1 {{ request()->is('admin/reports*') ? 'bg-[#3F7A5D] text-white shadow-lg border border-emerald-400/30' : 'text-slate-300 hover:bg-[#232E28] hover:text-white' }}">
+                    <a href="/admin/reports" @click="mobileMenuOpen = false" class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-bold transition-all duration-200 hover:translate-x-1 {{ request()->is('admin/reports*') ? 'bg-[#3F7A5D] text-white shadow-emco-primary' : 'text-[#52645B] hover:bg-[#F3F6F4] hover:text-[#2C3E35]' }}">
                         <svg class="w-4.5 h-4.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
                         </svg>
@@ -160,9 +158,9 @@
 
             <!-- Pengaturan Group -->
             <div>
-                <div class="px-2.5 text-[10px] font-extrabold text-emerald-400/80 uppercase tracking-widest mb-1.5">Administrasi</div>
+                <div class="px-2.5 text-[10px] font-extrabold text-[#5F7167] uppercase tracking-widest mb-1.5">Administrasi</div>
                 <nav class="space-y-0.5">
-                    <a href="/admin/settings" @click="mobileMenuOpen = false" class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-bold transition-all duration-200 hover:translate-x-1 {{ request()->is('admin/settings*') ? 'bg-[#3F7A5D] text-white shadow-lg border border-emerald-400/30' : 'text-slate-300 hover:bg-[#232E28] hover:text-white' }}">
+                    <a href="/admin/settings" @click="mobileMenuOpen = false" class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-bold transition-all duration-200 hover:translate-x-1 {{ request()->is('admin/settings*') ? 'bg-[#3F7A5D] text-white shadow-emco-primary' : 'text-[#52645B] hover:bg-[#F3F6F4] hover:text-[#2C3E35]' }}">
                         <svg class="w-4.5 h-4.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -174,20 +172,20 @@
         </div>
 
         <!-- User Profile Footer -->
-        <div class="p-3 border-t border-emerald-500/20 bg-[#121B17]/60">
+        <div class="p-3 border-t border-[#E3EEE8] bg-[#F3F6F4]/50">
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-2.5 min-w-0">
-                    <div class="w-8 h-8 rounded-xl bg-[#3F7A5D] text-white font-mono font-extrabold text-sm flex items-center justify-center border border-emerald-400/30 shrink-0">
+                    <div class="w-8 h-8 rounded-xl bg-[#E3EEE8] text-[#3F7A5D] font-mono font-extrabold text-sm flex items-center justify-center border border-[#3F7A5D]/20 shrink-0">
                         {{ strtoupper(substr(auth()->user()->name ?? 'U', 0, 1)) }}
                     </div>
                     <div class="overflow-hidden min-w-0">
-                        <div class="font-extrabold text-sm text-white truncate">{{ auth()->user()->name ?? 'User' }}</div>
-                        <div class="text-[10px] text-emerald-400 font-bold uppercase tracking-wide truncate">{{ auth()->user()->role->name ?? 'OWNER' }}</div>
+                        <div class="font-extrabold text-sm text-[#2C3E35] truncate">{{ auth()->user()->name ?? 'User' }}</div>
+                        <div class="text-[10px] text-[#5F7167] font-bold uppercase tracking-wide truncate">{{ auth()->user()->role->name ?? 'OWNER' }}</div>
                     </div>
                 </div>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <button type="submit" title="Logout" class="p-2 text-slate-400 hover:text-rose-400 hover:bg-rose-950/50 rounded-xl transition active-press">
+                    <button type="submit" title="Logout" class="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition active-press">
                         <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
                         </svg>
@@ -200,16 +198,16 @@
     <!-- Main Application Wrapper -->
     <div class="flex-1 flex flex-col min-w-0 h-full overflow-hidden">
         <!-- Top Navbar -->
-        <header class="h-14 sm:h-16 bg-[#1C2621] border-b border-emerald-500/20 px-3.5 sm:px-6 flex items-center justify-between shrink-0">
+        <header class="h-14 sm:h-16 bg-white border-b border-[#E3EEE8] px-3.5 sm:px-6 flex items-center justify-between shrink-0">
             <div class="flex items-center gap-2.5 sm:gap-3 min-w-0">
-                <button @click="mobileMenuOpen = !mobileMenuOpen" class="lg:hidden p-2 text-slate-300 hover:text-white rounded-xl bg-[#232E28] hover:bg-[#2C3E35] shrink-0 active-press transition" title="Buka Menu">
+                <button @click="mobileMenuOpen = !mobileMenuOpen" class="lg:hidden p-2 text-slate-600 hover:text-slate-900 rounded-xl bg-slate-100 hover:bg-slate-200 shrink-0 active-press transition" title="Buka Menu">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                     </svg>
                 </button>
                 <div class="min-w-0">
-                    <h2 class="font-extrabold text-sm sm:text-base text-white tracking-tight truncate max-w-[150px] sm:max-w-none">{{ $title ?? 'Admin Portal' }}</h2>
-                    <p class="text-[11px] text-emerald-400 font-semibold hidden sm:block">RAJA AKSESORIS BANGO</p>
+                    <h2 class="font-extrabold text-sm sm:text-base text-[#2C3E35] tracking-tight truncate max-w-[150px] sm:max-w-none">{{ $title ?? 'Admin Portal' }}</h2>
+                    <p class="text-[11px] text-[#5F7167] font-semibold hidden sm:block">RAJA AKSESORIS BANGO</p>
                 </div>
             </div>
 
@@ -218,7 +216,7 @@
                     <svg class="w-4 h-4 sm:w-4.5 sm:h-4.5 text-white shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 002 2v14a2 2 0 002 2z"></path>
                     </svg>
-                    <span>Kasir POS</span>
+                    <span>Kasir</span>
                 </a>
             </div>
         </header>
