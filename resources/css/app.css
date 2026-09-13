@@ -77,11 +77,11 @@
         -webkit-backdrop-filter: blur(12px);
     }
     .btn-glow {
-        box-shadow: 0 4px 14px 0 rgba(63, 122, 93, 0.3);
+        box-shadow: 0 4px 14px 0 rgba(4, 120, 87, 0.35);
         transition: all 0.2s ease-in-out;
     }
     .btn-glow:hover {
-        box-shadow: 0 6px 20px 0 rgba(63, 122, 93, 0.42);
+        box-shadow: 0 6px 20px 0 rgba(4, 120, 87, 0.45);
         transform: translateY(-1px);
     }
     .active-press:active {

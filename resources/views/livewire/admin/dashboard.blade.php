@@ -6,7 +6,7 @@
                 Selamat Datang, {{ auth()->user()->name }}!
             </h1>
             <div class="pt-1">
-                <a href="/pos" class="h-10 px-4 text-xs sm:text-sm bg-[#047857] hover:bg-[#065F46] text-white font-extrabold rounded-xl inline-flex items-center gap-2 transition shadow-sm active:scale-95">
+                <a href="/pos" class="h-10 px-4 text-xs sm:text-sm bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold rounded-xl inline-flex items-center gap-2 transition shadow-sm active:scale-95">
                     <span>Buka Layar Kasir</span> &rarr;
                 </a>
             </div>
@@ -164,7 +164,7 @@
                                     #{{ $index + 1 }}
                                 </span>
                                 <div class="truncate">
-                                    <div class="font-bold text-[#2C3E35] truncate">{{ ucwords(strtolower(data_get($item, 'product_name', ''))) }}</div>
+                                    <div class="font-bold text-[#2C3E35] truncate">{{ strtoupper(data_get($item, 'product_name', '')) }}</div>
                                     <div class="text-[10px] text-[#718379] font-mono">{{ data_get($item, 'code', '-') }}</div>
                                 </div>
                             </div>
