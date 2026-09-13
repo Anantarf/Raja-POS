@@ -14,8 +14,8 @@
             color: #000;
             background: #fff;
             margin: 0 auto;
-            padding: 2px 4px;
-            width: {{ ($paperWidth ?? '58mm') === '80mm' ? '72mm' : '48mm' }};
+            padding: 2px 2px;
+            width: {{ ($paperWidth ?? '58mm') === '80mm' ? '72mm' : '54mm' }};
             box-sizing: border-box;
             word-wrap: break-word;
             overflow-wrap: break-word;
@@ -26,21 +26,21 @@
         .bold { font-weight: bold; }
         .divider {
             border-top: 1px dashed #000;
-            margin: 8px 0;
+            margin: 6px 0;
         }
         .header {
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
         .header h2 {
-            margin: 0 0 5px 0;
+            margin: 0 0 3px 0;
             font-size: {{ ($paperWidth ?? '58mm') === '80mm' ? '18px' : '15px' }};
             text-transform: uppercase;
-            line-height: 1.3;
+            line-height: 1.2;
         }
         .header .subtitle {
             font-size: 11px;
-            margin-top: 5px;
-            line-height: 1.35;
+            margin-top: 3px;
+            line-height: 1.25;
         }
         .header .address {
             font-size: 10px;
@@ -48,28 +48,39 @@
         }
         .meta {
             font-size: 11px;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
         .table-items {
             width: 100%;
             border-collapse: collapse;
         }
         .table-items td {
-            padding: 2px 0;
+            padding: 1px 0;
             vertical-align: top;
         }
         .totals-table {
             width: 100%;
-            margin-top: 5px;
+            margin-top: 3px;
         }
         .totals-table td {
-            padding: 2px 0;
+            padding: 1px 0;
+            vertical-align: top;
+        }
+        .totals-table .label {
+            width: 48%;
+            line-height: 1.15;
+            word-break: normal;
+            overflow-wrap: anywhere;
+        }
+        .totals-table .amount {
+            width: 52%;
+            white-space: nowrap;
         }
         .footer {
-            margin-top: 12px;
+            margin-top: 8px;
             font-size: 11px;
             white-space: pre-line;
-            line-height: 1.3;
+            line-height: 1.2;
         }
         @media print {
             body { padding: 0; }
@@ -128,8 +139,8 @@
         </tr>
         @foreach($sale->payments as $payment)
             <tr>
-                <td class="text-left" style="max-width: 60%; word-break: break-word;">BAYAR ({{ $payment->paymentMethod->name ?? 'Metode' }})</td>
-                <td class="text-right" style="vertical-align: top; white-space: nowrap;">Rp{{ number_format($payment->amount, 0, ',', '.') }}</td>
+                <td class="text-left label">{{ $payment->paymentMethod->name ?? 'BAYAR' }}</td>
+                <td class="text-right amount">Rp{{ number_format($payment->amount, 0, ',', '.') }}</td>
             </tr>
         @endforeach
         @if(($sale->change_amount ?? 0) > 0)
