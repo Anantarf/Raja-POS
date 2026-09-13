@@ -300,7 +300,6 @@
                                 <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xs flex flex-col justify-between">
                                     <div class="bg-[#F3F6F4] px-3.5 py-2 border-b border-slate-200 flex items-center justify-between font-extrabold text-xs text-[#2C3E35]">
                                         <span class="uppercase tracking-wider">DANA</span>
-                                        <span class="text-[10px] text-[#718379] font-semibold">E-Wallet / Digital</span>
                                     </div>
                                     <div class="divide-y divide-slate-100 text-xs font-medium flex-1">
                                         <div class="grid grid-cols-2 px-3 py-2 items-center hover:bg-slate-50">
@@ -347,7 +346,6 @@
                                 <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xs flex flex-col justify-between">
                                     <div class="bg-[#F3F6F4] px-3.5 py-2 border-b border-slate-200 flex items-center justify-between font-extrabold text-xs text-[#2C3E35]">
                                         <span class="uppercase tracking-wider">QRIS</span>
-                                        <span class="text-[10px] text-[#718379] font-semibold">Gateway Pembayaran</span>
                                     </div>
                                     <div class="divide-y divide-slate-100 text-xs font-medium flex-1">
                                         <div class="grid grid-cols-2 px-3 py-2 items-center hover:bg-slate-50">
@@ -386,7 +384,6 @@
                                 <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xs flex flex-col justify-between">
                                     <div class="bg-[#F3F6F4] px-3.5 py-2 border-b border-slate-200 flex items-center justify-between font-extrabold text-xs text-[#2C3E35]">
                                         <span class="uppercase tracking-wider">BANK BCA</span>
-                                        <span class="text-[10px] text-[#718379] font-semibold">Rekening Utama</span>
                                     </div>
                                     <div class="divide-y divide-slate-100 text-xs font-medium flex-1">
                                         <div class="grid grid-cols-2 px-3 py-2 items-center hover:bg-slate-50">
@@ -433,7 +430,6 @@
                                 <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xs flex flex-col justify-between">
                                     <div class="bg-[#F3F6F4] px-3.5 py-2 border-b border-slate-200 flex items-center justify-between font-extrabold text-xs text-[#2C3E35]">
                                         <span class="uppercase tracking-wider">BANK MAS</span>
-                                        <span class="text-[10px] text-[#718379] font-semibold">Rekening Operasional</span>
                                     </div>
                                     <div class="divide-y divide-slate-100 text-xs font-medium flex-1">
                                         <div class="grid grid-cols-2 px-3 py-2 items-center hover:bg-slate-50">
@@ -480,7 +476,6 @@
                                 <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xs flex flex-col justify-between">
                                     <div class="bg-[#F3F6F4] px-3.5 py-2 border-b border-slate-200 flex items-center justify-between font-extrabold text-xs text-[#2C3E35]">
                                         <span class="uppercase tracking-wider">MULTI</span>
-                                        <span class="text-[10px] text-[#718379] font-semibold">Distributor Pulsa &amp; PPOB</span>
                                     </div>
                                     <div class="divide-y divide-slate-100 text-xs font-medium flex-1">
                                         <div class="grid grid-cols-2 px-3 py-2 items-center hover:bg-slate-50">
@@ -527,7 +522,6 @@
                                 <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xs flex flex-col justify-between">
                                     <div class="bg-[#F3F6F4] px-3.5 py-2 border-b border-slate-200 flex items-center justify-between font-extrabold text-xs text-[#2C3E35]">
                                         <span class="uppercase tracking-wider">WAHANA</span>
-                                        <span class="text-[10px] text-[#718379] font-semibold">Ekspedisi &amp; Keagenan</span>
                                     </div>
                                     <div class="divide-y divide-slate-100 text-xs font-medium flex-1">
                                         <div class="grid grid-cols-2 px-3 py-2 items-center hover:bg-slate-50">
@@ -727,7 +721,6 @@
                                                 <span class="w-2 h-2 rounded-full bg-sky-500 shrink-0"></span>
                                                 <span>DANA</span>
                                             </div>
-                                            <div class="text-[11px] text-[#718379] font-medium">E-Wallet</div>
                                         </td>
                                         <td class="py-2.5 px-3 text-right">
                                             <div class="font-mono font-extrabold text-[#2C3E35] text-xs sm:text-sm">Rp {{ number_format($mDanaAkhir, 0, ',', '.') }}</div>
@@ -776,7 +769,6 @@
                                                 <span class="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>
                                                 <span>QRIS</span>
                                             </div>
-                                            <div class="text-[11px] text-[#718379] font-medium">Gateway &amp; EDC</div>
                                         </td>
                                         <td class="py-2.5 px-3 text-right">
                                             <div class="font-mono font-extrabold text-[#2C3E35] text-xs sm:text-sm">Rp {{ number_format($mQrisExpected, 0, ',', '.') }}</div>
@@ -819,7 +811,6 @@
                                                 <span class="w-2 h-2 rounded-full bg-blue-600 shrink-0"></span>
                                                 <span>BCA</span>
                                             </div>
-                                            <div class="text-[11px] text-[#718379] font-medium">M-Banking Utama</div>
                                         </td>
                                         <td class="py-2.5 px-3 text-right">
                                             <div class="font-mono font-extrabold text-[#2C3E35] text-xs sm:text-sm">Rp {{ number_format($mBcaAkhir, 0, ',', '.') }}</div>
@@ -868,7 +859,6 @@
                                                 <span class="w-2 h-2 rounded-full bg-indigo-600 shrink-0"></span>
                                                 <span>Bank MAS</span>
                                             </div>
-                                            <div class="text-[11px] text-[#718379] font-medium">M-Banking Ops</div>
                                         </td>
                                         <td class="py-2.5 px-3 text-right">
                                             <div class="font-mono font-extrabold text-[#2C3E35] text-xs sm:text-sm">Rp {{ number_format($mBankmasAkhir, 0, ',', '.') }}</div>
@@ -917,7 +907,6 @@
                                                 <span class="w-2 h-2 rounded-full bg-purple-600 shrink-0"></span>
                                                 <span>Multi</span>
                                             </div>
-                                            <div class="text-[11px] text-[#718379] font-medium">PPOB Multi</div>
                                         </td>
                                         <td class="py-2.5 px-3 text-right">
                                             <div class="font-mono font-extrabold text-[#2C3E35] text-xs sm:text-sm">Rp {{ number_format($mMultiAkhir, 0, ',', '.') }}</div>
@@ -966,7 +955,6 @@
                                                 <span class="w-2 h-2 rounded-full bg-amber-600 shrink-0"></span>
                                                 <span>Wahana</span>
                                             </div>
-                                            <div class="text-[11px] text-[#718379] font-medium">Wahana Express</div>
                                         </td>
                                         <td class="py-2.5 px-3 text-right">
                                             <div class="font-mono font-extrabold text-[#2C3E35] text-xs sm:text-sm">Rp {{ number_format($mWahanaAkhir, 0, ',', '.') }}</div>
