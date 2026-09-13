@@ -784,7 +784,7 @@
 
                                         <div class="p-3 bg-amber-50/90 border border-amber-300 rounded-xl space-y-1.5">
                                             <div class="flex items-center justify-between">
-                                                <label class="block font-black text-amber-950 text-xs">Saldo Aktual di HP (Android)</label>
+                                                <label class="block font-black text-amber-950 text-xs">Saldo Aktual di HP</label>
                                                 <span class="text-[9px] font-extrabold text-amber-800 bg-amber-200/80 px-1.5 py-0.5 rounded uppercase">Utama</span>
                                             </div>
                                             <div class="relative flex items-center">
