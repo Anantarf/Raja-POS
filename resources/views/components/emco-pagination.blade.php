@@ -1,8 +1,8 @@
 @if ($paginator->hasPages())
     <nav role="navigation" aria-label="Pagination Navigation" class="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs sm:text-sm w-full">
         <!-- Results Summary Text -->
-        <div class="text-slate-500 font-medium text-xs sm:text-sm text-center sm:text-left">
-            Menampilkan <span class="font-bold text-slate-900 font-mono">{{ $paginator->firstItem() ?? 0 }}</span> &ndash; <span class="font-bold text-slate-900 font-mono">{{ $paginator->lastItem() ?? 0 }}</span> dari <span class="font-bold text-emerald-700 font-mono">{{ number_format($paginator->total(), 0, ',', '.') }}</span> item
+        <div class="text-[#718379] font-medium text-xs sm:text-sm text-center sm:text-left">
+            Menampilkan <span class="font-bold text-[#232E28] font-mono">{{ $paginator->firstItem() ?? 0 }}</span> &ndash; <span class="font-bold text-[#232E28] font-mono">{{ $paginator->lastItem() ?? 0 }}</span> dari <span class="font-bold text-[#3F7A5D] font-mono">{{ number_format($paginator->total(), 0, ',', '.') }}</span> item
         </div>
 
         <!-- Pagination Controls -->
@@ -13,7 +13,7 @@
                     &lsaquo;
                 </span>
             @else
-                <button type="button" wire:click="previousPage('{{ $paginator->getPageName() }}')" wire:loading.attr="disabled" class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl border border-slate-200 bg-white text-slate-800 hover:bg-slate-50 hover:border-emerald-600/40 flex items-center justify-center transition cursor-pointer active:scale-95 shadow-2xs text-xs sm:text-sm shrink-0">
+                <button type="button" wire:click="previousPage('{{ $paginator->getPageName() }}')" wire:loading.attr="disabled" class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl border border-slate-200/80 bg-white text-[#232E28] hover:bg-[#F3F6F4] hover:border-[#3F7A5D]/40 flex items-center justify-center transition cursor-pointer active:scale-95 shadow-xs text-xs sm:text-sm shrink-0">
                     &lsaquo;
                 </button>
             @endif
@@ -29,11 +29,11 @@
                 @if (is_array($element))
                     @foreach ($element as $page => $url)
                         @if ($page == $paginator->currentPage())
-                            <span class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-emerald-700 text-white flex items-center justify-center shadow-2xs font-black text-xs sm:text-sm shrink-0">
+                            <span class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-[#3F7A5D] text-white flex items-center justify-center shadow-xs font-black text-xs sm:text-sm shrink-0">
                                 {{ $page }}
                             </span>
                         @else
-                            <button type="button" wire:click="gotoPage({{ $page }}, '{{ $paginator->getPageName() }}')" class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl border border-slate-200 bg-white text-slate-800 hover:bg-slate-50 hover:border-emerald-600/40 flex items-center justify-center transition cursor-pointer active:scale-95 text-xs sm:text-sm shrink-0">
+                            <button type="button" wire:click="gotoPage({{ $page }}, '{{ $paginator->getPageName() }}')" class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl border border-slate-200/80 bg-white text-[#232E28] hover:bg-[#F3F6F4] hover:border-[#3F7A5D]/40 flex items-center justify-center transition cursor-pointer active:scale-95 text-xs sm:text-sm shrink-0">
                                 {{ $page }}
                             </button>
                         @endif
@@ -43,7 +43,7 @@
 
             {{-- Next Page Link --}}
             @if ($paginator->hasMorePages())
-                <button type="button" wire:click="nextPage('{{ $paginator->getPageName() }}')" wire:loading.attr="disabled" class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl border border-slate-200 bg-white text-slate-800 hover:bg-slate-50 hover:border-emerald-600/40 flex items-center justify-center transition cursor-pointer active:scale-95 shadow-2xs text-xs sm:text-sm shrink-0">
+                <button type="button" wire:click="nextPage('{{ $paginator->getPageName() }}')" wire:loading.attr="disabled" class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl border border-slate-200/80 bg-white text-[#232E28] hover:bg-[#F3F6F4] hover:border-[#3F7A5D]/40 flex items-center justify-center transition cursor-pointer active:scale-95 shadow-xs text-xs sm:text-sm shrink-0">
                     &rsaquo;
                 </button>
             @else

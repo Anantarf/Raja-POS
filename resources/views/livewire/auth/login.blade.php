@@ -1,23 +1,23 @@
-<div x-data="{ showPassword: false }" class="w-full max-w-md bg-white/90 backdrop-blur-md rounded-3xl p-8 border border-slate-200/90 shadow-2xl space-y-6">
+<div x-data="{ showPassword: false }" class="w-full max-w-md bg-white/90 backdrop-blur-md rounded-3xl p-8 border border-[#E3EEE8] shadow-2xl space-y-6">
     <!-- Brand Header -->
     <div class="text-center space-y-3">
         <img src="{{ asset('favicon.svg') }}" alt="Raja POS" class="w-14 h-14 mx-auto rounded-2xl shadow-md shrink-0">
         <div>
-            <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">RAJA AKSESORIS</h1>
-            <p class="text-xs text-slate-500 font-bold mt-1 uppercase tracking-wider">Retail Management System</p>
+            <h1 class="text-2xl font-extrabold text-[#232E28] tracking-tight">RAJA AKSESORIS</h1>
+            <p class="text-xs text-[#718379] font-bold mt-1 uppercase tracking-wider">Retail Management System</p>
         </div>
     </div>
 
     <!-- Login Form -->
     <form wire:submit.prevent="login" class="space-y-4 text-xs font-semibold">
         <div>
-            <label class="block text-slate-900 font-bold mb-1.5">Username</label>
+            <label class="block text-[#232E28] font-bold mb-1.5">Username</label>
             <input
                 type="text"
                 wire:model="username"
                 autocomplete="username"
                 placeholder="Masukkan username kasir/admin..."
-                class="w-full p-3.5 border border-slate-200 rounded-2xl bg-slate-50 text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 focus:bg-white transition"
+                class="w-full p-3.5 border border-slate-200 rounded-2xl bg-[#F3F6F4] text-xs font-bold text-[#232E28] focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] focus:bg-white transition"
                 required
                 autofocus
             />
@@ -27,21 +27,21 @@
         </div>
 
         <div>
-            <label class="block text-slate-900 font-bold mb-1.5">Password</label>
+            <label class="block text-[#232E28] font-bold mb-1.5">Password</label>
             <div class="relative w-full flex items-center">
                 <input
                     :type="showPassword ? 'text' : 'password'"
                     wire:model="password"
                     autocomplete="current-password"
                     placeholder="Masukkan password..."
-                    class="w-full p-3.5 pr-12 border border-slate-200 rounded-2xl bg-slate-50 text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 focus:bg-white transition"
+                    class="w-full p-3.5 pr-12 border border-slate-200 rounded-2xl bg-[#F3F6F4] text-xs font-bold text-[#232E28] focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] focus:bg-white transition"
                     required
                 />
                 <button
                     type="button"
                     @click="showPassword = !showPassword"
                     tabindex="-1"
-                    class="absolute right-3 text-slate-400 hover:text-emerald-700 transition p-1.5 cursor-pointer focus:outline-none flex items-center justify-center rounded-lg z-10"
+                    class="absolute right-3 text-slate-400 hover:text-[#3F7A5D] transition p-1.5 cursor-pointer focus:outline-none flex items-center justify-center rounded-lg z-10"
                     :title="showPassword ? 'Sembunyikan password' : 'Tampilkan password'"
                 >
                     <!-- Eye Open Icon -->
@@ -62,8 +62,8 @@
 
         <div class="flex items-center justify-between text-xs pt-1">
             <label class="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" wire:model="remember" class="w-4 h-4 text-emerald-700 rounded border-slate-300 focus:ring-emerald-500">
-                <span class="text-slate-500 font-medium">Ingat Saya</span>
+                <input type="checkbox" wire:model="remember" class="w-4 h-4 text-[#3F7A5D] rounded border-slate-300 focus:ring-[#3F7A5D]">
+                <span class="text-[#718379] font-medium">Ingat Saya</span>
             </label>
         </div>
 
@@ -80,7 +80,7 @@
             type="submit"
             wire:loading.attr="disabled"
             wire:loading.class="opacity-75 cursor-not-allowed"
-            class="w-full py-4 bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold rounded-2xl text-xs uppercase tracking-wider transition active:scale-95 shadow-md mt-2 cursor-pointer flex items-center justify-center gap-2"
+            class="w-full py-4 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-2xl text-xs uppercase tracking-wider transition active:scale-95 shadow-md mt-2 cursor-pointer flex items-center justify-center gap-2"
         >
             <svg wire:loading class="animate-spin w-4 h-4 text-white shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

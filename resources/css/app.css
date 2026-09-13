@@ -47,10 +47,6 @@
         font-size: 1rem;
         line-height: 1.5;
     }
-
-    *, ::before, ::after {
-        border-color: #e2e8f0;
-    }
 }
 
 @layer utilities {
