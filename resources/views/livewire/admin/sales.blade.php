@@ -8,21 +8,25 @@
     </div>
 
     <!-- Search & Filter Toolbar -->
-    <div class="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200/90 shadow-2xs grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3 text-xs sm:text-sm">
+    <div class="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200/60 shadow-xs grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3 text-xs sm:text-sm">
         <div class="relative w-full">
             <input
                 type="text"
                 wire:model.live.debounce.300ms="search"
+                data-shortcut-search
                 placeholder="Cari No. TRX / Kasir..."
-                class="w-full h-10 sm:h-11 pl-9 pr-3 py-2 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 bg-white text-slate-800 placeholder:text-slate-400 shadow-2xs"
+                class="w-full h-10 sm:h-11 pl-9 pr-10 py-2 border border-slate-200/80 rounded-xl text-xs sm:text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 bg-slate-50/70 text-slate-800 placeholder:text-slate-400 transition"
             />
             <svg class="w-4 h-4 text-slate-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
             </svg>
+            <div class="absolute right-3 top-3 hidden sm:flex items-center gap-0.5">
+                <kbd class="px-1.5 py-0.5 text-[10px] font-mono font-bold text-slate-400 bg-white border border-slate-200 rounded shadow-2xs">⌘K</kbd>
+            </div>
         </div>
 
         <div>
-            <select wire:model.live="paymentMethodId" class="w-full h-10 sm:h-11 py-2 px-3 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold bg-white text-slate-800 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 cursor-pointer shadow-2xs">
+            <select wire:model.live="paymentMethodId" class="w-full h-10 sm:h-11 py-2 px-3 border border-slate-200/80 rounded-xl text-xs sm:text-sm font-semibold bg-slate-50/70 text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 cursor-pointer transition">
                 <option value="">Semua Metode Pembayaran</option>
                 @foreach($paymentMethods as $pm)
                     @php
@@ -43,7 +47,7 @@
             <input
                 type="date"
                 wire:model.live="startDate"
-                class="w-full h-10 sm:h-11 py-2 px-3 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold bg-white text-slate-800 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 shadow-2xs"
+                class="w-full h-10 sm:h-11 py-2 px-3 border border-slate-200/80 rounded-xl text-xs sm:text-sm font-semibold bg-slate-50/70 text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition"
                 placeholder="Dari Tanggal"
             />
         </div>
@@ -52,17 +56,17 @@
             <input
                 type="date"
                 wire:model.live="endDate"
-                class="w-full h-10 sm:h-11 py-2 px-3 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold bg-white text-slate-800 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 shadow-2xs"
+                class="w-full h-10 sm:h-11 py-2 px-3 border border-slate-200/80 rounded-xl text-xs sm:text-sm font-semibold bg-slate-50/70 text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition"
                 placeholder="Sampai Tanggal"
             />
         </div>
     </div>
 
-    <!-- Sales Table -->
-    <div class="bg-white border border-slate-200/90 rounded-2xl shadow-2xs overflow-hidden">
+    <!-- Sales Table Container -->
+    <div class="bg-white border border-slate-200/60 rounded-2xl shadow-xs overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-sm text-left">
-                <thead class="bg-slate-50 border-b border-slate-200/80 text-slate-500 uppercase text-xs font-black tracking-wider whitespace-nowrap">
+                <thead class="bg-slate-50/80 border-b border-slate-200/60 text-slate-500 uppercase text-xs font-extrabold tracking-wider whitespace-nowrap">
                     <tr>
                         <th wire:click="sortBy('invoice_number')" class="py-3.5 px-4 cursor-pointer hover:text-emerald-700 transition select-none">
                             <div class="flex items-center gap-1">
@@ -99,45 +103,49 @@
                         <th class="py-3.5 px-4 text-center">Aksi</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-100 font-medium">
+                <!-- Loading Skeleton State -->
+                <x-table-skeleton :cols="6" :rows="5" wire:loading.delay />
+
+                <!-- Data Table Body -->
+                <tbody wire:loading.remove.delay class="divide-y divide-slate-100 font-medium">
                     @forelse($sales as $sale)
                         <tr class="hover:bg-slate-50/80 transition">
                             <td class="py-3.5 px-4 whitespace-nowrap">
-                                <div class="font-bold text-emerald-700 font-mono text-xs bg-emerald-50 border border-emerald-200/80 px-2.5 py-0.5 rounded-md inline-block">{{ $sale->invoice_number }}</div>
+                                <div class="font-bold text-emerald-700 font-mono text-xs bg-emerald-50 px-2.5 py-1 rounded-lg inline-block">{{ $sale->invoice_number }}</div>
                                 <div class="text-xs text-slate-500 mt-1 font-semibold whitespace-nowrap">{{ $sale->created_at->timezone('Asia/Jakarta')->format('d M Y, H:i') }}</div>
                             </td>
                             <td class="py-3.5 px-4 text-slate-800 whitespace-nowrap">
-                                <div class="font-bold text-slate-800">{{ $sale->user?->name ?? 'Kasir' }}</div>
-                                <div class="text-xs text-slate-500 font-semibold">{{ $sale->location?->name ?? 'Toko' }}</div>
+                                <div class="font-bold text-slate-900 text-sm">{{ $sale->user?->name ?? 'Kasir' }}</div>
+                                <div class="text-xs text-slate-500 font-medium">{{ $sale->location?->name ?? 'Toko' }}</div>
                             </td>
                             <td class="py-3.5 px-4 whitespace-nowrap">
                                 <div class="flex flex-wrap gap-1">
                                     @foreach($sale->payments as $p)
-                                        <span class="px-2.5 py-0.5 rounded-md text-[11px] font-mono font-bold bg-slate-100 text-slate-800 border border-slate-200 inline-block whitespace-nowrap">
+                                        <span class="px-2.5 py-1 rounded-lg text-xs font-mono font-semibold bg-slate-100 text-slate-700 inline-block whitespace-nowrap">
                                             {{ $p->paymentMethod?->name }}: Rp {{ number_format($p->amount, 0, ',', '.') }}
                                         </span>
                                     @endforeach
                                 </div>
                             </td>
-                            <td class="py-3.5 px-4 text-right font-mono font-black text-slate-900 text-sm whitespace-nowrap">
+                            <td class="py-3.5 px-4 text-right font-mono font-extrabold text-slate-900 text-sm whitespace-nowrap">
                                 Rp {{ number_format($sale->grand_total, 0, ',', '.') }}
                             </td>
                             <td class="py-3.5 px-4 text-center whitespace-nowrap">
-                                <span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold uppercase tracking-wider whitespace-nowrap inline-block {{ $sale->status === 'COMPLETED' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200/80' : 'bg-amber-50 text-amber-800 border border-amber-200/80' }}">
+                                <span class="px-2.5 py-1 rounded-lg text-xs font-extrabold uppercase tracking-wider whitespace-nowrap inline-block {{ $sale->status === 'COMPLETED' ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-800' }}">
                                     {{ $sale->status === 'COMPLETED' ? 'LUNAS' : $sale->status }}
                                 </span>
                             </td>
                             <td class="py-3.5 px-4 text-center whitespace-nowrap">
                                 <div class="flex items-center justify-center gap-1.5 whitespace-nowrap">
-                                    <button wire:click="openDetailModal({{ $sale->id }})" class="px-3 py-1.5 bg-slate-100 hover:bg-emerald-50 text-slate-800 hover:text-emerald-700 border border-slate-200/80 rounded-xl text-xs font-extrabold transition cursor-pointer shadow-2xs">
+                                    <button wire:click="openDetailModal({{ $sale->id }})" class="px-3 py-1.5 bg-slate-100 hover:bg-emerald-50 hover:text-emerald-700 text-slate-700 rounded-xl text-xs font-bold transition cursor-pointer">
                                         Detail Transaksi
                                     </button>
-                                    <button wire:click="openReceiptModal({{ $sale->id }})" class="px-3 py-1.5 bg-slate-100 hover:bg-emerald-50 text-slate-800 hover:text-emerald-700 border border-slate-200/80 rounded-xl text-xs font-extrabold transition cursor-pointer shadow-2xs flex items-center gap-1">
+                                    <button wire:click="openReceiptModal({{ $sale->id }})" class="px-3 py-1.5 bg-slate-100 hover:bg-emerald-50 hover:text-emerald-700 text-slate-700 rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1">
                                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
                                         <span>Struk</span>
                                     </button>
                                     @if(auth()->user()->can('sales.trash'))
-                                        <button wire:click="moveToTrash({{ $sale->id }})" wire:confirm="Pindahkan transaksi ini ke Sampah Transaksi? Stok dan saldo akan dikembalikan." class="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200/80 rounded-xl text-xs font-extrabold transition cursor-pointer shadow-2xs">
+                                        <button wire:click="moveToTrash({{ $sale->id }})" wire:confirm="Pindahkan transaksi ini ke Sampah Transaksi? Stok dan saldo akan dikembalikan." class="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 rounded-xl text-xs font-bold transition cursor-pointer">
                                             Ke Sampah
                                         </button>
                                     @endif
@@ -146,14 +154,20 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="py-12 text-center text-slate-400 font-medium">Belum ada riwayat transaksi penjualan.</td>
+                            <td colspan="6">
+                                <x-empty-state
+                                    icon="receipt"
+                                    title="Riwayat Transaksi Kosong"
+                                    description="Belum ada transaksi penjualan yang tercatat atau kata kunci pencarian Anda tidak cocok."
+                                />
+                            </td>
                         </tr>
                     @endforelse
                 </tbody>
             </table>
         </div>
 
-        <div class="p-3.5 border-t border-slate-200/80">
+        <div class="p-3.5 border-t border-slate-100">
             {{ $sales->links('components.emco-pagination') }}
         </div>
     </div>
