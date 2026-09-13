@@ -79,7 +79,7 @@ class Settings extends Component
         $this->validate([
             'storeName' => 'required|string|max:255',
             'receiptPaperWidth' => 'required|in:58mm,80mm',
-            'printMode' => 'required|in:BROWSER,RAWBT',
+            'printMode' => 'required|in:BROWSER,RAWBT,WEB_BLUETOOTH',
             'autoPrint' => 'boolean',
             'receiptHeaderTagline' => 'nullable|string|max:255',
             'receiptAddress' => 'nullable|string|max:500',

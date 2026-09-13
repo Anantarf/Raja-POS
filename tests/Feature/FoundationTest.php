@@ -188,7 +188,7 @@ class FoundationTest extends TestCase
             ->test(SettingsComponent::class)
             ->set('storeName', 'Raja Aksesoris Utama')
             ->set('receiptPaperWidth', '80mm')
-            ->set('printMode', 'RAWBT')
+            ->set('printMode', 'WEB_BLUETOOTH')
             ->set('autoPrint', true)
             ->set('receiptHeaderTagline', 'Toko Aksesoris Terlengkap')
             ->set('receiptAddress', 'Jl. Merdeka No. 45, Jakarta')
@@ -200,7 +200,7 @@ class FoundationTest extends TestCase
 
         $this->assertEquals('Raja Aksesoris Utama', Setting::get('store_name'));
         $this->assertEquals('80mm', Setting::get('receipt_paper_width'));
-        $this->assertEquals('RAWBT', Setting::get('print_mode'));
+        $this->assertEquals('WEB_BLUETOOTH', Setting::get('print_mode'));
         $this->assertEquals('1', Setting::get('auto_print'));
         $this->assertEquals('Toko Aksesoris Terlengkap', Setting::get('receipt_header_tagline'));
         $this->assertEquals('Jl. Merdeka No. 45, Jakarta', Setting::get('receipt_address'));

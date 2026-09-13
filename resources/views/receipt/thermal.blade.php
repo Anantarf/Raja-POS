@@ -128,6 +128,10 @@
                 <td class="text-right">Rp{{ number_format($payment->amount, 0, ',', '.') }}</td>
             </tr>
         @endforeach
+        <tr>
+            <td class="text-left">KEMBALI</td>
+            <td class="text-right">Rp{{ number_format($sale->change_amount, 0, ',', '.') }}</td>
+        </tr>
     </table>
 
     <div class="divider"></div>

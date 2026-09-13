@@ -259,18 +259,45 @@
     <!-- In-Page Thermal Receipt Pop-Up Modal -->
     @if($showReceiptModal && $receiptSale)
         @php
+            $paperWidth = \App\Models\Setting::get('receipt_paper_width', '58mm');
+            $printMode = \App\Models\Setting::get('print_mode', 'BROWSER');
             $storeName = \App\Models\Setting::get('store_name', 'Raja Aksesoris');
             $tagline = \App\Models\Setting::get('receipt_header_tagline', 'Retail Management System');
             $address = \App\Models\Setting::get('receipt_address', '');
             $phone = \App\Models\Setting::get('receipt_phone', '');
             $footerText = \App\Models\Setting::get('receipt_footer_text', 'Terima Kasih Telah Berbelanja!');
-            $paperWidth = \App\Models\Setting::get('receipt_paper_width', '58mm');
             $showCashier = \App\Models\Setting::get('show_cashier_name', '1') === '1';
+
+            $receiptData = [
+                'storeName' => $storeName,
+                'tagline' => $tagline,
+                'address' => $address,
+                'phone' => $phone,
+                'invoiceNumber' => $receiptSale->invoice_number,
+                'date' => $receiptSale->created_at->timezone('Asia/Jakarta')->format('d/m/Y H:i'),
+                'cashier' => $showCashier ? ($receiptSale->user?->name ?? 'Kasir') : '',
+                'items' => $receiptSale->items->map(fn($it) => [
+                    'name' => $it->product_name_snapshot,
+                    'qty' => $it->quantity,
+                    'price' => 'Rp '.number_format($it->selling_price, 0, ',', '.'),
+                    'subtotal' => 'Rp '.number_format($it->subtotal, 0, ',', '.'),
+                ])->values()->all(),
+                'total' => 'Rp '.number_format($receiptSale->total_amount, 0, ',', '.'),
+                'payments' => $receiptSale->payments->map(fn($p) => [
+                    'method' => 'BAYAR ('.($p->paymentMethod?->name ?? 'Metode').')',
+                    'amount' => 'Rp '.number_format($p->amount, 0, ',', '.'),
+                ])->values()->all(),
+                'footer' => $footerText,
+            ];
         @endphp
 
         <div
             class="fixed inset-0 bg-[#2C3E35]/70 backdrop-blur-sm flex items-center justify-center z-[60] p-4 overflow-y-auto"
             x-data="{
+                receiptJson: @js($receiptData),
+                printWebBt() {
+                    window.webBluetoothThermalPrinter?.printReceipt(this.receiptJson);
+                },
                 printThermal(saleId) {
                     if (!saleId) return;
                     let iframe = document.getElementById('receipt-iframe-sales');
@@ -311,77 +338,30 @@
 
                 <!-- Receipt Paper Simulation Box -->
                 <div class="bg-[#F3F6F4] p-3 rounded-xl border border-slate-200/80 max-h-[380px] overflow-y-auto">
-                    <div id="printable-receipt-content" class="bg-white p-4 rounded-lg shadow-sm border border-slate-200 font-mono text-xs text-black leading-relaxed space-y-2 select-text" style="width: {{ $paperWidth === '80mm' ? '280px' : '200px' }}; margin: 0 auto;">
-                        <div class="text-center font-bold text-sm uppercase tracking-wide">{{ filled($storeName) ? $storeName : 'RAJA AKSESORIS' }}</div>
-                        @if(filled($tagline))
-                            <div class="text-center text-[10px] text-slate-600">{{ $tagline }}</div>
-                        @endif
-                        @if(filled($address))
-                            <div class="text-center text-[9px] text-slate-600 mt-0.5">{{ $address }}</div>
-                        @endif
-                        @if(filled($phone))
-                            <div class="text-center text-[9px] text-slate-600">Telp: {{ $phone }}</div>
-                        @endif
-
-                        <div class="border-t border-dashed border-black my-2"></div>
-
-                        <div class="text-[11px] space-y-0.5">
-                            <div><strong>No:</strong> {{ $receiptSale->invoice_number }}</div>
-                            <div><strong>Tgl:</strong> {{ $receiptSale->created_at->timezone('Asia/Jakarta')->format('d/m/Y H:i') }}</div>
-                            @if($showCashier)
-                                <div><strong>Kasir:</strong> {{ $receiptSale->user?->name ?? 'Kasir' }}</div>
-                            @endif
-                        </div>
-
-                        <div class="border-t border-dashed border-black my-2"></div>
-
-                        <!-- Table Items -->
-                        <table class="w-full text-xs text-left">
-                            @foreach($receiptSale->items as $item)
-                                <tr>
-                                    <td colspan="2" class="font-bold pt-1">{{ $item->product_name_snapshot }}</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-left text-[11px] text-slate-700">{{ $item->quantity }} x Rp{{ number_format($item->selling_price, 0, ',', '.') }}</td>
-                                    <td class="text-right font-bold whitespace-nowrap">Rp{{ number_format($item->subtotal, 0, ',', '.') }}</td>
-                                </tr>
-                            @endforeach
-                        </table>
-
-                        <div class="border-t border-dashed border-black my-2"></div>
-
-                        <!-- Totals -->
-                        <div class="space-y-1 text-xs">
-                            <div class="flex justify-between font-bold text-sm">
-                                <span>TOTAL</span>
-                                <span>Rp{{ number_format($receiptSale->total_amount, 0, ',', '.') }}</span>
-                            </div>
-                            @foreach($receiptSale->payments as $payment)
-                                <div class="flex justify-between text-[11px]">
-                                    <span>BAYAR ({{ $payment->paymentMethod?->name ?? 'Metode' }})</span>
-                                    <span>Rp{{ number_format($payment->amount, 0, ',', '.') }}</span>
-                                </div>
-                            @endforeach
-                        </div>
-
-                        <div class="border-t border-dashed border-black my-2"></div>
-
-                        <div class="text-center text-[10px] text-slate-600 pt-1 space-y-0.5 whitespace-pre-line">
-                            {{ filled($footerText) ? $footerText : "Terima Kasih Telah Berbelanja!\nSampai Jumpa Kembali." }}
-                        </div>
-                    </div>
+                    @include('receipt._preview', ['sale' => $receiptSale])
                 </div>
 
                 <!-- Modal Actions Footer -->
                 <div class="pt-2 space-y-2">
-                    <button
-                        type="button"
-                        @click="printThermal({{ $receiptSale->id }})"
-                        class="w-full py-2.5 px-4 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-2xl text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm transition active:scale-95 cursor-pointer"
-                    >
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
-                        <span>Cetak Struk Thermal ({{ $paperWidth }})</span>
-                    </button>
+                    @if($printMode === 'WEB_BLUETOOTH')
+                        <button
+                            type="button"
+                            @click="printWebBt()"
+                            class="w-full py-2.5 px-4 bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold rounded-2xl text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm transition active:scale-95 cursor-pointer"
+                        >
+                            <svg class="w-4 h-4 text-white shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+                            <span>Cetak Direct (Web Bluetooth)</span>
+                        </button>
+                    @else
+                        <button
+                            type="button"
+                            @click="printThermal({{ $receiptSale->id }})"
+                            class="w-full py-2.5 px-4 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-2xl text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm transition active:scale-95 cursor-pointer"
+                        >
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+                            <span>Cetak Struk Thermal ({{ $paperWidth }})</span>
+                        </button>
+                    @endif
 
                     <button
                         type="button"

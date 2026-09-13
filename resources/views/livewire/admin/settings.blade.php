@@ -117,13 +117,70 @@
 
                         <div>
                             <label class="block text-xs font-bold uppercase tracking-wider text-[#2C3E35] mb-1.5">Mode Cetak Utama *</label>
-                            <select wire:model="printMode" class="w-full h-11 px-3 py-2 border border-slate-200 rounded-xl font-bold text-sm text-[#2C3E35] focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]">
+                            <select wire:model.live="printMode" class="w-full h-11 px-3 py-2 border border-slate-200 rounded-xl font-bold text-sm text-[#2C3E35] focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]">
                                 <option value="BROWSER">Browser Native Dialog (PC / Laptop)</option>
+                                <option value="WEB_BLUETOOTH">Web Bluetooth Direct (1-Click Direct Print PC/Android)</option>
                                 <option value="RAWBT">RawBT App Intent (Android Bluetooth Direct)</option>
                             </select>
                             <p class="text-[11px] text-[#718379] mt-1">Metode utama yang dipicu saat kasir menekan tombol cetak.</p>
                         </div>
                     </div>
+
+                    @if($printMode === 'WEB_BLUETOOTH')
+                        <div x-data="{
+                            printerName: window.webBluetoothThermalPrinter?.getSavedDeviceName() || '',
+                            isConnecting: false,
+                            async pair() {
+                                this.isConnecting = true;
+                                const name = await window.webBluetoothThermalPrinter?.pairDevice();
+                                if (name) {
+                                    this.printerName = name;
+                                }
+                                this.isConnecting = false;
+                            },
+                            async testPrint() {
+                                const success = await window.webBluetoothThermalPrinter?.printReceipt({
+                                    storeName: '{{ $storeName }}',
+                                    tagline: '{{ $receiptHeaderTagline }}',
+                                    address: '{{ $receiptAddress }}',
+                                    phone: '{{ $receiptPhone }}',
+                                    invoiceNumber: 'INV-TEST-001',
+                                    date: '{{ now()->format('d/m/Y H:i') }}',
+                                    cashier: '{{ auth()->user()->name }}',
+                                    items: [
+                                        { name: 'TEST PRINTER ITEM 1', qty: 1, price: 'Rp 10.000', subtotal: 'Rp 10.000' }
+                                    ],
+                                    total: 'Rp 10.000',
+                                    payments: [{ method: 'TUNAI', amount: 'Rp 10.000' }],
+                                    footer: '{{ $receiptFooterText }}'
+                                });
+                                if (success) {
+                                    alert('Struk percoban berhasil dikirim ke printer!');
+                                }
+                            }
+                        }" class="p-4 bg-emerald-50/80 rounded-xl border border-emerald-200/80 space-y-3">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2 text-emerald-900 font-extrabold text-xs uppercase tracking-wider">
+                                    <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+                                    <span>Koneksi Direct Web Bluetooth</span>
+                                </div>
+                                <span x-text="printerName ? 'TERPASANG: ' + printerName : 'BELUM TERHUBUNG'" :class="printerName ? 'bg-emerald-200/80 text-emerald-800' : 'bg-amber-100 text-amber-800'" class="px-2.5 py-0.5 rounded-md text-[10px] font-extrabold uppercase font-mono"></span>
+                            </div>
+
+                            <p class="text-xs text-emerald-800 font-medium">
+                                Mode Web Bluetooth memungkinkan cetak struk <strong>1-click tanpa jendela dialog Chrome</strong>. Pastikan Bluetooth PC/Laptop atau HP Anda sudah menyala.
+                            </p>
+
+                            <div class="flex items-center gap-2 pt-1">
+                                <button type="button" @click="pair()" :disabled="isConnecting" class="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs rounded-xl transition flex items-center gap-1.5 cursor-pointer shadow-xs">
+                                    <span x-text="isConnecting ? 'Menghubungkan...' : 'Sambungkan Bluetooth Printer'"></span>
+                                </button>
+                                <button type="button" @click="testPrint()" class="px-4 py-2 bg-white hover:bg-slate-50 text-emerald-800 border border-emerald-300 font-bold text-xs rounded-xl transition cursor-pointer">
+                                    Cetak Struk Percobaan
+                                </button>
+                            </div>
+                        </div>
+                    @endif
 
                     <!-- Options Toggle -->
                     <div class="p-4 bg-[#F3F6F4]/70 rounded-xl border border-slate-200/70 space-y-3">

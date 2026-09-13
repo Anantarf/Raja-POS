@@ -90,5 +90,184 @@
             }, 3000);
         });
     </script>
+    <script>
+        window.webBluetoothThermalPrinter = {
+            device: null,
+            characteristic: null,
+
+            isSupported() {
+                return typeof navigator !== 'undefined' && 'bluetooth' in navigator;
+            },
+
+            getSavedDeviceName() {
+                return localStorage.getItem('web_bt_printer_name') || '';
+            },
+
+            async pairDevice() {
+                if (!this.isSupported()) {
+                    alert('Web Bluetooth API tidak didukung browser ini. Harap gunakan Google Chrome, Microsoft Edge, atau Opera.');
+                    return false;
+                }
+                try {
+                    const device = await navigator.bluetooth.requestDevice({
+                        acceptAllDevices: true,
+                        optionalServices: [
+                            '000018f0-0000-1000-8000-00805f9b34fb',
+                            '0000ffe0-0000-1000-8000-00805f9b34fb',
+                            '0000ff00-0000-1000-8000-00805f9b34fb',
+                            '49535343-fe7d-41a5-8b22-3c9700d378d2',
+                            'e7810a71-73ae-499d-8c15-faa9aef0c3f2'
+                        ]
+                    });
+
+                    this.device = device;
+                    const name = device.name || 'Printer Bluetooth';
+                    localStorage.setItem('web_bt_printer_name', name);
+                    localStorage.setItem('web_bt_printer_id', device.id);
+
+                    const connected = await this.connect();
+                    if (connected) {
+                        return name;
+                    }
+                    return false;
+                } catch (e) {
+                    console.warn('Web Bluetooth cancelled:', e);
+                    return false;
+                }
+            },
+
+            async connect() {
+                if (!this.device) {
+                    if (!this.isSupported()) return false;
+                    try {
+                        return await this.pairDevice();
+                    } catch (e) {
+                        return false;
+                    }
+                }
+                try {
+                    if (this.device.gatt && this.device.gatt.connected && this.characteristic) {
+                        return true;
+                    }
+                    const server = await this.device.gatt.connect();
+                    const services = await server.getPrimaryServices();
+                    for (const service of services) {
+                        const characteristics = await service.getCharacteristics();
+                        for (const char of characteristics) {
+                            if (char.properties.write || char.properties.writeWithoutResponse) {
+                                this.characteristic = char;
+                                return true;
+                            }
+                        }
+                    }
+                    return false;
+                } catch (e) {
+                    console.error('GATT Connection Error:', e);
+                    return false;
+                }
+            },
+
+            encodeEscPos(data) {
+                const encoder = new TextEncoder();
+                const bytes = [];
+
+                const append = (str) => {
+                    const arr = encoder.encode(str);
+                    for (let i = 0; i < arr.length; i++) bytes.push(arr[i]);
+                };
+                const raw = (...rawBytes) => {
+                    for (let b of rawBytes) bytes.push(b);
+                };
+
+                // Initialize printer
+                raw(0x1B, 0x40);
+
+                // Center align
+                raw(0x1B, 0x61, 0x01);
+
+                // Store Name (Bold + Double Height)
+                raw(0x1B, 0x45, 0x01, 0x1D, 0x21, 0x11);
+                append((data.storeName || 'RAJA AKSESORIS') + '\n');
+
+                // Reset Text Size & Bold
+                raw(0x1D, 0x21, 0x00, 0x1B, 0x45, 0x00);
+
+                if (data.tagline) append(data.tagline + '\n');
+                if (data.address) append(data.address + '\n');
+                if (data.phone) append('Telp: ' + data.phone + '\n');
+
+                append('--------------------------------\n');
+
+                // Left align
+                raw(0x1B, 0x61, 0x00);
+                append('No  : ' + (data.invoiceNumber || '-') + '\n');
+                append('Tgl : ' + (data.date || '-') + '\n');
+                if (data.cashier) append('Kasir: ' + data.cashier + '\n');
+
+                append('--------------------------------\n');
+
+                if (data.items && data.items.length) {
+                    data.items.forEach(item => {
+                        append((item.name || '') + '\n');
+                        let line2 = ' ' + item.qty + ' x ' + item.price;
+                        let subtotalStr = item.subtotal;
+                        let spaceCount = Math.max(1, 32 - line2.length - subtotalStr.length);
+                        append(line2 + ' '.repeat(spaceCount) + subtotalStr + '\n');
+                    });
+                }
+
+                append('--------------------------------\n');
+
+                // Right align for totals
+                raw(0x1B, 0x61, 0x02);
+                raw(0x1B, 0x45, 0x01); // Bold on
+                append('TOTAL: ' + (data.total || '0') + '\n');
+                raw(0x1B, 0x45, 0x00); // Bold off
+
+                if (data.payments) {
+                    data.payments.forEach(p => {
+                        append(p.method + ': ' + p.amount + '\n');
+                    });
+                }
+
+                append('--------------------------------\n');
+
+                // Center align for footer
+                raw(0x1B, 0x61, 0x01);
+                append((data.footer || 'Terima Kasih!') + '\n\n\n\n');
+
+                // Paper Feed & Cut
+                raw(0x1B, 0x64, 0x04);
+
+                return new Uint8Array(bytes);
+            },
+
+            async printReceipt(receiptData) {
+                let connected = await this.connect();
+                if (!connected) {
+                    const devName = await this.pairDevice();
+                    if (!devName) return false;
+                }
+
+                try {
+                    const dataBytes = this.encodeEscPos(receiptData);
+                    const chunkSize = 100;
+                    for (let i = 0; i < dataBytes.length; i += chunkSize) {
+                        const chunk = dataBytes.slice(i, i + chunkSize);
+                        if (this.characteristic.properties.writeWithoutResponse) {
+                            await this.characteristic.writeValueWithoutResponse(chunk);
+                        } else {
+                            await this.characteristic.writeValue(chunk);
+                        }
+                    }
+                    return true;
+                } catch (e) {
+                    console.error('Web Bluetooth Print Error:', e);
+                    alert('Gagal mengirim data cetak ke Bluetooth printer: ' + e.message);
+                    return false;
+                }
+            }
+        };
+    </script>
 </body>
 </html>

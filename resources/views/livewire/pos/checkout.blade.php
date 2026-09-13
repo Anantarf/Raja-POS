@@ -672,8 +672,60 @@
 
     <!-- Success Modal with Receipt Preview -->
     @if($showSuccessModal)
-        @php($completedSale = $this->completedSale)
-        <div class="fixed inset-0 bg-[#232E28]/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 overflow-y-auto">
+        @php
+            $completedSale = $this->completedSale;
+            $paperWidth = \App\Models\Setting::get('receipt_paper_width', '58mm');
+            $printMode = \App\Models\Setting::get('print_mode', 'BROWSER');
+            $autoPrint = \App\Models\Setting::get('auto_print', '1') === '1';
+            $storeName = \App\Models\Setting::get('store_name', 'Raja Aksesoris');
+            $tagline = \App\Models\Setting::get('receipt_header_tagline', 'Retail Management System');
+            $address = \App\Models\Setting::get('receipt_address', '');
+            $phone = \App\Models\Setting::get('receipt_phone', '');
+            $footerText = \App\Models\Setting::get('receipt_footer_text', 'Terima Kasih Telah Berbelanja!');
+            $showCashier = \App\Models\Setting::get('show_cashier_name', '1') === '1';
+
+            $receiptData = [
+                'storeName' => $storeName,
+                'tagline' => $tagline,
+                'address' => $address,
+                'phone' => $phone,
+                'invoiceNumber' => $completedInvoiceNumber,
+                'date' => $completedSale ? $completedSale->created_at->timezone('Asia/Jakarta')->format('d/m/Y H:i') : now()->format('d/m/Y H:i'),
+                'cashier' => $showCashier ? ($completedSale->user?->name ?? auth()->user()->name) : '',
+                'items' => $completedSale ? $completedSale->items->map(fn($it) => [
+                    'name' => $it->product_name_snapshot,
+                    'qty' => $it->quantity,
+                    'price' => 'Rp '.number_format($it->selling_price, 0, ',', '.'),
+                    'subtotal' => 'Rp '.number_format($it->subtotal, 0, ',', '.'),
+                ])->values()->all() : [],
+                'total' => 'Rp '.number_format($completedSale->total_amount ?? 0, 0, ',', '.'),
+                'payments' => $completedSale ? $completedSale->payments->map(fn($p) => [
+                    'method' => 'BAYAR ('.($p->paymentMethod?->name ?? 'Metode').')',
+                    'amount' => 'Rp '.number_format($p->amount, 0, ',', '.'),
+                ])->values()->all() : [],
+                'footer' => $footerText,
+            ];
+        @endphp
+        <div
+            class="fixed inset-0 bg-[#232E28]/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 overflow-y-auto"
+            x-data="{
+                receiptJson: @js($receiptData),
+                printWebBt() {
+                    window.webBluetoothThermalPrinter?.printReceipt(this.receiptJson);
+                }
+            }"
+            x-init="
+                @if($autoPrint)
+                    @if($printMode === 'WEB_BLUETOOTH')
+                        setTimeout(() => printWebBt(), 400);
+                    @elseif($printMode === 'RAWBT')
+                        setTimeout(() => window.location.href='intent:' + encodeURIComponent(window.location.origin + '/receipt/thermal/{{ $completedSaleId }}') + '#Intent;scheme=http;package=ru.a256.rawbtprinter;end;', 400);
+                    @else
+                        setTimeout(() => printReceiptDirect({{ $completedSaleId }}), 400);
+                    @endif
+                @endif
+            "
+        >
             <div class="bg-white rounded-2xl p-5 max-w-3xl w-full shadow-2xl border border-slate-100 my-auto">
                 <div class="grid grid-cols-1 md:grid-cols-[0.9fr_1.1fr] gap-5 items-start">
                     <div class="text-center space-y-4">
@@ -695,16 +747,28 @@
                         </div>
 
                         <div class="flex flex-col gap-2 pt-1">
-                            <button
-                                type="button"
-                                onclick="printReceiptDirect({{ $completedSaleId }})"
-                                class="w-full h-12 py-3 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-xl text-xs transition uppercase tracking-wider text-center flex items-center justify-center gap-2 cursor-pointer shadow-xs active-press hover-lift"
-                            >
-                                <svg class="w-4 h-4 text-white shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-                                </svg>
-                                <span>Cetak Struk Thermal (Langsung)</span>
-                            </button>
+                            @if($printMode === 'WEB_BLUETOOTH')
+                                <button
+                                    type="button"
+                                    @click="printWebBt()"
+                                    class="w-full h-12 py-3 bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold rounded-xl text-xs transition uppercase tracking-wider text-center flex items-center justify-center gap-2 cursor-pointer shadow-xs active-press hover-lift"
+                                >
+                                    <svg class="w-4 h-4 text-white shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+                                    <span>Cetak Direct (Web Bluetooth)</span>
+                                </button>
+                            @else
+                                <button
+                                    type="button"
+                                    onclick="printReceiptDirect({{ $completedSaleId }})"
+                                    class="w-full h-12 py-3 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-xl text-xs transition uppercase tracking-wider text-center flex items-center justify-center gap-2 cursor-pointer shadow-xs active-press hover-lift"
+                                >
+                                    <svg class="w-4 h-4 text-white shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                                    </svg>
+                                    <span>Cetak Struk Thermal (Langsung)</span>
+                                </button>
+                            @endif
+
                             <button
                                 type="button"
                                 onclick="window.location.href='intent:' + encodeURIComponent(window.location.origin + '/receipt/thermal/{{ $completedSaleId }}') + '#Intent;scheme=http;package=ru.a256.rawbtprinter;end;'"
@@ -723,63 +787,11 @@
                     </div>
 
                     <div class="bg-[#F3F6F4] p-3 rounded-xl border border-slate-200/80 max-h-[70vh] overflow-y-auto">
-                        <div class="bg-white p-4 rounded-lg shadow-sm border border-slate-200 font-mono text-xs text-black leading-relaxed space-y-2 select-text max-w-[320px] mx-auto">
-                            <div class="text-center font-bold text-sm uppercase tracking-wide">RAJA AKSESORIS</div>
-                            <div class="text-center text-[10px] text-slate-600">Retail Management System</div>
-
-                            <div class="border-t border-dashed border-black my-2"></div>
-
-                            <div class="text-[11px] space-y-0.5">
-                                <div><strong>No:</strong> {{ $completedSale?->invoice_number ?? $completedInvoiceNumber }}</div>
-                                <div><strong>Tgl:</strong> {{ $completedSale?->transaction_date?->timezone('Asia/Jakarta')->format('d/m/Y H:i') ?? now('Asia/Jakarta')->format('d/m/Y H:i') }}</div>
-                                <div><strong>Kasir:</strong> {{ $completedSale?->cashier?->name ?? auth()->user()->name }}</div>
-                            </div>
-
-                            <div class="border-t border-dashed border-black my-2"></div>
-
-                            <table class="w-full text-xs text-left">
-                                @forelse($completedSale?->items ?? [] as $item)
-                                    <tr>
-                                        <td colspan="2" class="font-bold pt-1">{{ $item->product_name_snapshot }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-left text-[11px] text-slate-700">{{ $item->quantity }} x Rp{{ number_format($item->selling_price, 0, ',', '.') }}</td>
-                                        <td class="text-right font-bold whitespace-nowrap">Rp{{ number_format($item->subtotal, 0, ',', '.') }}</td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="2" class="text-center text-slate-500 py-2">Item tidak tersedia.</td>
-                                    </tr>
-                                @endforelse
-                            </table>
-
-                            <div class="border-t border-dashed border-black my-2"></div>
-
-                            <div class="space-y-1 text-xs">
-                                <div class="flex justify-between font-bold text-sm">
-                                    <span>TOTAL</span>
-                                    <span>Rp{{ number_format($completedSale?->total_amount ?? 0, 0, ',', '.') }}</span>
-                                </div>
-                                @foreach($completedSale?->payments ?? [] as $payment)
-                                    <div class="flex justify-between text-[11px]">
-                                        <span>BAYAR ({{ $payment->paymentMethod?->name ?? 'Metode' }})</span>
-                                        <span>Rp{{ number_format($payment->amount, 0, ',', '.') }}</span>
-                                    </div>
-                                @endforeach
-                                <div class="flex justify-between text-[11px]">
-                                    <span>KEMBALI</span>
-                                    <span>Rp{{ number_format($completedSale?->change_amount ?? $completedChangeAmount, 0, ',', '.') }}</span>
-                                </div>
-                            </div>
-
-                            <div class="border-t border-dashed border-black my-2"></div>
-
-                            <div class="text-center text-[10px] text-slate-600 pt-1 space-y-0.5">
-                                <div class="font-bold">Terima Kasih Telah Berbelanja!</div>
-                                <div>Kepuasan Anda Adalah Kebanggaan Kami.</div>
-                                <div>Sampai Jumpa Kembali di Raja Aksesoris!</div>
-                            </div>
-                        </div>
+                        @include('receipt._preview', [
+                            'sale' => $completedSale,
+                            'invoiceNumber' => $completedInvoiceNumber,
+                            'changeAmount' => $completedChangeAmount,
+                        ])
                     </div>
                 </div>
             </div>
