@@ -784,10 +784,15 @@
                                         </div>
 
                                         <div class="p-3 bg-amber-50/80 border border-amber-200/80 rounded-xl space-y-1">
-                                            <label class="block font-black text-amber-950 text-xs">Saldo Aktual di HP (Android)</label>
+                                            <div class="flex items-center justify-between">
+                                                <label class="block font-black text-amber-950 text-xs">Saldo Aktual di HP (Android)</label>
+                                                @if((float)($danaSaldoAndroid ?? 0) > 0)
+                                                    <span class="text-[10px] text-amber-900 font-extrabold font-mono">Rp {{ number_format((float)$danaSaldoAndroid, 0, ',', '.') }}</span>
+                                                @endif
+                                            </div>
                                             <div class="relative flex items-center">
                                                 <span class="absolute left-3 font-mono font-extrabold text-xs text-amber-800">Rp</span>
-                                                <input type="number" step="1" wire:model.live="danaSaldoAndroid" class="w-full pl-9 pr-3 py-2 border border-amber-300 rounded-xl bg-white font-mono font-black text-right text-sm text-amber-950 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500" placeholder="0" />
+                                                <input type="number" step="1" wire:model.live="danaSaldoAndroid" wire:keydown.enter.prevent="nextModalStep" class="w-full pl-9 pr-3 py-2 border border-amber-300 rounded-xl bg-white font-mono font-black text-right text-sm text-amber-950 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500" placeholder="0" />
                                             </div>
                                         </div>
                                     </div>
@@ -821,10 +826,15 @@
                                         </div>
 
                                         <div class="p-3 bg-amber-50/80 border border-amber-200/80 rounded-xl space-y-1">
-                                            <label class="block font-black text-amber-950 text-xs">Saldo Aktual di HP / EDC</label>
+                                            <div class="flex items-center justify-between">
+                                                <label class="block font-black text-amber-950 text-xs">Saldo Aktual di HP / EDC</label>
+                                                @if((float)($qrisSaldoAndroid ?? 0) > 0)
+                                                    <span class="text-[10px] text-amber-900 font-extrabold font-mono">Rp {{ number_format((float)$qrisSaldoAndroid, 0, ',', '.') }}</span>
+                                                @endif
+                                            </div>
                                             <div class="relative flex items-center">
                                                 <span class="absolute left-3 font-mono font-extrabold text-xs text-amber-800">Rp</span>
-                                                <input type="number" step="1" wire:model.live="qrisSaldoAndroid" class="w-full pl-9 pr-3 py-2 border border-amber-300 rounded-xl bg-white font-mono font-black text-right text-sm text-amber-950 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500" placeholder="0" />
+                                                <input type="number" step="1" wire:model.live="qrisSaldoAndroid" wire:keydown.enter.prevent="nextModalStep" class="w-full pl-9 pr-3 py-2 border border-amber-300 rounded-xl bg-white font-mono font-black text-right text-sm text-amber-950 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500" placeholder="0" />
                                             </div>
                                         </div>
                                     </div>
@@ -868,10 +878,15 @@
                                         </div>
 
                                         <div class="p-3 bg-amber-50/80 border border-amber-200/80 rounded-xl space-y-1">
-                                            <label class="block font-black text-amber-950 text-xs">Saldo Aktual M-Banking BCA</label>
+                                            <div class="flex items-center justify-between">
+                                                <label class="block font-black text-amber-950 text-xs">Saldo Aktual M-Banking BCA</label>
+                                                @if((float)($bcaSaldoAndroid ?? 0) > 0)
+                                                    <span class="text-[10px] text-amber-900 font-extrabold font-mono">Rp {{ number_format((float)$bcaSaldoAndroid, 0, ',', '.') }}</span>
+                                                @endif
+                                            </div>
                                             <div class="relative flex items-center">
                                                 <span class="absolute left-3 font-mono font-extrabold text-xs text-amber-800">Rp</span>
-                                                <input type="number" step="1" wire:model.live="bcaSaldoAndroid" class="w-full pl-9 pr-3 py-2 border border-amber-300 rounded-xl bg-white font-mono font-black text-right text-sm text-amber-950 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500" placeholder="0" />
+                                                <input type="number" step="1" wire:model.live="bcaSaldoAndroid" wire:keydown.enter.prevent="nextModalStep" class="w-full pl-9 pr-3 py-2 border border-amber-300 rounded-xl bg-white font-mono font-black text-right text-sm text-amber-950 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500" placeholder="0" />
                                             </div>
                                         </div>
                                     </div>
@@ -906,10 +921,15 @@
                                         </div>
 
                                         <div class="p-3 bg-amber-50/80 border border-amber-200/80 rounded-xl space-y-1">
-                                            <label class="block font-black text-amber-950 text-xs">Saldo Aktual di HP Bank MAS</label>
+                                            <div class="flex items-center justify-between">
+                                                <label class="block font-black text-amber-950 text-xs">Saldo Aktual di HP Bank MAS</label>
+                                                @if((float)($bankmasSaldoAndroid ?? 0) > 0)
+                                                    <span class="text-[10px] text-amber-900 font-extrabold font-mono">Rp {{ number_format((float)$bankmasSaldoAndroid, 0, ',', '.') }}</span>
+                                                @endif
+                                            </div>
                                             <div class="relative flex items-center">
                                                 <span class="absolute left-3 font-mono font-extrabold text-xs text-amber-800">Rp</span>
-                                                <input type="number" step="1" wire:model.live="bankmasSaldoAndroid" class="w-full pl-9 pr-3 py-2 border border-amber-300 rounded-xl bg-white font-mono font-black text-right text-sm text-amber-950 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500" placeholder="0" />
+                                                <input type="number" step="1" wire:model.live="bankmasSaldoAndroid" wire:keydown.enter.prevent="nextModalStep" class="w-full pl-9 pr-3 py-2 border border-amber-300 rounded-xl bg-white font-mono font-black text-right text-sm text-amber-950 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500" placeholder="0" />
                                             </div>
                                         </div>
                                     </div>
@@ -953,10 +973,15 @@
                                         </div>
 
                                         <div class="p-3 bg-amber-50/80 border border-amber-200/80 rounded-xl space-y-1">
-                                            <label class="block font-black text-amber-950 text-xs">Saldo Aktual Aplikasi Multi</label>
+                                            <div class="flex items-center justify-between">
+                                                <label class="block font-black text-amber-950 text-xs">Saldo Aktual Aplikasi Multi</label>
+                                                @if((float)($multiSaldoAndroid ?? 0) > 0)
+                                                    <span class="text-[10px] text-amber-900 font-extrabold font-mono">Rp {{ number_format((float)$multiSaldoAndroid, 0, ',', '.') }}</span>
+                                                @endif
+                                            </div>
                                             <div class="relative flex items-center">
                                                 <span class="absolute left-3 font-mono font-extrabold text-xs text-amber-800">Rp</span>
-                                                <input type="number" step="1" wire:model.live="multiSaldoAndroid" class="w-full pl-9 pr-3 py-2 border border-amber-300 rounded-xl bg-white font-mono font-black text-right text-sm text-amber-950 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500" placeholder="0" />
+                                                <input type="number" step="1" wire:model.live="multiSaldoAndroid" wire:keydown.enter.prevent="nextModalStep" class="w-full pl-9 pr-3 py-2 border border-amber-300 rounded-xl bg-white font-mono font-black text-right text-sm text-amber-950 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500" placeholder="0" />
                                             </div>
                                         </div>
                                     </div>
@@ -991,10 +1016,15 @@
                                         </div>
 
                                         <div class="p-3 bg-amber-50/80 border border-amber-200/80 rounded-xl space-y-1">
-                                            <label class="block font-black text-amber-950 text-xs">Saldo Aktual Agen Wahana</label>
+                                            <div class="flex items-center justify-between">
+                                                <label class="block font-black text-amber-950 text-xs">Saldo Aktual Agen Wahana</label>
+                                                @if((float)($wahanaSaldoAndroid ?? 0) > 0)
+                                                    <span class="text-[10px] text-amber-900 font-extrabold font-mono">Rp {{ number_format((float)$wahanaSaldoAndroid, 0, ',', '.') }}</span>
+                                                @endif
+                                            </div>
                                             <div class="relative flex items-center">
                                                 <span class="absolute left-3 font-mono font-extrabold text-xs text-amber-800">Rp</span>
-                                                <input type="number" step="1" wire:model.live="wahanaSaldoAndroid" class="w-full pl-9 pr-3 py-2 border border-amber-300 rounded-xl bg-white font-mono font-black text-right text-sm text-amber-950 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500" placeholder="0" />
+                                                <input type="number" step="1" wire:model.live="wahanaSaldoAndroid" wire:keydown.enter.prevent="nextModalStep" class="w-full pl-9 pr-3 py-2 border border-amber-300 rounded-xl bg-white font-mono font-black text-right text-sm text-amber-950 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500" placeholder="0" />
                                             </div>
                                         </div>
                                     </div>
@@ -1010,7 +1040,12 @@
 
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div class="bg-white p-4.5 rounded-2xl border border-slate-200/90 shadow-sm space-y-2">
-                                        <label class="block font-extrabold text-xs text-[#2C3E35] uppercase tracking-wider">Tarik Tunai Kasir Toko</label>
+                                        <div class="flex items-center justify-between">
+                                            <label class="block font-extrabold text-xs text-[#2C3E35] uppercase tracking-wider">Tarik Tunai Kasir Toko</label>
+                                            @if((float)($tarikTunaiKasir ?? 0) > 0)
+                                                <span class="text-[10px] text-[#3F7A5D] font-extrabold font-mono">Rp {{ number_format((float)$tarikTunaiKasir, 0, ',', '.') }}</span>
+                                            @endif
+                                        </div>
                                         <div class="relative flex items-center">
                                             <span class="absolute left-3 font-mono font-extrabold text-xs text-slate-500">Rp</span>
                                             <input type="number" step="1" wire:model.live="tarikTunaiKasir" class="w-full pl-9 pr-3 py-2.5 border border-slate-200 rounded-xl bg-[#F3F6F4] font-mono font-bold text-right text-sm focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]" placeholder="0" />
