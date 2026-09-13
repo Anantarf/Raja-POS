@@ -253,47 +253,42 @@
         </div>
     @endif
 
+    <!-- Hidden Thermal Receipt Frame -->
+    <iframe id="receipt-iframe-sales" class="hidden fixed -top-full -left-full w-0 h-0 border-0"></iframe>
+
     <!-- In-Page Thermal Receipt Pop-Up Modal -->
     @if($showReceiptModal && $receiptSale)
+        @php
+            $storeName = \App\Models\Setting::get('store_name', 'Raja Aksesoris');
+            $tagline = \App\Models\Setting::get('receipt_header_tagline', 'Retail Management System');
+            $address = \App\Models\Setting::get('receipt_address', '');
+            $phone = \App\Models\Setting::get('receipt_phone', '');
+            $footerText = \App\Models\Setting::get('receipt_footer_text', 'Terima Kasih Telah Berbelanja!');
+            $paperWidth = \App\Models\Setting::get('receipt_paper_width', '58mm');
+            $showCashier = \App\Models\Setting::get('show_cashier_name', '1') === '1';
+        @endphp
+
         <div
             class="fixed inset-0 bg-[#2C3E35]/70 backdrop-blur-sm flex items-center justify-center z-[60] p-4 overflow-y-auto"
             x-data="{
-                printReceipt() {
-                    const printContents = document.getElementById('printable-receipt-content').innerHTML;
-                    const printWindow = window.open('', '_blank', 'width=400,height=600');
-                    printWindow.document.write(`
-                        <html>
-                            <head>
-                                <title>Struk #${ '{{ $receiptSale->invoice_number }}' }</title>
-                                <style>
-                                    @page { margin: 0; }
-                                    body {
-                                        font-family: 'Courier New', Courier, monospace;
-                                        font-size: 12px;
-                                        color: #000;
-                                        background: #fff;
-                                        margin: 0;
-                                        padding: 10px;
-                                        width: 58mm;
-                                    }
-                                    .text-center { text-align: center; }
-                                    .text-right { text-align: right; }
-                                    .text-left { text-align: left; }
-                                    .bold { font-weight: bold; }
-                                    .divider { border-top: 1px dashed #000; margin: 8px 0; }
-                                    .table-items { width: 100%; border-collapse: collapse; }
-                                    .table-items td { padding: 2px 0; vertical-align: top; }
-                                    .totals-table { width: 100%; margin-top: 5px; }
-                                    .totals-table td { padding: 2px 0; }
-                                    .footer { margin-top: 15px; font-size: 11px; }
-                                </style>
-                            </head>
-                            <body onload='window.print(); setTimeout(function(){ window.close(); }, 500);'>
-                                ${printContents}
-                            </body>
-                        </html>
-                    `);
-                    printWindow.document.close();
+                printThermal(saleId) {
+                    if (!saleId) return;
+                    let iframe = document.getElementById('receipt-iframe-sales');
+                    if (!iframe) {
+                        iframe = document.createElement('iframe');
+                        iframe.id = 'receipt-iframe-sales';
+                        iframe.className = 'hidden fixed -top-full -left-full w-0 h-0 border-0';
+                        document.body.appendChild(iframe);
+                    }
+                    iframe.src = '/receipt/thermal/' + saleId;
+                    iframe.onload = function() {
+                        try {
+                            iframe.contentWindow.focus();
+                            iframe.contentWindow.print();
+                        } catch (e) {
+                            console.error('Thermal print error:', e);
+                        }
+                    };
                 }
             }"
         >
@@ -306,7 +301,7 @@
                         </div>
                         <div>
                             <h3 class="text-sm font-extrabold text-[#2C3E35]">Preview Struk Kasir</h3>
-                            <p class="text-[11px] font-mono text-[#718379]">Kertas Thermal 58mm</p>
+                            <p class="text-[11px] font-mono text-[#718379]">Kertas Thermal {{ $paperWidth }}</p>
                         </div>
                     </div>
                     <button type="button" wire:click="$set('showReceiptModal', false)" class="text-slate-400 hover:text-slate-600 p-1 cursor-pointer">
@@ -316,16 +311,26 @@
 
                 <!-- Receipt Paper Simulation Box -->
                 <div class="bg-[#F3F6F4] p-3 rounded-xl border border-slate-200/80 max-h-[380px] overflow-y-auto">
-                    <div id="printable-receipt-content" class="bg-white p-4 rounded-lg shadow-sm border border-slate-200 font-mono text-xs text-black leading-relaxed space-y-2 select-text">
-                        <div class="text-center font-bold text-sm uppercase tracking-wide">RAJA AKSESORIS</div>
-                        <div class="text-center text-[10px] text-slate-600">Retail Management System</div>
+                    <div id="printable-receipt-content" class="bg-white p-4 rounded-lg shadow-sm border border-slate-200 font-mono text-xs text-black leading-relaxed space-y-2 select-text" style="width: {{ $paperWidth === '80mm' ? '280px' : '200px' }}; margin: 0 auto;">
+                        <div class="text-center font-bold text-sm uppercase tracking-wide">{{ filled($storeName) ? $storeName : 'RAJA AKSESORIS' }}</div>
+                        @if(filled($tagline))
+                            <div class="text-center text-[10px] text-slate-600">{{ $tagline }}</div>
+                        @endif
+                        @if(filled($address))
+                            <div class="text-center text-[9px] text-slate-600 mt-0.5">{{ $address }}</div>
+                        @endif
+                        @if(filled($phone))
+                            <div class="text-center text-[9px] text-slate-600">Telp: {{ $phone }}</div>
+                        @endif
 
                         <div class="border-t border-dashed border-black my-2"></div>
 
                         <div class="text-[11px] space-y-0.5">
                             <div><strong>No:</strong> {{ $receiptSale->invoice_number }}</div>
                             <div><strong>Tgl:</strong> {{ $receiptSale->created_at->timezone('Asia/Jakarta')->format('d/m/Y H:i') }}</div>
-                            <div><strong>Kasir:</strong> {{ $receiptSale->user?->name ?? 'Kasir' }}</div>
+                            @if($showCashier)
+                                <div><strong>Kasir:</strong> {{ $receiptSale->user?->name ?? 'Kasir' }}</div>
+                            @endif
                         </div>
 
                         <div class="border-t border-dashed border-black my-2"></div>
@@ -357,18 +362,12 @@
                                     <span>Rp{{ number_format($payment->amount, 0, ',', '.') }}</span>
                                 </div>
                             @endforeach
-                            <div class="flex justify-between text-[11px]">
-                                <span>KEMBALI</span>
-                                <span>Rp{{ number_format($receiptSale->change_amount, 0, ',', '.') }}</span>
-                            </div>
                         </div>
 
                         <div class="border-t border-dashed border-black my-2"></div>
 
-                        <div class="text-center text-[10px] text-slate-600 pt-1 space-y-0.5">
-                            <div class="font-bold">Terima Kasih Telah Berbelanja!</div>
-                            <div>Kepuasan Anda Adalah Kebanggaan Kami.</div>
-                            <div>Sampai Jumpa Kembali di Raja Aksesoris!</div>
+                        <div class="text-center text-[10px] text-slate-600 pt-1 space-y-0.5 whitespace-pre-line">
+                            {{ filled($footerText) ? $footerText : "Terima Kasih Telah Berbelanja!\nSampai Jumpa Kembali." }}
                         </div>
                     </div>
                 </div>
@@ -377,11 +376,19 @@
                 <div class="pt-2 space-y-2">
                     <button
                         type="button"
-                        @click="printReceipt()"
+                        @click="printThermal({{ $receiptSale->id }})"
                         class="w-full py-2.5 px-4 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-2xl text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm transition active:scale-95 cursor-pointer"
                     >
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
-                        <span>Cetak Struk Sekarang</span>
+                        <span>Cetak Struk Thermal ({{ $paperWidth }})</span>
+                    </button>
+
+                    <button
+                        type="button"
+                        onclick="window.location.href='intent:' + encodeURIComponent(window.location.origin + '/receipt/thermal/{{ $receiptSale->id }}') + '#Intent;scheme=http;package=ru.a256.rawbtprinter;end;'"
+                        class="w-full py-2 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs transition text-center flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                    >
+                        <span>Cetak Direct (RawBT Bluetooth)</span>
                     </button>
 
                     <div class="flex items-center justify-between text-xs pt-1">
