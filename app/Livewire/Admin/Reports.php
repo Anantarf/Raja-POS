@@ -57,6 +57,18 @@ class Reports extends Component
         $this->loadDailySummaryForm($reportService);
     }
 
+    public function setSummaryDateToToday(FinanceReportService $reportService): void
+    {
+        $this->summaryDate = Carbon::today()->toDateString();
+        $this->loadDailySummaryForm($reportService);
+    }
+
+    public function setSummaryDateToYesterday(FinanceReportService $reportService): void
+    {
+        $this->summaryDate = Carbon::yesterday()->toDateString();
+        $this->loadDailySummaryForm($reportService);
+    }
+
     public function updatedPeriod(): void
     {
         if ($this->period === 'today') {

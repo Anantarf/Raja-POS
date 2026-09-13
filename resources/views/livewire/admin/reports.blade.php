@@ -9,9 +9,13 @@
         <!-- Filter Period & Print Control -->
         <div class="flex items-center gap-2 flex-wrap text-sm">
             @if($type === 'daily_summary')
-                <div class="flex items-center gap-2">
+                <div class="flex items-center gap-2 flex-wrap">
                     <label class="text-xs font-bold text-[#718379] uppercase tracking-wider">Tanggal Rekap:</label>
-                    <input type="date" wire:model.live="summaryDate" class="h-11 px-3.5 py-2 border border-slate-200 rounded-xl bg-[#F3F6F4] text-[#2C3E35] font-extrabold focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] cursor-pointer text-sm" />
+                    <input type="date" wire:model.live="summaryDate" class="h-11 px-3.5 py-2 border border-slate-200 rounded-xl bg-[#F3F6F4] text-[#2C3E35] font-extrabold focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] cursor-pointer text-xs sm:text-sm" />
+                    <div class="inline-flex rounded-xl p-0.5 bg-slate-100 border border-slate-200">
+                        <button type="button" wire:click="setSummaryDateToToday" class="px-2.5 py-1.5 rounded-lg text-xs font-extrabold transition {{ $summaryDate === \Carbon\Carbon::today()->toDateString() ? 'bg-white text-[#2C3E35] shadow-xs' : 'text-slate-600 hover:text-slate-900' }}">Hari Ini</button>
+                        <button type="button" wire:click="setSummaryDateToYesterday" class="px-2.5 py-1.5 rounded-lg text-xs font-extrabold transition {{ $summaryDate === \Carbon\Carbon::yesterday()->toDateString() ? 'bg-white text-[#2C3E35] shadow-xs' : 'text-slate-600 hover:text-slate-900' }}">Kemarin</button>
+                    </div>
                 </div>
             @else
                 <select wire:model.live="period" class="h-11 px-3 py-2.5 border border-slate-200 rounded-xl bg-[#F3F6F4] text-[#2C3E35] font-bold focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] cursor-pointer">
@@ -130,7 +134,7 @@
                     </div>
                     <div>
                         <div class="flex items-center gap-2 flex-wrap">
-                            <h2 class="text-lg font-black text-[#2C3E35] tracking-tight uppercase">SUMMARY REPORT</h2>
+                            <h2 class="text-lg font-black text-[#2C3E35] tracking-tight uppercase">REKONSILIASI SUMMARY HARIAN</h2>
                             <span class="px-2.5 py-0.5 rounded-lg text-xs font-black uppercase bg-amber-200 text-amber-900 border border-amber-300">
                                 {{ strtoupper($formattedDate) }}
                             </span>
@@ -163,7 +167,7 @@
                             @if($isLocked)
                                 Terkunci oleh {{ $dailySummaryData['verifier_name'] ?? 'Supervisor' }} pada {{ \Carbon\Carbon::parse($dailySummaryData['verified_at'])->format('d/m/Y H:i') }}.
                             @else
-                                Rekapitulasi kasir, saldo e-wallet, &amp; setoran uang fisik harian.
+                                Laporan Rekonsiliasi Kasir &amp; Saldo Akun Toko.
                             @endif
                         </p>
                     </div>
@@ -202,7 +206,7 @@
                         <h3 class="text-base sm:text-lg font-black text-[#2C3E35] tracking-tight">Rekapitulasi Harian Belum Dimulai</h3>
                         <p class="text-xs text-[#718379] font-medium leading-relaxed">
                             Penjualan POS pada tanggal <span class="font-bold text-[#2C3E35]">{{ $formattedDate }}</span> terekam otomatis sebesar <span class="font-mono font-extrabold text-[#3F7A5D]">Rp {{ number_format($dailySummaryData['total_penjualan'], 0, ',', '.') }}</span>.
-                            Klik tombol di bawah untuk membuka dialog pencatatan saldo e-wallet dan setoran kasir.
+                            Saldo awal e-wallet otomatis diwarisi dari saldo akhir kemarin. Klik tombol di bawah untuk mengisi saldo fisik aplikasi.
                         </p>
                     </div>
                     <div>
@@ -221,7 +225,7 @@
                         <!-- Card 1: Total Omzet POS -->
                         <div class="bg-white border border-slate-200 rounded-2xl p-3.5 sm:p-4 shadow-xs flex flex-col justify-between space-y-2">
                             <div class="flex items-center justify-between">
-                                <span class="text-[11px] font-extrabold text-[#718379] uppercase tracking-wider">OMZET POS</span>
+                                <span class="text-[11px] font-extrabold text-[#718379] uppercase tracking-wider">PENJUALAN POS</span>
                                 <span class="p-1.5 rounded-lg bg-[#E3EEE8] text-[#3F7A5D]">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                                 </span>
@@ -230,14 +234,14 @@
                                 <div class="text-base sm:text-lg font-black font-mono text-[#2C3E35] tracking-tight">
                                     Rp {{ number_format($dailySummaryData['total_penjualan'], 0, ',', '.') }}
                                 </div>
-                                <span class="text-[10px] text-[#718379] font-medium">Auto POS Sales</span>
+                                <span class="text-[10px] text-[#718379] font-medium">Penjualan POS Otomatis</span>
                             </div>
                         </div>
 
                         <!-- Card 2: Margin Profit -->
                         <div class="bg-white border border-slate-200 rounded-2xl p-3.5 sm:p-4 shadow-xs flex flex-col justify-between space-y-2">
                             <div class="flex items-center justify-between">
-                                <span class="text-[11px] font-extrabold text-[#718379] uppercase tracking-wider">MARGIN PROFIT</span>
+                                <span class="text-[11px] font-extrabold text-[#718379] uppercase tracking-wider">PROFIT TOKO</span>
                                 <span class="p-1.5 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
                                 </span>
@@ -246,14 +250,14 @@
                                 <div class="text-base sm:text-lg font-black font-mono text-[#3F7A5D] tracking-tight">
                                     Rp {{ number_format($dailySummaryData['margin'], 0, ',', '.') }}
                                 </div>
-                                <span class="text-[10px] text-emerald-700 font-medium">Profit Toko</span>
+                                <span class="text-[10px] text-emerald-700 font-medium">Keuntungan Kotor Toko</span>
                             </div>
                         </div>
 
                         <!-- Card 3: Setoran Tunai Laci Kasir -->
                         <div class="bg-white border border-slate-200 rounded-2xl p-3.5 sm:p-4 shadow-xs flex flex-col justify-between space-y-2">
                             <div class="flex items-center justify-between">
-                                <span class="text-[11px] font-extrabold text-[#718379] uppercase tracking-wider">SETORAN LACI</span>
+                                <span class="text-[11px] font-extrabold text-[#718379] uppercase tracking-wider">WAJIB SETOR LACI</span>
                                 <span class="p-1.5 rounded-lg bg-amber-50 text-amber-800 border border-amber-200">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
                                 </span>
@@ -262,7 +266,7 @@
                                 <div class="text-base sm:text-lg font-black font-mono text-amber-950 tracking-tight">
                                     Rp {{ number_format($dailySummaryData['setoran_tunai'], 0, ',', '.') }}
                                 </div>
-                                <span class="text-[10px] text-amber-800 font-semibold">Uang Fisik Kasir</span>
+                                <span class="text-[10px] text-amber-800 font-semibold">Setoran Tunai Kasir</span>
                             </div>
                         </div>
 
@@ -275,7 +279,7 @@
                         @endphp
                         <div class="bg-white border border-slate-200 rounded-2xl p-3.5 sm:p-4 shadow-xs flex flex-col justify-between space-y-2">
                             <div class="flex items-center justify-between">
-                                <span class="text-[11px] font-extrabold text-[#718379] uppercase tracking-wider">TOTAL SALDO DIGITAL</span>
+                                <span class="text-[11px] font-extrabold text-[#718379] uppercase tracking-wider">TOTAL SALDO AKUN</span>
                                 <span class="p-1.5 rounded-lg bg-sky-50 text-sky-700 border border-sky-200">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
                                 </span>
@@ -300,32 +304,32 @@
                                 <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xs flex flex-col justify-between">
                                     <div class="bg-[#F3F6F4] px-3.5 py-2 border-b border-slate-200 flex items-center justify-between font-extrabold text-xs text-[#2C3E35]">
                                         <span class="uppercase tracking-wider">DANA</span>
-                                        <span class="text-[10px] text-[#718379] font-semibold">E-Wallet</span>
+                                        <span class="text-[10px] text-[#718379] font-semibold">E-Wallet / Digital</span>
                                     </div>
                                     <div class="divide-y divide-slate-100 text-xs font-medium flex-1">
                                         <div class="grid grid-cols-2 px-3 py-2 items-center hover:bg-slate-50">
-                                            <span class="text-[#718379]">SALDO AWAL</span>
+                                            <span class="text-[#718379]">Saldo Awal</span>
                                             <span class="text-right font-mono font-bold text-[#2C3E35]">Rp {{ number_format($dailySummaryData['dana_saldo_awal'], 0, ',', '.') }}</span>
                                         </div>
                                         <div class="grid grid-cols-2 px-3 py-2 items-center hover:bg-slate-50">
-                                            <span class="text-[#718379]">TOP UP SALDO</span>
+                                            <span class="text-[#718379]">Top Up Saldo</span>
                                             <span class="text-right font-mono font-bold text-[#2C3E35]">Rp {{ number_format($dailySummaryData['dana_topup'], 0, ',', '.') }}</span>
                                         </div>
                                         <div class="grid grid-cols-2 px-3 py-2 items-center bg-slate-50/80 font-bold text-[#2C3E35]">
-                                            <span>TOTAL SALDO</span>
+                                            <span>Total Saldo Tersedia</span>
                                             <span class="text-right font-mono font-black">Rp {{ number_format($dailySummaryData['dana_total'], 0, ',', '.') }}</span>
                                         </div>
                                         <div class="grid grid-cols-2 px-3 py-2 items-center hover:bg-slate-50">
-                                            <span class="text-[#718379]">TERPAKAI (TRX)</span>
+                                            <span class="text-[#718379]">Penggunaan Transaksi (Trx)</span>
                                             <span class="text-right font-mono font-bold text-[#2C3E35]">Rp {{ number_format($dailySummaryData['dana_trx'], 0, ',', '.') }}</span>
                                         </div>
                                         <div class="grid grid-cols-2 px-3 py-2 items-center bg-slate-100/70 font-extrabold text-[#2C3E35]">
-                                            <span>SALDO AKHIR</span>
+                                            <span>Saldo Akhir Sistem</span>
                                             <span class="text-right font-mono">Rp {{ number_format($dailySummaryData['dana_saldo_akhir'], 0, ',', '.') }}</span>
                                         </div>
                                     </div>
                                     <div class="grid grid-cols-2 px-3 py-2 items-center bg-amber-100 text-amber-950 font-black border-t border-amber-200">
-                                        <span class="text-[11px]">SALDO ANDROID</span>
+                                        <span class="text-[11px]">Saldo Aktual Aplikasi (Fisik)</span>
                                         <span class="text-right font-mono text-xs">Rp {{ number_format($dailySummaryData['dana_saldo_android'], 0, ',', '.') }}</span>
                                     </div>
                                 </div>
@@ -334,34 +338,34 @@
                                 <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xs flex flex-col justify-between">
                                     <div class="bg-[#F3F6F4] px-3.5 py-2 border-b border-slate-200 flex items-center justify-between font-extrabold text-xs text-[#2C3E35]">
                                         <span class="uppercase tracking-wider">QRIS</span>
-                                        <span class="text-[10px] text-[#718379] font-semibold">Payment Gateway</span>
+                                        <span class="text-[10px] text-[#718379] font-semibold">Gateway Pembayaran</span>
                                     </div>
                                     <div class="divide-y divide-slate-100 text-xs font-medium flex-1">
                                         <div class="grid grid-cols-2 px-3 py-2 items-center hover:bg-slate-50">
-                                            <span class="text-[#718379]">PEMBAYARAN POS</span>
+                                            <span class="text-[#718379]">Penjualan QRIS POS</span>
                                             <span class="text-right font-mono font-bold text-[#3F7A5D]">Rp {{ number_format($dailySummaryData['qris_pembayaran'], 0, ',', '.') }}</span>
                                         </div>
                                         <div class="grid grid-cols-2 px-3 py-2 items-center hover:bg-slate-50">
-                                            <span class="text-[#718379]">TARIK TUNAI</span>
+                                            <span class="text-[#718379]">Penerimaan Tarik Tunai</span>
                                             <span class="text-right font-mono font-bold text-[#2C3E35]">Rp {{ number_format($dailySummaryData['qris_tarik_tunai'], 0, ',', '.') }}</span>
                                         </div>
                                         <div class="grid grid-cols-2 px-3 py-2 items-center bg-slate-50/80 font-bold text-[#2C3E35]">
-                                            <span>TOTAL QRIS</span>
+                                            <span>Total Penerimaan QRIS</span>
                                             <span class="text-right font-mono font-black">Rp {{ number_format($dailySummaryData['qris_total'], 0, ',', '.') }}</span>
                                         </div>
                                         <div class="grid grid-cols-2 px-3 py-2 items-center bg-amber-100 text-amber-950 font-black border-t border-amber-200">
-                                            <span class="text-[11px]">SALDO ANDROID</span>
+                                            <span class="text-[11px]">Saldo Aktual Aplikasi (Fisik)</span>
                                             <span class="text-right font-mono text-xs">Rp {{ number_format($dailySummaryData['qris_saldo_android'], 0, ',', '.') }}</span>
                                         </div>
                                     </div>
                                     <div class="grid grid-cols-2 px-3 py-2 items-center bg-slate-50 border-t border-slate-200">
-                                        <span class="text-[11px] font-bold text-[#2C3E35]">STATUS SELISIH</span>
+                                        <span class="text-[11px] font-bold text-[#2C3E35]">Hasil Rekonsiliasi</span>
                                         <div class="text-right font-mono text-xs flex items-center justify-end gap-1.5">
                                             <span class="font-bold text-[#2C3E35]">Rp {{ number_format($dailySummaryData['qris_cek'], 0, ',', '.') }}</span>
                                             @if($dailySummaryData['qris_saldo_android'] == $dailySummaryData['qris_total'])
                                                 <span class="px-1.5 py-0.5 rounded text-[9px] bg-emerald-600 text-white font-black tracking-wider uppercase">MATCH</span>
                                             @else
-                                                <span class="px-1.5 py-0.5 rounded text-[9px] bg-rose-600 text-white font-black tracking-wider uppercase">SELISIH</span>
+                                                <span class="px-1.5 py-0.5 rounded text-[9px] bg-rose-600 text-white font-black tracking-wider uppercase">ADA SELISIH</span>
                                             @endif
                                         </div>
                                     </div>
@@ -371,32 +375,32 @@
                                 <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xs flex flex-col justify-between">
                                     <div class="bg-[#F3F6F4] px-3.5 py-2 border-b border-slate-200 flex items-center justify-between font-extrabold text-xs text-[#2C3E35]">
                                         <span class="uppercase tracking-wider">BANK MAS</span>
-                                        <span class="text-[10px] text-[#718379] font-semibold">Rek. Operasional</span>
+                                        <span class="text-[10px] text-[#718379] font-semibold">Rekening Operasional</span>
                                     </div>
                                     <div class="divide-y divide-slate-100 text-xs font-medium flex-1">
                                         <div class="grid grid-cols-2 px-3 py-2 items-center hover:bg-slate-50">
-                                            <span class="text-[#718379]">SALDO AWAL</span>
+                                            <span class="text-[#718379]">Saldo Awal</span>
                                             <span class="text-right font-mono font-bold text-[#2C3E35]">Rp {{ number_format($dailySummaryData['bankmas_saldo_awal'], 0, ',', '.') }}</span>
                                         </div>
                                         <div class="grid grid-cols-2 px-3 py-2 items-center hover:bg-slate-50">
-                                            <span class="text-[#718379]">TOP UP SALDO</span>
+                                            <span class="text-[#718379]">Top Up Saldo</span>
                                             <span class="text-right font-mono font-bold text-[#2C3E35]">Rp {{ number_format($dailySummaryData['bankmas_topup'], 0, ',', '.') }}</span>
                                         </div>
                                         <div class="grid grid-cols-2 px-3 py-2 items-center bg-slate-50/80 font-bold text-[#2C3E35]">
-                                            <span>TOTAL SALDO</span>
+                                            <span>Total Saldo Tersedia</span>
                                             <span class="text-right font-mono font-black">Rp {{ number_format($dailySummaryData['bankmas_total'], 0, ',', '.') }}</span>
                                         </div>
                                         <div class="grid grid-cols-2 px-3 py-2 items-center hover:bg-slate-50">
-                                            <span class="text-[#718379]">TERPAKAI (TRX)</span>
+                                            <span class="text-[#718379]">Penggunaan Transaksi (Trx)</span>
                                             <span class="text-right font-mono font-bold text-[#2C3E35]">Rp {{ number_format($dailySummaryData['bankmas_trx'], 0, ',', '.') }}</span>
                                         </div>
                                         <div class="grid grid-cols-2 px-3 py-2 items-center bg-slate-100/70 font-extrabold text-[#2C3E35]">
-                                            <span>SALDO AKHIR</span>
+                                            <span>Saldo Akhir Sistem</span>
                                             <span class="text-right font-mono">Rp {{ number_format($dailySummaryData['bankmas_sisa'], 0, ',', '.') }}</span>
                                         </div>
                                     </div>
                                     <div class="grid grid-cols-2 px-3 py-2 items-center bg-amber-100 text-amber-950 font-black border-t border-amber-200">
-                                        <span class="text-[11px]">SALDO ANDROID</span>
+                                        <span class="text-[11px]">Saldo Aktual Aplikasi (Fisik)</span>
                                         <span class="text-right font-mono text-xs">Rp {{ number_format($dailySummaryData['bankmas_saldo_android'], 0, ',', '.') }}</span>
                                     </div>
                                 </div>
@@ -405,32 +409,32 @@
                                 <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xs flex flex-col justify-between">
                                     <div class="bg-[#F3F6F4] px-3.5 py-2 border-b border-slate-200 flex items-center justify-between font-extrabold text-xs text-[#2C3E35]">
                                         <span class="uppercase tracking-wider">MULTI</span>
-                                        <span class="text-[10px] text-[#718379] font-semibold">Distributor Pulsa</span>
+                                        <span class="text-[10px] text-[#718379] font-semibold">Distributor Pulsa &amp; PPOB</span>
                                     </div>
                                     <div class="divide-y divide-slate-100 text-xs font-medium flex-1">
                                         <div class="grid grid-cols-2 px-3 py-2 items-center hover:bg-slate-50">
-                                            <span class="text-[#718379]">SALDO AWAL</span>
+                                            <span class="text-[#718379]">Saldo Awal</span>
                                             <span class="text-right font-mono font-bold text-[#2C3E35]">Rp {{ number_format($dailySummaryData['multi_saldo_awal'], 0, ',', '.') }}</span>
                                         </div>
                                         <div class="grid grid-cols-2 px-3 py-2 items-center hover:bg-slate-50">
-                                            <span class="text-[#718379]">TOP UP SALDO</span>
+                                            <span class="text-[#718379]">Top Up Saldo</span>
                                             <span class="text-right font-mono font-bold text-[#2C3E35]">Rp {{ number_format($dailySummaryData['multi_topup'], 0, ',', '.') }}</span>
                                         </div>
                                         <div class="grid grid-cols-2 px-3 py-2 items-center bg-slate-50/80 font-bold text-[#2C3E35]">
-                                            <span>TOTAL SALDO</span>
+                                            <span>Total Saldo Tersedia</span>
                                             <span class="text-right font-mono font-black">Rp {{ number_format($dailySummaryData['multi_total'], 0, ',', '.') }}</span>
                                         </div>
                                         <div class="grid grid-cols-2 px-3 py-2 items-center hover:bg-slate-50">
-                                            <span class="text-[#718379]">TERPAKAI (TRX)</span>
+                                            <span class="text-[#718379]">Penggunaan Transaksi (Trx)</span>
                                             <span class="text-right font-mono font-bold text-[#2C3E35]">Rp {{ number_format($dailySummaryData['multi_trx'], 0, ',', '.') }}</span>
                                         </div>
                                         <div class="grid grid-cols-2 px-3 py-2 items-center bg-slate-100/70 font-extrabold text-[#2C3E35]">
-                                            <span>SALDO AKHIR</span>
+                                            <span>Saldo Akhir Sistem</span>
                                             <span class="text-right font-mono">Rp {{ number_format($dailySummaryData['multi_sisa'], 0, ',', '.') }}</span>
                                         </div>
                                     </div>
                                     <div class="grid grid-cols-2 px-3 py-2 items-center bg-amber-100 text-amber-950 font-black border-t border-amber-200">
-                                        <span class="text-[11px]">SALDO ANDROID</span>
+                                        <span class="text-[11px]">Saldo Aktual Aplikasi (Fisik)</span>
                                         <span class="text-right font-mono text-xs">Rp {{ number_format($dailySummaryData['multi_saldo_android'], 0, ',', '.') }}</span>
                                     </div>
                                 </div>
@@ -444,63 +448,63 @@
                             <!-- Settlement Box -->
                             <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xs">
                                 <div class="bg-[#2C3E35] text-white px-3.5 py-2.5 font-extrabold text-xs uppercase tracking-wider flex items-center justify-between">
-                                    <span>REKAPITULASI PENJUALAN</span>
-                                    <span class="text-[10px] text-emerald-300 font-mono font-bold">AUTOMATED</span>
+                                    <span>RINCIAN PENJUALAN &amp; SETORAN</span>
+                                    <span class="text-[10px] text-emerald-300 font-mono font-bold">OTOMATIS</span>
                                 </div>
                                 <div class="divide-y divide-slate-100 text-xs">
                                     
                                     <!-- MARGIN -->
                                     <div class="flex items-center justify-between px-3.5 py-2.5 bg-emerald-50/60">
-                                        <span class="font-extrabold text-[#2C3E35]">MARGIN (PROFIT TOKO)</span>
+                                        <span class="font-extrabold text-[#2C3E35]">Laba Kotor Toko</span>
                                         <span class="font-mono font-black text-xs sm:text-sm text-[#3F7A5D]">Rp {{ number_format($dailySummaryData['margin'], 0, ',', '.') }}</span>
                                     </div>
 
                                     <!-- PENJUALAN -->
                                     <div class="flex items-center justify-between px-3.5 py-2.5 bg-amber-100/80 text-amber-950 font-extrabold">
-                                        <span>TOTAL PENJUALAN</span>
+                                        <span>Total Omzet Penjualan</span>
                                         <span class="font-mono text-xs sm:text-sm">Rp {{ number_format($dailySummaryData['total_penjualan'], 0, ',', '.') }}</span>
                                     </div>
 
                                     <!-- TARIK TUNAI -->
                                     <div class="flex items-center justify-between px-3.5 py-2 bg-slate-50 font-bold text-[#2C3E35]">
-                                        <span>TARIK TUNAI KASIR</span>
+                                        <span>Penerimaan Tarik Tunai</span>
                                         <span class="font-mono text-xs">Rp {{ number_format($dailySummaryData['tarik_tunai_kasir'], 0, ',', '.') }}</span>
                                     </div>
 
                                     <!-- SUBTOTAL NETTO -->
                                     <div class="flex items-center justify-between px-3.5 py-2 bg-white font-extrabold text-rose-700">
-                                        <span>SUBTOTAL NETTO</span>
+                                        <span>Omzet Penjualan Netto</span>
                                         <span class="font-mono text-xs">Rp {{ number_format($dailySummaryData['subtotal_netto'], 0, ',', '.') }}</span>
                                     </div>
 
                                     <!-- QRIS POS -->
                                     <div class="flex items-center justify-between px-3.5 py-2 bg-slate-50 font-medium text-[#2C3E35]">
-                                        <span class="text-[#718379]">PEMBAYARAN QRIS</span>
+                                        <span class="text-[#718379]">Penerimaan QRIS</span>
                                         <span class="font-mono text-xs font-bold text-slate-700">Rp {{ number_format($dailySummaryData['qris_pembayaran_pos'], 0, ',', '.') }}</span>
                                     </div>
 
                                     <!-- TUNAI POS -->
                                     <div class="flex items-center justify-between px-3.5 py-2 bg-white font-medium text-[#2C3E35]">
-                                        <span class="text-[#718379]">PEMBAYARAN TUNAI</span>
+                                        <span class="text-[#718379]">Penerimaan Tunai</span>
                                         <span class="font-mono text-xs font-bold text-slate-700">Rp {{ number_format($dailySummaryData['tunai_pembayaran_pos'], 0, ',', '.') }}</span>
                                     </div>
 
                                     <!-- TRANSFER POS -->
                                     <div class="flex items-center justify-between px-3.5 py-2 bg-white font-medium text-[#2C3E35]">
-                                        <span class="text-[#718379]">PEMBAYARAN TRANSFER</span>
+                                        <span class="text-[#718379]">Penerimaan Transfer Bank</span>
                                         <span class="font-mono text-xs font-bold text-slate-700">Rp {{ number_format($dailySummaryData['transfer_pembayaran_pos'], 0, ',', '.') }}</span>
                                     </div>
 
                                     <!-- SETORAN TUNAI FISIK (BOX HIJAU ENTERPRISE) -->
                                     <div class="p-4 bg-[#3F7A5D] text-white space-y-1">
                                         <div class="text-[10px] font-extrabold uppercase tracking-wider text-emerald-100 flex items-center justify-between">
-                                            <span>SETORAN TUNAI LACI KASIR</span>
+                                            <span>WAJIB SETOR UANG TUNAI LACI</span>
                                             <span class="px-1.5 py-0.5 rounded text-[9px] bg-[#2C3E35] text-emerald-200 font-bold uppercase tracking-wider">FISIK KASIR</span>
                                         </div>
                                         <div class="text-xl sm:text-2xl font-black font-mono tracking-tight text-white">
                                             Rp {{ number_format($dailySummaryData['setoran_tunai'], 0, ',', '.') }}
                                         </div>
-                                        <p class="text-[10px] text-emerald-100/90 font-medium">Uang fisik tunai yang wajib disetorkan kasir dari laci akhir hari.</p>
+                                        <p class="text-[10px] text-emerald-100/90 font-medium">Total uang fisik tunai di laci yang wajib disetorkan kasir pada akhir hari.</p>
                                     </div>
 
                                 </div>

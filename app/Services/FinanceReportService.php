@@ -283,8 +283,22 @@ class FinanceReportService
             ->with(['verifier', 'creator'])
             ->first();
 
-        // Defaults or saved values
-        $danaAwal = (float) ($savedSummary?->dana_saldo_awal ?? 0);
+        // Defaults or saved values (inherit yesterday's closing balance if unstarted)
+        if (! $savedSummary) {
+            $yesterdayDate = Carbon::parse($targetDate)->subDay()->toDateString();
+            $yesterdaySummary = DailySummary::forUserLocation($user)
+                ->whereDate('summary_date', $yesterdayDate)
+                ->first();
+
+            $danaAwal = (float) ($yesterdaySummary?->dana_saldo_android ?? 0);
+            $bankmasAwal = (float) ($yesterdaySummary?->bankmas_saldo_android ?? 0);
+            $multiAwal = (float) ($yesterdaySummary?->multi_saldo_android ?? 0);
+        } else {
+            $danaAwal = (float) $savedSummary->dana_saldo_awal;
+            $bankmasAwal = (float) $savedSummary->bankmas_saldo_awal;
+            $multiAwal = (float) $savedSummary->multi_saldo_awal;
+        }
+
         $danaTopup = (float) ($savedSummary?->dana_topup ?? 0);
         $danaTrx = (float) ($savedSummary?->dana_trx ?? 0);
         $danaAndroid = (float) ($savedSummary?->dana_saldo_android ?? ($danaAwal + $danaTopup - $danaTrx));
@@ -292,12 +306,10 @@ class FinanceReportService
         $qrisTarikTunai = (float) ($savedSummary?->qris_tarik_tunai ?? 0);
         $qrisAndroid = (float) ($savedSummary?->qris_saldo_android ?? ($qrisPembayaran + $qrisTarikTunai));
 
-        $bankmasAwal = (float) ($savedSummary?->bankmas_saldo_awal ?? 0);
         $bankmasTopup = (float) ($savedSummary?->bankmas_topup ?? 0);
         $bankmasTrx = (float) ($savedSummary?->bankmas_trx ?? 0);
         $bankmasAndroid = (float) ($savedSummary?->bankmas_saldo_android ?? ($bankmasAwal + $bankmasTopup - $bankmasTrx));
 
-        $multiAwal = (float) ($savedSummary?->multi_saldo_awal ?? 0);
         $multiTopup = (float) ($savedSummary?->multi_topup ?? 0);
         $multiTrx = (float) ($savedSummary?->multi_trx ?? 0);
         $multiAndroid = (float) ($savedSummary?->multi_saldo_android ?? ($multiAwal + $multiTopup - $multiTrx));
