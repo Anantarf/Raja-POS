@@ -5,7 +5,10 @@
             <h1 class="text-xl sm:text-2xl font-extrabold text-[#2C3E35] tracking-tight">
                 Selamat Datang, {{ auth()->user()->name }}!
             </h1>
-            <div class="pt-1">
+            <p class="text-xs sm:text-sm text-[#5F7167] font-medium leading-relaxed max-w-xl">
+                Ringkasan performa penjualan, monitoring saldo, dan manajemen operasional toko Anda hari ini.
+            </p>
+            <div class="pt-1.5">
                 <a href="/pos" class="h-10 px-4 text-xs sm:text-sm bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold rounded-xl inline-flex items-center gap-2 transition shadow-sm active:scale-95">
                     <span>Buka Layar Kasir</span> &rarr;
                 </a>
