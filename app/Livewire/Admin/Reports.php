@@ -101,24 +101,36 @@ class Reports extends Component
         $this->notes = $data['saved_model']?->notes;
     }
 
-    public function startChecking(FinanceReportService $reportService): void
+    public bool $showInputModal = false;
+
+    public function openInputModal(FinanceReportService $reportService): void
     {
         $user = auth()->user();
-        $locationId = $user->location_id ?? 1;
+        $existing = DailySummary::forUserLocation($user)->whereDate('summary_date', $this->summaryDate)->first();
 
-        DailySummary::updateOrCreate(
-            [
-                'location_id' => $locationId,
-                'summary_date' => $this->summaryDate,
-            ],
-            [
-                'status' => 'SEDANG_DICEK',
-                'created_by' => $user->id,
-            ]
-        );
+        if ($existing && $existing->status === 'SUDAH_DICEK' && ! $user->can('balance.adjust') && $user->role?->name !== 'OWNER') {
+            $this->dispatch('notify', message: 'Laporan tanggal ini sudah divalidasi & terkunci.', type: 'danger');
+            return;
+        }
 
         $this->loadDailySummaryForm($reportService);
-        $this->dispatch('notify', message: 'Pencatatan Rekap Harian dimulai. Silakan isi saldo fisik.', type: 'info');
+        $this->showInputModal = true;
+    }
+
+    public function closeInputModal(): void
+    {
+        $this->showInputModal = false;
+    }
+
+    public function saveInputModal(FinanceReportService $reportService): void
+    {
+        $this->saveDraft($reportService);
+        $this->showInputModal = false;
+    }
+
+    public function startChecking(FinanceReportService $reportService): void
+    {
+        $this->openInputModal($reportService);
     }
 
     public function saveDraft(FinanceReportService $reportService): void
