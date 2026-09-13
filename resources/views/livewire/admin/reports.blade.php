@@ -706,33 +706,33 @@
                             <table class="w-full text-xs text-left">
                                 <thead class="bg-[#F3F6F4] border-b border-slate-200/80 text-[#718379] uppercase text-[11px] font-extrabold tracking-wider">
                                     <tr>
-                                        <th class="py-2.5 px-3">Metode Pembayaran</th>
-                                        <th class="py-2.5 px-3 text-right">Saldo Sistem</th>
-                                        <th class="py-2.5 px-3 text-center w-44">Saldo Aktual</th>
-                                        <th class="py-2.5 px-3 text-right">Selisih</th>
-                                        <th class="py-2.5 px-3 text-center w-28">Koreksi</th>
+                                        <th class="py-3 px-3.5">Metode Pembayaran</th>
+                                        <th class="py-3 px-3.5 text-right">Saldo Sistem</th>
+                                        <th class="py-3 px-3.5 text-right w-44 sm:w-48">Saldo Aktual</th>
+                                        <th class="py-3 px-3.5 text-right">Selisih</th>
+                                        <th class="py-3 px-3.5 text-center w-28">Koreksi</th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-slate-100 font-medium text-xs">
                                     <!-- 1. DANA -->
                                     <tr class="hover:bg-[#F3F6F4]/60 transition">
-                                        <td class="py-2.5 px-3">
+                                        <td class="py-3 px-3.5">
                                             <div class="font-extrabold text-[#2C3E35] text-xs sm:text-sm flex items-center gap-1.5">
                                                 <span class="w-2 h-2 rounded-full bg-sky-500 shrink-0"></span>
                                                 <span>DANA</span>
                                             </div>
                                         </td>
-                                        <td class="py-2.5 px-3 text-right">
+                                        <td class="py-3 px-3.5 text-right">
                                             <div class="font-mono font-extrabold text-[#2C3E35] text-xs sm:text-sm">Rp {{ number_format($mDanaAkhir, 0, ',', '.') }}</div>
                                             <div class="text-[10px] text-[#718379] font-mono">Awal: Rp {{ number_format((float)$danaSaldoAwal, 0, ',', '.') }}</div>
                                         </td>
-                                        <td class="py-2.5 px-3">
-                                            <div class="relative flex items-center h-[38px]">
+                                        <td class="py-3 px-3.5 text-right">
+                                            <div class="relative flex items-center h-10 w-36 sm:w-40 ml-auto">
                                                 <span class="absolute left-2.5 font-mono text-xs text-slate-400 select-none pointer-events-none font-bold">Rp</span>
-                                                <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('danaSaldoAndroid', val ? parseInt(val) : 0);" value="{{ $danaSaldoAndroid ? number_format((float)$danaSaldoAndroid, 0, ',', '.') : '' }}" class="w-full h-full pl-7 pr-2.5 border border-slate-200 rounded-lg bg-[#F3F6F4] font-mono font-extrabold text-right text-xs sm:text-sm text-[#2C3E35] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] transition" placeholder="0" />
+                                                <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('danaSaldoAndroid', val ? parseInt(val) : 0);" value="{{ $danaSaldoAndroid ? number_format((float)$danaSaldoAndroid, 0, ',', '.') : '' }}" class="w-full h-10 pl-7 pr-2.5 border border-slate-300 rounded-xl bg-[#F3F6F4] font-mono font-extrabold text-right text-xs sm:text-sm text-[#2C3E35] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] transition shadow-2xs" placeholder="0" />
                                             </div>
                                         </td>
-                                        <td class="py-2.5 px-3 text-right whitespace-nowrap">
+                                        <td class="py-3 px-3.5 text-right whitespace-nowrap">
                                             @if($mDanaSelisih == 0)
                                                 <span class="font-mono font-extrabold text-xs sm:text-sm text-[#3F7A5D]">Rp 0</span>
                                             @elseif($mDanaSelisih < 0)
@@ -741,7 +741,7 @@
                                                 <span class="font-mono font-extrabold text-xs sm:text-sm text-emerald-600">+Rp {{ number_format($mDanaSelisih, 0, ',', '.') }}</span>
                                             @endif
                                         </td>
-                                        <td class="py-2.5 px-3 text-center">
+                                        <td class="py-3 px-3.5 text-center">
                                             <button type="button" x-on:click="openAdj = (openAdj === 'dana' ? null : 'dana')" class="px-2.5 py-1 bg-[#F3F6F4] hover:bg-[#E3EEE8] text-[#2C3E35] hover:text-[#3F7A5D] font-extrabold rounded-lg transition cursor-pointer text-[11px]">
                                                 Penyesuaian
                                             </button>
@@ -764,23 +764,23 @@
 
                                     <!-- 2. QRIS -->
                                     <tr class="hover:bg-[#F3F6F4]/60 transition">
-                                        <td class="py-2.5 px-3">
+                                        <td class="py-3 px-3.5">
                                             <div class="font-extrabold text-[#2C3E35] text-xs sm:text-sm flex items-center gap-1.5">
                                                 <span class="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>
                                                 <span>QRIS</span>
                                             </div>
                                         </td>
-                                        <td class="py-2.5 px-3 text-right">
+                                        <td class="py-3 px-3.5 text-right">
                                             <div class="font-mono font-extrabold text-[#2C3E35] text-xs sm:text-sm">Rp {{ number_format($mQrisExpected, 0, ',', '.') }}</div>
                                             <div class="text-[10px] text-[#718379] font-mono">Awal: Rp {{ number_format($dailySummaryData['qris_pembayaran'], 0, ',', '.') }}</div>
                                         </td>
-                                        <td class="py-2.5 px-3">
-                                            <div class="relative flex items-center h-[38px]">
+                                        <td class="py-3 px-3.5 text-right">
+                                            <div class="relative flex items-center h-10 w-36 sm:w-40 ml-auto">
                                                 <span class="absolute left-2.5 font-mono text-xs text-slate-400 select-none pointer-events-none font-bold">Rp</span>
-                                                <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('qrisSaldoAndroid', val ? parseInt(val) : 0);" value="{{ $qrisSaldoAndroid ? number_format((float)$qrisSaldoAndroid, 0, ',', '.') : '' }}" class="w-full h-full pl-7 pr-2.5 border border-slate-200 rounded-lg bg-[#F3F6F4] font-mono font-extrabold text-right text-xs sm:text-sm text-[#2C3E35] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] transition" placeholder="0" />
+                                                <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('qrisSaldoAndroid', val ? parseInt(val) : 0);" value="{{ $qrisSaldoAndroid ? number_format((float)$qrisSaldoAndroid, 0, ',', '.') : '' }}" class="w-full h-10 pl-7 pr-2.5 border border-slate-300 rounded-xl bg-[#F3F6F4] font-mono font-extrabold text-right text-xs sm:text-sm text-[#2C3E35] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] transition shadow-2xs" placeholder="0" />
                                             </div>
                                         </td>
-                                        <td class="py-2.5 px-3 text-right whitespace-nowrap">
+                                        <td class="py-3 px-3.5 text-right whitespace-nowrap">
                                             @if($mQrisSelisih == 0)
                                                 <span class="font-mono font-extrabold text-xs sm:text-sm text-[#3F7A5D]">Rp 0</span>
                                             @elseif($mQrisSelisih < 0)
@@ -789,7 +789,7 @@
                                                 <span class="font-mono font-extrabold text-xs sm:text-sm text-emerald-600">+Rp {{ number_format($mQrisSelisih, 0, ',', '.') }}</span>
                                             @endif
                                         </td>
-                                        <td class="py-2.5 px-3 text-center">
+                                        <td class="py-3 px-3.5 text-center">
                                             <button type="button" x-on:click="openAdj = (openAdj === 'qris' ? null : 'qris')" class="px-2.5 py-1 bg-[#F3F6F4] hover:bg-[#E3EEE8] text-[#2C3E35] hover:text-[#3F7A5D] font-extrabold rounded-lg transition cursor-pointer text-[11px]">
                                                 Penyesuaian
                                             </button>
@@ -806,23 +806,23 @@
 
                                     <!-- 3. BCA -->
                                     <tr class="hover:bg-[#F3F6F4]/60 transition">
-                                        <td class="py-2.5 px-3">
+                                        <td class="py-3 px-3.5">
                                             <div class="font-extrabold text-[#2C3E35] text-xs sm:text-sm flex items-center gap-1.5">
                                                 <span class="w-2 h-2 rounded-full bg-blue-600 shrink-0"></span>
                                                 <span>BCA</span>
                                             </div>
                                         </td>
-                                        <td class="py-2.5 px-3 text-right">
+                                        <td class="py-3 px-3.5 text-right">
                                             <div class="font-mono font-extrabold text-[#2C3E35] text-xs sm:text-sm">Rp {{ number_format($mBcaAkhir, 0, ',', '.') }}</div>
                                             <div class="text-[10px] text-[#718379] font-mono">Awal: Rp {{ number_format((float)$bcaSaldoAwal, 0, ',', '.') }}</div>
                                         </td>
-                                        <td class="py-2.5 px-3">
-                                            <div class="relative flex items-center h-[38px]">
+                                        <td class="py-3 px-3.5 text-right">
+                                            <div class="relative flex items-center h-10 w-36 sm:w-40 ml-auto">
                                                 <span class="absolute left-2.5 font-mono text-xs text-slate-400 select-none pointer-events-none font-bold">Rp</span>
-                                                <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('bcaSaldoAndroid', val ? parseInt(val) : 0);" value="{{ $bcaSaldoAndroid ? number_format((float)$bcaSaldoAndroid, 0, ',', '.') : '' }}" class="w-full h-full pl-7 pr-2.5 border border-slate-200 rounded-lg bg-[#F3F6F4] font-mono font-extrabold text-right text-xs sm:text-sm text-[#2C3E35] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] transition" placeholder="0" />
+                                                <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('bcaSaldoAndroid', val ? parseInt(val) : 0);" value="{{ $bcaSaldoAndroid ? number_format((float)$bcaSaldoAndroid, 0, ',', '.') : '' }}" class="w-full h-10 pl-7 pr-2.5 border border-slate-300 rounded-xl bg-[#F3F6F4] font-mono font-extrabold text-right text-xs sm:text-sm text-[#2C3E35] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] transition shadow-2xs" placeholder="0" />
                                             </div>
                                         </td>
-                                        <td class="py-2.5 px-3 text-right whitespace-nowrap">
+                                        <td class="py-3 px-3.5 text-right whitespace-nowrap">
                                             @if($mBcaSelisih == 0)
                                                 <span class="font-mono font-extrabold text-xs sm:text-sm text-[#3F7A5D]">Rp 0</span>
                                             @elseif($mBcaSelisih < 0)
@@ -831,7 +831,7 @@
                                                 <span class="font-mono font-extrabold text-xs sm:text-sm text-emerald-600">+Rp {{ number_format($mBcaSelisih, 0, ',', '.') }}</span>
                                             @endif
                                         </td>
-                                        <td class="py-2.5 px-3 text-center">
+                                        <td class="py-3 px-3.5 text-center">
                                             <button type="button" x-on:click="openAdj = (openAdj === 'bca' ? null : 'bca')" class="px-2.5 py-1 bg-[#F3F6F4] hover:bg-[#E3EEE8] text-[#2C3E35] hover:text-[#3F7A5D] font-extrabold rounded-lg transition cursor-pointer text-[11px]">
                                                 Penyesuaian
                                             </button>
@@ -854,23 +854,23 @@
 
                                     <!-- 4. BANK MAS -->
                                     <tr class="hover:bg-[#F3F6F4]/60 transition">
-                                        <td class="py-2.5 px-3">
+                                        <td class="py-3 px-3.5">
                                             <div class="font-extrabold text-[#2C3E35] text-xs sm:text-sm flex items-center gap-1.5">
                                                 <span class="w-2 h-2 rounded-full bg-indigo-600 shrink-0"></span>
                                                 <span>Bank MAS</span>
                                             </div>
                                         </td>
-                                        <td class="py-2.5 px-3 text-right">
+                                        <td class="py-3 px-3.5 text-right">
                                             <div class="font-mono font-extrabold text-[#2C3E35] text-xs sm:text-sm">Rp {{ number_format($mBankmasAkhir, 0, ',', '.') }}</div>
                                             <div class="text-[10px] text-[#718379] font-mono">Awal: Rp {{ number_format((float)$bankmasSaldoAwal, 0, ',', '.') }}</div>
                                         </td>
-                                        <td class="py-2.5 px-3">
-                                            <div class="relative flex items-center h-[38px]">
+                                        <td class="py-3 px-3.5 text-right">
+                                            <div class="relative flex items-center h-10 w-36 sm:w-40 ml-auto">
                                                 <span class="absolute left-2.5 font-mono text-xs text-slate-400 select-none pointer-events-none font-bold">Rp</span>
-                                                <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('bankmasSaldoAndroid', val ? parseInt(val) : 0);" value="{{ $bankmasSaldoAndroid ? number_format((float)$bankmasSaldoAndroid, 0, ',', '.') : '' }}" class="w-full h-full pl-7 pr-2.5 border border-slate-200 rounded-lg bg-[#F3F6F4] font-mono font-extrabold text-right text-xs sm:text-sm text-[#2C3E35] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] transition" placeholder="0" />
+                                                <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('bankmasSaldoAndroid', val ? parseInt(val) : 0);" value="{{ $bankmasSaldoAndroid ? number_format((float)$bankmasSaldoAndroid, 0, ',', '.') : '' }}" class="w-full h-10 pl-7 pr-2.5 border border-slate-300 rounded-xl bg-[#F3F6F4] font-mono font-extrabold text-right text-xs sm:text-sm text-[#2C3E35] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] transition shadow-2xs" placeholder="0" />
                                             </div>
                                         </td>
-                                        <td class="py-2.5 px-3 text-right whitespace-nowrap">
+                                        <td class="py-3 px-3.5 text-right whitespace-nowrap">
                                             @if($mBankmasSelisih == 0)
                                                 <span class="font-mono font-extrabold text-xs sm:text-sm text-[#3F7A5D]">Rp 0</span>
                                             @elseif($mBankmasSelisih < 0)
@@ -879,7 +879,7 @@
                                                 <span class="font-mono font-extrabold text-xs sm:text-sm text-emerald-600">+Rp {{ number_format($mBankmasSelisih, 0, ',', '.') }}</span>
                                             @endif
                                         </td>
-                                        <td class="py-2.5 px-3 text-center">
+                                        <td class="py-3 px-3.5 text-center">
                                             <button type="button" x-on:click="openAdj = (openAdj === 'bankmas' ? null : 'bankmas')" class="px-2.5 py-1 bg-[#F3F6F4] hover:bg-[#E3EEE8] text-[#2C3E35] hover:text-[#3F7A5D] font-extrabold rounded-lg transition cursor-pointer text-[11px]">
                                                 Penyesuaian
                                             </button>
@@ -902,23 +902,23 @@
 
                                     <!-- 5. MULTI -->
                                     <tr class="hover:bg-[#F3F6F4]/60 transition">
-                                        <td class="py-2.5 px-3">
+                                        <td class="py-3 px-3.5">
                                             <div class="font-extrabold text-[#2C3E35] text-xs sm:text-sm flex items-center gap-1.5">
                                                 <span class="w-2 h-2 rounded-full bg-purple-600 shrink-0"></span>
                                                 <span>Multi</span>
                                             </div>
                                         </td>
-                                        <td class="py-2.5 px-3 text-right">
+                                        <td class="py-3 px-3.5 text-right">
                                             <div class="font-mono font-extrabold text-[#2C3E35] text-xs sm:text-sm">Rp {{ number_format($mMultiAkhir, 0, ',', '.') }}</div>
                                             <div class="text-[10px] text-[#718379] font-mono">Awal: Rp {{ number_format((float)$multiSaldoAwal, 0, ',', '.') }}</div>
                                         </td>
-                                        <td class="py-2.5 px-3">
-                                            <div class="relative flex items-center h-[38px]">
+                                        <td class="py-3 px-3.5 text-right">
+                                            <div class="relative flex items-center h-10 w-36 sm:w-40 ml-auto">
                                                 <span class="absolute left-2.5 font-mono text-xs text-slate-400 select-none pointer-events-none font-bold">Rp</span>
-                                                <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('multiSaldoAndroid', val ? parseInt(val) : 0);" value="{{ $multiSaldoAndroid ? number_format((float)$multiSaldoAndroid, 0, ',', '.') : '' }}" class="w-full h-full pl-7 pr-2.5 border border-slate-200 rounded-lg bg-[#F3F6F4] font-mono font-extrabold text-right text-xs sm:text-sm text-[#2C3E35] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] transition" placeholder="0" />
+                                                <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('multiSaldoAndroid', val ? parseInt(val) : 0);" value="{{ $multiSaldoAndroid ? number_format((float)$multiSaldoAndroid, 0, ',', '.') : '' }}" class="w-full h-10 pl-7 pr-2.5 border border-slate-300 rounded-xl bg-[#F3F6F4] font-mono font-extrabold text-right text-xs sm:text-sm text-[#2C3E35] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] transition shadow-2xs" placeholder="0" />
                                             </div>
                                         </td>
-                                        <td class="py-2.5 px-3 text-right whitespace-nowrap">
+                                        <td class="py-3 px-3.5 text-right whitespace-nowrap">
                                             @if($mMultiSelisih == 0)
                                                 <span class="font-mono font-extrabold text-xs sm:text-sm text-[#3F7A5D]">Rp 0</span>
                                             @elseif($mMultiSelisih < 0)
@@ -927,7 +927,7 @@
                                                 <span class="font-mono font-extrabold text-xs sm:text-sm text-emerald-600">+Rp {{ number_format($mMultiSelisih, 0, ',', '.') }}</span>
                                             @endif
                                         </td>
-                                        <td class="py-2.5 px-3 text-center">
+                                        <td class="py-3 px-3.5 text-center">
                                             <button type="button" x-on:click="openAdj = (openAdj === 'multi' ? null : 'multi')" class="px-2.5 py-1 bg-[#F3F6F4] hover:bg-[#E3EEE8] text-[#2C3E35] hover:text-[#3F7A5D] font-extrabold rounded-lg transition cursor-pointer text-[11px]">
                                                 Penyesuaian
                                             </button>
@@ -950,23 +950,23 @@
 
                                     <!-- 6. WAHANA -->
                                     <tr class="hover:bg-[#F3F6F4]/60 transition">
-                                        <td class="py-2.5 px-3">
+                                        <td class="py-3 px-3.5">
                                             <div class="font-extrabold text-[#2C3E35] text-xs sm:text-sm flex items-center gap-1.5">
                                                 <span class="w-2 h-2 rounded-full bg-amber-600 shrink-0"></span>
                                                 <span>Wahana</span>
                                             </div>
                                         </td>
-                                        <td class="py-2.5 px-3 text-right">
+                                        <td class="py-3 px-3.5 text-right">
                                             <div class="font-mono font-extrabold text-[#2C3E35] text-xs sm:text-sm">Rp {{ number_format($mWahanaAkhir, 0, ',', '.') }}</div>
                                             <div class="text-[10px] text-[#718379] font-mono">Awal: Rp {{ number_format((float)$wahanaSaldoAwal, 0, ',', '.') }}</div>
                                         </td>
-                                        <td class="py-2.5 px-3">
-                                            <div class="relative flex items-center h-[38px]">
+                                        <td class="py-3 px-3.5 text-right">
+                                            <div class="relative flex items-center h-10 w-36 sm:w-40 ml-auto">
                                                 <span class="absolute left-2.5 font-mono text-xs text-slate-400 select-none pointer-events-none font-bold">Rp</span>
-                                                <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('wahanaSaldoAndroid', val ? parseInt(val) : 0);" value="{{ $wahanaSaldoAndroid ? number_format((float)$wahanaSaldoAndroid, 0, ',', '.') : '' }}" class="w-full h-full pl-7 pr-2.5 border border-slate-200 rounded-lg bg-[#F3F6F4] font-mono font-extrabold text-right text-xs sm:text-sm text-[#2C3E35] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] transition" placeholder="0" />
+                                                <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('wahanaSaldoAndroid', val ? parseInt(val) : 0);" value="{{ $wahanaSaldoAndroid ? number_format((float)$wahanaSaldoAndroid, 0, ',', '.') : '' }}" class="w-full h-10 pl-7 pr-2.5 border border-slate-300 rounded-xl bg-[#F3F6F4] font-mono font-extrabold text-right text-xs sm:text-sm text-[#2C3E35] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] transition shadow-2xs" placeholder="0" />
                                             </div>
                                         </td>
-                                        <td class="py-2.5 px-3 text-right whitespace-nowrap">
+                                        <td class="py-3 px-3.5 text-right whitespace-nowrap">
                                             @if($mWahanaSelisih == 0)
                                                 <span class="font-mono font-extrabold text-xs sm:text-sm text-[#3F7A5D]">Rp 0</span>
                                             @elseif($mWahanaSelisih < 0)
@@ -975,7 +975,7 @@
                                                 <span class="font-mono font-extrabold text-xs sm:text-sm text-emerald-600">+Rp {{ number_format($mWahanaSelisih, 0, ',', '.') }}</span>
                                             @endif
                                         </td>
-                                        <td class="py-2.5 px-3 text-center">
+                                        <td class="py-3 px-3.5 text-center">
                                             <button type="button" x-on:click="openAdj = (openAdj === 'wahana' ? null : 'wahana')" class="px-2.5 py-1 bg-[#F3F6F4] hover:bg-[#E3EEE8] text-[#2C3E35] hover:text-[#3F7A5D] font-extrabold rounded-lg transition cursor-pointer text-[11px]">
                                                 Penyesuaian
                                             </button>
