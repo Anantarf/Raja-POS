@@ -254,69 +254,33 @@
 
                     <!-- Simulated Paper Container -->
                     <div class="bg-slate-100 p-4 rounded-xl flex justify-center overflow-x-auto">
-                        <div class="bg-white text-black font-mono text-[11px] leading-tight shadow-md p-3 border border-slate-300 rounded transition-all duration-300" style="width: {{ $receiptPaperWidth === '80mm' ? '280px' : '200px' }};">
-                            <!-- Header -->
-                            <div class="text-center font-bold text-xs uppercase">{{ filled($storeName) ? $storeName : 'RAJA AKSESORIS' }}</div>
-                            @if(filled($receiptHeaderTagline))
-                                <div class="text-center text-[10px]">{{ $receiptHeaderTagline }}</div>
-                            @endif
-                            @if(filled($receiptAddress))
-                                <div class="text-center text-[9px] text-slate-600 mt-0.5 leading-tight">{{ $receiptAddress }}</div>
-                            @endif
-                            @if(filled($receiptPhone))
-                                <div class="text-center text-[9px] text-slate-600">Telp: {{ $receiptPhone }}</div>
-                            @endif
-
-                            <div class="border-t border-dashed border-black my-1.5"></div>
-
-                            <!-- Meta -->
-                            <div>No: INV-20260913-001</div>
-                            <div>Tgl: {{ date('d/m/Y H:i') }}</div>
-                            @if($showCashierName)
-                                <div>Kasir: {{ auth()->user()->name ?? 'Kasir Utami' }}</div>
-                            @endif
-
-                            <div class="border-t border-dashed border-black my-1.5"></div>
-
-                            <!-- Items -->
-                            <div class="space-y-1">
-                                <div>
-                                    <div class="font-bold">Kabel Data Type-C Fast</div>
-                                    <div class="flex justify-between">
-                                        <span>2 x Rp25.000</span>
-                                        <span>Rp50.000</span>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="font-bold">Tempered Glass Bening</div>
-                                    <div class="flex justify-between">
-                                        <span>1 x Rp35.000</span>
-                                        <span>Rp35.000</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="border-t border-dashed border-black my-1.5"></div>
-
-                            <!-- Totals -->
-                            <div class="space-y-0.5">
-                                <div class="flex justify-between font-bold">
-                                    <span>TOTAL</span>
-                                    <span>Rp85.000</span>
-                                </div>
-                                <div class="flex justify-between text-[10px]">
-                                    <span>BAYAR (Tunai)</span>
-                                    <span>Rp100.000</span>
-                                </div>
-                            </div>
-
-                            <div class="border-t border-dashed border-black my-1.5"></div>
-
-                            <!-- Footer -->
-                            <div class="text-center text-[10px] whitespace-pre-line leading-snug">
-                                {{ filled($receiptFooterText) ? $receiptFooterText : "Terima Kasih Telah Berbelanja!\nSampai Jumpa Kembali." }}
-                            </div>
-                        </div>
+                        @include('receipt._preview', [
+                            'storeName' => $storeName,
+                            'tagline' => $receiptHeaderTagline,
+                            'address' => $receiptAddress,
+                            'phone' => $receiptPhone,
+                            'footerText' => $receiptFooterText,
+                            'paperWidth' => $receiptPaperWidth,
+                            'showCashier' => $showCashierName,
+                            'invoiceNumber' => 'INV-20260913-001',
+                            'changeAmount' => 15000,
+                            'previewId' => 'settings-live-receipt-preview',
+                            'sale' => (object) [
+                                'invoice_number' => 'INV-20260913-001',
+                                'transaction_date' => now('Asia/Jakarta'),
+                                'total_amount' => 85000,
+                                'change_amount' => 15000,
+                                'cashier' => auth()->user(),
+                                'user' => auth()->user(),
+                                'items' => collect([
+                                    (object) ['product_name_snapshot' => 'Kabel Data Type-C Fast', 'quantity' => 2, 'selling_price' => 25000, 'subtotal' => 50000],
+                                    (object) ['product_name_snapshot' => 'Tempered Glass Bening', 'quantity' => 1, 'selling_price' => 35000, 'subtotal' => 35000],
+                                ]),
+                                'payments' => collect([
+                                    (object) ['paymentMethod' => (object) ['name' => 'Tunai'], 'amount' => 100000],
+                                ]),
+                            ],
+                        ])
                     </div>
                 </div>
             </div>

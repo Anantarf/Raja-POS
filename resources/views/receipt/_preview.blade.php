@@ -2,13 +2,13 @@
     $receiptSale = $sale ?? null;
     $fallbackInvoice = $invoiceNumber ?? null;
     $fallbackChange = $changeAmount ?? 0;
-    $storeName = \App\Models\Setting::get('store_name', 'Raja Aksesoris');
-    $tagline = \App\Models\Setting::get('receipt_header_tagline', 'Retail Management System');
-    $address = \App\Models\Setting::get('receipt_address', '');
-    $phone = \App\Models\Setting::get('receipt_phone', '');
-    $footerText = \App\Models\Setting::get('receipt_footer_text', 'Terima Kasih Telah Berbelanja!');
-    $paperWidth = \App\Models\Setting::get('receipt_paper_width', '58mm');
-    $showCashier = \App\Models\Setting::get('show_cashier_name', '1') === '1';
+    $storeName = $storeName ?? \App\Models\Setting::get('store_name', 'Raja Aksesoris');
+    $tagline = $tagline ?? \App\Models\Setting::get('receipt_header_tagline', 'Retail Management System');
+    $address = $address ?? \App\Models\Setting::get('receipt_address', '');
+    $phone = $phone ?? \App\Models\Setting::get('receipt_phone', '');
+    $footerText = $footerText ?? \App\Models\Setting::get('receipt_footer_text', 'Terima Kasih Telah Berbelanja!');
+    $paperWidth = $paperWidth ?? \App\Models\Setting::get('receipt_paper_width', '58mm');
+    $showCashier = isset($showCashier) ? (bool) $showCashier : (\App\Models\Setting::get('show_cashier_name', '1') === '1');
 @endphp
 
 <div
