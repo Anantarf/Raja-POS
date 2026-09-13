@@ -44,8 +44,7 @@
             'sales' => 'Penjualan & Produk Terlaris',
             'daily_summary' => 'Summary Harian (Tutup Kas)',
             'inventory' => 'Stok & Valuasi Barang',
-            'payment' => 'Metode Pembayaran',
-            'balance' => 'Saldo Toko'
+            'payment' => 'Metode Pembayaran'
         ] as $key => $label)
             <a href="/admin/reports/{{ $key }}" class="px-3 sm:px-3.5 py-2 sm:py-2.5 rounded-xl transition shrink-0 {{ $type === $key ? 'bg-[#3F7A5D] text-white shadow-xs' : 'text-[#52645B] hover:bg-[#F3F6F4] hover:text-[#2C3E35]' }}">{{ $label }}</a>
         @endforeach
@@ -1330,22 +1329,6 @@
                     @endforelse
                 </tbody>
             </table>
-        </div>
-
-    <!-- Tab 5: Account Balance Position -->
-    @elseif($type === 'balance')
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            @foreach($balanceAccounts as $account)
-                @php
-                    $hasBal = $account->current_balance > 0;
-                @endphp
-                <div class="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-sm space-y-1">
-                    <div class="text-[11px] text-[#718379] font-extrabold uppercase tracking-wider">{{ $account->name }}</div>
-                    <div class="text-2xl font-mono font-extrabold {{ $hasBal ? 'text-[#3F7A5D]' : 'text-slate-400' }}">
-                        Rp {{ number_format($account->current_balance, 0, ',', '.') }}
-                    </div>
-                </div>
-            @endforeach
         </div>
     @endif
 </div>
