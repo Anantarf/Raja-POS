@@ -16,9 +16,9 @@
     class="bg-white p-4 sm:p-5 rounded-xl shadow-md border border-slate-200/80 font-mono text-xs text-black leading-relaxed space-y-3 select-text"
     style="width: {{ $paperWidth === '80mm' ? '280px' : '220px' }}; margin: 0 auto;"
 >
-    <div class="text-center font-bold text-sm uppercase tracking-wide mb-1">{{ filled($storeName) ? $storeName : 'RAJA AKSESORIS' }}</div>
+    <div class="text-center font-bold text-sm uppercase tracking-wide mb-1.5 leading-snug">{{ filled($storeName) ? $storeName : 'RAJA AKSESORIS' }}</div>
     @if(filled($tagline))
-        <div class="text-center text-[10px] text-slate-600">{{ $tagline }}</div>
+        <div class="text-center text-[10px] text-slate-600 mt-1 leading-snug">{{ $tagline }}</div>
     @endif
     @if(filled($address))
         <div class="text-center text-[9px] text-slate-600 mt-0.5">{{ $address }}</div>

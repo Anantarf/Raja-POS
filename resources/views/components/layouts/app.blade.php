@@ -242,12 +242,12 @@
                 // Center align
                 raw(0x1B, 0x61, 0x01);
 
-                // Store Name (Bold + Double Height/Width) -> Double Width half capacity (15 cols for 58mm)
+                // Store Name (Bold + Double Width & Double Height with proper line spacing)
                 raw(0x1B, 0x45, 0x01, 0x1D, 0x21, 0x11);
                 append(wordWrap(data.storeName || 'RAJA AKSESORIS', Math.floor(maxCols / 2)) + '\n');
 
-                // Reset Text Size & Bold
-                raw(0x1D, 0x21, 0x00, 0x1B, 0x45, 0x00);
+                // Reset Text Size & Bold + Reset Line Spacing
+                raw(0x1D, 0x21, 0x00, 0x1B, 0x45, 0x00, 0x1B, 0x32);
 
                 if (data.tagline) append(wordWrap(data.tagline) + '\n');
                 if (data.address) append(wordWrap(data.address) + '\n');

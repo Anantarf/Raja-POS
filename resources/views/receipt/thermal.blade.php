@@ -32,13 +32,15 @@
             margin-bottom: 8px;
         }
         .header h2 {
-            margin: 0;
+            margin: 0 0 5px 0;
             font-size: {{ ($paperWidth ?? '58mm') === '80mm' ? '18px' : '15px' }};
             text-transform: uppercase;
+            line-height: 1.3;
         }
         .header .subtitle {
             font-size: 11px;
-            margin-top: 2px;
+            margin-top: 5px;
+            line-height: 1.35;
         }
         .header .address {
             font-size: 10px;
