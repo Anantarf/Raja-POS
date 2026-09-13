@@ -36,10 +36,20 @@ class Reports extends Component
     public $bankmasTrx = 0;
     public $bankmasSaldoAndroid = 0;
 
+    public $bcaSaldoAwal = 0;
+    public $bcaTopup = 0;
+    public $bcaTrx = 0;
+    public $bcaSaldoAndroid = 0;
+
     public $multiSaldoAwal = 0;
     public $multiTopup = 0;
     public $multiTrx = 0;
     public $multiSaldoAndroid = 0;
+
+    public $wahanaSaldoAwal = 0;
+    public $wahanaTopup = 0;
+    public $wahanaTrx = 0;
+    public $wahanaSaldoAndroid = 0;
 
     public $tarikTunaiKasir = 0;
     public ?string $notes = null;
@@ -104,10 +114,20 @@ class Reports extends Component
         $this->bankmasTrx = $data['bankmas_trx'];
         $this->bankmasSaldoAndroid = $data['bankmas_saldo_android'];
 
+        $this->bcaSaldoAwal = $data['bca_saldo_awal'];
+        $this->bcaTopup = $data['bca_topup'];
+        $this->bcaTrx = $data['bca_trx'];
+        $this->bcaSaldoAndroid = $data['bca_saldo_android'];
+
         $this->multiSaldoAwal = $data['multi_saldo_awal'];
         $this->multiTopup = $data['multi_topup'];
         $this->multiTrx = $data['multi_trx'];
         $this->multiSaldoAndroid = $data['multi_saldo_android'];
+
+        $this->wahanaSaldoAwal = $data['wahana_saldo_awal'];
+        $this->wahanaTopup = $data['wahana_topup'];
+        $this->wahanaTrx = $data['wahana_trx'];
+        $this->wahanaSaldoAndroid = $data['wahana_saldo_android'];
 
         $this->tarikTunaiKasir = $data['tarik_tunai_kasir'];
         $this->notes = $data['saved_model']?->notes;
@@ -157,8 +177,7 @@ class Reports extends Component
         }
 
         $data = $reportService->getDailySummaryReportData($this->summaryDate, $user);
-        $qrisExpected = $data['qris_total'];
-        $hasDiscrepancy = (float) $this->qrisSaldoAndroid != (float) $qrisExpected;
+        $hasDiscrepancy = $data['has_discrepancy'];
 
         DailySummary::updateOrCreate(
             [
@@ -178,10 +197,18 @@ class Reports extends Component
                 'bankmas_topup' => (float) $this->bankmasTopup,
                 'bankmas_trx' => (float) $this->bankmasTrx,
                 'bankmas_saldo_android' => (float) $this->bankmasSaldoAndroid,
+                'bca_saldo_awal' => (float) $this->bcaSaldoAwal,
+                'bca_topup' => (float) $this->bcaTopup,
+                'bca_trx' => (float) $this->bcaTrx,
+                'bca_saldo_android' => (float) $this->bcaSaldoAndroid,
                 'multi_saldo_awal' => (float) $this->multiSaldoAwal,
                 'multi_topup' => (float) $this->multiTopup,
                 'multi_trx' => (float) $this->multiTrx,
                 'multi_saldo_android' => (float) $this->multiSaldoAndroid,
+                'wahana_saldo_awal' => (float) $this->wahanaSaldoAwal,
+                'wahana_topup' => (float) $this->wahanaTopup,
+                'wahana_trx' => (float) $this->wahanaTrx,
+                'wahana_saldo_android' => (float) $this->wahanaSaldoAndroid,
                 'tarik_tunai_kasir' => (float) $this->tarikTunaiKasir,
                 'notes' => $this->notes,
                 'created_by' => $user->id,
@@ -207,10 +234,16 @@ class Reports extends Component
         $bankmasAkhir = (float) $this->bankmasSaldoAwal + (float) $this->bankmasTopup - (float) $this->bankmasTrx;
         $bankmasSelisih = (float) $this->bankmasSaldoAndroid - $bankmasAkhir;
 
+        $bcaAkhir = (float) $this->bcaSaldoAwal + (float) $this->bcaTopup - (float) $this->bcaTrx;
+        $bcaSelisih = (float) $this->bcaSaldoAndroid - $bcaAkhir;
+
         $multiAkhir = (float) $this->multiSaldoAwal + (float) $this->multiTopup - (float) $this->multiTrx;
         $multiSelisih = (float) $this->multiSaldoAndroid - $multiAkhir;
 
-        $hasDiscrepancy = ($danaSelisih != 0 || $qrisSelisih != 0 || $bankmasSelisih != 0 || $multiSelisih != 0);
+        $wahanaAkhir = (float) $this->wahanaSaldoAwal + (float) $this->wahanaTopup - (float) $this->wahanaTrx;
+        $wahanaSelisih = (float) $this->wahanaSaldoAndroid - $wahanaAkhir;
+
+        $hasDiscrepancy = ($danaSelisih != 0 || $qrisSelisih != 0 || $bankmasSelisih != 0 || $bcaSelisih != 0 || $multiSelisih != 0 || $wahanaSelisih != 0);
 
         if ($hasDiscrepancy && empty(trim($this->notes ?? ''))) {
             $this->dispatch('notify', message: 'Terdapat selisih pada saldo. Harap cantumkan penjelasan selisih di kolom catatan sebelum memvalidasi.', type: 'amber');
@@ -235,10 +268,18 @@ class Reports extends Component
                 'bankmas_topup' => (float) $this->bankmasTopup,
                 'bankmas_trx' => (float) $this->bankmasTrx,
                 'bankmas_saldo_android' => (float) $this->bankmasSaldoAndroid,
+                'bca_saldo_awal' => (float) $this->bcaSaldoAwal,
+                'bca_topup' => (float) $this->bcaTopup,
+                'bca_trx' => (float) $this->bcaTrx,
+                'bca_saldo_android' => (float) $this->bcaSaldoAndroid,
                 'multi_saldo_awal' => (float) $this->multiSaldoAwal,
                 'multi_topup' => (float) $this->multiTopup,
                 'multi_trx' => (float) $this->multiTrx,
                 'multi_saldo_android' => (float) $this->multiSaldoAndroid,
+                'wahana_saldo_awal' => (float) $this->wahanaSaldoAwal,
+                'wahana_topup' => (float) $this->wahanaTopup,
+                'wahana_trx' => (float) $this->wahanaTrx,
+                'wahana_saldo_android' => (float) $this->wahanaSaldoAndroid,
                 'tarik_tunai_kasir' => (float) $this->tarikTunaiKasir,
                 'notes' => $this->notes,
                 'created_by' => $user->id,

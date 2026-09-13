@@ -271,7 +271,9 @@
                             $totalSaldoDigital = ($dailySummaryData['dana_saldo_android'] ?? 0) 
                                                + ($dailySummaryData['qris_saldo_android'] ?? 0) 
                                                + ($dailySummaryData['bankmas_saldo_android'] ?? 0) 
-                                               + ($dailySummaryData['multi_saldo_android'] ?? 0);
+                                               + ($dailySummaryData['bca_saldo_android'] ?? 0) 
+                                               + ($dailySummaryData['multi_saldo_android'] ?? 0)
+                                               + ($dailySummaryData['wahana_saldo_android'] ?? 0);
                         @endphp
                         <div class="bg-white border border-slate-200 rounded-2xl p-3.5 sm:p-4 shadow-xs flex flex-col justify-between space-y-2">
                             <div class="flex items-center justify-between">
@@ -284,7 +286,7 @@
                                 <div class="text-base sm:text-lg font-black font-mono text-slate-800 tracking-tight">
                                     Rp {{ number_format($totalSaldoDigital, 0, ',', '.') }}
                                 </div>
-                                <span class="text-[10px] text-[#718379] font-medium">DANA + QRIS + Bank + Multi</span>
+                                <span class="text-[10px] text-[#718379] font-medium">DANA + QRIS + BCA + MAS + Multi + Wahana</span>
                             </div>
                         </div>
                     </div>
@@ -292,7 +294,7 @@
                     <!-- MAIN CONTENT GRID (8 cols left / 4 cols right) -->
                     <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
                         
-                        <!-- Left Column: E-Wallet & Bank Tables Grid (8 cols desktop, 2x2 grid inside) -->
+                        <!-- Left Column: E-Wallet & Bank Tables Grid (8 cols desktop, 2x3 grid inside) -->
                         <div class="lg:col-span-7 xl:col-span-8">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 
@@ -388,7 +390,57 @@
                                     </div>
                                 </div>
 
-                                <!-- 3. BANK MAS Table -->
+                                <!-- 3. BANK BCA Table -->
+                                <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xs flex flex-col justify-between">
+                                    <div class="bg-[#F3F6F4] px-3.5 py-2 border-b border-slate-200 flex items-center justify-between font-extrabold text-xs text-[#2C3E35]">
+                                        <span class="uppercase tracking-wider">BANK BCA</span>
+                                        <span class="text-[10px] text-[#718379] font-semibold">Rekening Utama</span>
+                                    </div>
+                                    <div class="divide-y divide-slate-100 text-xs font-medium flex-1">
+                                        <div class="grid grid-cols-2 px-3 py-2 items-center hover:bg-slate-50">
+                                            <span class="text-[#718379]">Saldo Awal</span>
+                                            <span class="text-right font-mono font-bold text-[#2C3E35]">Rp {{ number_format($dailySummaryData['bca_saldo_awal'], 0, ',', '.') }}</span>
+                                        </div>
+                                        <div class="grid grid-cols-2 px-3 py-2 items-center hover:bg-slate-50">
+                                            <span class="text-[#718379]">Top Up Saldo</span>
+                                            <span class="text-right font-mono font-bold text-[#2C3E35]">Rp {{ number_format($dailySummaryData['bca_topup'], 0, ',', '.') }}</span>
+                                        </div>
+                                        <div class="grid grid-cols-2 px-3 py-2 items-center bg-slate-50/80 font-bold text-[#2C3E35]">
+                                            <span>Total Saldo Tersedia</span>
+                                            <span class="text-right font-mono font-black">Rp {{ number_format($dailySummaryData['bca_total'], 0, ',', '.') }}</span>
+                                        </div>
+                                        <div class="grid grid-cols-2 px-3 py-2 items-center hover:bg-slate-50">
+                                            <span class="text-[#718379]">Penggunaan Transaksi (Trx)</span>
+                                            <span class="text-right font-mono font-bold text-[#2C3E35]">Rp {{ number_format($dailySummaryData['bca_trx'], 0, ',', '.') }}</span>
+                                        </div>
+                                        <div class="grid grid-cols-2 px-3 py-2 items-center bg-slate-100/70 font-extrabold text-[#2C3E35]">
+                                            <span>Saldo Akhir Sistem</span>
+                                            <span class="text-right font-mono">Rp {{ number_format($dailySummaryData['bca_sisa'], 0, ',', '.') }}</span>
+                                        </div>
+                                    </div>
+                                    <div @if(! $isLocked) wire:click="openInputModal" title="Klik untuk edit saldo fisik" class="grid grid-cols-2 px-3 py-2 items-center bg-amber-100 hover:bg-amber-200 text-amber-950 font-black border-t border-amber-200 cursor-pointer transition" @else class="grid grid-cols-2 px-3 py-2 items-center bg-amber-100 text-amber-950 font-black border-t border-amber-200" @endif>
+                                        <span class="text-[11px] flex items-center gap-1">
+                                            <span>Saldo Aktual Aplikasi (Fisik)</span>
+                                            @if(! $isLocked)<svg class="w-3 h-3 text-amber-700 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>@endif
+                                        </span>
+                                        <span class="text-right font-mono text-xs">Rp {{ number_format($dailySummaryData['bca_saldo_android'], 0, ',', '.') }}</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 px-3 py-2 items-center bg-slate-50 border-t border-slate-200">
+                                        <span class="text-[11px] font-bold text-[#2C3E35]">Status Pengecekan</span>
+                                        <div class="text-right font-mono text-xs flex items-center justify-end gap-1.5">
+                                            @if($dailySummaryData['bca_selisih'] == 0)
+                                                <span class="px-1.5 py-0.5 rounded text-[9px] bg-emerald-600 text-white font-black tracking-wider uppercase">MATCH</span>
+                                            @else
+                                                <span class="font-bold {{ $dailySummaryData['bca_selisih'] > 0 ? 'text-emerald-700' : 'text-rose-700' }}">
+                                                    {{ $dailySummaryData['bca_selisih'] > 0 ? '+' : '' }}Rp {{ number_format($dailySummaryData['bca_selisih'], 0, ',', '.') }}
+                                                </span>
+                                                <span class="px-1.5 py-0.5 rounded text-[9px] bg-rose-600 text-white font-black tracking-wider uppercase">ADA SELISIH</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 4. BANK MAS Table -->
                                 <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xs flex flex-col justify-between">
                                     <div class="bg-[#F3F6F4] px-3.5 py-2 border-b border-slate-200 flex items-center justify-between font-extrabold text-xs text-[#2C3E35]">
                                         <span class="uppercase tracking-wider">BANK MAS</span>
@@ -438,7 +490,7 @@
                                     </div>
                                 </div>
 
-                                <!-- 4. MULTI Table -->
+                                <!-- 5. MULTI Table -->
                                 <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xs flex flex-col justify-between">
                                     <div class="bg-[#F3F6F4] px-3.5 py-2 border-b border-slate-200 flex items-center justify-between font-extrabold text-xs text-[#2C3E35]">
                                         <span class="uppercase tracking-wider">MULTI</span>
@@ -481,6 +533,56 @@
                                             @else
                                                 <span class="font-bold {{ $dailySummaryData['multi_selisih'] > 0 ? 'text-emerald-700' : 'text-rose-700' }}">
                                                     {{ $dailySummaryData['multi_selisih'] > 0 ? '+' : '' }}Rp {{ number_format($dailySummaryData['multi_selisih'], 0, ',', '.') }}
+                                                </span>
+                                                <span class="px-1.5 py-0.5 rounded text-[9px] bg-rose-600 text-white font-black tracking-wider uppercase">ADA SELISIH</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 6. WAHANA Table -->
+                                <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xs flex flex-col justify-between">
+                                    <div class="bg-[#F3F6F4] px-3.5 py-2 border-b border-slate-200 flex items-center justify-between font-extrabold text-xs text-[#2C3E35]">
+                                        <span class="uppercase tracking-wider">WAHANA</span>
+                                        <span class="text-[10px] text-[#718379] font-semibold">Ekspedisi &amp; Keagenan</span>
+                                    </div>
+                                    <div class="divide-y divide-slate-100 text-xs font-medium flex-1">
+                                        <div class="grid grid-cols-2 px-3 py-2 items-center hover:bg-slate-50">
+                                            <span class="text-[#718379]">Saldo Awal</span>
+                                            <span class="text-right font-mono font-bold text-[#2C3E35]">Rp {{ number_format($dailySummaryData['wahana_saldo_awal'], 0, ',', '.') }}</span>
+                                        </div>
+                                        <div class="grid grid-cols-2 px-3 py-2 items-center hover:bg-slate-50">
+                                            <span class="text-[#718379]">Top Up Saldo</span>
+                                            <span class="text-right font-mono font-bold text-[#2C3E35]">Rp {{ number_format($dailySummaryData['wahana_topup'], 0, ',', '.') }}</span>
+                                        </div>
+                                        <div class="grid grid-cols-2 px-3 py-2 items-center bg-slate-50/80 font-bold text-[#2C3E35]">
+                                            <span>Total Saldo Tersedia</span>
+                                            <span class="text-right font-mono font-black">Rp {{ number_format($dailySummaryData['wahana_total'], 0, ',', '.') }}</span>
+                                        </div>
+                                        <div class="grid grid-cols-2 px-3 py-2 items-center hover:bg-slate-50">
+                                            <span class="text-[#718379]">Penggunaan Transaksi (Trx)</span>
+                                            <span class="text-right font-mono font-bold text-[#2C3E35]">Rp {{ number_format($dailySummaryData['wahana_trx'], 0, ',', '.') }}</span>
+                                        </div>
+                                        <div class="grid grid-cols-2 px-3 py-2 items-center bg-slate-100/70 font-extrabold text-[#2C3E35]">
+                                            <span>Saldo Akhir Sistem</span>
+                                            <span class="text-right font-mono">Rp {{ number_format($dailySummaryData['wahana_sisa'], 0, ',', '.') }}</span>
+                                        </div>
+                                    </div>
+                                    <div @if(! $isLocked) wire:click="openInputModal" title="Klik untuk edit saldo fisik" class="grid grid-cols-2 px-3 py-2 items-center bg-amber-100 hover:bg-amber-200 text-amber-950 font-black border-t border-amber-200 cursor-pointer transition" @else class="grid grid-cols-2 px-3 py-2 items-center bg-amber-100 text-amber-950 font-black border-t border-amber-200" @endif>
+                                        <span class="text-[11px] flex items-center gap-1">
+                                            <span>Saldo Aktual Aplikasi (Fisik)</span>
+                                            @if(! $isLocked)<svg class="w-3 h-3 text-amber-700 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>@endif
+                                        </span>
+                                        <span class="text-right font-mono text-xs">Rp {{ number_format($dailySummaryData['wahana_saldo_android'], 0, ',', '.') }}</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 px-3 py-2 items-center bg-slate-50 border-t border-slate-200">
+                                        <span class="text-[11px] font-bold text-[#2C3E35]">Status Pengecekan</span>
+                                        <div class="text-right font-mono text-xs flex items-center justify-end gap-1.5">
+                                            @if($dailySummaryData['wahana_selisih'] == 0)
+                                                <span class="px-1.5 py-0.5 rounded text-[9px] bg-emerald-600 text-white font-black tracking-wider uppercase">MATCH</span>
+                                            @else
+                                                <span class="font-bold {{ $dailySummaryData['wahana_selisih'] > 0 ? 'text-emerald-700' : 'text-rose-700' }}">
+                                                    {{ $dailySummaryData['wahana_selisih'] > 0 ? '+' : '' }}Rp {{ number_format($dailySummaryData['wahana_selisih'], 0, ',', '.') }}
                                                 </span>
                                                 <span class="px-1.5 py-0.5 rounded text-[9px] bg-rose-600 text-white font-black tracking-wider uppercase">ADA SELISIH</span>
                                             @endif
@@ -602,13 +704,19 @@
                         $mQrisExpected = (float)($dailySummaryData['qris_pembayaran'] ?? 0) + (float)($qrisTarikTunai ?? 0);
                         $mQrisSelisih = (float)($qrisSaldoAndroid ?? 0) - $mQrisExpected;
 
+                        $mBcaAkhir = (float)($bcaSaldoAwal ?? 0) + (float)($bcaTopup ?? 0) - (float)($bcaTrx ?? 0);
+                        $mBcaSelisih = (float)($bcaSaldoAndroid ?? 0) - $mBcaAkhir;
+
                         $mBankmasAkhir = (float)($bankmasSaldoAwal ?? 0) + (float)($bankmasTopup ?? 0) - (float)($bankmasTrx ?? 0);
                         $mBankmasSelisih = (float)($bankmasSaldoAndroid ?? 0) - $mBankmasAkhir;
 
                         $mMultiAkhir = (float)($multiSaldoAwal ?? 0) + (float)($multiTopup ?? 0) - (float)($multiTrx ?? 0);
                         $mMultiSelisih = (float)($multiSaldoAndroid ?? 0) - $mMultiAkhir;
 
-                        $mHasDiscrepancy = ($mDanaSelisih != 0 || $mQrisSelisih != 0 || $mBankmasSelisih != 0 || $mMultiSelisih != 0);
+                        $mWahanaAkhir = (float)($wahanaSaldoAwal ?? 0) + (float)($wahanaTopup ?? 0) - (float)($wahanaTrx ?? 0);
+                        $mWahanaSelisih = (float)($wahanaSaldoAndroid ?? 0) - $mWahanaAkhir;
+
+                        $mHasDiscrepancy = ($mDanaSelisih != 0 || $mQrisSelisih != 0 || $mBcaSelisih != 0 || $mBankmasSelisih != 0 || $mMultiSelisih != 0 || $mWahanaSelisih != 0);
                     @endphp
 
                     <div class="space-y-4 max-h-[65vh] overflow-y-auto pr-1">
@@ -693,8 +801,38 @@
                             </div>
                         </div>
 
-                        <!-- BANK MAS & MULTI Grid -->
+                        <!-- BANK BCA & BANK MAS Grid -->
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- BANK BCA -->
+                            <div class="bg-[#F3F6F4]/80 p-4 rounded-2xl border border-slate-200 space-y-3">
+                                <div class="text-xs font-black text-[#2C3E35] uppercase tracking-wider border-b border-slate-200 pb-1.5 flex items-center justify-between">
+                                    <span>BANK BCA</span>
+                                    @if($mBcaSelisih == 0)
+                                        <span class="px-2 py-0.5 rounded text-[9px] bg-emerald-600 text-white font-black tracking-wider">MATCH</span>
+                                    @else
+                                        <span class="px-2 py-0.5 rounded text-[9px] bg-rose-600 text-white font-black tracking-wider">{{ $mBcaSelisih > 0 ? '+' : '' }}Rp {{ number_format($mBcaSelisih, 0, ',', '.') }}</span>
+                                    @endif
+                                </div>
+                                <div class="space-y-2 text-xs">
+                                    <div>
+                                        <label class="block font-bold text-[#718379] mb-1 text-[11px]">Saldo Awal (Rp) <span class="text-[10px] font-semibold text-emerald-700">(Otomatis dari Saldo Akhir Kemarin)</span></label>
+                                        <input type="number" step="1" wire:model.live="bcaSaldoAwal" class="w-full p-2 border border-slate-200 rounded-xl bg-white font-mono font-bold text-right text-xs" />
+                                    </div>
+                                    <div>
+                                        <label class="block font-bold text-[#718379] mb-1 text-[11px]">Top Up Saldo (Rp)</label>
+                                        <input type="number" step="1" wire:model.live="bcaTopup" class="w-full p-2 border border-slate-200 rounded-xl bg-white font-mono font-bold text-right text-xs" />
+                                    </div>
+                                    <div>
+                                        <label class="block font-bold text-[#718379] mb-1 text-[11px]">Transaksi Terpakai TRX (Rp)</label>
+                                        <input type="number" step="1" wire:model.live="bcaTrx" class="w-full p-2 border border-slate-200 rounded-xl bg-white font-mono font-bold text-right text-xs" />
+                                    </div>
+                                    <div>
+                                        <label class="block font-bold text-amber-900 mb-1 text-[11px]">Saldo Android / M-Banking di HP (Rp)</label>
+                                        <input type="number" step="1" wire:model.live="bcaSaldoAndroid" class="w-full p-2 border border-amber-300 rounded-xl bg-amber-50 font-mono font-black text-right text-xs text-amber-950" />
+                                    </div>
+                                </div>
+                            </div>
+
                             <!-- BANK MAS -->
                             <div class="bg-[#F3F6F4]/80 p-4 rounded-2xl border border-slate-200 space-y-3">
                                 <div class="text-xs font-black text-[#2C3E35] uppercase tracking-wider border-b border-slate-200 pb-1.5 flex items-center justify-between">
@@ -724,7 +862,10 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
 
+                        <!-- MULTI & WAHANA Grid -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <!-- MULTI -->
                             <div class="bg-[#F3F6F4]/80 p-4 rounded-2xl border border-slate-200 space-y-3">
                                 <div class="text-xs font-black text-[#2C3E35] uppercase tracking-wider border-b border-slate-200 pb-1.5 flex items-center justify-between">
@@ -751,6 +892,36 @@
                                     <div>
                                         <label class="block font-bold text-amber-900 mb-1 text-[11px]">Saldo Android di HP (Rp)</label>
                                         <input type="number" step="1" wire:model.live="multiSaldoAndroid" class="w-full p-2 border border-amber-300 rounded-xl bg-amber-50 font-mono font-black text-right text-xs text-amber-950" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- WAHANA -->
+                            <div class="bg-[#F3F6F4]/80 p-4 rounded-2xl border border-slate-200 space-y-3">
+                                <div class="text-xs font-black text-[#2C3E35] uppercase tracking-wider border-b border-slate-200 pb-1.5 flex items-center justify-between">
+                                    <span>WAHANA</span>
+                                    @if($mWahanaSelisih == 0)
+                                        <span class="px-2 py-0.5 rounded text-[9px] bg-emerald-600 text-white font-black tracking-wider">MATCH</span>
+                                    @else
+                                        <span class="px-2 py-0.5 rounded text-[9px] bg-rose-600 text-white font-black tracking-wider">{{ $mWahanaSelisih > 0 ? '+' : '' }}Rp {{ number_format($mWahanaSelisih, 0, ',', '.') }}</span>
+                                    @endif
+                                </div>
+                                <div class="space-y-2 text-xs">
+                                    <div>
+                                        <label class="block font-bold text-[#718379] mb-1 text-[11px]">Saldo Awal (Rp) <span class="text-[10px] font-semibold text-emerald-700">(Otomatis dari Saldo Akhir Kemarin)</span></label>
+                                        <input type="number" step="1" wire:model.live="wahanaSaldoAwal" class="w-full p-2 border border-slate-200 rounded-xl bg-white font-mono font-bold text-right text-xs" />
+                                    </div>
+                                    <div>
+                                        <label class="block font-bold text-[#718379] mb-1 text-[11px]">Top Up Saldo (Rp)</label>
+                                        <input type="number" step="1" wire:model.live="wahanaTopup" class="w-full text-right font-mono font-bold p-2 border border-slate-200 rounded-xl bg-white text-xs" />
+                                    </div>
+                                    <div>
+                                        <label class="block font-bold text-[#718379] mb-1 text-[11px]">Transaksi Terpakai TRX (Rp)</label>
+                                        <input type="number" step="1" wire:model.live="wahanaTrx" class="w-full p-2 border border-slate-200 rounded-xl bg-white font-mono font-bold text-right text-xs" />
+                                    </div>
+                                    <div>
+                                        <label class="block font-bold text-amber-900 mb-1 text-[11px]">Saldo Android di HP (Rp)</label>
+                                        <input type="number" step="1" wire:model.live="wahanaSaldoAndroid" class="w-full p-2 border border-amber-300 rounded-xl bg-amber-50 font-mono font-black text-right text-xs text-amber-950" />
                                     </div>
                                 </div>
                             </div>

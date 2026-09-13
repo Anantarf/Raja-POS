@@ -292,11 +292,15 @@ class FinanceReportService
 
             $danaAwal = (float) ($yesterdaySummary?->dana_saldo_android ?? 0);
             $bankmasAwal = (float) ($yesterdaySummary?->bankmas_saldo_android ?? 0);
+            $bcaAwal = (float) ($yesterdaySummary?->bca_saldo_android ?? 0);
             $multiAwal = (float) ($yesterdaySummary?->multi_saldo_android ?? 0);
+            $wahanaAwal = (float) ($yesterdaySummary?->wahana_saldo_android ?? 0);
         } else {
             $danaAwal = (float) $savedSummary->dana_saldo_awal;
             $bankmasAwal = (float) $savedSummary->bankmas_saldo_awal;
+            $bcaAwal = (float) ($savedSummary->bca_saldo_awal ?? 0);
             $multiAwal = (float) $savedSummary->multi_saldo_awal;
+            $wahanaAwal = (float) ($savedSummary->wahana_saldo_awal ?? 0);
         }
 
         $danaTopup = (float) ($savedSummary?->dana_topup ?? 0);
@@ -310,9 +314,17 @@ class FinanceReportService
         $bankmasTrx = (float) ($savedSummary?->bankmas_trx ?? 0);
         $bankmasAndroid = (float) ($savedSummary?->bankmas_saldo_android ?? ($bankmasAwal + $bankmasTopup - $bankmasTrx));
 
+        $bcaTopup = (float) ($savedSummary?->bca_topup ?? 0);
+        $bcaTrx = (float) ($savedSummary?->bca_trx ?? 0);
+        $bcaAndroid = (float) ($savedSummary?->bca_saldo_android ?? ($bcaAwal + $bcaTopup - $bcaTrx));
+
         $multiTopup = (float) ($savedSummary?->multi_topup ?? 0);
         $multiTrx = (float) ($savedSummary?->multi_trx ?? 0);
         $multiAndroid = (float) ($savedSummary?->multi_saldo_android ?? ($multiAwal + $multiTopup - $multiTrx));
+
+        $wahanaTopup = (float) ($savedSummary?->wahana_topup ?? 0);
+        $wahanaTrx = (float) ($savedSummary?->wahana_trx ?? 0);
+        $wahanaAndroid = (float) ($savedSummary?->wahana_saldo_android ?? ($wahanaAwal + $wahanaTopup - $wahanaTrx));
 
         $tarikTunaiKasir = (float) ($savedSummary?->tarik_tunai_kasir ?? $qrisTarikTunai);
 
@@ -331,11 +343,17 @@ class FinanceReportService
         $bankmasSaldoAkhir = $bankmasAwal + $bankmasTopup - $bankmasTrx;
         $bankmasSelisih = $bankmasAndroid - $bankmasSaldoAkhir;
 
+        $bcaSaldoAkhir = $bcaAwal + $bcaTopup - $bcaTrx;
+        $bcaSelisih = $bcaAndroid - $bcaSaldoAkhir;
+
         $multiSaldoAkhir = $multiAwal + $multiTopup - $multiTrx;
         $multiSelisih = $multiAndroid - $multiSaldoAkhir;
 
+        $wahanaSaldoAkhir = $wahanaAwal + $wahanaTopup - $wahanaTrx;
+        $wahanaSelisih = $wahanaAndroid - $wahanaSaldoAkhir;
+
         $status = $savedSummary?->status ?? 'BELUM_DICEK';
-        $hasDiscrepancy = $savedSummary ? $savedSummary->has_discrepancy : (($danaSelisih != 0) || ($qrisSelisih != 0) || ($bankmasSelisih != 0) || ($multiSelisih != 0));
+        $hasDiscrepancy = $savedSummary ? $savedSummary->has_discrepancy : (($danaSelisih != 0) || ($qrisSelisih != 0) || ($bankmasSelisih != 0) || ($bcaSelisih != 0) || ($multiSelisih != 0) || ($wahanaSelisih != 0));
 
         return [
             'summary_date' => $targetDate,
@@ -373,6 +391,15 @@ class FinanceReportService
             'bankmas_saldo_android' => $bankmasAndroid,
             'bankmas_selisih' => $bankmasSelisih,
 
+            // BANK BCA
+            'bca_saldo_awal' => $bcaAwal,
+            'bca_topup' => $bcaTopup,
+            'bca_total' => $bcaAwal + $bcaTopup,
+            'bca_trx' => $bcaTrx,
+            'bca_sisa' => $bcaSaldoAkhir,
+            'bca_saldo_android' => $bcaAndroid,
+            'bca_selisih' => $bcaSelisih,
+
             // MULTI
             'multi_saldo_awal' => $multiAwal,
             'multi_topup' => $multiTopup,
@@ -381,6 +408,15 @@ class FinanceReportService
             'multi_sisa' => $multiSaldoAkhir,
             'multi_saldo_android' => $multiAndroid,
             'multi_selisih' => $multiSelisih,
+
+            // WAHANA
+            'wahana_saldo_awal' => $wahanaAwal,
+            'wahana_topup' => $wahanaTopup,
+            'wahana_total' => $wahanaAwal + $wahanaTopup,
+            'wahana_trx' => $wahanaTrx,
+            'wahana_sisa' => $wahanaSaldoAkhir,
+            'wahana_saldo_android' => $wahanaAndroid,
+            'wahana_selisih' => $wahanaSelisih,
 
             // Rekap Penjualan & Margin (Kanan)
             'margin' => $margin,

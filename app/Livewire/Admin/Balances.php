@@ -85,7 +85,7 @@ class Balances extends Component
 
     private function resetForm()
     {
-        $accounts = BalanceAccount::forUserLocation()->where('status', 'ACTIVE')->where('account_type', '!=', 'PROVIDER')->get();
+        $accounts = BalanceAccount::forUserLocation()->where('status', 'ACTIVE')->get();
         $this->sourceAccountId = $accounts->first()?->id;
         $this->destinationAccountId = $accounts->skip(1)->first()?->id;
         $this->amount = 0;
@@ -103,7 +103,7 @@ class Balances extends Component
 
     public function render()
     {
-        $accounts = BalanceAccount::forUserLocation()->where('status', 'ACTIVE')->where('account_type', '!=', 'PROVIDER')->get();
+        $accounts = BalanceAccount::forUserLocation()->where('status', 'ACTIVE')->get();
         $query = BalanceTransaction::forUserLocation()->with(['sourceAccount', 'destinationAccount', 'creator', 'user']);
 
         if ($this->filterType === 'IN') {
