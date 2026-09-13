@@ -17,7 +17,7 @@
                 wire:model="username"
                 autocomplete="username"
                 placeholder="Masukkan username kasir/admin..."
-                class="w-full p-3.5 border border-slate-200 rounded-2xl bg-[#F3F6F4] text-xs font-bold text-[#232E28] focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] focus:bg-white transition"
+                class="w-full p-3.5 border border-slate-200 rounded-2xl bg-[#F3F6F4] text-xs font-bold text-[#232E28] focus:outline-none focus:ring-2 focus:ring-[#047857]/20 focus:border-[#047857] focus:bg-white transition"
                 required
                 autofocus
             />
@@ -34,14 +34,14 @@
                     wire:model="password"
                     autocomplete="current-password"
                     placeholder="Masukkan password..."
-                    class="w-full p-3.5 pr-12 border border-slate-200 rounded-2xl bg-[#F3F6F4] text-xs font-bold text-[#232E28] focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] focus:bg-white transition"
+                    class="w-full p-3.5 pr-12 border border-slate-200 rounded-2xl bg-[#F3F6F4] text-xs font-bold text-[#232E28] focus:outline-none focus:ring-2 focus:ring-[#047857]/20 focus:border-[#047857] focus:bg-white transition"
                     required
                 />
                 <button
                     type="button"
                     @click="showPassword = !showPassword"
                     tabindex="-1"
-                    class="absolute right-3 text-slate-400 hover:text-[#3F7A5D] transition p-1.5 cursor-pointer focus:outline-none flex items-center justify-center rounded-lg z-10"
+                    class="absolute right-3 text-slate-400 hover:text-[#047857] transition p-1.5 cursor-pointer focus:outline-none flex items-center justify-center rounded-lg z-10"
                     :title="showPassword ? 'Sembunyikan password' : 'Tampilkan password'"
                 >
                     <!-- Eye Open Icon -->
@@ -62,7 +62,7 @@
 
         <div class="flex items-center justify-between text-xs pt-1">
             <label class="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" wire:model="remember" class="w-4 h-4 text-[#3F7A5D] rounded border-slate-300 focus:ring-[#3F7A5D]">
+                <input type="checkbox" wire:model="remember" class="w-4 h-4 text-[#047857] rounded border-slate-300 focus:ring-[#047857]">
                 <span class="text-[#718379] font-medium">Ingat Saya</span>
             </label>
         </div>
@@ -80,7 +80,7 @@
             type="submit"
             wire:loading.attr="disabled"
             wire:loading.class="opacity-75 cursor-not-allowed"
-            class="w-full py-4 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-2xl text-xs uppercase tracking-wider transition active:scale-95 shadow-md mt-2 cursor-pointer flex items-center justify-center gap-2"
+            class="w-full py-4 bg-[#047857] hover:bg-[#065F46] text-white font-extrabold rounded-2xl text-xs uppercase tracking-wider transition active:scale-95 shadow-md mt-2 cursor-pointer flex items-center justify-center gap-2"
         >
             <svg wire:loading class="animate-spin w-4 h-4 text-white shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

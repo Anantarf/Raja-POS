@@ -26,7 +26,7 @@
                         &laquo; Prev
                     </span>
                 @else
-                    <button type="button" wire:click="previousPage('{{ $pageName }}')" wire:loading.attr="disabled" class="px-3.5 py-2 rounded-xl bg-white text-[#2C3E35] hover:bg-[#E3EEE8] hover:text-[#3F7A5D] font-bold border border-slate-200/80 transition cursor-pointer shadow-sm text-sm">
+                    <button type="button" wire:click="previousPage('{{ $pageName }}')" wire:loading.attr="disabled" class="px-3.5 py-2 rounded-xl bg-white text-[#2C3E35] hover:bg-[#E3EEE8] hover:text-[#047857] font-bold border border-slate-200/80 transition cursor-pointer shadow-sm text-sm">
                         &laquo; Prev
                     </button>
                 @endif
@@ -42,11 +42,11 @@
                     @if (is_array($element))
                         @foreach ($element as $page => $url)
                             @if ($page == $paginator->currentPage())
-                                <span class="px-3.5 py-2 rounded-xl bg-[#3F7A5D] text-white font-mono font-extrabold shadow-sm border border-[#3F7A5D] text-sm">
+                                <span class="px-3.5 py-2 rounded-xl bg-[#047857] text-white font-mono font-extrabold shadow-sm border border-[#047857] text-sm">
                                     {{ $page }}
                                 </span>
                             @else
-                                <button type="button" wire:click="gotoPage({{ $page }}, '{{ $pageName }}')" wire:loading.attr="disabled" class="px-3.5 py-2 rounded-xl bg-white text-[#2C3E35] hover:bg-[#E3EEE8] hover:text-[#3F7A5D] font-mono font-bold border border-slate-200/80 transition cursor-pointer shadow-sm text-sm">
+                                <button type="button" wire:click="gotoPage({{ $page }}, '{{ $pageName }}')" wire:loading.attr="disabled" class="px-3.5 py-2 rounded-xl bg-white text-[#2C3E35] hover:bg-[#E3EEE8] hover:text-[#047857] font-mono font-bold border border-slate-200/80 transition cursor-pointer shadow-sm text-sm">
                                     {{ $page }}
                                 </button>
                             @endif
@@ -56,7 +56,7 @@
 
                 <!-- Next Button -->
                 @if ($paginator->hasMorePages())
-                    <button type="button" wire:click="nextPage('{{ $pageName }}')" wire:loading.attr="disabled" class="px-3.5 py-2 rounded-xl bg-white text-[#2C3E35] hover:bg-[#E3EEE8] hover:text-[#3F7A5D] font-bold border border-slate-200/80 transition cursor-pointer shadow-sm text-sm">
+                    <button type="button" wire:click="nextPage('{{ $pageName }}')" wire:loading.attr="disabled" class="px-3.5 py-2 rounded-xl bg-white text-[#2C3E35] hover:bg-[#E3EEE8] hover:text-[#047857] font-bold border border-slate-200/80 transition cursor-pointer shadow-sm text-sm">
                         Next &raquo;
                     </button>
                 @else

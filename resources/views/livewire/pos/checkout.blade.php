@@ -1002,7 +1002,7 @@
     <!-- MOBILE STICKY FLOATING CART BAR (md:hidden) -->
     <div class="md:hidden fixed bottom-3 left-3 right-3 z-40 bg-[#232E28]/95 backdrop-blur-md text-white px-4 py-3 rounded-2xl shadow-xl border border-emerald-500/30 flex items-center justify-between gap-2.5 transition-all duration-300">
         <div class="flex items-center gap-2.5 min-w-0 flex-1">
-            <div class="w-10 h-10 rounded-xl bg-[#3F7A5D] text-white flex items-center justify-center font-mono font-extrabold text-sm shrink-0 shadow-inner">
+            <div class="w-10 h-10 rounded-xl bg-[#047857] text-white flex items-center justify-center font-mono font-extrabold text-sm shrink-0 shadow-inner">
                 {{ count($cart) }}
             </div>
             <div class="min-w-0 flex-1">
@@ -1022,7 +1022,7 @@
         <button
             type="button"
             @click="activeTab = (activeTab === 'cart' ? 'catalog' : 'cart'); document.getElementById('cart-section')?.scrollIntoView({ behavior: 'smooth' })"
-            class="bg-[#3F7A5D] hover:bg-[#32634B] text-white h-10 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-extrabold flex items-center gap-1 shadow-md active:scale-95 transition shrink-0 cursor-pointer whitespace-nowrap"
+            class="bg-[#047857] hover:bg-[#065F46] text-white h-10 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-extrabold flex items-center gap-1 shadow-md active:scale-95 transition shrink-0 cursor-pointer whitespace-nowrap"
         >
             <span x-text="activeTab === 'cart' ? '\u2190 Katalog' : 'Lihat & Bayar'"></span>
             <svg x-show="activeTab !== 'cart'" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

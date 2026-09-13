@@ -14,7 +14,7 @@
                 type="text"
                 wire:model.live.debounce.300ms="search"
                 placeholder="Cari No. TRX..."
-                class="w-full h-11 pl-9 pr-3.5 border border-slate-200 rounded-xl text-sm font-semibold focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] bg-[#F3F6F4] text-[#2C3E35] placeholder:text-[#718379]"
+                class="w-full h-11 pl-9 pr-3.5 border border-slate-200 rounded-xl text-sm font-semibold focus:ring-2 focus:ring-[#047857]/20 focus:border-[#047857] bg-[#F3F6F4] text-[#2C3E35] placeholder:text-[#718379]"
             />
             <svg class="w-4 h-4 text-slate-400 absolute left-3 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
@@ -39,7 +39,7 @@
                     @forelse($trashedSales as $sale)
                         <tr class="hover:bg-[#F3F6F4]/60 transition">
                             <td class="py-3.5 px-4 whitespace-nowrap">
-                                <div class="font-bold text-[#3F7A5D] font-mono text-xs bg-[#F3F6F4] border border-slate-200/80 px-2.5 py-1 rounded-md inline-block">{{ $sale->invoice_number }}</div>
+                                <div class="font-bold text-[#047857] font-mono text-xs bg-[#F3F6F4] border border-slate-200/80 px-2.5 py-1 rounded-md inline-block">{{ $sale->invoice_number }}</div>
                                 <div class="text-xs text-[#718379] mt-1 font-semibold whitespace-nowrap">Dibatalkan: {{ $sale->updated_at->format('d M Y, H:i') }}</div>
                             </td>
                             <td class="py-3.5 px-4 text-[#2C3E35] whitespace-nowrap">
@@ -56,7 +56,7 @@
                             </td>
                             <td class="py-3.5 px-4 text-center whitespace-nowrap">
                                 @if(auth()->user()->can('sales.restore'))
-                                    <button wire:click="restoreSale({{ $sale->id }})" wire:confirm="Pulihkan transaksi ini dari Sampah Transaksi? Stok akan dikurangi kembali dan saldo pembayaran akan dicatat ulang." class="h-9 px-3.5 bg-[#3F7A5D] hover:bg-[#32634B] text-white rounded-xl font-extrabold text-sm transition uppercase tracking-wider shadow-sm cursor-pointer whitespace-nowrap flex items-center justify-center">
+                                    <button wire:click="restoreSale({{ $sale->id }})" wire:confirm="Pulihkan transaksi ini dari Sampah Transaksi? Stok akan dikurangi kembali dan saldo pembayaran akan dicatat ulang." class="h-9 px-3.5 bg-[#047857] hover:bg-[#065F46] text-white rounded-xl font-extrabold text-sm transition uppercase tracking-wider shadow-sm cursor-pointer whitespace-nowrap flex items-center justify-center">
                                         Pulihkan Transaksi
                                     </button>
                                 @endif

@@ -6,11 +6,11 @@
             <p class="text-xs sm:text-sm text-[#718379] font-medium mt-0.5">Kelola saldo toko, rekening bank, mutasi transfer, dan penyesuaian saldo.</p>
         </div>
         <div class="grid grid-cols-2 sm:flex sm:items-center gap-2 sm:gap-2.5 w-full sm:w-auto overflow-x-auto no-scrollbar py-1">
-            <button type="button" wire:click="openModal('TRANSFER')" class="h-10 sm:h-11 px-3 sm:px-4 py-2 bg-[#F3F6F4] hover:bg-[#E3EEE8] text-[#3F7A5D] border border-slate-200/80 font-extrabold rounded-xl text-xs sm:text-sm transition active:scale-95 flex items-center justify-center gap-1.5 shrink-0 cursor-pointer shadow-xs">
-                <svg class="w-4 h-4 text-[#3F7A5D] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
+            <button type="button" wire:click="openModal('TRANSFER')" class="h-10 sm:h-11 px-3 sm:px-4 py-2 bg-[#F3F6F4] hover:bg-[#E3EEE8] text-[#047857] border border-slate-200/80 font-extrabold rounded-xl text-xs sm:text-sm transition active:scale-95 flex items-center justify-center gap-1.5 shrink-0 cursor-pointer shadow-xs">
+                <svg class="w-4 h-4 text-[#047857] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
                 <span>Transfer Saldo</span>
             </button>
-            <button type="button" wire:click="openModal('DEPOSIT')" class="h-10 sm:h-11 px-3 sm:px-4 py-2 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-xl text-xs sm:text-sm transition active:scale-95 flex items-center justify-center gap-1.5 shrink-0 cursor-pointer shadow-xs">
+            <button type="button" wire:click="openModal('DEPOSIT')" class="h-10 sm:h-11 px-3 sm:px-4 py-2 bg-[#047857] hover:bg-[#065F46] text-white font-extrabold rounded-xl text-xs sm:text-sm transition active:scale-95 flex items-center justify-center gap-1.5 shrink-0 cursor-pointer shadow-xs">
                 <svg class="w-4 h-4 sm:w-4.5 sm:h-4.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                 <span>Deposit / Setor</span>
             </button>
@@ -26,22 +26,22 @@
     </div>
 
     <!-- Summary KPI Banner (EMCO Palette Touch) -->
-    <div class="bg-gradient-to-r from-[#3F7A5D]/10 via-[#3F7A5D]/5 to-white rounded-2xl p-5 border border-slate-200/80 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-5">
+    <div class="bg-gradient-to-r from-[#047857]/10 via-[#047857]/5 to-white rounded-2xl p-5 border border-slate-200/80 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-5">
         <div class="space-y-1">
             <div class="text-xs text-[#718379] font-extrabold uppercase tracking-wider">Total Saldo Operasional Toko</div>
-            <div class="text-2xl sm:text-3xl font-extrabold text-[#3F7A5D] font-mono tracking-tight">
+            <div class="text-2xl sm:text-3xl font-extrabold text-[#047857] font-mono tracking-tight">
                 Rp {{ number_format($totalBalance, 0, ',', '.') }}
             </div>
             <p class="text-xs text-[#718379] font-medium">Gabungan saldo uang cash, rekening bank, QRIS, dan e-wallet toko.</p>
         </div>
 
         <div class="flex items-center gap-3 flex-wrap">
-            <div class="bg-[#E3EEE8]/60 px-4 py-2.5 rounded-2xl border border-[#3F7A5D]/20 flex items-center gap-3">
-                <div class="w-8 h-8 rounded-xl bg-[#3F7A5D] text-white flex items-center justify-center shrink-0">
+            <div class="bg-[#E3EEE8]/60 px-4 py-2.5 rounded-2xl border border-[#047857]/20 flex items-center gap-3">
+                <div class="w-8 h-8 rounded-xl bg-[#047857] text-white flex items-center justify-center shrink-0">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
                 </div>
                 <div>
-                    <div class="text-xs text-[#3F7A5D] uppercase font-extrabold tracking-wider">Uang Cash</div>
+                    <div class="text-xs text-[#047857] uppercase font-extrabold tracking-wider">Uang Cash</div>
                     <div class="text-sm font-mono font-extrabold text-[#2C3E35]">Rp {{ number_format($totalCash, 0, ',', '.') }}</div>
                 </div>
             </div>
@@ -75,12 +75,12 @@
                 $hasBalance = $acc->balance > 0;
                 $isMinus = $acc->balance < 0;
             @endphp
-            <div class="bg-white rounded-2xl p-4 shadow-sm border transition {{ $hasBalance ? 'border-[#3F7A5D]/40 bg-gradient-to-b from-[#E3EEE8]/30 to-white' : 'border-slate-200/80 hover:border-slate-300' }}">
+            <div class="bg-white rounded-2xl p-4 shadow-sm border transition {{ $hasBalance ? 'border-[#047857]/40 bg-gradient-to-b from-[#E3EEE8]/30 to-white' : 'border-slate-200/80 hover:border-slate-300' }}">
                 <div class="text-[11px] text-[#718379] font-extrabold uppercase tracking-wider mb-2 flex items-center justify-between">
                     <span>{{ $acc->name }}</span>
-                    <span class="w-2 h-2 rounded-full {{ $hasBalance ? 'bg-[#3F7A5D]' : 'bg-slate-300' }} inline-block"></span>
+                    <span class="w-2 h-2 rounded-full {{ $hasBalance ? 'bg-[#047857]' : 'bg-slate-300' }} inline-block"></span>
                 </div>
-                <div class="text-xl font-extrabold font-mono tracking-tight {{ $isMinus ? 'text-rose-600' : ($hasBalance ? 'text-[#3F7A5D]' : 'text-slate-400') }}">
+                <div class="text-xl font-extrabold font-mono tracking-tight {{ $isMinus ? 'text-rose-600' : ($hasBalance ? 'text-[#047857]' : 'text-slate-400') }}">
                     Rp {{ number_format($acc->balance, 0, ',', '.') }}
                 </div>
                 @if($isMinus && $acc->account_type === 'CASH')
@@ -104,7 +104,7 @@
             <div class="flex items-center gap-2 flex-wrap">
                 <!-- Filter Tabs (Clean text without emoji noise) -->
                 <div class="bg-[#F3F6F4] p-1 rounded-xl flex items-center gap-1 text-[11px] font-extrabold text-[#718379]">
-                    <button wire:click="setFilterType('ALL')" class="px-3 py-1.5 rounded-lg transition {{ $filterType === 'ALL' ? 'bg-white text-[#3F7A5D] shadow-sm' : 'hover:text-[#2C3E35]' }}">
+                    <button wire:click="setFilterType('ALL')" class="px-3 py-1.5 rounded-lg transition {{ $filterType === 'ALL' ? 'bg-white text-[#047857] shadow-sm' : 'hover:text-[#2C3E35]' }}">
                         Semua Mutasi
                     </button>
                     <button wire:click="setFilterType('IN')" class="px-3 py-1.5 rounded-lg transition {{ $filterType === 'IN' ? 'bg-emerald-600 text-white shadow-sm' : 'hover:text-emerald-700' }}">
@@ -124,7 +124,7 @@
                         type="text"
                         wire:model.live.debounce.300ms="search"
                         placeholder="Cari No. Mutasi / Ref..."
-                        class="w-full pl-9 pr-3 py-2 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] bg-[#F3F6F4]"
+                        class="w-full pl-9 pr-3 py-2 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-[#047857]/20 focus:border-[#047857] bg-[#F3F6F4]"
                     />
                     <svg class="w-4 h-4 text-slate-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
@@ -137,7 +137,7 @@
             <table class="w-full text-xs text-left">
                 <thead class="bg-[#F3F6F4] border-b border-[#E3EEE8] text-[#718379] uppercase text-[10px] font-extrabold tracking-wider">
                     <tr>
-                        <th wire:click="sortBy('transaction_number')" class="py-3.5 px-4 cursor-pointer hover:text-[#3F7A5D] transition select-none">
+                        <th wire:click="sortBy('transaction_number')" class="py-3.5 px-4 cursor-pointer hover:text-[#047857] transition select-none">
                             <div class="flex items-center gap-1">
                                 <span>No. Mutasi &amp; Waktu</span>
                                 @if($sortField === 'transaction_number' || $sortField === 'created_at')
@@ -149,7 +149,7 @@
                         </th>
                         <th class="py-3.5 px-4">Tipe Transaksi</th>
                         <th class="py-3.5 px-4">Aliran Akun</th>
-                        <th wire:click="sortBy('amount')" class="py-3.5 px-4 text-right cursor-pointer hover:text-[#3F7A5D] transition select-none">
+                        <th wire:click="sortBy('amount')" class="py-3.5 px-4 text-right cursor-pointer hover:text-[#047857] transition select-none">
                             <div class="flex items-center justify-end gap-1">
                                 <span>Nominal</span>
                                 @if($sortField === 'amount')
@@ -175,7 +175,7 @@
                             $label = $refType;
 
                             if (str_contains($refType, 'SALE') || str_contains($refType, 'POS')) {
-                                $badgeClass = 'bg-[#E3EEE8] text-[#3F7A5D] border-[#3F7A5D]/30';
+                                $badgeClass = 'bg-[#E3EEE8] text-[#047857] border-[#047857]/30';
                                 $label = 'PENJUALAN';
                             } elseif (str_contains($refType, 'DEPOSIT')) {
                                 $badgeClass = 'bg-emerald-50 text-emerald-800 border-emerald-200/80';
@@ -204,7 +204,7 @@
                                         $trxNum = strtoupper(($p[0] ?? 'TRX') . '-' . substr($p[1] ?? '', 0, 8));
                                     }
                                 @endphp
-                                <div class="font-bold text-[#3F7A5D] font-mono text-xs bg-[#F3F6F4] border border-slate-200/80 px-2.5 py-0.5 rounded-md inline-block">{{ $trxNum }}</div>
+                                <div class="font-bold text-[#047857] font-mono text-xs bg-[#F3F6F4] border border-slate-200/80 px-2.5 py-0.5 rounded-md inline-block">{{ $trxNum }}</div>
                                 <div class="text-[10px] text-[#718379] mt-1 font-semibold whitespace-nowrap">{{ $trx->created_at->timezone('Asia/Jakarta')->format('d M Y, H:i') }}</div>
                             </td>
 
@@ -227,7 +227,7 @@
                                     <span class="text-slate-400 font-bold">&rarr;</span>
 
                                     @if($trx->destinationAccount)
-                                        <span class="font-extrabold text-[#3F7A5D]">{{ $trx->destinationAccount->name }}</span>
+                                        <span class="font-extrabold text-[#047857]">{{ $trx->destinationAccount->name }}</span>
                                     @else
                                         <span class="text-slate-500 font-medium">Pengeluaran</span>
                                     @endif
@@ -237,7 +237,7 @@
                             <!-- Nominal Mutasi -->
                             <td class="py-3.5 px-4 text-right font-mono font-extrabold text-sm whitespace-nowrap">
                                 @if($isIncoming)
-                                    <span class="text-[#3F7A5D]">+ Rp {{ number_format($trx->amount, 0, ',', '.') }}</span>
+                                    <span class="text-[#047857]">+ Rp {{ number_format($trx->amount, 0, ',', '.') }}</span>
                                 @elseif($isOutgoing)
                                     <span class="text-rose-600">- Rp {{ number_format($trx->amount, 0, ',', '.') }}</span>
                                 @else
@@ -301,7 +301,7 @@
                     @if(in_array($showModal, ['TRANSFER', 'WITHDRAWAL']))
                         <div>
                             <label class="block text-[#718379] font-bold uppercase tracking-wider text-[11px] mb-1">Akun Asal *</label>
-                            <select wire:model="sourceAccountId" class="w-full p-2.5 border border-slate-200 rounded-xl bg-[#F3F6F4] text-[#2C3E35] font-semibold focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] cursor-pointer">
+                            <select wire:model="sourceAccountId" class="w-full p-2.5 border border-slate-200 rounded-xl bg-[#F3F6F4] text-[#2C3E35] font-semibold focus:bg-white focus:ring-2 focus:ring-[#047857]/20 focus:border-[#047857] cursor-pointer">
                                 <option value="">Pilih Akun Asal</option>
                                 @foreach($accounts as $acc)
                                     <option value="{{ $acc->id }}">{{ $acc->name }} (Rp {{ number_format($acc->balance, 0, ',', '.') }})</option>
@@ -313,7 +313,7 @@
                     @if(in_array($showModal, ['TRANSFER', 'DEPOSIT', 'ADJUSTMENT']))
                         <div>
                             <label class="block text-[#718379] font-bold uppercase tracking-wider text-[11px] mb-1">Akun Tujuan *</label>
-                            <select wire:model="destinationAccountId" class="w-full p-2.5 border border-slate-200 rounded-xl bg-[#F3F6F4] text-[#2C3E35] font-semibold focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] cursor-pointer">
+                            <select wire:model="destinationAccountId" class="w-full p-2.5 border border-slate-200 rounded-xl bg-[#F3F6F4] text-[#2C3E35] font-semibold focus:bg-white focus:ring-2 focus:ring-[#047857]/20 focus:border-[#047857] cursor-pointer">
                                 <option value="">Pilih Akun Tujuan</option>
                                 @foreach($accounts as $acc)
                                     <option value="{{ $acc->id }}">{{ $acc->name }} (Rp {{ number_format($acc->balance, 0, ',', '.') }})</option>
@@ -337,7 +337,7 @@
                                 "
                                 value="{{ $amount ? number_format($amount, 0, ',', '.') : '' }}"
                                 placeholder="0"
-                                class="w-full pl-9 pr-3 py-2.5 border border-slate-200 rounded-xl font-mono font-extrabold text-right text-sm text-[#3F7A5D] bg-[#F3F6F4] focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]"
+                                class="w-full pl-9 pr-3 py-2.5 border border-slate-200 rounded-xl font-mono font-extrabold text-right text-sm text-[#047857] bg-[#F3F6F4] focus:bg-white focus:ring-2 focus:ring-[#047857]/20 focus:border-[#047857]"
                                 required
                             />
                         </div>
@@ -345,11 +345,11 @@
 
                     <div>
                         <label class="block text-[#718379] font-bold uppercase tracking-wider text-[11px] mb-1">Keterangan / Alasan *</label>
-                        <input type="text" wire:model="description" class="w-full p-2.5 border border-slate-200 rounded-xl bg-[#F3F6F4] text-[#2C3E35] focus:bg-white focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] font-semibold" required />
+                        <input type="text" wire:model="description" class="w-full p-2.5 border border-slate-200 rounded-xl bg-[#F3F6F4] text-[#2C3E35] focus:bg-white focus:ring-2 focus:ring-[#047857]/20 focus:border-[#047857] font-semibold" required />
                     </div>
 
                     <div class="pt-3 flex gap-2.5">
-                        <button type="submit" class="flex-1 h-11 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-xl transition shadow-sm text-sm cursor-pointer flex items-center justify-center">
+                        <button type="submit" class="flex-1 h-11 bg-[#047857] hover:bg-[#065F46] text-white font-extrabold rounded-xl transition shadow-sm text-sm cursor-pointer flex items-center justify-center">
                             Proses Mutasi Saldo
                         </button>
                         <button type="button" wire:click="$set('showModal', null)" class="h-11 px-5 bg-slate-100 hover:bg-slate-200 text-[#2C3E35] font-bold rounded-xl text-sm transition cursor-pointer">

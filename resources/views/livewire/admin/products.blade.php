@@ -32,7 +32,7 @@
             </button>
 
             <!-- Tambah Produk Baru -->
-            <button wire:click="openCreateModal" class="h-10 sm:h-11 px-3 sm:px-4 py-2 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-xl text-xs sm:text-sm shadow-xs transition flex items-center justify-center gap-1.5 active:scale-95 shrink-0 cursor-pointer">
+            <button wire:click="openCreateModal" class="h-10 sm:h-11 px-3 sm:px-4 py-2 bg-[#047857] hover:bg-[#065F46] text-white font-extrabold rounded-xl text-xs sm:text-sm shadow-xs transition flex items-center justify-center gap-1.5 active:scale-95 shrink-0 cursor-pointer">
                 <svg class="w-4 h-4 sm:w-4.5 sm:h-4.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                 </svg>
@@ -49,7 +49,7 @@
                 type="text"
                 wire:model.live.debounce.300ms="search"
                 placeholder="Cari nama barang, barcode..."
-                class="w-full h-11 pl-9 pr-3 py-2.5 border border-slate-200 rounded-xl text-sm font-semibold focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] bg-[#F3F6F4] placeholder:text-[#718379]"
+                class="w-full h-11 pl-9 pr-3 py-2.5 border border-slate-200 rounded-xl text-sm font-semibold focus:ring-2 focus:ring-[#047857]/20 focus:border-[#047857] bg-[#F3F6F4] placeholder:text-[#718379]"
             />
             <svg class="w-4 h-4 text-slate-400 absolute left-3 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
@@ -58,7 +58,7 @@
 
         <div class="w-full md:w-auto flex flex-wrap items-center justify-between md:justify-end gap-2.5">
             <!-- Category Filter Dropdown -->
-            <select wire:model.live="selectedCategory" class="h-11 px-3 py-2.5 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold bg-white text-[#2C3E35] focus:ring-2 focus:ring-[#3F7A5D]/20 shrink-0">
+            <select wire:model.live="selectedCategory" class="h-11 px-3 py-2.5 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold bg-white text-[#2C3E35] focus:ring-2 focus:ring-[#047857]/20 shrink-0">
                 <option value="">Semua Kategori</option>
                 @foreach($categories as $cat)
                     <option value="{{ $cat->id }}">{{ $cat->name }}</option>
@@ -67,7 +67,7 @@
 
             <!-- Sort Dropdown & Direction Toggle -->
             <div class="flex items-center gap-1.5 shrink-0">
-                <select wire:model.live="sortField" class="h-11 px-3 py-2.5 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold bg-white text-[#2C3E35] focus:ring-2 focus:ring-[#3F7A5D]/20">
+                <select wire:model.live="sortField" class="h-11 px-3 py-2.5 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold bg-white text-[#2C3E35] focus:ring-2 focus:ring-[#047857]/20">
                     <option value="created_at">Urutkan: Terbaru</option>
                     <option value="name">Urutkan: Nama Barang</option>
                     <option value="stock">Urutkan: Jumlah Stok</option>
@@ -76,15 +76,15 @@
                         <option value="cost_price">Urutkan: Modal (COGS)</option>
                     @endif
                 </select>
-                <button type="button" wire:click="$set('sortDirection', '{{ $sortDirection === 'asc' ? 'desc' : 'asc' }}')" class="h-11 px-3 py-2 border border-slate-200 rounded-xl bg-white hover:bg-[#F3F6F4] font-extrabold text-xs sm:text-sm text-[#3F7A5D] transition shrink-0 cursor-pointer shadow-xs select-none" title="Ubah Arah Urutan (Ascending / Descending)">
+                <button type="button" wire:click="$set('sortDirection', '{{ $sortDirection === 'asc' ? 'desc' : 'asc' }}')" class="h-11 px-3 py-2 border border-slate-200 rounded-xl bg-white hover:bg-[#F3F6F4] font-extrabold text-xs sm:text-sm text-[#047857] transition shrink-0 cursor-pointer shadow-xs select-none" title="Ubah Arah Urutan (Ascending / Descending)">
                     {{ $sortDirection === 'asc' ? '↑ ASC' : '↓ DESC' }}
                 </button>
             </div>
 
             <!-- Jenis Stok Filter Pills -->
             <div class="flex items-center gap-1 bg-slate-100 p-1 min-h-[44px] h-auto rounded-xl shrink-0 flex-wrap max-w-full overflow-x-auto no-scrollbar">
-                <button type="button" wire:click="filterType('ALL')" class="px-2.5 sm:px-3 py-1.5 rounded-lg font-bold text-xs sm:text-sm transition cursor-pointer {{ $selectedType === 'ALL' ? 'bg-[#3F7A5D] text-white shadow-xs' : 'text-slate-600 hover:text-slate-900' }}">Semua</button>
-                <button type="button" wire:click="filterType('PHYSICAL')" class="px-2.5 sm:px-3 py-1.5 rounded-lg font-bold text-xs sm:text-sm transition cursor-pointer {{ $selectedType === 'PHYSICAL' ? 'bg-[#3F7A5D] text-white shadow-xs' : 'text-slate-600 hover:text-slate-900' }}">Fisik</button>
+                <button type="button" wire:click="filterType('ALL')" class="px-2.5 sm:px-3 py-1.5 rounded-lg font-bold text-xs sm:text-sm transition cursor-pointer {{ $selectedType === 'ALL' ? 'bg-[#047857] text-white shadow-xs' : 'text-slate-600 hover:text-slate-900' }}">Semua</button>
+                <button type="button" wire:click="filterType('PHYSICAL')" class="px-2.5 sm:px-3 py-1.5 rounded-lg font-bold text-xs sm:text-sm transition cursor-pointer {{ $selectedType === 'PHYSICAL' ? 'bg-[#047857] text-white shadow-xs' : 'text-slate-600 hover:text-slate-900' }}">Fisik</button>
                 <button type="button" wire:click="filterType('DIGITAL')" class="px-2.5 sm:px-3 py-1.5 rounded-lg font-bold text-xs sm:text-sm transition cursor-pointer {{ $selectedType === 'DIGITAL' ? 'bg-emerald-700 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900' }}">Digital</button>
                 <button type="button" wire:click="filterType('LAYANAN')" class="px-2.5 sm:px-3 py-1.5 rounded-lg font-bold text-xs sm:text-sm transition cursor-pointer {{ $selectedType === 'LAYANAN' || $selectedType === 'SERVICE' ? 'bg-[#C2AC7C] text-white shadow-xs' : 'text-slate-600 hover:text-slate-900' }}">Layanan</button>
                 <button type="button" wire:click="filterType('INCOMPLETE')" class="px-2.5 sm:px-3 py-1.5 rounded-lg font-bold text-xs sm:text-sm transition cursor-pointer flex items-center gap-1 {{ $selectedType === 'INCOMPLETE' ? 'bg-rose-600 text-white shadow-xs font-extrabold' : 'bg-rose-50 text-rose-700 hover:bg-rose-100 font-extrabold border border-rose-200/80' }}" title="Filter Khusus Produk yang Harganya Belum Lengkap">
@@ -99,7 +99,7 @@
                     type="button"
                     wire:click="setViewMode('card')"
                     title="Tampilan Kartu Grid"
-                    class="h-9 px-2.5 rounded-lg transition cursor-pointer {{ $viewMode === 'card' ? 'bg-[#3F7A5D] text-white shadow-sm' : 'text-slate-400 hover:text-slate-700' }}"
+                    class="h-9 px-2.5 rounded-lg transition cursor-pointer {{ $viewMode === 'card' ? 'bg-[#047857] text-white shadow-sm' : 'text-slate-400 hover:text-slate-700' }}"
                 >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
@@ -109,7 +109,7 @@
                     type="button"
                     wire:click="setViewMode('table')"
                     title="Tampilan Tabel List"
-                    class="h-9 px-2.5 rounded-lg transition cursor-pointer {{ $viewMode === 'table' ? 'bg-[#3F7A5D] text-white shadow-sm' : 'text-slate-400 hover:text-slate-700' }}"
+                    class="h-9 px-2.5 rounded-lg transition cursor-pointer {{ $viewMode === 'table' ? 'bg-[#047857] text-white shadow-sm' : 'text-slate-400 hover:text-slate-700' }}"
                 >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
@@ -135,11 +135,11 @@
                         : strtoupper(substr($product->name, 0, 2));
                 @endphp
 
-                <div class="bg-white rounded-2xl border border-slate-200/80 p-4 shadow-sm hover:shadow-md hover:border-[#3F7A5D]/50 transition-all duration-200 flex flex-col justify-between h-[350px] group">
+                <div class="bg-white rounded-2xl border border-slate-200/80 p-4 shadow-sm hover:shadow-md hover:border-[#047857]/50 transition-all duration-200 flex flex-col justify-between h-[350px] group">
                     <div class="space-y-2.5">
                         <!-- Top Metadata & Type Badge -->
                         <div class="flex items-center justify-between text-xs">
-                            <span class="px-2.5 py-0.5 rounded-md text-[11px] font-extrabold uppercase tracking-wider border {{ $product->product_type === 'PHYSICAL' ? 'bg-[#3F7A5D]/10 text-[#3F7A5D] border-[#3F7A5D]/20' : ($product->product_type === 'DIGITAL' ? 'bg-emerald-100/90 text-emerald-800 border-emerald-300/60' : 'bg-[#C2AC7C]/15 text-[#8F794B] border-[#C2AC7C]/30') }}">
+                            <span class="px-2.5 py-0.5 rounded-md text-[11px] font-extrabold uppercase tracking-wider border {{ $product->product_type === 'PHYSICAL' ? 'bg-[#047857]/10 text-[#047857] border-[#047857]/20' : ($product->product_type === 'DIGITAL' ? 'bg-emerald-100/90 text-emerald-800 border-emerald-300/60' : 'bg-[#C2AC7C]/15 text-[#8F794B] border-[#C2AC7C]/30') }}">
                                 {{ $product->product_type === 'PHYSICAL' ? 'FISIK' : ($product->product_type === 'DIGITAL' ? 'DIGITAL' : 'LAYANAN') }}
                             </span>
 
@@ -155,7 +155,7 @@
                             @if(!empty($product->image_path) && Illuminate\Support\Facades\Storage::disk('public')->exists($product->image_path))
                                 <img src="{{ Illuminate\Support\Facades\Storage::url($product->image_path) }}" alt="{{ $product->name }}" class="w-full h-full object-cover rounded-xl group-hover:scale-105 transition-transform duration-300">
                             @else
-                                <span class="text-2xl font-mono font-extrabold text-[#3F7A5D]/80 tracking-wider">
+                                <span class="text-2xl font-mono font-extrabold text-[#047857]/80 tracking-wider">
                                     {{ $initials }}
                                 </span>
                             @endif
@@ -163,7 +163,7 @@
 
                         <!-- Product Title & Barcode -->
                         <div>
-                            <h3 class="font-bold text-[#2C3E35] text-sm leading-snug line-clamp-2 group-hover:text-[#3F7A5D] transition-colors">
+                            <h3 class="font-bold text-[#2C3E35] text-sm leading-snug line-clamp-2 group-hover:text-[#047857] transition-colors">
                                 {{ $product->name }}
                             </h3>
                             <div class="text-xs font-mono text-slate-400 mt-0.5">
@@ -176,7 +176,7 @@
                             <span class="text-slate-700 font-semibold">{{ $product->category?->name ?? 'Umum' }}</span>
                             @if(!empty($product->product_subtype) && trim($product->product_subtype) !== '-')
                                 <span class="text-slate-300">&bull;</span>
-                                <span class="text-[#3F7A5D] font-bold">{{ $product->product_subtype }}</span>
+                                <span class="text-[#047857] font-bold">{{ $product->product_subtype }}</span>
                             @endif
                             @if(!empty($product->brand?->name) && trim($product->brand->name) !== '-')
                                 <span class="text-slate-300">&bull;</span>
@@ -241,7 +241,7 @@
                 <table class="w-full text-sm text-left">
                     <thead class="bg-[#F3F6F4] border-b border-slate-200/80 text-[#718379] uppercase text-xs font-extrabold tracking-wider">
                         <tr>
-                            <th wire:click="sortBy('name')" class="py-3.5 px-4 cursor-pointer hover:text-[#3F7A5D] transition select-none">
+                            <th wire:click="sortBy('name')" class="py-3.5 px-4 cursor-pointer hover:text-[#047857] transition select-none">
                                 <div class="flex items-center gap-1">
                                     <span>Nama Barang / Layanan</span>
                                     @if($sortField === 'name')
@@ -251,7 +251,7 @@
                                     @endif
                                 </div>
                             </th>
-                            <th wire:click="sortBy('product_type')" class="py-3.5 px-4 cursor-pointer hover:text-[#3F7A5D] transition select-none">
+                            <th wire:click="sortBy('product_type')" class="py-3.5 px-4 cursor-pointer hover:text-[#047857] transition select-none">
                                 <div class="flex items-center gap-1">
                                     <span>Jenis Stok</span>
                                     @if($sortField === 'product_type')
@@ -262,7 +262,7 @@
                                 </div>
                             </th>
                             <th class="py-3.5 px-4">Kategori &bull; Jenis &bull; Merk</th>
-                            <th wire:click="sortBy('stock')" class="py-3.5 px-4 text-center cursor-pointer hover:text-[#3F7A5D] transition select-none">
+                            <th wire:click="sortBy('stock')" class="py-3.5 px-4 text-center cursor-pointer hover:text-[#047857] transition select-none">
                                 <div class="flex items-center justify-center gap-1">
                                     <span>Jumlah Stok</span>
                                     @if($sortField === 'stock' || $sortField === 'quantity')
@@ -273,7 +273,7 @@
                                 </div>
                             </th>
                             @if(auth()->user()->can('cost_price.view'))
-                                <th wire:click="sortBy('cost_price')" class="py-3.5 px-4 text-right cursor-pointer hover:text-[#3F7A5D] transition select-none">
+                                <th wire:click="sortBy('cost_price')" class="py-3.5 px-4 text-right cursor-pointer hover:text-[#047857] transition select-none">
                                     <div class="flex items-center justify-end gap-1">
                                         <span>Modal</span>
                                         @if($sortField === 'cost_price')
@@ -284,7 +284,7 @@
                                     </div>
                                 </th>
                             @endif
-                            <th wire:click="sortBy('selling_price')" class="py-3.5 px-4 text-right cursor-pointer hover:text-[#3F7A5D] transition select-none">
+                            <th wire:click="sortBy('selling_price')" class="py-3.5 px-4 text-right cursor-pointer hover:text-[#047857] transition select-none">
                                 <div class="flex items-center justify-end gap-1">
                                     <span>Harga Jual</span>
                                     @if($sortField === 'selling_price')
@@ -306,7 +306,7 @@
                                         @if(!empty($product->image_path) && Illuminate\Support\Facades\Storage::disk('public')->exists($product->image_path))
                                             <img src="{{ Illuminate\Support\Facades\Storage::url($product->image_path) }}" alt="{{ $product->name }}" class="w-9 h-9 object-cover rounded-xl bg-slate-100 border border-slate-200/80 shrink-0">
                                         @else
-                                            <div class="w-9 h-9 rounded-xl bg-[#F3F6F4] border border-slate-200/80 text-[#3F7A5D] font-mono font-extrabold text-xs flex items-center justify-center shrink-0">
+                                            <div class="w-9 h-9 rounded-xl bg-[#F3F6F4] border border-slate-200/80 text-[#047857] font-mono font-extrabold text-xs flex items-center justify-center shrink-0">
                                                 {{ strtoupper(substr($product->code, 0, 2)) }}
                                             </div>
                                         @endif
@@ -321,7 +321,7 @@
 
                                 <!-- Col 2: Jenis Stok Badge -->
                                 <td class="py-3.5 px-4 whitespace-nowrap">
-                                    <span class="px-2.5 py-0.5 rounded-md text-[11px] font-extrabold uppercase tracking-wider border {{ $product->product_type === 'PHYSICAL' ? 'bg-[#3F7A5D]/10 text-[#3F7A5D] border-[#3F7A5D]/20' : ($product->product_type === 'DIGITAL' ? 'bg-emerald-100/90 text-emerald-800 border-emerald-300/60' : 'bg-[#C2AC7C]/15 text-[#8F794B] border-[#C2AC7C]/30') }}">
+                                    <span class="px-2.5 py-0.5 rounded-md text-[11px] font-extrabold uppercase tracking-wider border {{ $product->product_type === 'PHYSICAL' ? 'bg-[#047857]/10 text-[#047857] border-[#047857]/20' : ($product->product_type === 'DIGITAL' ? 'bg-emerald-100/90 text-emerald-800 border-emerald-300/60' : 'bg-[#C2AC7C]/15 text-[#8F794B] border-[#C2AC7C]/30') }}">
                                         {{ $product->product_type === 'PHYSICAL' ? 'FISIK' : ($product->product_type === 'DIGITAL' ? 'DIGITAL' : 'LAYANAN') }}
                                     </span>
                                 </td>
@@ -332,7 +332,7 @@
                                         <span class="text-slate-700 font-semibold">{{ $product->category?->name ?? 'Umum' }}</span>
                                         @if(!empty($product->product_subtype) && trim($product->product_subtype) !== '-')
                                             <span class="text-slate-300">&bull;</span>
-                                            <span class="text-[#3F7A5D] font-bold">{{ $product->product_subtype }}</span>
+                                            <span class="text-[#047857] font-bold">{{ $product->product_subtype }}</span>
                                         @endif
                                         @if(!empty($product->brand?->name) && trim($product->brand->name) !== '-')
                                             <span class="text-slate-300">&bull;</span>
@@ -421,21 +421,21 @@
                         <div>
                             <label class="block text-[#2C3E35] font-bold mb-1">Kode / Barcode *</label>
                             <div class="flex items-center gap-1.5">
-                                <input type="text" wire:model="code" class="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] font-mono font-extrabold uppercase text-xs" required />
-                                <button type="button" wire:click="generateAutoCode" title="Generate Otomatis Kode Barcode" class="px-2.5 py-2.5 bg-[#E3EEE8] hover:bg-[#3F7A5D] hover:text-white text-[#3F7A5D] border border-[#3F7A5D]/30 rounded-xl font-bold text-[10px] uppercase tracking-wider shrink-0 transition cursor-pointer active:scale-95">
+                                <input type="text" wire:model="code" class="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#047857]/20 focus:border-[#047857] font-mono font-extrabold uppercase text-xs" required />
+                                <button type="button" wire:click="generateAutoCode" title="Generate Otomatis Kode Barcode" class="px-2.5 py-2.5 bg-[#E3EEE8] hover:bg-[#047857] hover:text-white text-[#047857] border border-[#047857]/30 rounded-xl font-bold text-[10px] uppercase tracking-wider shrink-0 transition cursor-pointer active:scale-95">
                                     Auto
                                 </button>
                             </div>
                         </div>
                         <div>
                             <label class="block text-[#2C3E35] font-bold mb-1">Barcode Fisik (Scan)</label>
-                            <input type="text" wire:model="barcode" placeholder="Opsional" class="w-full p-3 border border-slate-300 rounded-2xl focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] font-mono" />
+                            <input type="text" wire:model="barcode" placeholder="Opsional" class="w-full p-3 border border-slate-300 rounded-2xl focus:ring-2 focus:ring-[#047857]/20 focus:border-[#047857] font-mono" />
                         </div>
                     </div>
 
                     <div>
                         <label class="block text-[#2C3E35] font-bold mb-1">Nama Barang/Layanan *</label>
-                        <input type="text" wire:model="name" placeholder="Contoh: Casing Premium Softcase / Top Up Saldo DANA" class="w-full p-3 border border-slate-300 rounded-2xl focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] font-bold" required />
+                        <input type="text" wire:model="name" placeholder="Contoh: Casing Premium Softcase / Top Up Saldo DANA" class="w-full p-3 border border-slate-300 rounded-2xl focus:ring-2 focus:ring-[#047857]/20 focus:border-[#047857] font-bold" required />
                     </div>
 
                     <div class="grid grid-cols-2 gap-4">
@@ -490,7 +490,7 @@
                                     "
                                     value="{{ $cost_price ? number_format((float) $cost_price, 0, ',', '.') : '' }}"
                                     placeholder="0"
-                                    class="w-full pl-10 pr-3 py-3 border border-slate-300 rounded-2xl font-mono font-bold text-right text-xs text-[#2C3E35] focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]"
+                                    class="w-full pl-10 pr-3 py-3 border border-slate-300 rounded-2xl font-mono font-bold text-right text-xs text-[#2C3E35] focus:ring-2 focus:ring-[#047857]/20 focus:border-[#047857]"
                                     required
                                 />
                             </div>
@@ -510,7 +510,7 @@
                                     "
                                     value="{{ $selling_price ? number_format((float) $selling_price, 0, ',', '.') : '' }}"
                                     placeholder="0"
-                                    class="w-full pl-10 pr-3 py-3 border border-slate-300 rounded-2xl font-mono text-[#2C3E35] font-extrabold text-sm text-right focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]"
+                                    class="w-full pl-10 pr-3 py-3 border border-slate-300 rounded-2xl font-mono text-[#2C3E35] font-extrabold text-sm text-right focus:ring-2 focus:ring-[#047857]/20 focus:border-[#047857]"
                                     required
                                 />
                             </div>
@@ -525,7 +525,7 @@
                     @endif
 
                     <div class="pt-3 flex gap-3">
-                        <button type="submit" class="flex-1 py-4 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-bold rounded-2xl transition shadow-emco-primary text-xs uppercase tracking-wider">
+                        <button type="submit" class="flex-1 py-4 bg-[#047857] hover:bg-[#065F46] text-white font-bold rounded-2xl transition shadow-emco-primary text-xs uppercase tracking-wider">
                             Simpan Barang/Layanan
                         </button>
                         <button type="button" wire:click="$set('showCreateModal', false)" class="py-4 px-5 bg-slate-100 text-slate-700 font-semibold rounded-2xl text-xs">
@@ -552,7 +552,7 @@
                         <input type="file" wire:model="importFile" class="w-full p-3 border border-slate-300 rounded-2xl bg-[#F3F6F4] font-medium" required />
                     </div>
 
-                    <div class="bg-[#E3EEE8] text-[#3F7A5D] p-4 rounded-2xl text-xs leading-relaxed font-medium space-y-1">
+                    <div class="bg-[#E3EEE8] text-[#047857] p-4 rounded-2xl text-xs leading-relaxed font-medium space-y-1">
                         <div class="font-bold">Informasi Mapping Format Excel:</div>
                         <div>&bull; <strong>Nama Barang/Layanan</strong>, <strong>Jenis Stok</strong> (Fisik/Digital/Layanan), <strong>Jenis</strong>, <strong>Kategori</strong>, dan <strong>Merk</strong>.</div>
                         <div>&bull; Kategori dan Merk otomatis dibuat jika belum ada di database.</div>

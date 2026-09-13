@@ -56,8 +56,8 @@
 
             // Raja Aksesoris EMCO Palette Variations
             const colors = [
-                '#3F7A5D', // Deep Jade Emerald
-                '#32634B', // Darker Jade
+                '#047857', // Deep Jade Emerald
+                '#065F46', // Darker Jade
                 '#C2AC7C', // Warm Sand Ochre
                 '#D9A21B', // Golden Yellow Accent
                 '#A9D1A0', // Fresh Mint
