@@ -394,7 +394,7 @@ class PosService
 
         ProcessAuditLogJob::dispatch(
             action: 'POS_CHECKOUT',
-            description: "Penjualan POS #{$sale->invoice_number} berhasil diproses (Total: Rp".number_format($sale->total_amount, 0, ',', '.').")",
+            description: "Penjualan POS #{$sale->invoice_number} berhasil diproses (Total: Rp".number_format($sale->total_amount, 0, ',', '.').')',
             userId: $cashier->id,
             context: [
                 'sale_id' => $sale->id,

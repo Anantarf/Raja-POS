@@ -295,6 +295,7 @@ class PosCheckoutTest extends TestCase
         $this->assertEquals(10000, $sale->total_cost);
         $this->assertEquals('Kabel Harga Server', $sale->items()->value('product_name_snapshot'));
     }
+
     public function test_change_uses_selected_cash_account(): void
     {
         $cashier = User::where('username', 'superadmin')->first();
@@ -332,6 +333,7 @@ class PosCheckoutTest extends TestCase
         $this->assertEquals(0, $mainCash->fresh()->current_balance);
         $this->assertEquals(50000, $drawerCash->fresh()->current_balance);
     }
+
     public function test_trash_and_restore_use_per_payment_change_account(): void
     {
         $cashier = User::where('username', 'superadmin')->first();

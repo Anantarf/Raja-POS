@@ -2,11 +2,11 @@
 
 namespace Tests\Feature;
 
+use App\Livewire\Admin\Settings as SettingsComponent;
 use App\Models\BalanceAccount;
 use App\Models\Location;
 use App\Models\PaymentMethod;
 use App\Models\Role;
-use App\Livewire\Admin\Settings as SettingsComponent;
 use App\Models\Setting;
 use App\Models\User;
 use Database\Seeders\DatabaseSeeder;
@@ -152,6 +152,7 @@ class FoundationTest extends TestCase
             ->call('addLocation')
             ->assertForbidden();
     }
+
     public function test_settings_can_create_payment_method_with_generated_code(): void
     {
         $owner = User::where('username', 'superadmin')->first();
@@ -169,6 +170,7 @@ class FoundationTest extends TestCase
             'type' => 'TRANSFER',
         ]);
     }
+
     public function test_portal_routes_redirect_to_custom_admin_routes(): void
     {
         $superadmin = User::where('username', 'superadmin')->first();
@@ -176,5 +178,34 @@ class FoundationTest extends TestCase
         $this->actingAs($superadmin)->get('/portal')->assertRedirect('/admin');
         $this->get('/portal/reports/sales')->assertRedirect('/admin/reports/sales');
         $this->get('/portal/settings/users')->assertRedirect('/admin/settings/users');
+    }
+
+    public function test_settings_can_save_printer_and_receipt_configurations(): void
+    {
+        $owner = User::where('username', 'superadmin')->first();
+
+        Livewire::actingAs($owner)
+            ->test(SettingsComponent::class)
+            ->set('storeName', 'Raja Aksesoris Utama')
+            ->set('receiptPaperWidth', '80mm')
+            ->set('printMode', 'RAWBT')
+            ->set('autoPrint', true)
+            ->set('receiptHeaderTagline', 'Toko Aksesoris Terlengkap')
+            ->set('receiptAddress', 'Jl. Merdeka No. 45, Jakarta')
+            ->set('receiptPhone', '081234567890')
+            ->set('receiptFooterText', 'Terima kasih telah berbelanja!')
+            ->set('showCashierName', true)
+            ->call('savePrinterSettings')
+            ->assertHasNoErrors();
+
+        $this->assertEquals('Raja Aksesoris Utama', Setting::get('store_name'));
+        $this->assertEquals('80mm', Setting::get('receipt_paper_width'));
+        $this->assertEquals('RAWBT', Setting::get('print_mode'));
+        $this->assertEquals('1', Setting::get('auto_print'));
+        $this->assertEquals('Toko Aksesoris Terlengkap', Setting::get('receipt_header_tagline'));
+        $this->assertEquals('Jl. Merdeka No. 45, Jakarta', Setting::get('receipt_address'));
+        $this->assertEquals('081234567890', Setting::get('receipt_phone'));
+        $this->assertEquals('Terima kasih telah berbelanja!', Setting::get('receipt_footer_text'));
+        $this->assertEquals('1', Setting::get('show_cashier_name'));
     }
 }

@@ -12,9 +12,28 @@ use Livewire\Component;
 
 class Settings extends Component
 {
-    public $activeTab = 'STORE_SETTINGS'; // STORE_SETTINGS, USERS, ROLES, PAYMENT_METHODS, LOCATIONS
+    public $activeTab = 'STORE_SETTINGS'; // STORE_SETTINGS, PRINTER_SETTINGS, USERS, ROLES, PAYMENT_METHODS, LOCATIONS
 
-    public array $allowedTabs = ['STORE_SETTINGS', 'USERS', 'ROLES', 'PAYMENT_METHODS', 'LOCATIONS'];
+    public array $allowedTabs = ['STORE_SETTINGS', 'PRINTER_SETTINGS', 'USERS', 'ROLES', 'PAYMENT_METHODS', 'LOCATIONS'];
+
+    // Printer & Receipt Form
+    public $storeName = 'Raja Aksesoris';
+
+    public $receiptPaperWidth = '58mm';
+
+    public $printMode = 'BROWSER';
+
+    public $autoPrint = true;
+
+    public $receiptHeaderTagline = 'Retail Management System';
+
+    public $receiptAddress = '';
+
+    public $receiptPhone = '';
+
+    public $receiptFooterText = 'Terima Kasih Telah Berbelanja! Kepuasan Anda Adalah Kebanggaan Kami.';
+
+    public $showCashierName = true;
 
     // Location Form
     public $locationName = '';
@@ -41,6 +60,45 @@ class Settings extends Component
     {
         $tab = strtoupper(str_replace('-', '_', $section ?: 'store-settings'));
         $this->activeTab = in_array($tab, $this->allowedTabs, true) ? $tab : 'STORE_SETTINGS';
+
+        $this->storeName = Setting::get('store_name', 'Raja Aksesoris');
+        $this->receiptPaperWidth = Setting::get('receipt_paper_width', '58mm');
+        $this->printMode = Setting::get('print_mode', 'BROWSER');
+        $this->autoPrint = Setting::get('auto_print', '1') === '1';
+        $this->receiptHeaderTagline = Setting::get('receipt_header_tagline', 'Retail Management System');
+        $this->receiptAddress = Setting::get('receipt_address', '');
+        $this->receiptPhone = Setting::get('receipt_phone', '');
+        $this->receiptFooterText = Setting::get('receipt_footer_text', 'Terima Kasih Telah Berbelanja! Kepuasan Anda Adalah Kebanggaan Kami.');
+        $this->showCashierName = Setting::get('show_cashier_name', '1') === '1';
+    }
+
+    public function savePrinterSettings(): void
+    {
+        abort_unless(auth()->user()->can('settings.manage'), 403);
+
+        $this->validate([
+            'storeName' => 'required|string|max:255',
+            'receiptPaperWidth' => 'required|in:58mm,80mm',
+            'printMode' => 'required|in:BROWSER,RAWBT',
+            'autoPrint' => 'boolean',
+            'receiptHeaderTagline' => 'nullable|string|max:255',
+            'receiptAddress' => 'nullable|string|max:500',
+            'receiptPhone' => 'nullable|string|max:50',
+            'receiptFooterText' => 'nullable|string|max:500',
+            'showCashierName' => 'boolean',
+        ]);
+
+        Setting::set('store_name', $this->storeName);
+        Setting::set('receipt_paper_width', $this->receiptPaperWidth);
+        Setting::set('print_mode', $this->printMode);
+        Setting::set('auto_print', $this->autoPrint ? '1' : '0');
+        Setting::set('receipt_header_tagline', $this->receiptHeaderTagline ?: '');
+        Setting::set('receipt_address', $this->receiptAddress ?: '');
+        Setting::set('receipt_phone', $this->receiptPhone ?: '');
+        Setting::set('receipt_footer_text', $this->receiptFooterText ?: '');
+        Setting::set('show_cashier_name', $this->showCashierName ? '1' : '0');
+
+        $this->dispatch('notify', message: 'Pengaturan printer dan struk berhasil disimpan.', type: 'success');
     }
 
     public function addUser()

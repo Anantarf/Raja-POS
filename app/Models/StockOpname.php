@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Str;
 
 class StockOpname extends Model
 {
@@ -57,7 +58,7 @@ class StockOpname extends Model
         $dateStr = date('ymd');
 
         do {
-            $number = $cleanPrefix . '-' . $dateStr . '-' . strtoupper(\Illuminate\Support\Str::random(5));
+            $number = $cleanPrefix.'-'.$dateStr.'-'.strtoupper(Str::random(5));
         } while (static::where('opname_number', $number)->exists());
 
         return $number;
@@ -76,9 +77,10 @@ class StockOpname extends Model
 
         if (strlen($number) > 20 && str_contains($number, '-')) {
             $parts = array_values(array_filter(explode('-', $number)));
-            $prefix = strtoupper(!empty($parts[0]) ? $parts[0] : 'OPN');
+            $prefix = strtoupper(! empty($parts[0]) ? $parts[0] : 'OPN');
             $code = strtoupper(end($parts));
-            return $prefix . '-' . substr($code, 0, 8);
+
+            return $prefix.'-'.substr($code, 0, 8);
         }
 
         return strtoupper($number);

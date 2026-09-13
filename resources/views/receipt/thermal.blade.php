@@ -3,19 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Struk #{{ $sale->invoice_number }} - Raja Aksesoris</title>
+    <title>Struk #{{ $sale->invoice_number }} - {{ $storeName ?? 'Raja Aksesoris' }}</title>
     <style>
         @page {
             margin: 0;
         }
         body {
             font-family: 'Courier New', Courier, monospace;
-            font-size: 12px;
+            font-size: {{ ($paperWidth ?? '58mm') === '80mm' ? '13px' : '12px' }};
             color: #000;
             background: #fff;
             margin: 0;
-            padding: 10px;
+            padding: 8px;
             width: {{ $paperWidth ?? '58mm' }};
+            box-sizing: border-box;
         }
         .text-center { text-align: center; }
         .text-right { text-align: right; }
@@ -26,12 +27,20 @@
             margin: 8px 0;
         }
         .header {
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
         .header h2 {
             margin: 0;
-            font-size: 16px;
+            font-size: {{ ($paperWidth ?? '58mm') === '80mm' ? '18px' : '15px' }};
             text-transform: uppercase;
+        }
+        .header .subtitle {
+            font-size: 11px;
+            margin-top: 2px;
+        }
+        .header .address {
+            font-size: 10px;
+            margin-top: 2px;
         }
         .meta {
             font-size: 11px;
@@ -53,16 +62,18 @@
             padding: 2px 0;
         }
         .footer {
-            margin-top: 15px;
+            margin-top: 12px;
             font-size: 11px;
+            white-space: pre-line;
+            line-height: 1.3;
         }
         @media print {
             body { padding: 0; }
-            .no-print { display: none; }
+            .no-print { display: none !important; }
         }
     </style>
 </head>
-<body onload="window.print()">
+<body onload="{{ ($printMode ?? 'BROWSER') === 'RAWBT' ? "window.location.href='intent:' + encodeURIComponent(window.location.href) + '#Intent;scheme=http;package=ru.a256.rawbtprinter;end;'" : 'window.print()' }}">
     <div class="no-print" style="margin-bottom: 10px; display: flex; gap: 8px; flex-wrap: wrap;">
         <button onclick="window.print()" style="padding: 6px 12px; cursor: pointer; background: #0284c7; color: #ffffff; border: none; border-radius: 4px; font-weight: 600; font-family: sans-serif;">Cetak Struk (Browser)</button>
         <button onclick="window.location.href='intent:' + encodeURIComponent(window.location.href) + '#Intent;scheme=http;package=ru.a256.rawbtprinter;end;'" style="padding: 6px 12px; cursor: pointer; background: #16a34a; color: #ffffff; border: none; border-radius: 4px; font-weight: 600; font-family: sans-serif;">Cetak Direct (RawBT POS)</button>
@@ -70,14 +81,24 @@
     </div>
 
     <div class="header text-center">
-        <h2>Raja Aksesoris</h2>
-        <div>Retail Management System</div>
+        <h2>{{ $storeName ?? 'Raja Aksesoris' }}</h2>
+        @if(filled($receiptHeaderTagline ?? null))
+            <div class="subtitle">{{ $receiptHeaderTagline }}</div>
+        @endif
+        @if(filled($receiptAddress ?? null))
+            <div class="address">{{ $receiptAddress }}</div>
+        @endif
+        @if(filled($receiptPhone ?? null))
+            <div class="address">Telp: {{ $receiptPhone }}</div>
+        @endif
     </div>
 
     <div class="meta">
         <div><strong>No:</strong> {{ $sale->invoice_number }}</div>
         <div><strong>Tgl:</strong> {{ $sale->transaction_date->timezone('Asia/Jakarta')->format('d/m/Y H:i') }}</div>
-        <div><strong>Kasir:</strong> {{ $sale->cashier->name ?? 'Kasir' }}</div>
+        @if($showCashierName ?? true)
+            <div><strong>Kasir:</strong> {{ $sale->cashier->name ?? 'Kasir' }}</div>
+        @endif
     </div>
 
     <div class="divider"></div>
@@ -107,18 +128,18 @@
                 <td class="text-right">Rp{{ number_format($payment->amount, 0, ',', '.') }}</td>
             </tr>
         @endforeach
-        <tr>
-            <td class="text-left">KEMBALI</td>
-            <td class="text-right">Rp{{ number_format($sale->change_amount, 0, ',', '.') }}</td>
-        </tr>
     </table>
 
     <div class="divider"></div>
 
     <div class="footer text-center">
-        <div class="bold">Terima Kasih Telah Berbelanja!</div>
-        <div>Kepuasan Anda Adalah Kebanggaan Kami.</div>
-        <div>Sampai Jumpa Kembali di Raja Aksesoris!</div>
+        @if(filled($receiptFooterText ?? null))
+            {{ $receiptFooterText }}
+        @else
+            <div class="bold">Terima Kasih Telah Berbelanja!</div>
+            <div>Kepuasan Anda Adalah Kebanggaan Kami.</div>
+            <div>Sampai Jumpa Kembali di {{ $storeName ?? 'Raja Aksesoris' }}!</div>
+        @endif
     </div>
 </body>
 </html>

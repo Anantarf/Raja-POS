@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -15,9 +16,9 @@ return new class extends Migration
             $table->foreignId('location_id')->nullable()->after('account_type')->constrained('locations')->nullOnDelete();
         });
 
-        $firstLocationId = \Illuminate\Support\Facades\DB::table('locations')->value('id');
+        $firstLocationId = DB::table('locations')->value('id');
         if ($firstLocationId) {
-            \Illuminate\Support\Facades\DB::table('balance_accounts')
+            DB::table('balance_accounts')
                 ->whereNull('location_id')
                 ->update(['location_id' => $firstLocationId]);
         }

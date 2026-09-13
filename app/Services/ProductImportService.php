@@ -418,7 +418,6 @@ class ProductImportService
         return $temporaryFile.'.xlsx';
     }
 
-
     protected function findHeaderIndex(array $headers, array $candidates): ?int
     {
         foreach ($candidates as $candidate) {

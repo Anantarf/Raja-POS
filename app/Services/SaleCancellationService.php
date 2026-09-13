@@ -9,7 +9,6 @@ use App\Models\Inventory;
 use App\Models\Sale;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 use InvalidArgumentException;
 
 class SaleCancellationService

@@ -16,6 +16,7 @@
     <div class="flex items-center gap-1.5 sm:gap-2 border-b border-slate-200/80 pb-3 text-xs sm:text-sm font-extrabold overflow-x-auto no-scrollbar whitespace-nowrap">
         @foreach([
             'STORE_SETTINGS' => ['Profil Toko', '/admin/settings/store-settings'],
+            'PRINTER_SETTINGS' => ['Printer & Struk', '/admin/settings/printer-settings'],
             'USERS' => ['Pengguna & Akses', '/admin/settings/users'],
             'ROLES' => ['Role & Hak Akses', '/admin/settings/roles'],
             'PAYMENT_METHODS' => ['Metode Pembayaran', '/admin/settings/payment-methods'],
@@ -74,7 +75,7 @@
                     <div class="space-y-2.5 pt-1">
                         <div class="flex justify-between items-center py-1.5 border-b border-slate-100">
                             <span class="text-[#718379] font-bold">Kertas Printer Struk:</span>
-                            <span class="font-extrabold text-[#2C3E35] font-mono">{{ $settingMap->get('receipt_paper_width', '80mm') }}</span>
+                            <span class="font-extrabold text-[#2C3E35] font-mono">{{ $settingMap->get('receipt_paper_width', '58mm') }}</span>
                         </div>
                         <div class="flex justify-between items-center py-1.5 border-b border-slate-100">
                             <span class="text-[#718379] font-bold">Acuan Zona Waktu:</span>
@@ -89,7 +90,182 @@
             </div>
         </div>
 
-    <!-- Tab 2: USERS -->
+    <!-- Tab 2: PRINTER & STRUK SETTINGS -->
+    @elseif($activeTab === 'PRINTER_SETTINGS')
+        <div class="grid grid-cols-1 lg:grid-cols-5 gap-5">
+            <!-- Form Panel -->
+            <div class="lg:col-span-3 bg-white border border-slate-200/80 rounded-2xl p-5 shadow-sm space-y-5">
+                <div class="flex items-start justify-between gap-4 border-b border-slate-100 pb-3.5">
+                    <div>
+                        <h3 class="text-base font-extrabold text-[#2C3E35] uppercase tracking-wider">Konfigurasi Printer &amp; Struk Thermal</h3>
+                        <p class="text-sm text-[#718379] font-medium mt-0.5">Atur ukuran kertas, metode cetak, dan tampilan teks header/footer struk.</p>
+                    </div>
+                    <span class="px-3 py-1 rounded-lg bg-[#E3EEE8] text-[#3F7A5D] text-xs font-extrabold uppercase tracking-wider border border-[#3F7A5D]/20">Thermal POS</span>
+                </div>
+
+                <form wire:submit.prevent="savePrinterSettings" class="space-y-4">
+                    <!-- Grid 1: Ukuran Kertas & Mode Cetak -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-[#2C3E35] mb-1.5">Ukuran Kertas Thermal *</label>
+                            <select wire:model.live="receiptPaperWidth" class="w-full h-11 px-3 py-2 border border-slate-200 rounded-xl font-bold text-sm text-[#2C3E35] focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]">
+                                <option value="58mm">58mm (Kertas Struk Kecil Standard)</option>
+                                <option value="80mm">80mm (Kertas Struk Lebar Desktop)</option>
+                            </select>
+                            <p class="text-[11px] text-[#718379] mt-1">Pilih `58mm` untuk printer Bluetooth portable atau `80mm` untuk printer kasir besar.</p>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-[#2C3E35] mb-1.5">Mode Cetak Utama *</label>
+                            <select wire:model="printMode" class="w-full h-11 px-3 py-2 border border-slate-200 rounded-xl font-bold text-sm text-[#2C3E35] focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]">
+                                <option value="BROWSER">Browser Native Dialog (PC / Laptop)</option>
+                                <option value="RAWBT">RawBT App Intent (Android Bluetooth Direct)</option>
+                            </select>
+                            <p class="text-[11px] text-[#718379] mt-1">Metode utama yang dipicu saat kasir menekan tombol cetak.</p>
+                        </div>
+                    </div>
+
+                    <!-- Options Toggle -->
+                    <div class="p-4 bg-[#F3F6F4]/70 rounded-xl border border-slate-200/70 space-y-3">
+                        <label class="flex items-center gap-3 cursor-pointer">
+                            <input type="checkbox" wire:model="autoPrint" class="w-4 h-4 text-[#3F7A5D] rounded border-slate-300 focus:ring-[#3F7A5D]">
+                            <div>
+                                <div class="text-xs font-extrabold text-[#2C3E35] uppercase tracking-wider">Otomatis Cetak (Auto-Print)</div>
+                                <div class="text-[11px] text-[#718379]">Otomatis membuka dialog cetak struk begitu transaksi checkout selesai dikonfirmasi.</div>
+                            </div>
+                        </label>
+
+                        <div class="border-t border-slate-200/60 pt-2.5">
+                            <label class="flex items-center gap-3 cursor-pointer">
+                                <input type="checkbox" wire:model.live="showCashierName" class="w-4 h-4 text-[#3F7A5D] rounded border-slate-300 focus:ring-[#3F7A5D]">
+                                <div>
+                                    <div class="text-xs font-extrabold text-[#2C3E35] uppercase tracking-wider">Tampilkan Nama Kasir di Struk</div>
+                                    <div class="text-[11px] text-[#718379]">Mencantumkan label "Kasir: [Nama User]" di bagian atas metadata struk.</div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Header Inputs -->
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-[#2C3E35] mb-1">Nama Toko *</label>
+                            <input type="text" wire:model.live="storeName" class="w-full h-10 px-3 py-2 border border-slate-200 rounded-xl font-bold text-sm text-[#2C3E35] focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]" required />
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-[#2C3E35] mb-1">Tagline / Sub-Header Struk</label>
+                            <input type="text" wire:model.live="receiptHeaderTagline" placeholder="Retail Management System" class="w-full h-10 px-3 py-2 border border-slate-200 rounded-xl text-sm text-[#2C3E35] focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]" />
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-[#2C3E35] mb-1">Alamat Toko</label>
+                                <input type="text" wire:model.live="receiptAddress" placeholder="Jl. Aksesoris No. 88, Jakarta" class="w-full h-10 px-3 py-2 border border-slate-200 rounded-xl text-sm text-[#2C3E35] focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]" />
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-[#2C3E35] mb-1">No. Telp / WhatsApp</label>
+                                <input type="text" wire:model.live="receiptPhone" placeholder="0812-3456-7890" class="w-full h-10 px-3 py-2 border border-slate-200 rounded-xl text-sm text-[#2C3E35] focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer Input -->
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-[#2C3E35] mb-1">Pesan Footer Struk</label>
+                        <textarea wire:model.live="receiptFooterText" rows="2" class="w-full p-2.5 border border-slate-200 rounded-xl text-sm text-[#2C3E35] focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]" placeholder="Terima kasih telah berbelanja!"></textarea>
+                    </div>
+
+                    <div class="pt-2">
+                        <button type="submit" class="w-full sm:w-auto px-6 py-2.5 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-xl text-sm uppercase tracking-wider transition shadow-sm cursor-pointer">
+                            Simpan Pengaturan Printer
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Live Preview Panel -->
+            <div class="lg:col-span-2 space-y-4">
+                <div class="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-sm">
+                    <div class="border-b border-slate-100 pb-3 mb-4 flex items-center justify-between">
+                        <div>
+                            <h3 class="text-sm font-extrabold text-[#2C3E35] uppercase tracking-wider">Live Preview Struk</h3>
+                            <p class="text-xs text-[#718379] font-medium">Gambaran hasil cetak di kertas thermal</p>
+                        </div>
+                        <span class="px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200 text-xs font-mono font-bold">{{ $receiptPaperWidth }}</span>
+                    </div>
+
+                    <!-- Simulated Paper Container -->
+                    <div class="bg-slate-100 p-4 rounded-xl flex justify-center overflow-x-auto">
+                        <div class="bg-white text-black font-mono text-[11px] leading-tight shadow-md p-3 border border-slate-300 rounded transition-all duration-300" style="width: {{ $receiptPaperWidth === '80mm' ? '280px' : '200px' }};">
+                            <!-- Header -->
+                            <div class="text-center font-bold text-xs uppercase">{{ filled($storeName) ? $storeName : 'RAJA AKSESORIS' }}</div>
+                            @if(filled($receiptHeaderTagline))
+                                <div class="text-center text-[10px]">{{ $receiptHeaderTagline }}</div>
+                            @endif
+                            @if(filled($receiptAddress))
+                                <div class="text-center text-[9px] text-slate-600 mt-0.5 leading-tight">{{ $receiptAddress }}</div>
+                            @endif
+                            @if(filled($receiptPhone))
+                                <div class="text-center text-[9px] text-slate-600">Telp: {{ $receiptPhone }}</div>
+                            @endif
+
+                            <div class="border-t border-dashed border-black my-1.5"></div>
+
+                            <!-- Meta -->
+                            <div>No: INV-20260913-001</div>
+                            <div>Tgl: {{ date('d/m/Y H:i') }}</div>
+                            @if($showCashierName)
+                                <div>Kasir: {{ auth()->user()->name ?? 'Kasir Utami' }}</div>
+                            @endif
+
+                            <div class="border-t border-dashed border-black my-1.5"></div>
+
+                            <!-- Items -->
+                            <div class="space-y-1">
+                                <div>
+                                    <div class="font-bold">Kabel Data Type-C Fast</div>
+                                    <div class="flex justify-between">
+                                        <span>2 x Rp25.000</span>
+                                        <span>Rp50.000</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="font-bold">Tempered Glass Bening</div>
+                                    <div class="flex justify-between">
+                                        <span>1 x Rp35.000</span>
+                                        <span>Rp35.000</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="border-t border-dashed border-black my-1.5"></div>
+
+                            <!-- Totals -->
+                            <div class="space-y-0.5">
+                                <div class="flex justify-between font-bold">
+                                    <span>TOTAL</span>
+                                    <span>Rp85.000</span>
+                                </div>
+                                <div class="flex justify-between text-[10px]">
+                                    <span>BAYAR (Tunai)</span>
+                                    <span>Rp100.000</span>
+                                </div>
+                            </div>
+
+                            <div class="border-t border-dashed border-black my-1.5"></div>
+
+                            <!-- Footer -->
+                            <div class="text-center text-[10px] whitespace-pre-line leading-snug">
+                                {{ filled($receiptFooterText) ? $receiptFooterText : "Terima Kasih Telah Berbelanja!\nSampai Jumpa Kembali." }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <!-- Tab 3: USERS -->
     @elseif($activeTab === 'USERS')
         <div class="grid grid-cols-1 lg:grid-cols-5 gap-5">
             <!-- Table Panel (60% Golden Width) -->

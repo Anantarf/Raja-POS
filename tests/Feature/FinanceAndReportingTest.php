@@ -2,7 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Livewire\Admin\Balances as BalancesComponent;
 use App\Models\BalanceAccount;
+use App\Models\BalanceTransaction;
 use App\Models\Location;
 use App\Models\PaymentMethod;
 use App\Models\Product;
@@ -13,8 +15,8 @@ use App\Services\FinanceReportService;
 use App\Services\InventoryService;
 use App\Services\PosService;
 use Database\Seeders\DatabaseSeeder;
-use App\Livewire\Admin\Balances as BalancesComponent;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Livewire\Livewire;
 use Tests\TestCase;
 
@@ -30,8 +32,8 @@ class FinanceAndReportingTest extends TestCase
 
     public function test_formatted_transaction_number_attribute(): void
     {
-        $trx = new \App\Models\BalanceTransaction([
-            'transaction_number' => 'TRX-30971e96-924c-45fa-b1a6-21234d4e4db3'
+        $trx = new BalanceTransaction([
+            'transaction_number' => 'TRX-30971e96-924c-45fa-b1a6-21234d4e4db3',
         ]);
 
         $this->assertEquals('TRX-30971E96', $trx->formatted_transaction_number);
@@ -41,7 +43,7 @@ class FinanceAndReportingTest extends TestCase
     {
         $user = User::first();
         $location = Location::first();
-        \Illuminate\Support\Facades\DB::table('sales')->insert([
+        DB::table('sales')->insert([
             'invoice_number' => 'TRX-30971e96-924c-45fa-b1a6-21234d4e4db3',
             'cashier_id' => $user->id,
             'location_id' => $location->id,
@@ -54,7 +56,7 @@ class FinanceAndReportingTest extends TestCase
             'updated_at' => now(),
         ]);
 
-        \Illuminate\Support\Facades\DB::table('balance_transactions')->insert([
+        DB::table('balance_transactions')->insert([
             'transaction_number' => 'TRX-30971E96',
             'transaction_type' => 'SALE_RECEIPT',
             'amount' => 10000,
@@ -70,8 +72,8 @@ class FinanceAndReportingTest extends TestCase
         $migration = require database_path('migrations/2026_09_05_000012_normalize_legacy_sale_invoices_and_descriptions.php');
         $migration->up();
 
-        $sale = \Illuminate\Support\Facades\DB::table('sales')->first();
-        $trx = \Illuminate\Support\Facades\DB::table('balance_transactions')->first();
+        $sale = DB::table('sales')->first();
+        $trx = DB::table('balance_transactions')->first();
 
         $this->assertEquals('TRX-30971E96', $sale->invoice_number);
         $this->assertStringContainsString('POS #TRX-30971E96', $trx->description);
@@ -200,6 +202,7 @@ class FinanceAndReportingTest extends TestCase
             ->call('processTransaction')
             ->assertHasErrors(['showModal']);
     }
+
     public function test_balance_service_blocks_overdraw(): void
     {
         $owner = User::where('username', 'superadmin')->first();

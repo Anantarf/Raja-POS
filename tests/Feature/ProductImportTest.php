@@ -121,6 +121,7 @@ class ProductImportTest extends TestCase
         $this->assertEquals(15000, $product->cost_price);
         $this->assertEquals(35000, $product->selling_price);
     }
+
     public function test_reimport_does_not_add_initial_stock_twice(): void
     {
         $superadmin = User::where('username', 'superadmin')->first();

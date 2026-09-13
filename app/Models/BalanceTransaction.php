@@ -88,7 +88,7 @@ class BalanceTransaction extends Model
         $dateStr = date('ymd');
 
         do {
-            $number = $cleanPrefix . '-' . $dateStr . '-' . strtoupper(Str::random(5));
+            $number = $cleanPrefix.'-'.$dateStr.'-'.strtoupper(Str::random(5));
         } while (static::where('transaction_number', $number)->exists());
 
         return $number;
@@ -107,9 +107,10 @@ class BalanceTransaction extends Model
 
         if (strlen($number) > 20 && str_contains($number, '-')) {
             $parts = array_values(array_filter(explode('-', $number)));
-            $prefix = strtoupper(!empty($parts[0]) ? $parts[0] : 'TRX');
-            $code = strtoupper(!empty($parts[1]) ? $parts[1] : substr($number, -8));
-            return $prefix . '-' . substr($code, 0, 8);
+            $prefix = strtoupper(! empty($parts[0]) ? $parts[0] : 'TRX');
+            $code = strtoupper(! empty($parts[1]) ? $parts[1] : substr($number, -8));
+
+            return $prefix.'-'.substr($code, 0, 8);
         }
 
         return strtoupper($number);
@@ -127,7 +128,7 @@ class BalanceTransaction extends Model
         }
 
         return preg_replace_callback('/(TRX)-([a-zA-Z0-9]{8})-[a-zA-Z0-9-]{10,}/i', function ($m) {
-            return strtoupper($m[1] . '-' . substr($m[2], 0, 8));
+            return strtoupper($m[1].'-'.substr($m[2], 0, 8));
         }, (string) $value);
     }
 }

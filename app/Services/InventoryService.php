@@ -17,6 +17,7 @@ class InventoryService
     public function __construct(
         protected CatalogCacheService $catalogCacheService
     ) {}
+
     /**
      * Adjust stock for a physical product at a specific location.
      * Uses row locking (SELECT ... FOR UPDATE) and DB Transaction.

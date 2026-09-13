@@ -9,6 +9,7 @@ use App\Models\Location;
 use App\Models\PaymentMethod;
 use App\Models\Product;
 use App\Models\Sale;
+use App\Models\Setting;
 use App\Services\PosService;
 use Illuminate\Support\Str;
 use Livewire\Component;
@@ -479,7 +480,9 @@ class Checkout extends Component
             $this->completedInvoiceNumber = $sale->invoice_number;
             $this->completedChangeAmount = (float) $sale->change_amount;
             $this->showSuccessModal = true;
-            $this->dispatch('auto-print-receipt', saleId: $sale->id);
+            if (Setting::get('auto_print', '1') === '1') {
+                $this->dispatch('auto-print-receipt', saleId: $sale->id);
+            }
 
             $this->clearCart();
         } catch (\Exception $e) {

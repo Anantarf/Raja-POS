@@ -7,7 +7,6 @@ use App\Models\BalanceAccount;
 use App\Models\BalanceTransaction;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 use InvalidArgumentException;
 
 class BalanceService
@@ -62,7 +61,7 @@ class BalanceService
 
         ProcessAuditLogJob::dispatch(
             action: 'BALANCE_TRANSFER',
-            description: "Transfer saldo Rp".number_format($amount, 0, ',', '.')." dari {$fromAccount->name} ke {$toAccount->name}",
+            description: 'Transfer saldo Rp'.number_format($amount, 0, ',', '.')." dari {$fromAccount->name} ke {$toAccount->name}",
             userId: $user->id,
             context: [
                 'from_account_id' => $fromAccount->id,

@@ -83,9 +83,10 @@ class Sale extends Model
 
         if (strlen($number) > 20 && str_contains($number, '-')) {
             $parts = array_values(array_filter(explode('-', $number)));
-            $prefix = strtoupper(!empty($parts[0]) ? $parts[0] : 'TRX');
-            $code = strtoupper(!empty($parts[1]) ? $parts[1] : substr($number, -8));
-            return $prefix . '-' . substr($code, 0, 8);
+            $prefix = strtoupper(! empty($parts[0]) ? $parts[0] : 'TRX');
+            $code = strtoupper(! empty($parts[1]) ? $parts[1] : substr($number, -8));
+
+            return $prefix.'-'.substr($code, 0, 8);
         }
 
         return strtoupper($number);

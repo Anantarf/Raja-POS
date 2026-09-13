@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Livewire\Admin\Inventories;
 use App\Livewire\Admin\StockOpname as StockOpnameComponent;
 use App\Models\Inventory;
 use App\Models\Location;
@@ -226,8 +227,8 @@ class InventoryTest extends TestCase
     {
         $user = User::where('username', 'superadmin')->first();
 
-        \Livewire\Livewire::actingAs($user)
-            ->test(\App\Livewire\Admin\Inventories::class)
+        Livewire::actingAs($user)
+            ->test(Inventories::class)
             ->call('sortBy', 'stock_status')
             ->assertSet('sortField', 'stock_status')
             ->assertSet('sortDirection', 'asc')
@@ -235,6 +236,7 @@ class InventoryTest extends TestCase
             ->assertSet('sortDirection', 'desc')
             ->assertStatus(200);
     }
+
     public function test_stock_opname_rejects_non_physical_product(): void
     {
         $owner = User::where('username', 'superadmin')->first();

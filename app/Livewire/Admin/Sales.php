@@ -14,14 +14,19 @@ class Sales extends Component
     use WithPagination, WithSorting;
 
     public $search = '';
+
     public $startDate = '';
+
     public $endDate = '';
+
     public $paymentMethodId = '';
 
     public $selectedSaleId = null;
+
     public $showDetailModal = false;
 
     public $receiptSaleId = null;
+
     public $showReceiptModal = false;
 
     protected $paginationTheme = 'tailwind';

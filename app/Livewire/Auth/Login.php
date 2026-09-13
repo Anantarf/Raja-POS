@@ -10,7 +10,9 @@ use Livewire\Component;
 class Login extends Component
 {
     public $username = '';
+
     public $password = '';
+
     public $remember = false;
 
     public function login()
@@ -24,19 +26,21 @@ class Login extends Component
 
         if (RateLimiter::tooManyAttempts($throttleKey, 5)) {
             $seconds = RateLimiter::availableIn($throttleKey);
-            $this->addError('username', "Terlalu banyak percobaan login. Silakan coba lagi dalam {$seconds} detik.");
+            $this->addError('login_error', "Terlalu banyak percobaan login. Silakan coba lagi dalam {$seconds} detik.");
+
             return;
         }
 
         if (Auth::attempt(['username' => $this->username, 'password' => $this->password], $this->remember)) {
             RateLimiter::clear($throttleKey);
             session()->regenerate();
+
             return redirect()->intended('/pos');
         }
 
         RateLimiter::hit($throttleKey, 60);
 
-        $this->addError('username', 'Username atau password yang Anda masukkan tidak sesuai.');
+        $this->addError('login_error', 'Username atau password yang Anda masukkan tidak sesuai.');
     }
 
     public function render()

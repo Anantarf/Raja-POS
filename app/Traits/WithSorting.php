@@ -5,6 +5,7 @@ namespace App\Traits;
 trait WithSorting
 {
     public string $sortField = 'created_at';
+
     public string $sortDirection = 'desc';
 
     public function sortBy(string $field): void

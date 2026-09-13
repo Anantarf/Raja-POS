@@ -16,14 +16,14 @@ return new class extends Migration
             $number = trim((string) ($trx->transaction_number ?? ''));
             if (strlen($number) > 20 && str_contains($number, '-')) {
                 $parts = array_values(array_filter(explode('-', $number)));
-                $prefix = strtoupper(!empty($parts[0]) ? $parts[0] : 'TRX');
-                $code = strtoupper(!empty($parts[1]) ? $parts[1] : substr($number, -8));
-                $newNumber = $prefix . '-' . substr($code, 0, 8);
+                $prefix = strtoupper(! empty($parts[0]) ? $parts[0] : 'TRX');
+                $code = strtoupper(! empty($parts[1]) ? $parts[1] : substr($number, -8));
+                $newNumber = $prefix.'-'.substr($code, 0, 8);
 
                 $baseNew = $newNumber;
                 $counter = 1;
                 while (DB::table('balance_transactions')->where('transaction_number', $newNumber)->where('id', '!=', $trx->id)->exists()) {
-                    $newNumber = $baseNew . '-' . $counter;
+                    $newNumber = $baseNew.'-'.$counter;
                     $counter++;
                 }
 
@@ -35,7 +35,7 @@ return new class extends Migration
         DB::table('balance_transactions')
             ->where('description', 'like', '%Pembalian%')
             ->update([
-                'description' => DB::raw("REPLACE(description, 'Pembalian', 'Pengembalian')")
+                'description' => DB::raw("REPLACE(description, 'Pembalian', 'Pengembalian')"),
             ]);
     }
 

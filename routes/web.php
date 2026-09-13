@@ -15,6 +15,7 @@ use App\Livewire\Admin\StockOpname;
 use App\Livewire\Auth\Login;
 use App\Livewire\Pos\Checkout;
 use App\Models\Sale;
+use App\Models\Setting;
 use App\Services\ProductImportService;
 use Illuminate\Support\Facades\Route;
 
@@ -64,7 +65,15 @@ Route::middleware(['auth'])->group(function () {
 
         return view('receipt.thermal', [
             'sale' => $sale,
-            'paperWidth' => '58mm',
+            'paperWidth' => Setting::get('receipt_paper_width', '58mm'),
+            'storeName' => Setting::get('store_name', 'Raja Aksesoris'),
+            'receiptHeaderTagline' => Setting::get('receipt_header_tagline', 'Retail Management System'),
+            'receiptAddress' => Setting::get('receipt_address', ''),
+            'receiptPhone' => Setting::get('receipt_phone', ''),
+            'receiptFooterText' => Setting::get('receipt_footer_text', 'Terima Kasih Telah Berbelanja! Kepuasan Anda Adalah Kebanggaan Kami.'),
+            'showCashierName' => Setting::get('show_cashier_name', '1') === '1',
+            'printMode' => Setting::get('print_mode', 'BROWSER'),
+            'autoPrint' => Setting::get('auto_print', '1') === '1',
         ]);
     })->name('receipt.thermal');
 

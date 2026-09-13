@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Location;
 use App\Models\Product;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Cache;
 
 class CatalogCacheService
@@ -16,7 +17,7 @@ class CatalogCacheService
     /**
      * Get active product catalog cached by location.
      */
-    public function getCachedProductsForPos(?Location $location = null): \Illuminate\Database\Eloquent\Collection
+    public function getCachedProductsForPos(?Location $location = null): Collection
     {
         $locationId = $location?->id ?? 0;
         $cacheKey = "pos_catalog_products_loc_{$locationId}";
@@ -28,9 +29,9 @@ class CatalogCacheService
             if ($location) {
                 $query->where(function ($q) use ($location) {
                     $q->where('product_type', '!=', 'PHYSICAL')
-                      ->orWhereHas('inventories', function ($invQ) use ($location) {
-                          $invQ->where('location_id', $location->id);
-                      });
+                        ->orWhereHas('inventories', function ($invQ) use ($location) {
+                            $invQ->where('location_id', $location->id);
+                        });
                 });
             }
 

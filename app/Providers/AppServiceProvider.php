@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -34,16 +36,17 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         if (app()->environment('production') || str_starts_with(config('app.url'), 'https://') || request()->header('X-Forwarded-Proto') === 'https') {
-            \Illuminate\Support\Facades\URL::forceScheme('https');
+            URL::forceScheme('https');
         }
 
-        \Illuminate\Support\Facades\Gate::before(function ($user, $ability) {
+        Gate::before(function ($user, $ability) {
             if ($user->hasRole('OWNER') || $user->hasRole('SUPERADMIN') || $user->hasRole('ADMIN')) {
                 // Owner and Admin have full access to management
                 if ($user->hasRole('OWNER')) {
                     return true;
                 }
             }
+
             return $user->hasPermission($ability) ? true : null;
         });
     }

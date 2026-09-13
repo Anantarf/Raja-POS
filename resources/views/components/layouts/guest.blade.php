@@ -13,6 +13,17 @@
         html {
             font-size: 110%;
         }
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover, 
+        input:-webkit-autofill:focus, 
+        input:-webkit-autofill:active {
+            -webkit-box-shadow: 0 0 0px 1000px #F3F6F4 inset !important;
+            -webkit-text-fill-color: #232E28 !important;
+            transition: background-color 5000s ease-in-out 0s;
+        }
+        input:focus:-webkit-autofill {
+            -webkit-box-shadow: 0 0 0px 1000px #FFFFFF inset !important;
+        }
     </style>
     @livewireStyles
 </head>
