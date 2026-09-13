@@ -37,7 +37,6 @@ class InventoryService
         }
 
         $movement = DB::transaction(function () use ($product, $location, $quantityChange, $movementType, $notes, $user, $reference) {
-            // Row lock inventory record
             $inventory = Inventory::where('product_id', $product->id)
                 ->where('location_id', $location->id)
                 ->lockForUpdate()
@@ -52,36 +51,8 @@ class InventoryService
                 ]);
             }
 
-            $quantityBefore = $inventory->quantity;
-            $quantityAfter = $quantityBefore + $quantityChange;
-
-            if ($quantityAfter < 0) {
-                throw new InvalidArgumentException("Stok produk '{$product->name}' tidak mencukupi.");
-            }
-
-            // Update inventory
-            $inventory->update([
-                'quantity' => $quantityAfter,
-                'last_stock_at' => now(),
-            ]);
-
-            // Clear catalog cache for this location
-            $this->catalogCacheService->clearCatalogCache($location->id);
-
-            // Create movement log
-            return InventoryMovement::create([
-                'product_id' => $product->id,
-                'location_id' => $location->id,
-                'movement_type' => $movementType,
-                'quantity_before' => $quantityBefore,
-                'quantity_change' => $quantityChange,
-                'quantity_after' => $quantityAfter,
-                'reference_type' => $reference ? get_class($reference) : null,
-                'reference_id' => $reference ? $reference->id : null,
-                'notes' => $notes,
-                'created_by' => $user?->id ?? auth()->id(),
-            ]);
-        });
+            return $this->adjustLockedInventory($inventory, $product, $location, $quantityChange, $movementType, $notes, $user, $reference);
+        }, 3);
 
         if ($movement && in_array($movementType, ['MANUAL_ADJUSTMENT', 'TRANSFER', 'STOCK_OPNAME', 'STOCK_IN', 'STOCK_OUT'], true)) {
             ProcessAuditLogJob::dispatch(
@@ -101,6 +72,47 @@ class InventoryService
         }
 
         return $movement;
+    }
+
+    /**
+     * Apply a stock change to an inventory row already locked by the caller's transaction.
+     */
+    public function adjustLockedInventory(
+        Inventory $inventory,
+        Product $product,
+        Location $location,
+        int $quantityChange,
+        string $movementType,
+        ?string $notes = null,
+        ?User $user = null,
+        mixed $reference = null
+    ): InventoryMovement {
+        $quantityBefore = $inventory->quantity;
+        $quantityAfter = $quantityBefore + $quantityChange;
+
+        if ($quantityAfter < 0) {
+            throw new InvalidArgumentException("Stok produk '{$product->name}' tidak mencukupi.");
+        }
+
+        $inventory->update([
+            'quantity' => $quantityAfter,
+            'last_stock_at' => now(),
+        ]);
+
+        $this->catalogCacheService->clearCatalogCache($location->id);
+
+        return InventoryMovement::create([
+            'product_id' => $product->id,
+            'location_id' => $location->id,
+            'movement_type' => $movementType,
+            'quantity_before' => $quantityBefore,
+            'quantity_change' => $quantityChange,
+            'quantity_after' => $quantityAfter,
+            'reference_type' => $reference ? get_class($reference) : null,
+            'reference_id' => $reference?->id,
+            'notes' => $notes,
+            'created_by' => $user?->id ?? auth()->id(),
+        ]);
     }
 
     /**

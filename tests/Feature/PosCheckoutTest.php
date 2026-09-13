@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Services\InventoryService;
 use App\Services\PosService;
 use App\Services\SaleCancellationService;
+use App\Support\Rupiah;
 use Database\Seeders\DatabaseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -23,6 +24,13 @@ class PosCheckoutTest extends TestCase
     {
         parent::setUp();
         $this->seed(DatabaseSeeder::class);
+    }
+
+    public function test_rupiah_rejects_fractional_amounts(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        Rupiah::value('10000.50');
     }
 
     public function test_pos_checkout_single_payment_exact_amount(): void
@@ -157,6 +165,40 @@ class PosCheckoutTest extends TestCase
 
         $this->expectException(\InvalidArgumentException::class);
         $posService->processCheckout($cashier, $cartItems, $paymentsData);
+    }
+
+    public function test_pos_checkout_rolls_back_when_duplicate_cart_rows_exceed_locked_stock(): void
+    {
+        $location = Location::where('code', 'RAJA-BANGO')->first();
+        $cashier = User::where('username', 'superadmin')->first();
+        $product = Product::create([
+            'code' => 'ACC-POS-LOCK-01',
+            'name' => 'Produk Stok Terakhir',
+            'product_type' => 'PHYSICAL',
+            'cost_price' => 5000,
+            'selling_price' => 10000,
+        ]);
+
+        app(InventoryService::class)->adjustStock($product, $location, 1, 'ADJUSTMENT_IN', 'Stok awal', $cashier);
+
+        $cashPm = PaymentMethod::where('code', 'CASH')->first();
+        $cashAccount = BalanceAccount::where('code', 'CASH')->first();
+
+        try {
+            app(PosService::class)->processCheckout(
+                $cashier,
+                [
+                    ['product' => $product, 'quantity' => 1],
+                    ['product' => $product, 'quantity' => 1],
+                ],
+                [['payment_method_id' => $cashPm->id, 'balance_account_id' => $cashAccount->id, 'amount' => 20000]]
+            );
+            $this->fail('Checkout seharusnya ditolak karena total kebutuhan stok melebihi stok terkunci.');
+        } catch (\InvalidArgumentException) {
+            $this->assertDatabaseCount('sales', 0);
+            $this->assertSame(1, Inventory::where('product_id', $product->id)->value('quantity'));
+            $this->assertDatabaseCount('inventory_movements', 1);
+        }
     }
 
     public function test_pos_checkout_blocks_incomplete_price_status(): void

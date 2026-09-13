@@ -675,6 +675,16 @@
                 <!-- Primary Action Checkout Button (High Contrast Disabled & Active) -->
                 <button
                     type="button"
+                    x-on:click.capture="
+                        if (!navigator.onLine) {
+                            $event.preventDefault();
+                            $event.stopImmediatePropagation();
+                            window.dispatchEvent(new CustomEvent('notify', { detail: { message: 'Transaksi gagal diproses. Periksa koneksi internet dan coba kembali!', type: 'danger' } }));
+                            return;
+                        }
+
+                        window.rajaPosCheckoutPending = true;
+                    "
                     wire:click="processCheckout"
                     @if(count($cart) === 0 || $this->total_paid < $this->grand_total) disabled @endif
                     class="w-full h-11 py-2.5 rounded-xl font-black text-sm sm:text-base uppercase tracking-wider transition-all flex items-center justify-center gap-2 {{ count($cart) > 0 && $this->total_paid >= $this->grand_total ? 'bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white shadow-md cursor-pointer active-press hover-lift' : 'bg-slate-200 text-slate-400 cursor-not-allowed' }}"
@@ -1042,3 +1052,27 @@
         };
     </script>
 </div>
+
+<script>
+    document.addEventListener('livewire:init', () => {
+        Livewire.hook('commit', ({ succeed, fail }) => {
+            succeed(() => {
+                window.rajaPosCheckoutPending = false;
+            });
+
+            fail(({ status }) => {
+                if (!window.rajaPosCheckoutPending || status !== 0) {
+                    return;
+                }
+
+                window.rajaPosCheckoutPending = false;
+                window.dispatchEvent(new CustomEvent('notify', {
+                    detail: {
+                        message: 'Transaksi gagal diproses. Periksa koneksi internet dan coba kembali!',
+                        type: 'danger',
+                    },
+                }));
+            });
+        });
+    });
+</script>

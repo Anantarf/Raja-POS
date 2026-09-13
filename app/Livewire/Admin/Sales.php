@@ -95,7 +95,7 @@ class Sales extends Component
                     $pq->where('payment_method_id', $this->paymentMethodId);
                 });
             })
-            ->with(['cashier', 'user', 'payments.paymentMethod']);
+            ->with(['user', 'location', 'payments.paymentMethod']);
 
         if ($this->search) {
             $query->where(function ($q) {
@@ -114,8 +114,8 @@ class Sales extends Component
         $direction = in_array($this->sortDirection, ['asc', 'desc']) ? $this->sortDirection : 'desc';
 
         $sales = $query->orderBy($field, $direction)->paginate(12);
-        $selectedSale = $this->selectedSaleId ? Sale::forUserLocation()->with(['items', 'payments.paymentMethod', 'cashier', 'user'])->find($this->selectedSaleId) : null;
-        $receiptSale = $this->receiptSaleId ? Sale::forUserLocation()->with(['items', 'payments.paymentMethod', 'cashier', 'user'])->find($this->receiptSaleId) : null;
+        $selectedSale = $this->selectedSaleId ? Sale::forUserLocation()->with(['items', 'payments.paymentMethod', 'user', 'location'])->find($this->selectedSaleId) : null;
+        $receiptSale = $this->receiptSaleId ? Sale::forUserLocation()->with(['items', 'payments.paymentMethod', 'user', 'location'])->find($this->receiptSaleId) : null;
 
         return view('livewire.admin.sales', [
             'sales' => $sales,

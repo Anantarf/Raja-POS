@@ -11,6 +11,7 @@ use App\Models\Product;
 use App\Models\Sale;
 use App\Models\Setting;
 use App\Services\PosService;
+use App\Support\Rupiah;
 use Illuminate\Support\Str;
 use Livewire\Component;
 
@@ -77,7 +78,7 @@ class Checkout extends Component
 
     public array $cart = []; // [product_id => ['product_id' => int, 'name' => string, 'code' => string, 'price' => float, 'cost_price' => float, 'quantity' => int, 'stock' => int, 'price_status' => string, 'type' => string]]
 
-    public array $payments = []; // [['payment_method_id' => int, 'balance_account_id' => ?int, 'amount' => float, 'reference_number' => ?string]]
+    public array $payments = []; // [['payment_method_id' => int, 'balance_account_id' => ?int, 'amount' => int, 'reference_number' => ?string]]
 
     public ?string $notes = null;
 
@@ -87,7 +88,7 @@ class Checkout extends Component
 
     public ?string $completedInvoiceNumber = null;
 
-    public float $completedChangeAmount = 0;
+    public int $completedChangeAmount = 0;
 
     public bool $showSuccessModal = false;
 
@@ -98,16 +99,16 @@ class Checkout extends Component
 
     public ?string $selectedPpobProductName = '';
 
-    public float $ppobBillAmount = 0;
+    public int $ppobBillAmount = 0;
 
-    public float $ppobStoreAdminFee = 3000;
+    public int $ppobStoreAdminFee = 3000;
 
-    public float $ppobVendorAdminFee = 1500;
+    public int $ppobVendorAdminFee = 1500;
 
     // Non-Cash Change Confirmation Modal Properties
     public bool $showNonCashChangeConfirmModal = false;
 
-    public float $pendingNonCashChangeAmount = 0;
+    public int $pendingNonCashChangeAmount = 0;
 
     public string $pendingNonCashMethodName = '';
 
@@ -207,8 +208,8 @@ class Checkout extends Component
             return;
         }
 
-        $sellingPrice = (float) ($this->ppobBillAmount + $this->ppobStoreAdminFee);
-        $costPrice = (float) ($this->ppobBillAmount + $this->ppobVendorAdminFee);
+        $sellingPrice = $this->ppobBillAmount + $this->ppobStoreAdminFee;
+        $costPrice = $this->ppobBillAmount + $this->ppobVendorAdminFee;
 
         $cartKey = 'PPOB_'.$product->id.'_'.time();
         $displayName = $product->name.' (Rp '.number_format($this->ppobBillAmount, 0, ',', '.').')';
@@ -278,8 +279,8 @@ class Checkout extends Component
                 'product_id' => $product->id,
                 'name' => $product->name,
                 'code' => $product->code,
-                'price' => (float) $product->selling_price,
-                'cost_price' => (float) $product->cost_price,
+                'price' => Rupiah::value($product->selling_price, 'Harga jual'),
+                'cost_price' => Rupiah::value($product->cost_price, 'Harga modal'),
                 'quantity' => 1,
                 'stock' => $currentStock,
                 'price_status' => $product->price_status,
@@ -378,7 +379,7 @@ class Checkout extends Component
         }
 
         foreach ($this->payments as $idx => $pay) {
-            if (isset($pay['amount']) && (float) $pay['amount'] > 1000000000) {
+            if (isset($pay['amount']) && Rupiah::value($pay['amount'], 'Nominal pembayaran') > 1000000000) {
                 $this->payments[$idx]['amount'] = 1000000000;
             }
         }
@@ -392,17 +393,17 @@ class Checkout extends Component
         }
     }
 
-    public function setPaymentAmount(float $amount)
+    public function setPaymentAmount(int $amount)
     {
         if (isset($this->payments[0])) {
             $this->payments[0]['amount'] = min(1000000000, max(0, $amount));
         }
     }
 
-    public function addNominalToPayment(float $nominal)
+    public function addNominalToPayment(int $nominal)
     {
         if (isset($this->payments[0])) {
-            $current = (float) ($this->payments[0]['amount'] ?? 0);
+            $current = Rupiah::value($this->payments[0]['amount'] ?? 0, 'Nominal pembayaran');
             $this->payments[0]['amount'] = min(1000000000, $current + $nominal);
         }
     }
@@ -410,30 +411,30 @@ class Checkout extends Component
     public function updateDefaultPaymentAmount()
     {
         foreach ($this->payments as $index => $payment) {
-            $this->payments[$index]['amount'] = min(1000000000, max(0, (float) ($payment['amount'] ?? 0)));
+            $this->payments[$index]['amount'] = min(1000000000, max(0, Rupiah::value($payment['amount'] ?? 0, 'Nominal pembayaran')));
         }
 
         $this->dispatch('cart-updated', cart: $this->cart);
     }
 
-    public function getSubtotalProperty(): float
+    public function getSubtotalProperty(): int
     {
         return array_reduce($this->cart, function ($carry, $item) {
             return $carry + ($item['price'] * $item['quantity']);
-        }, 0.0);
+        }, 0);
     }
 
-    public function getGrandTotalProperty(): float
+    public function getGrandTotalProperty(): int
     {
         return $this->subtotal;
     }
 
-    public function getTotalPaidProperty(): float
+    public function getTotalPaidProperty(): int
     {
-        return array_sum(array_column($this->payments, 'amount'));
+        return array_sum(array_map(fn ($payment) => Rupiah::value($payment['amount'] ?? 0, 'Nominal pembayaran'), $this->payments));
     }
 
-    public function getChangeAmountProperty(): float
+    public function getChangeAmountProperty(): int
     {
         return max(0, $this->total_paid - $this->grand_total);
     }
@@ -472,8 +473,8 @@ class Checkout extends Component
             foreach ($this->payments as $p) {
                 $pm = PaymentMethod::find($p['payment_method_id'] ?? null);
                 if ($pm && $pm->type === 'CASH') {
-                    $cashPaid += (float) ($p['amount'] ?? 0);
-                } elseif ($pm && (float) ($p['amount'] ?? 0) > 0) {
+                    $cashPaid += Rupiah::value($p['amount'] ?? 0, 'Nominal pembayaran');
+                } elseif ($pm && Rupiah::value($p['amount'] ?? 0, 'Nominal pembayaran') > 0) {
                     $nonCashMethods[] = $pm->name ?? 'Non-Tunai';
                 }
             }
@@ -501,12 +502,12 @@ class Checkout extends Component
                 // [CELAH #6] Re-validate LAYANAN/PPOB cart item price integrity server-side
                 // Prevent browser console $wire.set('cart.key.price', 1) manipulation
                 if (! empty($item['is_ppob_open']) || $product->product_type === 'LAYANAN') {
-                    $billAmount = (float) ($item['bill_amount'] ?? 0);
-                    $adminFee = (float) ($item['admin_fee'] ?? 0);
+                    $billAmount = Rupiah::value($item['bill_amount'] ?? 0, 'Nominal tagihan');
+                    $adminFee = Rupiah::value($item['admin_fee'] ?? 0, 'Biaya admin');
                     $expectedPrice = $billAmount + $adminFee;
 
                     // If price in cart doesn't match bill+admin, reject
-                    if (abs((float) ($item['price'] ?? 0) - $expectedPrice) > 1) {
+                    if (Rupiah::value($item['price'] ?? 0, 'Harga layanan') !== $expectedPrice) {
                         throw new \InvalidArgumentException("Harga item '{$product->name}' tidak valid. Kemungkinan ada manipulasi data.");
                     }
 
@@ -535,7 +536,7 @@ class Checkout extends Component
 
             $this->completedSaleId = $sale->id;
             $this->completedInvoiceNumber = $sale->invoice_number;
-            $this->completedChangeAmount = (float) $sale->change_amount;
+            $this->completedChangeAmount = Rupiah::value($sale->change_amount, 'Kembalian');
             $this->showSuccessModal = true;
             if (Setting::get('auto_print', '1') === '1') {
                 $this->dispatch('auto-print-receipt', saleId: $sale->id);
@@ -594,7 +595,7 @@ class Checkout extends Component
         $balanceAccounts = BalanceAccount::forUserLocation($user)->where('status', 'ACTIVE')->get();
         $cashAccount = BalanceAccount::forUserLocation($user)->where('code', 'CASH')->first()
             ?? BalanceAccount::forUserLocation($user)->where('account_type', 'CASH')->first();
-        $cashBalance = (float) ($cashAccount?->current_balance ?? 0);
+        $cashBalance = Rupiah::value($cashAccount?->current_balance ?? 0, 'Saldo kas');
 
         return view('livewire.pos.checkout', [
             'products' => $products,

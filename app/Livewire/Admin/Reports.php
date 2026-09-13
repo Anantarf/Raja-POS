@@ -24,34 +24,51 @@ class Reports extends Component
     public string $summaryDate = '';
 
     public $danaSaldoAwal = 0;
+
     public $danaTopup = 0;
+
     public $danaTrx = 0;
+
     public $danaSaldoAndroid = 0;
 
     public $qrisTarikTunai = 0;
+
     public $qrisSaldoAndroid = 0;
 
     public $bankmasSaldoAwal = 0;
+
     public $bankmasTopup = 0;
+
     public $bankmasTrx = 0;
+
     public $bankmasSaldoAndroid = 0;
 
     public $bcaSaldoAwal = 0;
+
     public $bcaTopup = 0;
+
     public $bcaTrx = 0;
+
     public $bcaSaldoAndroid = 0;
 
     public $multiSaldoAwal = 0;
+
     public $multiTopup = 0;
+
     public $multiTrx = 0;
+
     public $multiSaldoAndroid = 0;
 
     public $wahanaSaldoAwal = 0;
+
     public $wahanaTopup = 0;
+
     public $wahanaTrx = 0;
+
     public $wahanaSaldoAndroid = 0;
 
     public $tarikTunaiKasir = 0;
+
     public ?string $notes = null;
 
     public function mount(string $type = 'sales'): void
@@ -134,6 +151,7 @@ class Reports extends Component
     }
 
     public bool $showInputModal = false;
+
     public int $modalStep = 1;
 
     public function setModalStep(int $step): void
@@ -162,6 +180,7 @@ class Reports extends Component
 
         if ($existing && $existing->status === 'SUDAH_DICEK' && ! $user->can('balance.adjust') && $user->role?->name !== 'OWNER') {
             $this->dispatch('notify', message: 'Laporan tanggal ini sudah divalidasi & terkunci.', type: 'danger');
+
             return;
         }
 
@@ -194,6 +213,7 @@ class Reports extends Component
         $existing = DailySummary::forUserLocation($user)->whereDate('summary_date', $this->summaryDate)->first();
         if ($existing && $existing->status === 'SUDAH_DICEK' && ! $user->can('balance.adjust')) {
             $this->dispatch('notify', message: 'Laporan tanggal ini sudah terkunci dan tidak dapat diubah.', type: 'danger');
+
             return;
         }
 
@@ -268,6 +288,7 @@ class Reports extends Component
 
         if ($hasDiscrepancy && empty(trim($this->notes ?? ''))) {
             $this->dispatch('notify', message: 'Terdapat selisih pada saldo. Harap cantumkan penjelasan selisih di kolom catatan sebelum memvalidasi.', type: 'amber');
+
             return;
         }
 
@@ -330,30 +351,42 @@ class Reports extends Component
     public function render(FinanceReportService $reportService)
     {
         $user = auth()->user();
-        $metrics = $reportService->getSummaryMetrics($this->startDate, $this->endDate, $user);
-        $paymentDistribution = $reportService->getPaymentMethodDistribution($this->startDate, $this->endDate, $user);
-        $topProducts = $reportService->getTopSellingProducts($this->startDate, $this->endDate, 5, $user);
-        $cashierPerformance = $reportService->getCashierPerformance($this->startDate, $this->endDate, $user);
-        $inventoryValuation = $reportService->getInventoryValuation($user);
-        $categoryBreakdown = $reportService->getCategoryBreakdown($this->startDate, $this->endDate, $user);
-        $dailyTrend = $reportService->getDailySalesTrend(7, $user);
-        $dailySummaryData = $reportService->getDailySummaryReportData($this->summaryDate ?: Carbon::today()->toDateString(), $user);
+        $metrics = in_array($this->type, ['sales', 'payment'], true)
+            ? $reportService->getSummaryMetrics($this->startDate, $this->endDate, $user)
+            : [];
+        $paymentDistribution = $this->type === 'payment'
+            ? $reportService->getPaymentMethodDistribution($this->startDate, $this->endDate, $user)
+            : [];
+        $topProducts = $this->type === 'sales'
+            ? $reportService->getTopSellingProducts($this->startDate, $this->endDate, 5, $user)
+            : collect();
+        $inventoryValuation = $this->type === 'inventory'
+            ? $reportService->getInventoryValuation($user)
+            : [];
+        $categoryBreakdown = $this->type === 'sales'
+            ? $reportService->getCategoryBreakdown($this->startDate, $this->endDate, $user)
+            : collect();
+        $dailyTrend = $this->type === 'sales'
+            ? $reportService->getDailySalesTrend(7, $user)
+            : ['labels' => [], 'data' => []];
+        $dailySummaryData = $this->type === 'daily_summary'
+            ? $reportService->getDailySummaryReportData($this->summaryDate ?: Carbon::today()->toDateString(), $user)
+            : [];
 
         return view('livewire.admin.reports', [
             'metrics' => $metrics,
             'paymentDistribution' => $paymentDistribution,
             'topProducts' => $topProducts,
-            'cashierPerformance' => $cashierPerformance,
             'inventoryValuation' => $inventoryValuation,
             'categoryBreakdown' => $categoryBreakdown,
             'dailyTrend' => $dailyTrend,
             'dailySummaryData' => $dailySummaryData,
             'salesCount' => $metrics['sales_count'] ?? 0,
-            'inventoryCount' => Inventory::forUserLocation($user)->count(),
-            'lowStockCount' => Inventory::forUserLocation($user)->with('product')->get()->filter(fn ($inventory) => $inventory->stock_status !== 'AVAILABLE')->count(),
-            'balanceAccounts' => BalanceAccount::forUserLocation($user)->where('status', 'ACTIVE')->orderBy('name')->get(),
-            'productCount' => Product::count(),
-            'incompleteProductCount' => Product::where('price_status', 'INCOMPLETE')->count(),
+            'inventoryCount' => $this->type === 'inventory' ? Inventory::forUserLocation($user)->count() : 0,
+            'lowStockCount' => $this->type === 'inventory' ? Inventory::forUserLocation($user)->with('product')->get()->filter(fn ($inventory) => $inventory->stock_status !== 'AVAILABLE')->count() : 0,
+            'balanceAccounts' => $this->type === 'daily_summary' ? BalanceAccount::forUserLocation($user)->where('status', 'ACTIVE')->orderBy('name')->get() : collect(),
+            'productCount' => $this->type === 'inventory' ? Product::count() : 0,
+            'incompleteProductCount' => $this->type === 'inventory' ? Product::where('price_status', 'INCOMPLETE')->count() : 0,
         ])->layout('components.layouts.admin', ['title' => 'Laporan Toko']);
     }
 }

@@ -163,6 +163,24 @@ class FinanceAndReportingTest extends TestCase
         $this->assertEquals(60000, $metrics['gross_profit']);
         $this->assertEquals(1, $metrics['sales_count']);
         $this->assertEquals(100000, $metrics['total_balance']);
+
+        $topProduct = $reportService->getTopSellingProducts(user: $owner)->first();
+        $this->assertSame('Kabel Type-C Braided', $topProduct->product_name);
+        $this->assertEquals(2, $topProduct->total_qty);
+        $this->assertEquals(100000, $topProduct->total_omzet);
+
+        $cashier = $reportService->getCashierPerformance(user: $owner)->first();
+        $this->assertSame($owner->name, $cashier->cashier_name);
+        $this->assertEquals(1, $cashier->total_sales);
+        $this->assertEquals(100000, $cashier->total_omzet);
+
+        $category = $reportService->getCategoryBreakdown(user: $owner)->first();
+        $this->assertSame('Tanpa Kategori', $category->category_name);
+        $this->assertEquals(2, $category->total_qty);
+        $this->assertEquals(100000, $category->total_omzet);
+
+        $trend = $reportService->getDailySalesTrend(user: $owner);
+        $this->assertContains(100000.0, $trend['data']);
     }
 
     public function test_profit_permission_boundary(): void

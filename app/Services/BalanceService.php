@@ -6,13 +6,16 @@ use App\Jobs\ProcessAuditLogJob;
 use App\Models\BalanceAccount;
 use App\Models\BalanceTransaction;
 use App\Models\User;
+use App\Support\Rupiah;
 use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
 
 class BalanceService
 {
-    public function transfer(BalanceAccount $fromAccount, BalanceAccount $toAccount, float $amount, string $description, User $user): BalanceTransaction
+    public function transfer(BalanceAccount $fromAccount, BalanceAccount $toAccount, mixed $amount, string $description, User $user): BalanceTransaction
     {
+        $amount = Rupiah::value($amount, 'Nominal');
+
         if ($amount <= 0) {
             throw new InvalidArgumentException('Nominal transfer harus lebih dari 0.');
         }
@@ -34,12 +37,12 @@ class BalanceService
             if (! $from || ! $to || $from->status !== 'ACTIVE' || $to->status !== 'ACTIVE') {
                 throw new InvalidArgumentException('Akun saldo tidak aktif, tidak ditemukan, atau di luar lokasi cabang Anda.');
             }
-            if ((float) $from->current_balance < $amount) {
+            if (Rupiah::value($from->current_balance, 'Saldo akun') < $amount) {
                 throw new InvalidArgumentException('Saldo akun asal tidak mencukupi untuk transfer.');
             }
 
-            $fromBefore = (float) $from->current_balance;
-            $toBefore = (float) $to->current_balance;
+            $fromBefore = Rupiah::value($from->current_balance, 'Saldo akun');
+            $toBefore = Rupiah::value($to->current_balance, 'Saldo akun');
             $from->update(['current_balance' => $fromBefore - $amount]);
             $to->update(['current_balance' => $toBefore + $amount]);
 
@@ -74,8 +77,10 @@ class BalanceService
         return $trx;
     }
 
-    public function deposit(BalanceAccount $account, float $amount, string $description, User $user): BalanceTransaction
+    public function deposit(BalanceAccount $account, mixed $amount, string $description, User $user): BalanceTransaction
     {
+        $amount = Rupiah::value($amount, 'Nominal');
+
         if ($amount <= 0) {
             throw new InvalidArgumentException('Nominal setoran harus lebih dari 0.');
         }
@@ -83,8 +88,10 @@ class BalanceService
         return $this->updateSingleAccount($account, $amount, 'DEPOSIT', 'destination_account_id', $description, $user);
     }
 
-    public function withdraw(BalanceAccount $account, float $amount, string $description, User $user): BalanceTransaction
+    public function withdraw(BalanceAccount $account, mixed $amount, string $description, User $user): BalanceTransaction
     {
+        $amount = Rupiah::value($amount, 'Nominal');
+
         if ($amount <= 0) {
             throw new InvalidArgumentException('Nominal penarikan harus lebih dari 0.');
         }
@@ -92,8 +99,10 @@ class BalanceService
         return $this->updateSingleAccount($account, -$amount, 'WITHDRAWAL', 'source_account_id', $description, $user);
     }
 
-    public function adjustBalance(BalanceAccount $account, float $newBalance, string $reason, User $user): BalanceTransaction
+    public function adjustBalance(BalanceAccount $account, mixed $newBalance, string $reason, User $user): BalanceTransaction
     {
+        $newBalance = Rupiah::value($newBalance, 'Saldo');
+
         if ($newBalance < 0) {
             throw new InvalidArgumentException('Saldo hasil penyesuaian tidak boleh negatif.');
         }
@@ -104,7 +113,7 @@ class BalanceService
                 throw new InvalidArgumentException('Akun saldo tidak aktif atau di luar lokasi cabang Anda.');
             }
 
-            $before = (float) $locked->current_balance;
+            $before = Rupiah::value($locked->current_balance, 'Saldo akun');
             $locked->update(['current_balance' => $newBalance]);
 
             return BalanceTransaction::create([
@@ -134,7 +143,7 @@ class BalanceService
         return $trx;
     }
 
-    private function updateSingleAccount(BalanceAccount $account, float $change, string $type, string $accountColumn, string $description, User $user): BalanceTransaction
+    private function updateSingleAccount(BalanceAccount $account, int $change, string $type, string $accountColumn, string $description, User $user): BalanceTransaction
     {
         $trx = DB::transaction(function () use ($account, $change, $type, $accountColumn, $description, $user) {
             $locked = BalanceAccount::forUserLocation($user)->whereKey($account->id)->lockForUpdate()->first();
@@ -142,7 +151,7 @@ class BalanceService
                 throw new InvalidArgumentException('Akun saldo tidak aktif atau di luar lokasi cabang Anda.');
             }
 
-            $before = (float) $locked->current_balance;
+            $before = Rupiah::value($locked->current_balance, 'Saldo akun');
             $after = $before + $change;
             if ($after < 0) {
                 throw new InvalidArgumentException('Saldo akun tidak mencukupi.');

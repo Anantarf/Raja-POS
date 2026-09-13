@@ -95,16 +95,18 @@ class FinanceReportService
         $labels = [];
         $data = [];
 
+        $totalsByDate = Sale::forUserLocation($user)
+            ->where('status', 'COMPLETED')
+            ->whereBetween('transaction_date', [$startDate->copy()->startOfDay(), Carbon::today()->endOfDay()])
+            ->selectRaw('DATE(transaction_date) as sale_date, SUM(total_amount) as total_amount')
+            ->groupByRaw('DATE(transaction_date)')
+            ->pluck('total_amount', 'sale_date');
+
         for ($i = 0; $i < $days; $i++) {
             $date = (clone $startDate)->addDays($i);
             $dateStr = $date->format('Y-m-d');
             $labels[] = $date->format('d M');
-
-            $dailyOmzet = (float) Sale::forUserLocation($user)->where('status', 'COMPLETED')
-                ->whereDate('transaction_date', $dateStr)
-                ->sum('total_amount');
-
-            $data[] = $dailyOmzet;
+            $data[] = (float) ($totalsByDate[$dateStr] ?? 0);
         }
 
         return [
@@ -119,30 +121,21 @@ class FinanceReportService
     public function getTopSellingProducts(?string $startDate = null, ?string $endDate = null, int $limit = 5, ?User $user = null)
     {
         $user = $user ?? auth()->user();
-        $query = SaleItem::with('product')
-            ->whereHas('sale', function ($q) use ($startDate, $endDate, $user) {
-                $q->forUserLocation($user)->where('status', 'COMPLETED');
-                if ($startDate) {
-                    $q->whereDate('transaction_date', '>=', $startDate);
-                }
-                if ($endDate) {
-                    $q->whereDate('transaction_date', '<=', $endDate);
-                }
-            });
 
-        $items = $query->get();
-
-        return $items->groupBy('product_id')->map(function ($group) {
-            $product = $group->first()->product;
-
-            return (object) [
-                'product_name' => $product?->name ?? 'Produk Dihapus',
-                'code' => $product?->code ?? '-',
-                'total_qty' => (int) $group->sum('quantity'),
-                'total_omset' => (float) $group->sum('subtotal'),
-                'total_omzet' => (float) $group->sum('subtotal'),
-            ];
-        })->sortByDesc('total_qty')->take($limit)->values();
+        return SaleItem::query()
+            ->join('sales', 'sale_items.sale_id', '=', 'sales.id')
+            ->leftJoin('products', 'sale_items.product_id', '=', 'products.id')
+            ->where('sales.status', 'COMPLETED')
+            ->when($user && ! $user->hasGlobalLocationAccess(), fn ($query) => $user->location_id ? $query->where('sales.location_id', $user->location_id) : $query->whereRaw('1 = 0'))
+            ->when($startDate, fn ($query) => $query->whereDate('sales.transaction_date', '>=', $startDate))
+            ->when($endDate, fn ($query) => $query->whereDate('sales.transaction_date', '<=', $endDate))
+            ->selectRaw("COALESCE(products.name, sale_items.product_name_snapshot, 'Produk Dihapus') as product_name")
+            ->selectRaw("COALESCE(products.code, sale_items.product_code_snapshot, '-') as code")
+            ->selectRaw('SUM(sale_items.quantity) as total_qty, SUM(sale_items.subtotal) as total_omset, SUM(sale_items.subtotal) as total_omzet')
+            ->groupBy('sale_items.product_id', 'products.name', 'products.code', 'sale_items.product_name_snapshot', 'sale_items.product_code_snapshot')
+            ->orderByDesc('total_qty')
+            ->limit($limit)
+            ->get();
     }
 
     /**
@@ -151,29 +144,17 @@ class FinanceReportService
     public function getCashierPerformance(?string $startDate = null, ?string $endDate = null, ?User $user = null)
     {
         $user = $user ?? auth()->user();
-        $query = Sale::forUserLocation($user)->with('cashier')->where('status', 'COMPLETED');
 
-        if ($startDate) {
-            $query->whereDate('transaction_date', '>=', $startDate);
-        }
-
-        if ($endDate) {
-            $query->whereDate('transaction_date', '<=', $endDate);
-        }
-
-        $sales = $query->get();
-
-        return $sales->groupBy('cashier_id')->map(function ($group) {
-            $cashierName = $group->first()->cashier?->name ?? 'System';
-
-            return (object) [
-                'cashier_name' => $cashierName,
-                'total_sales' => $group->count(),
-                'total_omset' => (float) $group->sum('total_amount'),
-                'total_omzet' => (float) $group->sum('total_amount'),
-                'total_margin' => (float) $group->sum('gross_profit'),
-            ];
-        })->sortByDesc('total_omzet')->values();
+        return Sale::forUserLocation($user)
+            ->leftJoin('users', 'sales.cashier_id', '=', 'users.id')
+            ->where('sales.status', 'COMPLETED')
+            ->when($startDate, fn ($query) => $query->whereDate('sales.transaction_date', '>=', $startDate))
+            ->when($endDate, fn ($query) => $query->whereDate('sales.transaction_date', '<=', $endDate))
+            ->selectRaw("COALESCE(users.name, 'System') as cashier_name")
+            ->selectRaw('COUNT(sales.id) as total_sales, SUM(sales.total_amount) as total_omset, SUM(sales.total_amount) as total_omzet, SUM(sales.gross_profit) as total_margin')
+            ->groupBy('sales.cashier_id', 'users.name')
+            ->orderByDesc('total_omzet')
+            ->get();
     }
 
     /**
@@ -210,28 +191,20 @@ class FinanceReportService
     public function getCategoryBreakdown(?string $startDate = null, ?string $endDate = null, ?User $user = null)
     {
         $user = $user ?? auth()->user();
-        $query = SaleItem::with(['product.category'])
-            ->whereHas('sale', function ($q) use ($startDate, $endDate, $user) {
-                $q->forUserLocation($user)->where('status', 'COMPLETED');
-                if ($startDate) {
-                    $q->whereDate('transaction_date', '>=', $startDate);
-                }
-                if ($endDate) {
-                    $q->whereDate('transaction_date', '<=', $endDate);
-                }
-            });
 
-        $items = $query->get();
-
-        return $items->groupBy(fn ($item) => $item->product?->category?->name ?? 'Tanpa Kategori')
-            ->map(function ($group, $categoryName) {
-                return (object) [
-                    'category_name' => $categoryName,
-                    'total_qty' => (int) $group->sum('quantity'),
-                    'total_omset' => (float) $group->sum('subtotal'),
-                    'total_omzet' => (float) $group->sum('subtotal'),
-                ];
-            })->sortByDesc('total_omzet')->values();
+        return SaleItem::query()
+            ->join('sales', 'sale_items.sale_id', '=', 'sales.id')
+            ->leftJoin('products', 'sale_items.product_id', '=', 'products.id')
+            ->leftJoin('categories', 'products.category_id', '=', 'categories.id')
+            ->where('sales.status', 'COMPLETED')
+            ->when($user && ! $user->hasGlobalLocationAccess(), fn ($query) => $user->location_id ? $query->where('sales.location_id', $user->location_id) : $query->whereRaw('1 = 0'))
+            ->when($startDate, fn ($query) => $query->whereDate('sales.transaction_date', '>=', $startDate))
+            ->when($endDate, fn ($query) => $query->whereDate('sales.transaction_date', '<=', $endDate))
+            ->selectRaw("COALESCE(categories.name, 'Tanpa Kategori') as category_name")
+            ->selectRaw('SUM(sale_items.quantity) as total_qty, SUM(sale_items.subtotal) as total_omset, SUM(sale_items.subtotal) as total_omzet')
+            ->groupBy('categories.id', 'categories.name')
+            ->orderByDesc('total_omzet')
+            ->get();
     }
 
     /**
@@ -430,4 +403,3 @@ class FinanceReportService
         ];
     }
 }
-

@@ -12,6 +12,7 @@ use App\Models\Product;
 use App\Models\Sale;
 use App\Models\SaleItem;
 use App\Models\User;
+use App\Support\Rupiah;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -27,7 +28,7 @@ class PosService
      * Process POS checkout atomically inside a DB Transaction.
      *
      * @param  array  $cartItems  format: [['product' => Product, 'quantity' => int], ...]
-     * @param  array  $paymentsData  format: [['payment_method_id' => int, 'balance_account_id' => ?int, 'amount' => float, 'reference_number' => ?string], ...]
+     * @param  array  $paymentsData  format: [['payment_method_id' => int, 'balance_account_id' => ?int, 'amount' => int, 'reference_number' => ?string], ...]
      */
     public function processCheckout(
         User $cashier,
@@ -98,8 +99,8 @@ class PosService
             }
 
             $isService = $product->product_type === 'LAYANAN';
-            $costPrice = $isService ? (float) ($item['cost_price'] ?? 0) : (float) $product->cost_price;
-            $sellingPrice = $isService ? (float) ($item['price'] ?? 0) : (float) $product->selling_price;
+            $costPrice = Rupiah::value($isService ? ($item['cost_price'] ?? 0) : $product->cost_price, 'Harga modal');
+            $sellingPrice = Rupiah::value($isService ? ($item['price'] ?? 0) : $product->selling_price, 'Harga jual');
             $nameSnapshot = $isService && ! empty($item['name']) ? $item['name'] : $product->name;
 
             // Block INCOMPLETE price status if no valid custom price provided
@@ -159,7 +160,7 @@ class PosService
         $totalPaid = 0;
 
         foreach ($paymentsData as $paymentData) {
-            $amount = (float) ($paymentData['amount'] ?? 0);
+            $amount = Rupiah::value($paymentData['amount'] ?? 0, 'Nominal pembayaran');
             $paymentMethodId = $paymentData['payment_method_id'] ?? null;
             $paymentMethod = $paymentMethodId ? PaymentMethod::where('status', 'ACTIVE')->find($paymentMethodId) : null;
 
@@ -271,6 +272,34 @@ class PosService
             $notes,
             $idempotencyKey
         ) {
+            $requiredStockByProduct = [];
+            $productNamesById = [];
+            foreach ($validatedItems as $validatedItem) {
+                if ($validatedItem['product']->product_type === 'PHYSICAL') {
+                    $productId = $validatedItem['product']->id;
+                    $requiredStockByProduct[$productId] = ($requiredStockByProduct[$productId] ?? 0) + $validatedItem['quantity'];
+                    $productNamesById[$productId] = $validatedItem['product']->name;
+                }
+            }
+
+            $lockedInventories = Inventory::query()
+                ->where('location_id', $location->id)
+                ->whereIn('product_id', array_keys($requiredStockByProduct))
+                ->orderBy('product_id')
+                ->lockForUpdate()
+                ->get()
+                ->keyBy('product_id');
+
+            foreach ($requiredStockByProduct as $productId => $requiredQuantity) {
+                $inventory = $lockedInventories->get($productId);
+                if (! $inventory || $inventory->quantity < $requiredQuantity) {
+                    $productName = $productNamesById[$productId];
+                    $availableQuantity = $inventory?->quantity ?? 0;
+
+                    throw new InvalidArgumentException("Stok produk '{$productName}' tidak mencukupi (Tersedia: {$availableQuantity}, Diminta: {$requiredQuantity}).");
+                }
+            }
+
             // Generate Transaction Number server-side with retry collision protection
             $attempts = 0;
             do {
@@ -321,7 +350,8 @@ class PosService
 
                 // Deduct inventory for PHYSICAL products
                 if ($product->product_type === 'PHYSICAL') {
-                    $this->inventoryService->adjustStock(
+                    $this->inventoryService->adjustLockedInventory(
+                        inventory: $lockedInventories->get($product->id),
                         product: $product,
                         location: $location,
                         quantityChange: -$qty,
@@ -353,7 +383,7 @@ class PosService
                 if ($balanceAccountId) {
                     $account = BalanceAccount::whereKey($balanceAccountId)->lockForUpdate()->first();
                     if ($account) {
-                        $before = $account->current_balance;
+                        $before = Rupiah::value($account->current_balance, 'Saldo akun');
                         $after = $before + $pData['amount'];
 
                         $account->update(['current_balance' => $after]);
@@ -394,7 +424,7 @@ class PosService
                     throw new InvalidArgumentException('Akun kas tunai untuk penyerahan kembalian tidak valid atau tidak aktif.');
                 }
 
-                $beforeCash = $targetAccount->current_balance;
+                $beforeCash = Rupiah::value($targetAccount->current_balance, 'Saldo akun');
                 $afterCash = $beforeCash - $pData['change_amount'];
 
                 $targetAccount->update(['current_balance' => $afterCash]);
@@ -415,7 +445,7 @@ class PosService
             }
 
             return $sale;
-        });
+        }, 3);
 
         ProcessAuditLogJob::dispatch(
             action: 'POS_CHECKOUT',

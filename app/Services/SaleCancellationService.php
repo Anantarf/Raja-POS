@@ -8,6 +8,7 @@ use App\Models\BalanceTransaction;
 use App\Models\Inventory;
 use App\Models\Sale;
 use App\Models\User;
+use App\Support\Rupiah;
 use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
 
@@ -66,8 +67,8 @@ class SaleCancellationService
                 if ($payment->balance_account_id) {
                     $account = BalanceAccount::whereKey($payment->balance_account_id)->lockForUpdate()->first();
                     if ($account) {
-                        $before = $account->current_balance;
-                        $after = $before - $payment->amount; // Deduct payment back
+                        $before = Rupiah::value($account->current_balance, 'Saldo akun');
+                        $after = $before - Rupiah::value($payment->amount, 'Nominal pembayaran'); // Deduct payment back
 
                         $account->update(['current_balance' => $after]);
 
@@ -75,7 +76,7 @@ class SaleCancellationService
                             'transaction_number' => BalanceTransaction::generateTransactionNumber('TRX'),
                             'transaction_type' => 'TRASH_REVERSAL',
                             'source_account_id' => $account->id,
-                            'amount' => $payment->amount,
+                            'amount' => Rupiah::value($payment->amount, 'Nominal pembayaran'),
                             'balance_before' => $before,
                             'balance_after' => $after,
                             'reference_type' => Sale::class,
@@ -90,7 +91,7 @@ class SaleCancellationService
 
             // 3. Revert per-payment change amount back to each CASH account.
             foreach ($sale->payments as $payment) {
-                if ($payment->change_amount <= 0 || ! $payment->balance_account_id) {
+                if (Rupiah::value($payment->change_amount, 'Kembalian') <= 0 || ! $payment->balance_account_id) {
                     continue;
                 }
 
@@ -99,8 +100,8 @@ class SaleCancellationService
                     continue;
                 }
 
-                $beforeCash = $cashAccount->current_balance;
-                $afterCash = $beforeCash + $payment->change_amount;
+                $beforeCash = Rupiah::value($cashAccount->current_balance, 'Saldo akun');
+                $afterCash = $beforeCash + Rupiah::value($payment->change_amount, 'Kembalian');
 
                 $cashAccount->update(['current_balance' => $afterCash]);
 
@@ -108,7 +109,7 @@ class SaleCancellationService
                     'transaction_number' => BalanceTransaction::generateTransactionNumber('TRX'),
                     'transaction_type' => 'TRASH_REVERSAL',
                     'destination_account_id' => $cashAccount->id,
-                    'amount' => $payment->change_amount,
+                    'amount' => Rupiah::value($payment->change_amount, 'Kembalian'),
                     'balance_before' => $beforeCash,
                     'balance_after' => $afterCash,
                     'reference_type' => Sale::class,
@@ -210,8 +211,8 @@ class SaleCancellationService
                 if ($payment->balance_account_id) {
                     $account = BalanceAccount::whereKey($payment->balance_account_id)->lockForUpdate()->first();
                     if ($account) {
-                        $before = $account->current_balance;
-                        $after = $before + $payment->amount;
+                        $before = Rupiah::value($account->current_balance, 'Saldo akun');
+                        $after = $before + Rupiah::value($payment->amount, 'Nominal pembayaran');
 
                         $account->update(['current_balance' => $after]);
 
@@ -219,7 +220,7 @@ class SaleCancellationService
                             'transaction_number' => BalanceTransaction::generateTransactionNumber('TRX'),
                             'transaction_type' => 'RESTORE_REVERSAL',
                             'destination_account_id' => $account->id,
-                            'amount' => $payment->amount,
+                            'amount' => Rupiah::value($payment->amount, 'Nominal pembayaran'),
                             'balance_before' => $before,
                             'balance_after' => $after,
                             'reference_type' => Sale::class,
@@ -234,7 +235,7 @@ class SaleCancellationService
 
             // 3. Re-deduct per-payment change amount from each CASH account.
             foreach ($sale->payments as $payment) {
-                if ($payment->change_amount <= 0 || ! $payment->balance_account_id) {
+                if (Rupiah::value($payment->change_amount, 'Kembalian') <= 0 || ! $payment->balance_account_id) {
                     continue;
                 }
 
@@ -243,8 +244,8 @@ class SaleCancellationService
                     continue;
                 }
 
-                $beforeCash = $cashAccount->current_balance;
-                $afterCash = $beforeCash - $payment->change_amount;
+                $beforeCash = Rupiah::value($cashAccount->current_balance, 'Saldo akun');
+                $afterCash = $beforeCash - Rupiah::value($payment->change_amount, 'Kembalian');
 
                 $cashAccount->update(['current_balance' => $afterCash]);
 
@@ -252,7 +253,7 @@ class SaleCancellationService
                     'transaction_number' => BalanceTransaction::generateTransactionNumber('TRX'),
                     'transaction_type' => 'RESTORE_REVERSAL',
                     'source_account_id' => $cashAccount->id,
-                    'amount' => $payment->change_amount,
+                    'amount' => Rupiah::value($payment->change_amount, 'Kembalian'),
                     'balance_before' => $beforeCash,
                     'balance_after' => $afterCash,
                     'reference_type' => Sale::class,
