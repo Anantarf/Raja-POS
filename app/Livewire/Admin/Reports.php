@@ -56,7 +56,7 @@ class Reports extends Component
 
     public function mount(string $type = 'sales'): void
     {
-        $allowed = ['sales', 'daily_summary', 'cashier', 'inventory', 'payment', 'balance', 'product'];
+        $allowed = ['sales', 'daily_summary', 'inventory', 'payment', 'balance', 'product'];
         $this->type = in_array($type, $allowed, true) ? $type : 'sales';
 
         $this->summaryDate = Carbon::today()->toDateString();

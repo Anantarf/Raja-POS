@@ -43,7 +43,6 @@
         @foreach([
             'sales' => 'Penjualan & Produk Terlaris',
             'daily_summary' => 'Summary Harian (Tutup Kas)',
-            'cashier' => 'Performa Kasir',
             'inventory' => 'Stok & Valuasi Barang',
             'payment' => 'Metode Pembayaran',
             'balance' => 'Saldo Toko'
@@ -52,8 +51,8 @@
         @endforeach
     </div>
 
-    <!-- Contextual Executive KPI Cards for Sales, Cashier, and Payment tabs -->
-    @if(in_array($type, ['sales', 'cashier', 'payment']))
+    <!-- Contextual Executive KPI Cards for Sales and Payment tabs -->
+    @if(in_array($type, ['sales', 'payment']))
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5">
             <!-- 1. Omzet -->
             <div class="bg-white rounded-2xl p-3.5 sm:p-4 border border-slate-200/80 shadow-xs space-y-1">
@@ -1164,49 +1163,6 @@
                         @endforelse
                     </div>
                 </div>
-            </div>
-        </div>
-
-    <!-- Tab 2: Cashier Performance -->
-    @elseif($type === 'cashier')
-        <div class="bg-white border border-slate-200/80 rounded-2xl shadow-sm overflow-hidden">
-            <div class="p-4 sm:p-5 border-b border-slate-100">
-                <h3 class="text-sm font-extrabold text-[#2C3E35] uppercase tracking-wider">Performa &amp; Produktivitas Kasir</h3>
-                <p class="text-xs text-[#718379] mt-0.5">Laporan total transaksi, omzet, dan margin yang dihasilkan oleh masing-masing petugas kasir.</p>
-            </div>
-            <div class="overflow-x-auto">
-                <table class="w-full text-xs text-left">
-                    <thead class="bg-[#F3F6F4] border-b border-slate-200/80 text-[#718379] uppercase text-[10px] font-extrabold tracking-wider">
-                        <tr>
-                            <th class="py-3.5 px-4">Nama Petugas Kasir</th>
-                            <th class="py-3.5 px-4 text-center">Total Transaksi</th>
-                            <th class="py-3.5 px-4 text-right">Omzet Dihasilkan</th>
-                            <th class="py-3.5 px-4 text-right">Margin Dihasilkan</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-100 font-medium">
-                        @forelse($cashierPerformance as $cashier)
-                            <tr class="hover:bg-[#F3F6F4]/60 transition">
-                                <td class="py-3.5 px-4 font-bold text-[#2C3E35] text-sm">
-                                    {{ $cashier->cashier_name }}
-                                </td>
-                                <td class="py-3.5 px-4 text-center font-mono font-bold text-[#2C3E35]">
-                                    {{ number_format($cashier->total_sales, 0, ',', '.') }} Trx
-                                </td>
-                                <td class="py-3.5 px-4 text-right font-mono font-extrabold text-[#2C3E35]">
-                                    Rp {{ number_format($cashier->total_omzet, 0, ',', '.') }}
-                                </td>
-                                <td class="py-3.5 px-4 text-right font-mono font-extrabold text-[#3F7A5D]">
-                                    Rp {{ number_format($cashier->total_margin, 0, ',', '.') }}
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="4" class="py-10 text-center text-slate-400">Belum ada data performa kasir pada periode ini.</td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
             </div>
         </div>
 
