@@ -91,9 +91,11 @@ class ProductImportService
                 $code = 'PRD-'.strtoupper(Str::random(6));
             }
 
-            $catName = $idxCategory !== null ? trim($row[$idxCategory] ?? '') : 'Umum';
+            $catName = $idxCategory !== null ? trim($row[$idxCategory] ?? '') : '';
             if (empty($catName)) {
-                $catName = 'Umum';
+                $errors[] = "Baris {$rowNumber}: Kategori wajib diisi.";
+
+                continue;
             }
 
             $subtypeName = $idxSubtype !== null ? trim($row[$idxSubtype] ?? '') : '';

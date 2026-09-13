@@ -50,7 +50,7 @@ class ProductImportTest extends TestCase
         // Assert Product IMP-001 created
         $p1 = Product::where('code', 'IMP-001')->first();
         $this->assertNotNull($p1);
-        $this->assertEquals('Kabel Type-C 1m', $p1->name);
+        $this->assertEquals('KABEL TYPE-C 1M', $p1->name);
         $this->assertEquals('COMPLETE', $p1->price_status);
         $this->assertEquals(15000, $p1->cost_price);
         $this->assertEquals(35000, $p1->selling_price);
@@ -111,7 +111,7 @@ class ProductImportTest extends TestCase
     public function test_import_parses_indonesian_thousand_separators(): void
     {
         $superadmin = User::where('username', 'superadmin')->first();
-        $csv = "Kode,Nama,Jenis Stok,Harga Modal,Harga Jual,Stok Awal\nIMP-RP,Kabel Rupiah,PHYSICAL,15.000,35.000,3";
+        $csv = "Kode,Nama,Kategori,Jenis Stok,Harga Modal,Harga Jual,Stok Awal\nIMP-RP,Kabel Rupiah,Aksesoris,PHYSICAL,15.000,35.000,3";
 
         Storage::fake('local');
         Storage::disk('local')->put('rupiah.csv', $csv);
@@ -125,10 +125,25 @@ class ProductImportTest extends TestCase
         $this->assertEquals(35000, $product->selling_price);
     }
 
+    public function test_import_rejects_blank_category(): void
+    {
+        Storage::fake('local');
+        Storage::disk('local')->put('blank-category.csv', "Kode,Nama,Jenis Stok,Harga Modal,Harga Jual\nIMP-NO-CAT,Produk Tanpa Kategori,PHYSICAL,10000,20000");
+
+        $result = app(ProductImportService::class)->importFromCsv(
+            Storage::disk('local')->path('blank-category.csv'),
+            User::where('username', 'superadmin')->first()
+        );
+
+        $this->assertSame(0, $result['imported_count']);
+        $this->assertContains('Baris 2: Kategori wajib diisi.', $result['errors']);
+        $this->assertDatabaseMissing('products', ['code' => 'IMP-NO-CAT']);
+    }
+
     public function test_reimport_does_not_add_initial_stock_twice(): void
     {
         $superadmin = User::where('username', 'superadmin')->first();
-        $csv = "Kode,Nama,Jenis Stok,Harga Modal,Harga Jual,Stok Awal\nIMP-IDEMP,Kabel Idempotent,PHYSICAL,10000,20000,8";
+        $csv = "Kode,Nama,Kategori,Jenis Stok,Harga Modal,Harga Jual,Stok Awal\nIMP-IDEMP,Kabel Idempotent,Aksesoris,PHYSICAL,10000,20000,8";
         Storage::fake('local');
         Storage::disk('local')->put('idempotent.csv', $csv);
         $path = Storage::disk('local')->path('idempotent.csv');

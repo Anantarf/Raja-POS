@@ -127,7 +127,7 @@ class PosLivewireUiTest extends TestCase
             ->assertSee('Transaksi Berhasil!')
             ->assertSee('Cetak Struk Thermal')
             ->assertSee('RAJA AKSESORIS')
-            ->assertSee('Kabel Data Type C');
+            ->assertSee('KABEL DATA TYPE C');
 
         $this->assertDatabaseHas('sales', [
             'cashier_id' => $this->cashier->id,

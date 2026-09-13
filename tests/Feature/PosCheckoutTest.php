@@ -378,7 +378,7 @@ class PosCheckoutTest extends TestCase
 
         $this->assertEquals(25000, $sale->total_amount);
         $this->assertEquals(10000, $sale->total_cost);
-        $this->assertEquals('Kabel Harga Server', $sale->items()->value('product_name_snapshot'));
+        $this->assertEquals('KABEL HARGA SERVER', $sale->items()->value('product_name_snapshot'));
     }
 
     public function test_change_uses_selected_cash_account(): void

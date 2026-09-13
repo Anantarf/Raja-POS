@@ -41,12 +41,10 @@ class FinanceReportService
         $yesterdayOmzet = (float) Sale::forUserLocation($user)->where('status', 'COMPLETED')->whereDate('transaction_date', Carbon::yesterday())->sum('total_amount');
 
         $growth = 0.0;
-        if ($yesterdayOmzet > 0) {
+        if ($todayOmzet > 0 && $yesterdayOmzet > 0) {
             $growth = (($todayOmzet - $yesterdayOmzet) / $yesterdayOmzet) * 100;
         } elseif ($todayOmzet > 0) {
             $growth = 100.0;
-        } else {
-            $growth = 0.0;
         }
 
         return [

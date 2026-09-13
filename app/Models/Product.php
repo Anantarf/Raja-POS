@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class Product extends Model
 {
@@ -42,6 +43,10 @@ class Product extends Model
         parent::boot();
 
         static::saving(function ($product) {
+            if (filled($product->name)) {
+                $product->name = Str::upper(trim($product->name));
+            }
+
             // Price status logic (PRD 7.1)
             if ($product->product_type !== 'LAYANAN' && ((float) $product->cost_price <= 0 || (float) $product->selling_price <= 0)) {
                 $product->price_status = 'INCOMPLETE';

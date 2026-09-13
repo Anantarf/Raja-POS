@@ -61,6 +61,7 @@ class MasterDataTest extends TestCase
             'status' => 'ACTIVE',
         ]);
         $this->assertEquals('INCOMPLETE', $incompleteProduct->price_status);
+        $this->assertSame('KABEL TYPE-C 1M', $incompleteProduct->name);
 
         // 2. Complete price product
         $completeProduct = Product::create([

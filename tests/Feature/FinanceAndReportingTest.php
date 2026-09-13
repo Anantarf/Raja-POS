@@ -165,7 +165,7 @@ class FinanceAndReportingTest extends TestCase
         $this->assertEquals(100000, $metrics['total_balance']);
 
         $topProduct = $reportService->getTopSellingProducts(user: $owner)->first();
-        $this->assertSame('Kabel Type-C Braided', $topProduct->product_name);
+        $this->assertSame('KABEL TYPE-C BRAIDED', $topProduct->product_name);
         $this->assertEquals(2, $topProduct->total_qty);
         $this->assertEquals(100000, $topProduct->total_omzet);
 
