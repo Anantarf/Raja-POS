@@ -63,9 +63,9 @@
             <span>Rp {{ number_format($receiptSale?->total_amount ?? 0, 0, ',', '.') }}</span>
         </div>
         @foreach($receiptSale?->payments ?? [] as $payment)
-            <div class="flex justify-between gap-3 text-[11px]">
-                <span>BAYAR ({{ $payment->paymentMethod?->name ?? 'Metode' }})</span>
-                <span>Rp {{ number_format($payment->amount, 0, ',', '.') }}</span>
+            <div class="flex justify-between gap-2 text-[11px] flex-wrap items-baseline">
+                <span class="break-words max-w-[65%]">BAYAR ({{ $payment->paymentMethod?->name ?? 'Metode' }})</span>
+                <span class="font-bold text-right ml-auto whitespace-nowrap">Rp {{ number_format($payment->amount, 0, ',', '.') }}</span>
             </div>
         @endforeach
         @if(($receiptSale?->change_amount ?? $fallbackChange ?? 0) > 0)

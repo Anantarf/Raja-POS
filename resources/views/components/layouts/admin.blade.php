@@ -422,8 +422,12 @@
                 const formatRow = (left, right) => {
                     left = String(left || '');
                     right = String(right || '');
-                    let spaceCount = Math.max(1, maxCols - left.length - right.length);
-                    return left + ' '.repeat(spaceCount) + right;
+                    if (left.length + right.length + 1 <= maxCols) {
+                        let spaceCount = maxCols - left.length - right.length;
+                        return left + ' '.repeat(spaceCount) + right;
+                    }
+                    let spaceCount = Math.max(0, maxCols - right.length);
+                    return left + '\n' + ' '.repeat(spaceCount) + right;
                 };
 
                 // Initialize printer
@@ -438,6 +442,7 @@
 
                 // Reset Text Size & Bold + Reset Line Spacing
                 raw(0x1D, 0x21, 0x00, 0x1B, 0x45, 0x00, 0x1B, 0x32);
+                append('\n');
 
                 if (data.tagline) append(wordWrap(data.tagline) + '\n');
                 if (data.address) append(wordWrap(data.address) + '\n');

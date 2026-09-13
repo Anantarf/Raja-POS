@@ -128,8 +128,8 @@
         </tr>
         @foreach($sale->payments as $payment)
             <tr>
-                <td class="text-left">BAYAR ({{ $payment->paymentMethod->name ?? 'Metode' }})</td>
-                <td class="text-right">Rp{{ number_format($payment->amount, 0, ',', '.') }}</td>
+                <td class="text-left" style="max-width: 60%; word-break: break-word;">BAYAR ({{ $payment->paymentMethod->name ?? 'Metode' }})</td>
+                <td class="text-right" style="vertical-align: top; white-space: nowrap;">Rp{{ number_format($payment->amount, 0, ',', '.') }}</td>
             </tr>
         @endforeach
         @if(($sale->change_amount ?? 0) > 0)
