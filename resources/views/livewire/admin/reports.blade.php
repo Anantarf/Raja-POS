@@ -172,7 +172,7 @@
                 <!-- Action Controls -->
                 <div class="flex items-center gap-2 w-full lg:w-auto justify-end flex-wrap">
                     @if(! $isLocked)
-                        <button wire:click="openInputModal" class="px-4 py-2.5 bg-amber-500 hover:bg-amber-600 text-white font-extrabold text-xs rounded-xl shadow-xs transition flex items-center gap-1.5 cursor-pointer active-press">
+                        <button wire:click="openInputModal" class="px-4 py-2.5 bg-[#D97706] hover:bg-[#B45309] text-white font-extrabold text-xs rounded-xl border border-[#B45309] shadow-sm transition flex items-center gap-1.5 cursor-pointer active-press">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                             <span>Input / Edit Saldo Fisik</span>
                         </button>
@@ -324,8 +324,11 @@
                                             <span class="text-right font-mono">Rp {{ number_format($dailySummaryData['dana_saldo_akhir'], 0, ',', '.') }}</span>
                                         </div>
                                     </div>
-                                    <div class="grid grid-cols-2 px-3 py-2 items-center bg-amber-100 text-amber-950 font-black border-t border-amber-200">
-                                        <span class="text-[11px]">Saldo Aktual Aplikasi (Fisik)</span>
+                                    <div @if(! $isLocked) wire:click="openInputModal" title="Klik untuk edit saldo fisik" class="grid grid-cols-2 px-3 py-2 items-center bg-amber-100 hover:bg-amber-200 text-amber-950 font-black border-t border-amber-200 cursor-pointer transition" @else class="grid grid-cols-2 px-3 py-2 items-center bg-amber-100 text-amber-950 font-black border-t border-amber-200" @endif>
+                                        <span class="text-[11px] flex items-center gap-1">
+                                            <span>Saldo Aktual Aplikasi (Fisik)</span>
+                                            @if(! $isLocked)<svg class="w-3 h-3 text-amber-700 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>@endif
+                                        </span>
                                         <span class="text-right font-mono text-xs">Rp {{ number_format($dailySummaryData['dana_saldo_android'], 0, ',', '.') }}</span>
                                     </div>
                                     <div class="grid grid-cols-2 px-3 py-2 items-center bg-slate-50 border-t border-slate-200">
@@ -362,8 +365,11 @@
                                             <span>Total Penerimaan QRIS</span>
                                             <span class="text-right font-mono font-black">Rp {{ number_format($dailySummaryData['qris_total'], 0, ',', '.') }}</span>
                                         </div>
-                                        <div class="grid grid-cols-2 px-3 py-2 items-center bg-amber-100 text-amber-950 font-black border-t border-amber-200">
-                                            <span class="text-[11px]">Saldo Aktual Aplikasi (Fisik)</span>
+                                        <div @if(! $isLocked) wire:click="openInputModal" title="Klik untuk edit saldo fisik" class="grid grid-cols-2 px-3 py-2 items-center bg-amber-100 hover:bg-amber-200 text-amber-950 font-black border-t border-amber-200 cursor-pointer transition" @else class="grid grid-cols-2 px-3 py-2 items-center bg-amber-100 text-amber-950 font-black border-t border-amber-200" @endif>
+                                            <span class="text-[11px] flex items-center gap-1">
+                                                <span>Saldo Aktual Aplikasi (Fisik)</span>
+                                                @if(! $isLocked)<svg class="w-3 h-3 text-amber-700 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>@endif
+                                            </span>
                                             <span class="text-right font-mono text-xs">Rp {{ number_format($dailySummaryData['qris_saldo_android'], 0, ',', '.') }}</span>
                                         </div>
                                     </div>
@@ -410,8 +416,11 @@
                                             <span class="text-right font-mono">Rp {{ number_format($dailySummaryData['bankmas_sisa'], 0, ',', '.') }}</span>
                                         </div>
                                     </div>
-                                    <div class="grid grid-cols-2 px-3 py-2 items-center bg-amber-100 text-amber-950 font-black border-t border-amber-200">
-                                        <span class="text-[11px]">Saldo Aktual Aplikasi (Fisik)</span>
+                                    <div @if(! $isLocked) wire:click="openInputModal" title="Klik untuk edit saldo fisik" class="grid grid-cols-2 px-3 py-2 items-center bg-amber-100 hover:bg-amber-200 text-amber-950 font-black border-t border-amber-200 cursor-pointer transition" @else class="grid grid-cols-2 px-3 py-2 items-center bg-amber-100 text-amber-950 font-black border-t border-amber-200" @endif>
+                                        <span class="text-[11px] flex items-center gap-1">
+                                            <span>Saldo Aktual Aplikasi (Fisik)</span>
+                                            @if(! $isLocked)<svg class="w-3 h-3 text-amber-700 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>@endif
+                                        </span>
                                         <span class="text-right font-mono text-xs">Rp {{ number_format($dailySummaryData['bankmas_saldo_android'], 0, ',', '.') }}</span>
                                     </div>
                                     <div class="grid grid-cols-2 px-3 py-2 items-center bg-slate-50 border-t border-slate-200">
@@ -457,8 +466,11 @@
                                             <span class="text-right font-mono">Rp {{ number_format($dailySummaryData['multi_sisa'], 0, ',', '.') }}</span>
                                         </div>
                                     </div>
-                                    <div class="grid grid-cols-2 px-3 py-2 items-center bg-amber-100 text-amber-950 font-black border-t border-amber-200">
-                                        <span class="text-[11px]">Saldo Aktual Aplikasi (Fisik)</span>
+                                    <div @if(! $isLocked) wire:click="openInputModal" title="Klik untuk edit saldo fisik" class="grid grid-cols-2 px-3 py-2 items-center bg-amber-100 hover:bg-amber-200 text-amber-950 font-black border-t border-amber-200 cursor-pointer transition" @else class="grid grid-cols-2 px-3 py-2 items-center bg-amber-100 text-amber-950 font-black border-t border-amber-200" @endif>
+                                        <span class="text-[11px] flex items-center gap-1">
+                                            <span>Saldo Aktual Aplikasi (Fisik)</span>
+                                            @if(! $isLocked)<svg class="w-3 h-3 text-amber-700 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>@endif
+                                        </span>
                                         <span class="text-right font-mono text-xs">Rp {{ number_format($dailySummaryData['multi_saldo_android'], 0, ',', '.') }}</span>
                                     </div>
                                     <div class="grid grid-cols-2 px-3 py-2 items-center bg-slate-50 border-t border-slate-200">
