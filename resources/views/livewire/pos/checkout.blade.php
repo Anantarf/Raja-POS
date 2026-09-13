@@ -9,12 +9,6 @@
                 localStorage.removeItem('raja_pos_draft_cart');
             }
         });
-        window.addEventListener('auto-print-receipt', e => {
-            const saleId = e.detail?.saleId || (Array.isArray(e.detail) ? e.detail[0]?.saleId : null);
-            if (saleId && typeof window.printReceiptDirect === 'function') {
-                setTimeout(() => window.printReceiptDirect(saleId), 300);
-            }
-        });
     "
     class="min-h-screen lg:h-screen flex flex-col overflow-y-auto lg:overflow-hidden bg-[#F3F6F4] font-sans text-[#232E28]"
 >
@@ -753,10 +747,19 @@
                                 <button
                                     type="button"
                                     @click="printWebBt()"
-                                    class="w-full h-12 py-3 bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold rounded-xl text-xs transition uppercase tracking-wider text-center flex items-center justify-center gap-2 cursor-pointer shadow-xs active-press hover-lift"
+                                    class="w-full h-12 py-3 bg-[#3F7A5D] hover:bg-[#32634B] text-white font-extrabold rounded-xl text-xs transition uppercase tracking-wider text-center flex items-center justify-center gap-2 cursor-pointer shadow-xs active-press hover-lift"
                                 >
                                     <svg class="w-4 h-4 text-white shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
                                     <span>Cetak Direct (Web Bluetooth)</span>
+                                </button>
+                            @elseif($printMode === 'RAWBT')
+                                <button
+                                    type="button"
+                                    onclick="window.location.href='intent:' + encodeURIComponent(window.location.origin + '/receipt/thermal/{{ $completedSaleId }}') + '#Intent;scheme=http;package=ru.a256.rawbtprinter;end;'"
+                                    class="w-full h-12 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold rounded-xl text-xs transition uppercase tracking-wider text-center flex items-center justify-center gap-2 cursor-pointer shadow-xs active-press hover-lift"
+                                >
+                                    <svg class="w-4 h-4 text-white shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                                    <span>Cetak Direct (RawBT Bluetooth)</span>
                                 </button>
                             @else
                                 <button
@@ -767,21 +770,14 @@
                                     <svg class="w-4 h-4 text-white shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
                                     </svg>
-                                    <span>Cetak Struk Thermal (Langsung)</span>
+                                    <span>Cetak Struk Thermal (Browser Dialog)</span>
                                 </button>
                             @endif
 
                             <button
                                 type="button"
-                                onclick="window.location.href='intent:' + encodeURIComponent(window.location.origin + '/receipt/thermal/{{ $completedSaleId }}') + '#Intent;scheme=http;package=ru.a256.rawbtprinter;end;'"
-                                class="w-full h-10 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs transition text-center flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs active-press"
-                            >
-                                <span>Cetak Direct (RawBT Bluetooth)</span>
-                            </button>
-                            <button
-                                type="button"
                                 wire:click="closeSuccessModal"
-                                class="w-full h-11 py-2.5 bg-slate-100 hover:bg-slate-200 text-[#232E28] font-bold rounded-xl text-sm transition cursor-pointer"
+                                class="w-full h-11 py-2.5 bg-slate-100 hover:bg-slate-200 text-[#232E28] font-bold rounded-xl text-sm transition cursor-pointer mt-1"
                             >
                                 Selesai / Transaksi Baru
                             </button>
