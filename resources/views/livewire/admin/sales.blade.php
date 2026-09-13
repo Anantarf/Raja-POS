@@ -339,7 +339,7 @@
                 </div>
 
                 <!-- Receipt Paper Simulation Box -->
-                <div class="bg-[#F3F6F4] p-3 rounded-xl border border-slate-200/80 max-h-[380px] overflow-y-auto">
+                <div class="bg-[#F3F6F4] p-4 rounded-2xl border border-slate-200/80 max-h-[60vh] overflow-y-auto flex justify-center items-start">
                     @include('receipt._preview', ['sale' => $receiptSale])
                 </div>
 
