@@ -160,6 +160,7 @@ class FoundationTest extends TestCase
         Livewire::actingAs($owner)
             ->test(SettingsComponent::class)
             ->set('pmName', 'Transfer Bank Mandiri')
+            ->set('pmReceiptLabel', 'Mandiri')
             ->set('pmType', 'TRANSFER')
             ->call('addPaymentMethod')
             ->assertHasNoErrors();
@@ -167,8 +168,35 @@ class FoundationTest extends TestCase
         $this->assertDatabaseHas('payment_methods', [
             'name' => 'Transfer Bank Mandiri',
             'code' => 'TRANSFER_BANK_MANDIRI',
+            'receipt_label' => 'Mandiri',
             'type' => 'TRANSFER',
         ]);
+    }
+
+    public function test_settings_can_update_payment_method_receipt_label(): void
+    {
+        $owner = User::where('username', 'superadmin')->first();
+        $paymentMethod = PaymentMethod::where('code', 'TRANSFER')->first();
+
+        Livewire::actingAs($owner)
+            ->test(SettingsComponent::class)
+            ->set("paymentMethodLabels.{$paymentMethod->id}", 'Transfer')
+            ->call('updatePaymentMethodReceiptLabel', $paymentMethod->id)
+            ->assertHasNoErrors();
+
+        $this->assertEquals('Transfer', $paymentMethod->fresh()->receipt_label);
+    }
+
+    public function test_payment_method_receipt_label_is_limited_for_thermal_layout(): void
+    {
+        $owner = User::where('username', 'superadmin')->first();
+        $paymentMethod = PaymentMethod::where('code', 'TRANSFER')->first();
+
+        Livewire::actingAs($owner)
+            ->test(SettingsComponent::class)
+            ->set("paymentMethodLabels.{$paymentMethod->id}", 'Transfer Bank Manual BCA')
+            ->call('updatePaymentMethodReceiptLabel', $paymentMethod->id)
+            ->assertHasErrors(["paymentMethodLabels.{$paymentMethod->id}" => 'max']);
     }
 
     public function test_portal_routes_redirect_to_custom_admin_routes(): void

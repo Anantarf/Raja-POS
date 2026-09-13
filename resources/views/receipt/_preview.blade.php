@@ -64,7 +64,7 @@
         </div>
         @foreach($receiptSale?->payments ?? [] as $payment)
             <div class="flex justify-between gap-2 text-[11px] flex-wrap items-baseline">
-                <span class="break-words max-w-[65%]">BAYAR ({{ $payment->paymentMethod?->name ?? 'Metode' }})</span>
+                <span class="break-words max-w-[65%]">BAYAR ({{ $payment->paymentMethod?->receipt_display_name ?? 'Metode' }})</span>
                 <span class="font-bold text-right ml-auto whitespace-nowrap">Rp {{ number_format($payment->amount, 0, ',', '.') }}</span>
             </div>
         @endforeach

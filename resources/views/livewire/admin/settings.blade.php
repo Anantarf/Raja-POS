@@ -603,6 +603,7 @@
                             <tr>
                                 <th class="py-3.5 px-4">Nama Metode</th>
                                 <th class="py-3.5 px-4">Kategori Tipe</th>
+                                <th class="py-3.5 px-4">Nama Cetak Struk</th>
                                 <th class="py-3.5 px-4 text-center">Status</th>
                             </tr>
                         </thead>
@@ -614,6 +615,13 @@
                                     </td>
                                     <td class="py-3.5 px-4 font-mono font-extrabold text-emerald-700 text-sm">
                                         {{ $pm->type }}
+                                    </td>
+                                    <td class="py-3 px-4 min-w-48">
+                                        <div class="flex items-center gap-2">
+                                            <input type="text" wire:model.defer="paymentMethodLabels.{{ $pm->id }}" maxlength="20" placeholder="{{ $pm->name }}" class="w-36 h-9 px-3 border border-slate-200 rounded-xl bg-slate-50 text-slate-800 font-semibold text-xs focus:bg-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600" />
+                                            <button type="button" wire:click="updatePaymentMethodReceiptLabel({{ $pm->id }})" class="h-9 px-3 bg-slate-100 hover:bg-emerald-50 text-slate-700 hover:text-emerald-700 border border-slate-200 rounded-xl font-extrabold text-[11px] transition cursor-pointer">Simpan</button>
+                                        </div>
+                                        @error('paymentMethodLabels.'.$pm->id) <div class="text-xs text-rose-600 font-semibold mt-1">Maksimal 20 karakter.</div> @enderror
                                     </td>
                                     <td class="py-3.5 px-4 text-center">
                                         <span class="px-2.5 py-1 rounded-lg text-xs font-extrabold bg-emerald-50 text-emerald-700 border border-emerald-200/80 uppercase">
@@ -637,6 +645,12 @@
                     <div>
                         <label class="block text-slate-500 font-extrabold uppercase tracking-wider text-xs mb-1">Nama Metode *</label>
                         <input type="text" wire:model="pmName" placeholder="Transfer Bank BCA / QRIS" class="w-full h-11 px-3.5 border border-slate-200 rounded-xl bg-slate-50 text-slate-800 font-semibold text-sm focus:bg-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600" required />
+                    </div>
+                    <div>
+                        <label class="block text-slate-500 font-extrabold uppercase tracking-wider text-xs mb-1">Nama Cetak Struk</label>
+                        <input type="text" wire:model="pmReceiptLabel" maxlength="20" placeholder="Transfer / QRIS / Cash" class="w-full h-11 px-3.5 border border-slate-200 rounded-xl bg-slate-50 text-slate-800 font-semibold text-sm focus:bg-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600" />
+                        <p class="text-xs text-slate-500 font-medium mt-1">Opsional, maksimal 20 karakter untuk struk thermal.</p>
+                        @error('pmReceiptLabel') <div class="text-xs text-rose-600 font-semibold mt-1">Maksimal 20 karakter.</div> @enderror
                     </div>
                     <div>
                         <label class="block text-slate-500 font-extrabold uppercase tracking-wider text-xs mb-1">Kategori Tipe *</label>

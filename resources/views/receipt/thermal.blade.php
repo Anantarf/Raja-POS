@@ -139,7 +139,7 @@
         </tr>
         @foreach($sale->payments as $payment)
             <tr>
-                <td class="text-left label">{{ $payment->paymentMethod->name ?? 'BAYAR' }}</td>
+                <td class="text-left label">{{ $payment->paymentMethod?->receipt_display_name ?? 'BAYAR' }}</td>
                 <td class="text-right amount">Rp{{ number_format($payment->amount, 0, ',', '.') }}</td>
             </tr>
         @endforeach

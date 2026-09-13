@@ -11,8 +11,14 @@ class PaymentMethod extends Model
 
     protected $fillable = [
         'name',
+        'receipt_label',
         'code',
         'type',
         'status',
     ];
+
+    public function getReceiptDisplayNameAttribute(): string
+    {
+        return filled($this->receipt_label) ? $this->receipt_label : $this->name;
+    }
 }

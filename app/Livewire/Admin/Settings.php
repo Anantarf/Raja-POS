@@ -43,6 +43,10 @@ class Settings extends Component
     // Payment Method Form
     public $pmName = '';
 
+    public $pmReceiptLabel = '';
+
+    public array $paymentMethodLabels = [];
+
     public $pmType = 'CASH';
 
     // User Form
@@ -70,6 +74,10 @@ class Settings extends Component
         $this->receiptPhone = Setting::get('receipt_phone', '');
         $this->receiptFooterText = Setting::get('receipt_footer_text', 'Terima Kasih Telah Berbelanja! Kepuasan Anda Adalah Kebanggaan Kami.');
         $this->showCashierName = Setting::get('show_cashier_name', '1') === '1';
+        $this->paymentMethodLabels = PaymentMethod::query()
+            ->pluck('receipt_label', 'id')
+            ->map(fn ($label) => $label ?? '')
+            ->toArray();
     }
 
     public function savePrinterSettings(): void
@@ -157,18 +165,44 @@ class Settings extends Component
 
         $this->validate([
             'pmName' => 'required|string|max:255|unique:payment_methods,name',
+            'pmReceiptLabel' => 'nullable|string|max:20',
             'pmType' => 'required|in:CASH,QRIS,TRANSFER,E_WALLET',
         ]);
 
         PaymentMethod::create([
             'name' => $this->pmName,
+            'receipt_label' => filled($this->pmReceiptLabel) ? trim($this->pmReceiptLabel) : null,
             'code' => Str::upper(Str::slug($this->pmName, '_')),
             'type' => $this->pmType,
             'status' => 'ACTIVE',
         ]);
 
         $this->pmName = '';
+        $this->pmReceiptLabel = '';
+        $this->paymentMethodLabels = PaymentMethod::query()
+            ->pluck('receipt_label', 'id')
+            ->map(fn ($label) => $label ?? '')
+            ->toArray();
         $this->dispatch('notify', message: 'Metode pembayaran berhasil ditambahkan.', type: 'success');
+    }
+
+    public function updatePaymentMethodReceiptLabel(int $paymentMethodId): void
+    {
+        abort_unless(auth()->user()->can('settings.manage'), 403);
+
+        $this->validate([
+            "paymentMethodLabels.{$paymentMethodId}" => 'nullable|string|max:20',
+        ]);
+
+        $paymentMethod = PaymentMethod::findOrFail($paymentMethodId);
+        $label = trim((string) ($this->paymentMethodLabels[$paymentMethodId] ?? ''));
+
+        $paymentMethod->update([
+            'receipt_label' => $label !== '' ? $label : null,
+        ]);
+
+        $this->paymentMethodLabels[$paymentMethodId] = $paymentMethod->receipt_label ?? '';
+        $this->dispatch('notify', message: 'Nama cetak struk berhasil disimpan.', type: 'success');
     }
 
     public function render()

@@ -213,6 +213,36 @@ class PosCheckoutTest extends TestCase
         );
     }
 
+    public function test_thermal_receipt_uses_short_payment_label(): void
+    {
+        $location = Location::where('code', 'RAJA-BANGO')->first();
+        $transferPm = PaymentMethod::where('code', 'TRANSFER')->first();
+        $transferPm->update(['receipt_label' => 'Transfer']);
+        $transferAccount = BalanceAccount::where('code', 'BANK_BCA')->first();
+        $owner = User::where('username', 'superadmin')->first();
+        $product = Product::create([
+            'code' => 'ACC-RCT-LABEL',
+            'name' => 'Adapter Label Receipt',
+            'product_type' => 'PHYSICAL',
+            'cost_price' => 10000,
+            'selling_price' => 220000,
+        ]);
+
+        app(InventoryService::class)->adjustStock($product, $location, 5, 'ADJUSTMENT_IN', 'Stock', $owner);
+
+        $sale = app(PosService::class)->processCheckout(
+            cashier: $owner,
+            cartItems: [['product' => $product, 'quantity' => 1]],
+            paymentsData: [['payment_method_id' => $transferPm->id, 'balance_account_id' => $transferAccount->id, 'amount' => $product->selling_price]]
+        );
+
+        $this->actingAs($owner)
+            ->get(route('receipt.thermal', $sale))
+            ->assertOk()
+            ->assertSee('Transfer')
+            ->assertDontSee('Transfer Bank');
+    }
+
     public function test_thermal_receipt_route(): void
     {
         $location = Location::where('code', 'RAJA-BANGO')->first();

@@ -285,7 +285,7 @@
                 ])->values()->all(),
                 'total' => 'Rp '.number_format($receiptSale->total_amount, 0, ',', '.'),
                 'payments' => $receiptSale->payments->map(fn($p) => [
-                    'method' => 'BAYAR ('.($p->paymentMethod?->name ?? 'Metode').')',
+                    'method' => 'BAYAR ('.($p->paymentMethod?->receipt_display_name ?? 'Metode').')',
                     'amount' => 'Rp '.number_format($p->amount, 0, ',', '.'),
                 ])->values()->all(),
                 'change' => ($receiptSale->change_amount ?? 0) > 0 ? 'Rp '.number_format($receiptSale->change_amount, 0, ',', '.') : null,
