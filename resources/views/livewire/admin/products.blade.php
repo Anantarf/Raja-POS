@@ -263,7 +263,7 @@
 
     <!-- MAIN PRODUCT CONTENT: TABLE LIST VIEW -->
     @else
-        <div class="bg-white border border-slate-200/80 rounded-2xl shadow-sm overflow-hidden">
+        <div class="bg-white border border-slate-200/80 rounded-2xl shadow-sm overflow-hidden" x-data="{ selected: @entangle('selectedProducts').live }">
             <div class="overflow-x-auto">
                 <table class="w-full text-sm text-left border-collapse">
                     <thead class="bg-[#F3F6F4] text-[11px] font-extrabold text-[#5F7167] uppercase tracking-wider border-b border-slate-200/80">
@@ -328,12 +328,11 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100 font-medium">
-                        @php $selectedMap = array_flip($selectedProducts); @endphp
                         @forelse($products as $product)
-                            <tr class="hover:bg-[#F3F6F4]/60 transition {{ isset($selectedMap[(string)$product->id]) || isset($selectedMap[$product->id]) ? 'bg-emerald-50/60' : '' }}">
+                            <tr class="hover:bg-[#F3F6F4]/60 transition" :class="selected.includes('{{ $product->id }}') || selected.includes({{ $product->id }}) ? 'bg-emerald-50/60' : ''">
                                 <!-- Col 0: Checkbox -->
                                 <td class="py-3.5 px-3.5 text-center w-10 shrink-0">
-                                    <input type="checkbox" wire:model.live="selectedProducts" value="{{ $product->id }}" class="w-4 h-4 rounded border-slate-300 text-[#047857] focus:ring-[#047857] cursor-pointer" />
+                                    <input type="checkbox" x-model="selected" value="{{ $product->id }}" class="w-4 h-4 rounded border-slate-300 text-[#047857] focus:ring-[#047857] cursor-pointer" />
                                 </td>
 
                                 <!-- Col 1: Nama Barang/Layanan & Barcode -->
