@@ -173,7 +173,7 @@
                     @if(! $isLocked)
                         <button wire:click="openInputModal" style="background-color: #d97706 !important; color: #ffffff !important; border: 1px solid #b45309 !important;" class="px-4 py-2.5 font-extrabold text-xs rounded-xl shadow-sm transition flex items-center gap-1.5 cursor-pointer active-press">
                             <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
-                            <span class="text-white">Input / Edit Saldo Fisik</span>
+                            <span class="text-white">Input / Edit Saldo Aktual</span>
                         </button>
 
                         <button wire:click="openInputModal" wire:loading.attr="disabled" style="background-color: #3F7A5D !important; color: #ffffff !important; border: 1px solid #32634B !important;" class="px-5 py-2.5 font-extrabold text-xs rounded-xl shadow-xs transition flex items-center gap-2 cursor-pointer active-press">
@@ -201,7 +201,7 @@
                         <h3 class="text-base sm:text-lg font-black text-[#2C3E35] tracking-tight">Rekapitulasi Harian Belum Dimulai</h3>
                         <p class="text-xs text-[#718379] font-medium leading-relaxed">
                             Penjualan POS pada tanggal <span class="font-bold text-[#2C3E35]">{{ $formattedDate }}</span> terekam otomatis sebesar <span class="font-mono font-extrabold text-[#3F7A5D]">Rp {{ number_format($dailySummaryData['total_penjualan'], 0, ',', '.') }}</span>.
-                            Saldo awal e-wallet otomatis ditarik dari saldo akhir kemarin. Klik tombol di bawah untuk mengisi saldo fisik aplikasi.
+                            Saldo awal e-wallet otomatis ditarik dari saldo akhir kemarin. Klik tombol di bawah untuk mengisi saldo aktual aplikasi.
                         </p>
                     </div>
                     <div>
@@ -326,7 +326,7 @@
                                         </div>
                                     </div>
                                     <div class="grid grid-cols-2 px-3 py-2 items-center bg-amber-100 text-amber-950 font-black border-t border-amber-200">
-                                        <span class="text-[11px]">Saldo Aktual Aplikasi (Fisik)</span>
+                                        <span class="text-[11px]">Saldo Aktual</span>
                                         <span class="text-right font-mono text-xs">Rp {{ number_format($dailySummaryData['dana_saldo_android'], 0, ',', '.') }}</span>
                                     </div>
                                     <div class="grid grid-cols-2 px-3 py-2 items-center bg-slate-50 border-t border-slate-200">
@@ -364,7 +364,7 @@
                                             <span class="text-right font-mono font-black">Rp {{ number_format($dailySummaryData['qris_total'], 0, ',', '.') }}</span>
                                         </div>
                                         <div class="grid grid-cols-2 px-3 py-2 items-center bg-amber-100 text-amber-950 font-black border-t border-amber-200">
-                                            <span class="text-[11px]">Saldo Aktual Aplikasi (Fisik)</span>
+                                            <span class="text-[11px]">Saldo Aktual</span>
                                             <span class="text-right font-mono text-xs">Rp {{ number_format($dailySummaryData['qris_saldo_android'], 0, ',', '.') }}</span>
                                         </div>
                                     </div>
@@ -412,7 +412,7 @@
                                         </div>
                                     </div>
                                     <div class="grid grid-cols-2 px-3 py-2 items-center bg-amber-100 text-amber-950 font-black border-t border-amber-200">
-                                        <span class="text-[11px]">Saldo Aktual Aplikasi (Fisik)</span>
+                                        <span class="text-[11px]">Saldo Aktual</span>
                                         <span class="text-right font-mono text-xs">Rp {{ number_format($dailySummaryData['bca_saldo_android'], 0, ',', '.') }}</span>
                                     </div>
                                     <div class="grid grid-cols-2 px-3 py-2 items-center bg-slate-50 border-t border-slate-200">
@@ -459,7 +459,7 @@
                                         </div>
                                     </div>
                                     <div class="grid grid-cols-2 px-3 py-2 items-center bg-amber-100 text-amber-950 font-black border-t border-amber-200">
-                                        <span class="text-[11px]">Saldo Aktual Aplikasi (Fisik)</span>
+                                        <span class="text-[11px]">Saldo Aktual</span>
                                         <span class="text-right font-mono text-xs">Rp {{ number_format($dailySummaryData['bankmas_saldo_android'], 0, ',', '.') }}</span>
                                     </div>
                                     <div class="grid grid-cols-2 px-3 py-2 items-center bg-slate-50 border-t border-slate-200">
@@ -506,7 +506,7 @@
                                         </div>
                                     </div>
                                     <div class="grid grid-cols-2 px-3 py-2 items-center bg-amber-100 text-amber-950 font-black border-t border-amber-200">
-                                        <span class="text-[11px]">Saldo Aktual Aplikasi (Fisik)</span>
+                                        <span class="text-[11px]">Saldo Aktual</span>
                                         <span class="text-right font-mono text-xs">Rp {{ number_format($dailySummaryData['multi_saldo_android'], 0, ',', '.') }}</span>
                                     </div>
                                     <div class="grid grid-cols-2 px-3 py-2 items-center bg-slate-50 border-t border-slate-200">
@@ -553,7 +553,7 @@
                                         </div>
                                     </div>
                                     <div class="grid grid-cols-2 px-3 py-2 items-center bg-amber-100 text-amber-950 font-black border-t border-amber-200">
-                                        <span class="text-[11px]">Saldo Aktual Aplikasi (Fisik)</span>
+                                        <span class="text-[11px]">Saldo Aktual</span>
                                         <span class="text-right font-mono text-xs">Rp {{ number_format($dailySummaryData['wahana_saldo_android'], 0, ',', '.') }}</span>
                                     </div>
                                     <div class="grid grid-cols-2 px-3 py-2 items-center bg-slate-50 border-t border-slate-200">
@@ -669,7 +669,7 @@
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                             </div>
                             <div>
-                                <h3 class="text-base font-black text-[#2C3E35] tracking-tight uppercase">INPUT SALDO FISIK &amp; REKAP HARIAN</h3>
+                                <h3 class="text-base font-black text-[#2C3E35] tracking-tight uppercase">INPUT SALDO AKTUAL &amp; REKAP HARIAN</h3>
                                 <p class="text-xs text-[#718379] font-medium">Tanggal Rekap: <span class="font-bold text-[#2C3E35]">{{ $formattedDate }}</span></p>
                             </div>
                         </div>
