@@ -657,15 +657,15 @@
             @endif
         </div>
 
-        <!-- MODAL DIALOG INPUT SALDO FISIK & REKAP HARIAN (PAGINATED PER CATEGORY) -->
+        <!-- MODAL DIALOG INPUT SALDO AKTUAL & REKAP HARIAN (PAGINATED & ENTERPRISE POLISHED) -->
         @if($showInputModal)
-            <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 overflow-y-auto">
-                <div class="bg-white rounded-3xl max-w-3xl w-full p-5 sm:p-6 shadow-2xl border border-slate-200 space-y-4 my-6 transition-all">
+            <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+                <div class="bg-white rounded-3xl max-w-3xl w-full p-5 sm:p-6 shadow-2xl border border-slate-200 space-y-4 my-auto transition-all">
                     
                     <!-- Modal Header -->
-                    <div class="flex items-center justify-between border-b border-slate-100 pb-3.5">
+                    <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                         <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-xl bg-[#E3EEE8] text-[#3F7A5D] font-extrabold flex items-center justify-center border border-[#3F7A5D]/20 shadow-xs">
+                            <div class="w-10 h-10 rounded-2xl bg-[#E3EEE8] text-[#3F7A5D] font-extrabold flex items-center justify-center border border-[#3F7A5D]/20 shadow-xs">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                             </div>
                             <div>
@@ -679,29 +679,29 @@
                     </div>
 
                     <!-- Step Navigation Tabs Bar -->
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 p-1 bg-[#F3F6F4] rounded-2xl border border-slate-200/80">
-                        <button type="button" wire:click="setModalStep(1)" class="px-3 py-2 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer {{ $modalStep === 1 ? 'bg-[#3F7A5D] text-white shadow-xs' : 'text-[#718379] hover:bg-slate-200/60 hover:text-[#2C3E35]' }}">
-                            <span class="w-4 h-4 rounded-full text-[10px] flex items-center justify-center font-black {{ $modalStep === 1 ? 'bg-white text-[#3F7A5D]' : 'bg-slate-300 text-slate-700' }}">1</span>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 p-1.5 bg-[#F3F6F4] rounded-2xl border border-slate-200/80">
+                        <button type="button" wire:click="setModalStep(1)" class="px-3 py-2.5 rounded-xl text-xs font-extrabold transition flex items-center justify-center gap-2 cursor-pointer {{ $modalStep === 1 ? 'bg-[#3F7A5D] text-white shadow-xs' : 'text-[#718379] hover:bg-slate-200/60 hover:text-[#2C3E35]' }}">
+                            <span class="w-5 h-5 rounded-full text-[11px] flex items-center justify-center font-black {{ $modalStep === 1 ? 'bg-white text-[#3F7A5D]' : 'bg-slate-300 text-slate-700' }}">1</span>
                             <span class="truncate">E-Wallet &amp; QRIS</span>
                         </button>
 
-                        <button type="button" wire:click="setModalStep(2)" class="px-3 py-2 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer {{ $modalStep === 2 ? 'bg-[#3F7A5D] text-white shadow-xs' : 'text-[#718379] hover:bg-slate-200/60 hover:text-[#2C3E35]' }}">
-                            <span class="w-4 h-4 rounded-full text-[10px] flex items-center justify-center font-black {{ $modalStep === 2 ? 'bg-white text-[#3F7A5D]' : 'bg-slate-300 text-slate-700' }}">2</span>
+                        <button type="button" wire:click="setModalStep(2)" class="px-3 py-2.5 rounded-xl text-xs font-extrabold transition flex items-center justify-center gap-2 cursor-pointer {{ $modalStep === 2 ? 'bg-[#3F7A5D] text-white shadow-xs' : 'text-[#718379] hover:bg-slate-200/60 hover:text-[#2C3E35]' }}">
+                            <span class="w-5 h-5 rounded-full text-[11px] flex items-center justify-center font-black {{ $modalStep === 2 ? 'bg-white text-[#3F7A5D]' : 'bg-slate-300 text-slate-700' }}">2</span>
                             <span class="truncate">Bank BCA &amp; MAS</span>
                         </button>
 
-                        <button type="button" wire:click="setModalStep(3)" class="px-3 py-2 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer {{ $modalStep === 3 ? 'bg-[#3F7A5D] text-white shadow-xs' : 'text-[#718379] hover:bg-slate-200/60 hover:text-[#2C3E35]' }}">
-                            <span class="w-4 h-4 rounded-full text-[10px] flex items-center justify-center font-black {{ $modalStep === 3 ? 'bg-white text-[#3F7A5D]' : 'bg-slate-300 text-slate-700' }}">3</span>
+                        <button type="button" wire:click="setModalStep(3)" class="px-3 py-2.5 rounded-xl text-xs font-extrabold transition flex items-center justify-center gap-2 cursor-pointer {{ $modalStep === 3 ? 'bg-[#3F7A5D] text-white shadow-xs' : 'text-[#718379] hover:bg-slate-200/60 hover:text-[#2C3E35]' }}">
+                            <span class="w-5 h-5 rounded-full text-[11px] flex items-center justify-center font-black {{ $modalStep === 3 ? 'bg-white text-[#3F7A5D]' : 'bg-slate-300 text-slate-700' }}">3</span>
                             <span class="truncate">Multi &amp; Wahana</span>
                         </button>
 
-                        <button type="button" wire:click="setModalStep(4)" class="px-3 py-2 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer {{ $modalStep === 4 ? 'bg-[#3F7A5D] text-white shadow-xs' : 'text-[#718379] hover:bg-slate-200/60 hover:text-[#2C3E35]' }}">
-                            <span class="w-4 h-4 rounded-full text-[10px] flex items-center justify-center font-black {{ $modalStep === 4 ? 'bg-white text-[#3F7A5D]' : 'bg-slate-300 text-slate-700' }}">4</span>
+                        <button type="button" wire:click="setModalStep(4)" class="px-3 py-2.5 rounded-xl text-xs font-extrabold transition flex items-center justify-center gap-2 cursor-pointer {{ $modalStep === 4 ? 'bg-[#3F7A5D] text-white shadow-xs' : 'text-[#718379] hover:bg-slate-200/60 hover:text-[#2C3E35]' }}">
+                            <span class="w-5 h-5 rounded-full text-[11px] flex items-center justify-center font-black {{ $modalStep === 4 ? 'bg-white text-[#3F7A5D]' : 'bg-slate-300 text-slate-700' }}">4</span>
                             <span class="truncate">Kasir &amp; Catatan</span>
                         </button>
                     </div>
 
-                    <!-- Modal Body Form Grid -->
+                    <!-- Live Calculation Helpers -->
                     @php
                         $mDanaAkhir = (float)($danaSaldoAwal ?? 0) + (float)($danaTopup ?? 0) - (float)($danaTrx ?? 0);
                         $mDanaSelisih = (float)($danaSaldoAndroid ?? 0) - $mDanaAkhir;
@@ -724,89 +724,107 @@
                         $mHasDiscrepancy = ($mDanaSelisih != 0 || $mQrisSelisih != 0 || $mBcaSelisih != 0 || $mBankmasSelisih != 0 || $mMultiSelisih != 0 || $mWahanaSelisih != 0);
                     @endphp
 
-                    <div class="space-y-4 min-h-[340px] max-h-[55vh] overflow-y-auto pr-1">
+                    <!-- Modal Body Form Grid -->
+                    <div class="space-y-4 max-h-[58vh] overflow-y-auto pr-1">
                         
                         <!-- Live Owner Match Status Banner -->
                         @if(! $mHasDiscrepancy)
-                            <div class="p-3.5 bg-emerald-50 border border-emerald-200 rounded-2xl flex items-center justify-between text-xs text-emerald-950 font-bold">
+                            <div class="p-3.5 bg-emerald-50 border border-emerald-200 rounded-2xl flex items-center justify-between text-xs text-emerald-950 font-bold shadow-xs">
                                 <div class="flex items-center gap-2">
                                     <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                                    <span>Status Pencocokan Owner: <strong class="text-emerald-700">SEMUA SALDO MATCH (Rp 0 Selisih)</strong></span>
+                                    <span>Status Owner: <strong class="text-emerald-700">SEMUA SALDO MATCH (Rp 0 Selisih)</strong></span>
                                 </div>
-                                <span class="px-2 py-0.5 rounded bg-emerald-600 text-white text-[10px] font-black uppercase tracking-wider">SIAP VALIDASI</span>
+                                <span class="px-2.5 py-1 rounded-lg bg-emerald-600 text-white text-[10px] font-black uppercase tracking-wider shadow-xs">SIAP VALIDASI</span>
                             </div>
                         @else
-                            <div class="p-3.5 bg-amber-50 border border-amber-300 rounded-2xl flex items-center justify-between text-xs text-amber-950 font-bold">
+                            <div class="p-3.5 bg-amber-50 border border-amber-300 rounded-2xl flex items-center justify-between text-xs text-amber-950 font-bold shadow-xs">
                                 <div class="flex items-center gap-2">
                                     <span class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse"></span>
-                                    <span>Status Pencocokan Owner: <strong class="text-amber-900">TERDAPAT SELISIH SALDO</strong> &mdash; Harap cantumkan penjelasan di Halaman 4 (Catatan).</span>
+                                    <span>Status Owner: <strong class="text-amber-900">TERDAPAT SELISIH SALDO</strong> &mdash; Harap isi penjelasan di Halaman 4.</span>
                                 </div>
-                                <span class="px-2 py-0.5 rounded bg-amber-600 text-white text-[10px] font-black uppercase tracking-wider">BUTUH CATATAN</span>
+                                <span class="px-2.5 py-1 rounded-lg bg-amber-600 text-white text-[10px] font-black uppercase tracking-wider shadow-xs">BUTUH CATATAN</span>
                             </div>
                         @endif
 
                         <!-- STEP 1: DANA & QRIS -->
                         @if($modalStep === 1)
-                            <div class="space-y-3">
-                                <div class="flex items-center justify-between text-xs font-black text-[#2C3E35] uppercase tracking-wider">
-                                    <span>BAGIAN 1: DANA &amp; QRIS</span>
-                                    <span class="text-[11px] text-[#718379] font-semibold">Step 1 dari 4</span>
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between text-xs font-black text-[#2C3E35] uppercase tracking-wider pb-1 border-b border-slate-100">
+                                    <span>LANGKAH 1 DARI 4: E-WALLET DANA &amp; QRIS GATEWAY</span>
                                 </div>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <!-- DANA -->
-                                    <div class="bg-[#F3F6F4]/80 p-4 rounded-2xl border border-slate-200 space-y-3">
-                                        <div class="text-xs font-black text-[#2C3E35] uppercase tracking-wider border-b border-slate-200 pb-1.5 flex items-center justify-between">
-                                            <span>DANA (E-Wallet)</span>
+                                    <div class="bg-white p-4.5 rounded-2xl border border-slate-200/90 shadow-sm space-y-3.5">
+                                        <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+                                            <div class="flex items-center gap-2">
+                                                <span class="w-3 h-3 rounded-full bg-sky-500"></span>
+                                                <span class="font-extrabold text-sm text-[#2C3E35]">DANA</span>
+                                                <span class="text-[10px] text-[#718379] font-medium uppercase">(E-Wallet)</span>
+                                            </div>
                                             @if($mDanaSelisih == 0)
-                                                <span class="px-2 py-0.5 rounded text-[9px] bg-emerald-600 text-white font-black tracking-wider">MATCH</span>
+                                                <span class="px-2 py-0.5 rounded-md text-[10px] bg-emerald-100 text-emerald-800 font-black">MATCH</span>
                                             @else
-                                                <span class="px-2 py-0.5 rounded text-[9px] bg-rose-600 text-white font-black tracking-wider">{{ $mDanaSelisih > 0 ? '+' : '' }}Rp {{ number_format($mDanaSelisih, 0, ',', '.') }}</span>
+                                                <span class="px-2 py-0.5 rounded-md text-[10px] bg-rose-100 text-rose-800 font-black">{{ $mDanaSelisih > 0 ? '+' : '' }}Rp {{ number_format($mDanaSelisih, 0, ',', '.') }}</span>
                                             @endif
                                         </div>
-                                        <div class="space-y-2 text-xs">
+
+                                        <div class="grid grid-cols-3 gap-2 bg-[#F3F6F4]/90 p-2.5 rounded-xl text-[11px]">
                                             <div>
-                                                <label class="block font-bold text-[#718379] mb-1 text-[11px]">Saldo Awal (Rp) <span class="text-[10px] font-semibold text-emerald-700">(Saldo Akhir Kemarin)</span></label>
-                                                <input type="number" step="1" wire:model.live="danaSaldoAwal" class="w-full p-2 border border-slate-200 rounded-xl bg-white font-mono font-bold text-right text-xs" />
+                                                <span class="text-[#718379] font-semibold block text-[10px]">Saldo Awal</span>
+                                                <input type="number" step="1" wire:model.live="danaSaldoAwal" class="w-full mt-0.5 p-1.5 border border-slate-200 rounded-lg bg-white font-mono font-bold text-right text-xs" />
                                             </div>
                                             <div>
-                                                <label class="block font-bold text-[#718379] mb-1 text-[11px]">Top Up Saldo (Rp)</label>
-                                                <input type="number" step="1" wire:model.live="danaTopup" class="w-full p-2 border border-slate-200 rounded-xl bg-white font-mono font-bold text-right text-xs" />
+                                                <span class="text-[#718379] font-semibold block text-[10px]">Top Up</span>
+                                                <input type="number" step="1" wire:model.live="danaTopup" class="w-full mt-0.5 p-1.5 border border-slate-200 rounded-lg bg-white font-mono font-bold text-right text-xs" />
                                             </div>
                                             <div>
-                                                <label class="block font-bold text-[#718379] mb-1 text-[11px]">Transaksi Terpakai TRX (Rp)</label>
-                                                <input type="number" step="1" wire:model.live="danaTrx" class="w-full p-2 border border-slate-200 rounded-xl bg-white font-mono font-bold text-right text-xs" />
+                                                <span class="text-[#718379] font-semibold block text-[10px]">Trx Dipakai</span>
+                                                <input type="number" step="1" wire:model.live="danaTrx" class="w-full mt-0.5 p-1.5 border border-slate-200 rounded-lg bg-white font-mono font-bold text-right text-xs" />
                                             </div>
-                                            <div>
-                                                <label class="block font-bold text-amber-900 mb-1 text-[11px]">Saldo Android di HP (Rp)</label>
-                                                <input type="number" step="1" wire:model.live="danaSaldoAndroid" class="w-full p-2 border border-amber-300 rounded-xl bg-amber-50 font-mono font-black text-right text-xs text-amber-950" />
+                                        </div>
+
+                                        <div class="p-3 bg-amber-50/80 border border-amber-200/80 rounded-xl space-y-1">
+                                            <label class="block font-black text-amber-950 text-xs">Saldo Aktual di HP (Android)</label>
+                                            <div class="relative flex items-center">
+                                                <span class="absolute left-3 font-mono font-extrabold text-xs text-amber-800">Rp</span>
+                                                <input type="number" step="1" wire:model.live="danaSaldoAndroid" class="w-full pl-9 pr-3 py-2 border border-amber-300 rounded-xl bg-white font-mono font-black text-right text-sm text-amber-950 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500" placeholder="0" />
                                             </div>
                                         </div>
                                     </div>
 
                                     <!-- QRIS -->
-                                    <div class="bg-[#F3F6F4]/80 p-4 rounded-2xl border border-slate-200 space-y-3">
-                                        <div class="text-xs font-black text-[#2C3E35] uppercase tracking-wider border-b border-slate-200 pb-1.5 flex items-center justify-between">
-                                            <span>QRIS Gateway</span>
+                                    <div class="bg-white p-4.5 rounded-2xl border border-slate-200/90 shadow-sm space-y-3.5">
+                                        <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+                                            <div class="flex items-center gap-2">
+                                                <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+                                                <span class="font-extrabold text-sm text-[#2C3E35]">QRIS</span>
+                                                <span class="text-[10px] text-[#718379] font-medium uppercase">(Gateway)</span>
+                                            </div>
                                             @if($mQrisSelisih == 0)
-                                                <span class="px-2 py-0.5 rounded text-[9px] bg-emerald-600 text-white font-black tracking-wider">MATCH</span>
+                                                <span class="px-2 py-0.5 rounded-md text-[10px] bg-emerald-100 text-emerald-800 font-black">MATCH</span>
                                             @else
-                                                <span class="px-2 py-0.5 rounded text-[9px] bg-rose-600 text-white font-black tracking-wider">{{ $mQrisSelisih > 0 ? '+' : '' }}Rp {{ number_format($mQrisSelisih, 0, ',', '.') }}</span>
+                                                <span class="px-2 py-0.5 rounded-md text-[10px] bg-rose-100 text-rose-800 font-black">{{ $mQrisSelisih > 0 ? '+' : '' }}Rp {{ number_format($mQrisSelisih, 0, ',', '.') }}</span>
                                             @endif
                                         </div>
-                                        <div class="space-y-2 text-xs">
+
+                                        <div class="grid grid-cols-2 gap-2 bg-[#F3F6F4]/90 p-2.5 rounded-xl text-[11px]">
                                             <div>
-                                                <label class="block font-bold text-[#718379] mb-1 text-[11px]">Pembayaran POS (Auto)</label>
-                                                <div class="p-2 bg-slate-100 rounded-xl font-mono font-extrabold text-right text-xs text-[#3F7A5D]">
+                                                <span class="text-[#718379] font-semibold block text-[10px]">Pembayaran POS (Auto)</span>
+                                                <div class="mt-0.5 p-1.5 bg-slate-100 rounded-lg font-mono font-bold text-right text-xs text-[#3F7A5D]">
                                                     Rp {{ number_format($dailySummaryData['qris_pembayaran'], 0, ',', '.') }}
                                                 </div>
                                             </div>
                                             <div>
-                                                <label class="block font-bold text-[#718379] mb-1 text-[11px]">Tarik Tunai Pelanggan (Rp)</label>
-                                                <input type="number" step="1" wire:model.live="qrisTarikTunai" class="w-full p-2 border border-slate-200 rounded-xl bg-white font-mono font-bold text-right text-xs" />
+                                                <span class="text-[#718379] font-semibold block text-[10px]">Tarik Tunai Pelanggan</span>
+                                                <input type="number" step="1" wire:model.live="qrisTarikTunai" class="w-full mt-0.5 p-1.5 border border-slate-200 rounded-lg bg-white font-mono font-bold text-right text-xs" />
                                             </div>
-                                            <div>
-                                                <label class="block font-bold text-amber-900 mb-1 text-[11px]">Saldo Android / EDC di HP (Rp)</label>
-                                                <input type="number" step="1" wire:model.live="qrisSaldoAndroid" class="w-full p-2 border border-amber-300 rounded-xl bg-amber-50 font-mono font-black text-right text-xs text-amber-950" />
+                                        </div>
+
+                                        <div class="p-3 bg-amber-50/80 border border-amber-200/80 rounded-xl space-y-1">
+                                            <label class="block font-black text-amber-950 text-xs">Saldo Aktual di HP / EDC</label>
+                                            <div class="relative flex items-center">
+                                                <span class="absolute left-3 font-mono font-extrabold text-xs text-amber-800">Rp</span>
+                                                <input type="number" step="1" wire:model.live="qrisSaldoAndroid" class="w-full pl-9 pr-3 py-2 border border-amber-300 rounded-xl bg-white font-mono font-black text-right text-sm text-amber-950 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500" placeholder="0" />
                                             </div>
                                         </div>
                                     </div>
@@ -815,68 +833,83 @@
 
                         <!-- STEP 2: BANK BCA & BANK MAS -->
                         @elseif($modalStep === 2)
-                            <div class="space-y-3">
-                                <div class="flex items-center justify-between text-xs font-black text-[#2C3E35] uppercase tracking-wider">
-                                    <span>BAGIAN 2: BANK BCA &amp; BANK MAS</span>
-                                    <span class="text-[11px] text-[#718379] font-semibold">Step 2 dari 4</span>
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between text-xs font-black text-[#2C3E35] uppercase tracking-wider pb-1 border-b border-slate-100">
+                                    <span>LANGKAH 2 DARI 4: BANK BCA &amp; BANK MAS</span>
                                 </div>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <!-- BANK BCA -->
-                                    <div class="bg-[#F3F6F4]/80 p-4 rounded-2xl border border-slate-200 space-y-3">
-                                        <div class="text-xs font-black text-[#2C3E35] uppercase tracking-wider border-b border-slate-200 pb-1.5 flex items-center justify-between">
-                                            <span>BANK BCA</span>
+                                    <div class="bg-white p-4.5 rounded-2xl border border-slate-200/90 shadow-sm space-y-3.5">
+                                        <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+                                            <div class="flex items-center gap-2">
+                                                <span class="w-3 h-3 rounded-full bg-blue-600"></span>
+                                                <span class="font-extrabold text-sm text-[#2C3E35]">BANK BCA</span>
+                                            </div>
                                             @if($mBcaSelisih == 0)
-                                                <span class="px-2 py-0.5 rounded text-[9px] bg-emerald-600 text-white font-black tracking-wider">MATCH</span>
+                                                <span class="px-2 py-0.5 rounded-md text-[10px] bg-emerald-100 text-emerald-800 font-black">MATCH</span>
                                             @else
-                                                <span class="px-2 py-0.5 rounded text-[9px] bg-rose-600 text-white font-black tracking-wider">{{ $mBcaSelisih > 0 ? '+' : '' }}Rp {{ number_format($mBcaSelisih, 0, ',', '.') }}</span>
+                                                <span class="px-2 py-0.5 rounded-md text-[10px] bg-rose-100 text-rose-800 font-black">{{ $mBcaSelisih > 0 ? '+' : '' }}Rp {{ number_format($mBcaSelisih, 0, ',', '.') }}</span>
                                             @endif
                                         </div>
-                                        <div class="space-y-2 text-xs">
+
+                                        <div class="grid grid-cols-3 gap-2 bg-[#F3F6F4]/90 p-2.5 rounded-xl text-[11px]">
                                             <div>
-                                                <label class="block font-bold text-[#718379] mb-1 text-[11px]">Saldo Awal (Rp) <span class="text-[10px] font-semibold text-emerald-700">(Saldo Akhir Kemarin)</span></label>
-                                                <input type="number" step="1" wire:model.live="bcaSaldoAwal" class="w-full p-2 border border-slate-200 rounded-xl bg-white font-mono font-bold text-right text-xs" />
+                                                <span class="text-[#718379] font-semibold block text-[10px]">Saldo Awal</span>
+                                                <input type="number" step="1" wire:model.live="bcaSaldoAwal" class="w-full mt-0.5 p-1.5 border border-slate-200 rounded-lg bg-white font-mono font-bold text-right text-xs" />
                                             </div>
                                             <div>
-                                                <label class="block font-bold text-[#718379] mb-1 text-[11px]">Top Up Saldo (Rp)</label>
-                                                <input type="number" step="1" wire:model.live="bcaTopup" class="w-full p-2 border border-slate-200 rounded-xl bg-white font-mono font-bold text-right text-xs" />
+                                                <span class="text-[#718379] font-semibold block text-[10px]">Top Up</span>
+                                                <input type="number" step="1" wire:model.live="bcaTopup" class="w-full mt-0.5 p-1.5 border border-slate-200 rounded-lg bg-white font-mono font-bold text-right text-xs" />
                                             </div>
                                             <div>
-                                                <label class="block font-bold text-[#718379] mb-1 text-[11px]">Transaksi Terpakai TRX (Rp)</label>
-                                                <input type="number" step="1" wire:model.live="bcaTrx" class="w-full p-2 border border-slate-200 rounded-xl bg-white font-mono font-bold text-right text-xs" />
+                                                <span class="text-[#718379] font-semibold block text-[10px]">Trx Dipakai</span>
+                                                <input type="number" step="1" wire:model.live="bcaTrx" class="w-full mt-0.5 p-1.5 border border-slate-200 rounded-lg bg-white font-mono font-bold text-right text-xs" />
                                             </div>
-                                            <div>
-                                                <label class="block font-bold text-amber-900 mb-1 text-[11px]">Saldo Android / M-Banking di HP (Rp)</label>
-                                                <input type="number" step="1" wire:model.live="bcaSaldoAndroid" class="w-full p-2 border border-amber-300 rounded-xl bg-amber-50 font-mono font-black text-right text-xs text-amber-950" />
+                                        </div>
+
+                                        <div class="p-3 bg-amber-50/80 border border-amber-200/80 rounded-xl space-y-1">
+                                            <label class="block font-black text-amber-950 text-xs">Saldo Aktual M-Banking BCA</label>
+                                            <div class="relative flex items-center">
+                                                <span class="absolute left-3 font-mono font-extrabold text-xs text-amber-800">Rp</span>
+                                                <input type="number" step="1" wire:model.live="bcaSaldoAndroid" class="w-full pl-9 pr-3 py-2 border border-amber-300 rounded-xl bg-white font-mono font-black text-right text-sm text-amber-950 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500" placeholder="0" />
                                             </div>
                                         </div>
                                     </div>
 
                                     <!-- BANK MAS -->
-                                    <div class="bg-[#F3F6F4]/80 p-4 rounded-2xl border border-slate-200 space-y-3">
-                                        <div class="text-xs font-black text-[#2C3E35] uppercase tracking-wider border-b border-slate-200 pb-1.5 flex items-center justify-between">
-                                            <span>BANK MAS</span>
+                                    <div class="bg-white p-4.5 rounded-2xl border border-slate-200/90 shadow-sm space-y-3.5">
+                                        <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+                                            <div class="flex items-center gap-2">
+                                                <span class="w-3 h-3 rounded-full bg-indigo-600"></span>
+                                                <span class="font-extrabold text-sm text-[#2C3E35]">BANK MAS</span>
+                                            </div>
                                             @if($mBankmasSelisih == 0)
-                                                <span class="px-2 py-0.5 rounded text-[9px] bg-emerald-600 text-white font-black tracking-wider">MATCH</span>
+                                                <span class="px-2 py-0.5 rounded-md text-[10px] bg-emerald-100 text-emerald-800 font-black">MATCH</span>
                                             @else
-                                                <span class="px-2 py-0.5 rounded text-[9px] bg-rose-600 text-white font-black tracking-wider">{{ $mBankmasSelisih > 0 ? '+' : '' }}Rp {{ number_format($mBankmasSelisih, 0, ',', '.') }}</span>
+                                                <span class="px-2 py-0.5 rounded-md text-[10px] bg-rose-100 text-rose-800 font-black">{{ $mBankmasSelisih > 0 ? '+' : '' }}Rp {{ number_format($mBankmasSelisih, 0, ',', '.') }}</span>
                                             @endif
                                         </div>
-                                        <div class="space-y-2 text-xs">
+
+                                        <div class="grid grid-cols-3 gap-2 bg-[#F3F6F4]/90 p-2.5 rounded-xl text-[11px]">
                                             <div>
-                                                <label class="block font-bold text-[#718379] mb-1 text-[11px]">Saldo Awal (Rp) <span class="text-[10px] font-semibold text-emerald-700">(Saldo Akhir Kemarin)</span></label>
-                                                <input type="number" step="1" wire:model.live="bankmasSaldoAwal" class="w-full p-2 border border-slate-200 rounded-xl bg-white font-mono font-bold text-right text-xs" />
+                                                <span class="text-[#718379] font-semibold block text-[10px]">Saldo Awal</span>
+                                                <input type="number" step="1" wire:model.live="bankmasSaldoAwal" class="w-full mt-0.5 p-1.5 border border-slate-200 rounded-lg bg-white font-mono font-bold text-right text-xs" />
                                             </div>
                                             <div>
-                                                <label class="block font-bold text-[#718379] mb-1 text-[11px]">Top Up Saldo (Rp)</label>
-                                                <input type="number" step="1" wire:model.live="bankmasTopup" class="w-full p-2 border border-slate-200 rounded-xl bg-white font-mono font-bold text-right text-xs" />
+                                                <span class="text-[#718379] font-semibold block text-[10px]">Top Up</span>
+                                                <input type="number" step="1" wire:model.live="bankmasTopup" class="w-full mt-0.5 p-1.5 border border-slate-200 rounded-lg bg-white font-mono font-bold text-right text-xs" />
                                             </div>
                                             <div>
-                                                <label class="block font-bold text-[#718379] mb-1 text-[11px]">Transaksi Terpakai TRX (Rp)</label>
-                                                <input type="number" step="1" wire:model.live="bankmasTrx" class="w-full p-2 border border-slate-200 rounded-xl bg-white font-mono font-bold text-right text-xs" />
+                                                <span class="text-[#718379] font-semibold block text-[10px]">Trx Dipakai</span>
+                                                <input type="number" step="1" wire:model.live="bankmasTrx" class="w-full mt-0.5 p-1.5 border border-slate-200 rounded-lg bg-white font-mono font-bold text-right text-xs" />
                                             </div>
-                                            <div>
-                                                <label class="block font-bold text-amber-900 mb-1 text-[11px]">Saldo Android di HP (Rp)</label>
-                                                <input type="number" step="1" wire:model.live="bankmasSaldoAndroid" class="w-full p-2 border border-amber-300 rounded-xl bg-amber-50 font-mono font-black text-right text-xs text-amber-950" />
+                                        </div>
+
+                                        <div class="p-3 bg-amber-50/80 border border-amber-200/80 rounded-xl space-y-1">
+                                            <label class="block font-black text-amber-950 text-xs">Saldo Aktual di HP Bank MAS</label>
+                                            <div class="relative flex items-center">
+                                                <span class="absolute left-3 font-mono font-extrabold text-xs text-amber-800">Rp</span>
+                                                <input type="number" step="1" wire:model.live="bankmasSaldoAndroid" class="w-full pl-9 pr-3 py-2 border border-amber-300 rounded-xl bg-white font-mono font-black text-right text-sm text-amber-950 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500" placeholder="0" />
                                             </div>
                                         </div>
                                     </div>
@@ -885,68 +918,83 @@
 
                         <!-- STEP 3: MULTI & WAHANA -->
                         @elseif($modalStep === 3)
-                            <div class="space-y-3">
-                                <div class="flex items-center justify-between text-xs font-black text-[#2C3E35] uppercase tracking-wider">
-                                    <span>BAGIAN 3: MULTI &amp; WAHANA</span>
-                                    <span class="text-[11px] text-[#718379] font-semibold">Step 3 dari 4</span>
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between text-xs font-black text-[#2C3E35] uppercase tracking-wider pb-1 border-b border-slate-100">
+                                    <span>LANGKAH 3 DARI 4: SALDO MULTI &amp; EKSPEDISI WAHANA</span>
                                 </div>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <!-- MULTI -->
-                                    <div class="bg-[#F3F6F4]/80 p-4 rounded-2xl border border-slate-200 space-y-3">
-                                        <div class="text-xs font-black text-[#2C3E35] uppercase tracking-wider border-b border-slate-200 pb-1.5 flex items-center justify-between">
-                                            <span>MULTI</span>
+                                    <div class="bg-white p-4.5 rounded-2xl border border-slate-200/90 shadow-sm space-y-3.5">
+                                        <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+                                            <div class="flex items-center gap-2">
+                                                <span class="w-3 h-3 rounded-full bg-purple-600"></span>
+                                                <span class="font-extrabold text-sm text-[#2C3E35]">MULTI</span>
+                                            </div>
                                             @if($mMultiSelisih == 0)
-                                                <span class="px-2 py-0.5 rounded text-[9px] bg-emerald-600 text-white font-black tracking-wider">MATCH</span>
+                                                <span class="px-2 py-0.5 rounded-md text-[10px] bg-emerald-100 text-emerald-800 font-black">MATCH</span>
                                             @else
-                                                <span class="px-2 py-0.5 rounded text-[9px] bg-rose-600 text-white font-black tracking-wider">{{ $mMultiSelisih > 0 ? '+' : '' }}Rp {{ number_format($mMultiSelisih, 0, ',', '.') }}</span>
+                                                <span class="px-2 py-0.5 rounded-md text-[10px] bg-rose-100 text-rose-800 font-black">{{ $mMultiSelisih > 0 ? '+' : '' }}Rp {{ number_format($mMultiSelisih, 0, ',', '.') }}</span>
                                             @endif
                                         </div>
-                                        <div class="space-y-2 text-xs">
+
+                                        <div class="grid grid-cols-3 gap-2 bg-[#F3F6F4]/90 p-2.5 rounded-xl text-[11px]">
                                             <div>
-                                                <label class="block font-bold text-[#718379] mb-1 text-[11px]">Saldo Awal (Rp) <span class="text-[10px] font-semibold text-emerald-700">(Saldo Akhir Kemarin)</span></label>
-                                                <input type="number" step="1" wire:model.live="multiSaldoAwal" class="w-full p-2 border border-slate-200 rounded-xl bg-white font-mono font-bold text-right text-xs" />
+                                                <span class="text-[#718379] font-semibold block text-[10px]">Saldo Awal</span>
+                                                <input type="number" step="1" wire:model.live="multiSaldoAwal" class="w-full mt-0.5 p-1.5 border border-slate-200 rounded-lg bg-white font-mono font-bold text-right text-xs" />
                                             </div>
                                             <div>
-                                                <label class="block font-bold text-[#718379] mb-1 text-[11px]">Top Up Saldo (Rp)</label>
-                                                <input type="number" step="1" wire:model.live="multiTopup" class="w-full text-right font-mono font-bold p-2 border border-slate-200 rounded-xl bg-white text-xs" />
+                                                <span class="text-[#718379] font-semibold block text-[10px]">Top Up</span>
+                                                <input type="number" step="1" wire:model.live="multiTopup" class="w-full mt-0.5 p-1.5 border border-slate-200 rounded-lg bg-white font-mono font-bold text-right text-xs" />
                                             </div>
                                             <div>
-                                                <label class="block font-bold text-[#718379] mb-1 text-[11px]">Transaksi Terpakai TRX (Rp)</label>
-                                                <input type="number" step="1" wire:model.live="multiTrx" class="w-full p-2 border border-slate-200 rounded-xl bg-white font-mono font-bold text-right text-xs" />
+                                                <span class="text-[#718379] font-semibold block text-[10px]">Trx Dipakai</span>
+                                                <input type="number" step="1" wire:model.live="multiTrx" class="w-full mt-0.5 p-1.5 border border-slate-200 rounded-lg bg-white font-mono font-bold text-right text-xs" />
                                             </div>
-                                            <div>
-                                                <label class="block font-bold text-amber-900 mb-1 text-[11px]">Saldo Android di HP (Rp)</label>
-                                                <input type="number" step="1" wire:model.live="multiSaldoAndroid" class="w-full p-2 border border-amber-300 rounded-xl bg-amber-50 font-mono font-black text-right text-xs text-amber-950" />
+                                        </div>
+
+                                        <div class="p-3 bg-amber-50/80 border border-amber-200/80 rounded-xl space-y-1">
+                                            <label class="block font-black text-amber-950 text-xs">Saldo Aktual Aplikasi Multi</label>
+                                            <div class="relative flex items-center">
+                                                <span class="absolute left-3 font-mono font-extrabold text-xs text-amber-800">Rp</span>
+                                                <input type="number" step="1" wire:model.live="multiSaldoAndroid" class="w-full pl-9 pr-3 py-2 border border-amber-300 rounded-xl bg-white font-mono font-black text-right text-sm text-amber-950 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500" placeholder="0" />
                                             </div>
                                         </div>
                                     </div>
 
                                     <!-- WAHANA -->
-                                    <div class="bg-[#F3F6F4]/80 p-4 rounded-2xl border border-slate-200 space-y-3">
-                                        <div class="text-xs font-black text-[#2C3E35] uppercase tracking-wider border-b border-slate-200 pb-1.5 flex items-center justify-between">
-                                            <span>WAHANA</span>
+                                    <div class="bg-white p-4.5 rounded-2xl border border-slate-200/90 shadow-sm space-y-3.5">
+                                        <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+                                            <div class="flex items-center gap-2">
+                                                <span class="w-3 h-3 rounded-full bg-amber-600"></span>
+                                                <span class="font-extrabold text-sm text-[#2C3E35]">WAHANA</span>
+                                            </div>
                                             @if($mWahanaSelisih == 0)
-                                                <span class="px-2 py-0.5 rounded text-[9px] bg-emerald-600 text-white font-black tracking-wider">MATCH</span>
+                                                <span class="px-2 py-0.5 rounded-md text-[10px] bg-emerald-100 text-emerald-800 font-black">MATCH</span>
                                             @else
-                                                <span class="px-2 py-0.5 rounded text-[9px] bg-rose-600 text-white font-black tracking-wider">{{ $mWahanaSelisih > 0 ? '+' : '' }}Rp {{ number_format($mWahanaSelisih, 0, ',', '.') }}</span>
+                                                <span class="px-2 py-0.5 rounded-md text-[10px] bg-rose-100 text-rose-800 font-black">{{ $mWahanaSelisih > 0 ? '+' : '' }}Rp {{ number_format($mWahanaSelisih, 0, ',', '.') }}</span>
                                             @endif
                                         </div>
-                                        <div class="space-y-2 text-xs">
+
+                                        <div class="grid grid-cols-3 gap-2 bg-[#F3F6F4]/90 p-2.5 rounded-xl text-[11px]">
                                             <div>
-                                                <label class="block font-bold text-[#718379] mb-1 text-[11px]">Saldo Awal (Rp) <span class="text-[10px] font-semibold text-emerald-700">(Saldo Akhir Kemarin)</span></label>
-                                                <input type="number" step="1" wire:model.live="wahanaSaldoAwal" class="w-full p-2 border border-slate-200 rounded-xl bg-white font-mono font-bold text-right text-xs" />
+                                                <span class="text-[#718379] font-semibold block text-[10px]">Saldo Awal</span>
+                                                <input type="number" step="1" wire:model.live="wahanaSaldoAwal" class="w-full mt-0.5 p-1.5 border border-slate-200 rounded-lg bg-white font-mono font-bold text-right text-xs" />
                                             </div>
                                             <div>
-                                                <label class="block font-bold text-[#718379] mb-1 text-[11px]">Top Up Saldo (Rp)</label>
-                                                <input type="number" step="1" wire:model.live="wahanaTopup" class="w-full text-right font-mono font-bold p-2 border border-slate-200 rounded-xl bg-white text-xs" />
+                                                <span class="text-[#718379] font-semibold block text-[10px]">Top Up</span>
+                                                <input type="number" step="1" wire:model.live="wahanaTopup" class="w-full mt-0.5 p-1.5 border border-slate-200 rounded-lg bg-white font-mono font-bold text-right text-xs" />
                                             </div>
                                             <div>
-                                                <label class="block font-bold text-[#718379] mb-1 text-[11px]">Transaksi Terpakai TRX (Rp)</label>
-                                                <input type="number" step="1" wire:model.live="wahanaTrx" class="w-full p-2 border border-slate-200 rounded-xl bg-white font-mono font-bold text-right text-xs" />
+                                                <span class="text-[#718379] font-semibold block text-[10px]">Trx Dipakai</span>
+                                                <input type="number" step="1" wire:model.live="wahanaTrx" class="w-full mt-0.5 p-1.5 border border-slate-200 rounded-lg bg-white font-mono font-bold text-right text-xs" />
                                             </div>
-                                            <div>
-                                                <label class="block font-bold text-amber-900 mb-1 text-[11px]">Saldo Android di HP (Rp)</label>
-                                                <input type="number" step="1" wire:model.live="wahanaSaldoAndroid" class="w-full p-2 border border-amber-300 rounded-xl bg-amber-50 font-mono font-black text-right text-xs text-amber-950" />
+                                        </div>
+
+                                        <div class="p-3 bg-amber-50/80 border border-amber-200/80 rounded-xl space-y-1">
+                                            <label class="block font-black text-amber-950 text-xs">Saldo Aktual Agen Wahana</label>
+                                            <div class="relative flex items-center">
+                                                <span class="absolute left-3 font-mono font-extrabold text-xs text-amber-800">Rp</span>
+                                                <input type="number" step="1" wire:model.live="wahanaSaldoAndroid" class="w-full pl-9 pr-3 py-2 border border-amber-300 rounded-xl bg-white font-mono font-black text-right text-sm text-amber-950 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500" placeholder="0" />
                                             </div>
                                         </div>
                                     </div>
@@ -956,54 +1004,56 @@
                         <!-- STEP 4: KASIR & CATATAN -->
                         @elseif($modalStep === 4)
                             <div class="space-y-4">
-                                <div class="flex items-center justify-between text-xs font-black text-[#2C3E35] uppercase tracking-wider">
-                                    <span>BAGIAN 4: TARIK TUNAI KASIR &amp; CATATAN REKAP</span>
-                                    <span class="text-[11px] text-[#718379] font-semibold">Step 4 dari 4</span>
+                                <div class="flex items-center justify-between text-xs font-black text-[#2C3E35] uppercase tracking-wider pb-1 border-b border-slate-100">
+                                    <span>LANGKAH 4 DARI 4: TARIK TUNAI KASIR &amp; FINALISASI REKAP</span>
                                 </div>
 
-                                <div class="bg-[#F3F6F4]/80 p-4 rounded-2xl border border-slate-200 space-y-4">
-                                    <div>
-                                        <label class="block font-bold text-[#2C3E35] mb-1 text-xs uppercase tracking-wider">Tarik Tunai Kasir (Rp)</label>
-                                        <input type="number" step="1" wire:model.live="tarikTunaiKasir" class="w-full p-2.5 border border-slate-200 rounded-xl bg-white font-mono font-bold text-right text-xs" />
-                                        <span class="text-[10px] text-[#718379] mt-1 block">Total nominal yang ditarik tunai langsung dari kasir toko.</span>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div class="bg-white p-4.5 rounded-2xl border border-slate-200/90 shadow-sm space-y-2">
+                                        <label class="block font-extrabold text-xs text-[#2C3E35] uppercase tracking-wider">Tarik Tunai Kasir Toko</label>
+                                        <div class="relative flex items-center">
+                                            <span class="absolute left-3 font-mono font-extrabold text-xs text-slate-500">Rp</span>
+                                            <input type="number" step="1" wire:model.live="tarikTunaiKasir" class="w-full pl-9 pr-3 py-2.5 border border-slate-200 rounded-xl bg-[#F3F6F4] font-mono font-bold text-right text-sm focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]" placeholder="0" />
+                                        </div>
+                                        <span class="text-[11px] text-[#718379]">Nominal tunai yang ditarik kasir untuk operasional/setoran.</span>
                                     </div>
 
-                                    <div>
-                                        <label class="block font-bold text-[#2C3E35] mb-1 text-xs uppercase tracking-wider">Catatan Rekap / Penjelasan Selisih</label>
-                                        <textarea wire:model="notes" rows="3" placeholder="Tuliskan catatan tambahan atau penjelasan jika ada selisih saldo..." class="w-full p-3 border border-slate-200 rounded-xl bg-white text-xs font-medium text-[#2C3E35] leading-relaxed focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] transition"></textarea>
+                                    <div class="bg-white p-4.5 rounded-2xl border border-slate-200/90 shadow-sm space-y-2">
+                                        <label class="block font-extrabold text-xs text-[#2C3E35] uppercase tracking-wider">Catatan / Penjelasan Selisih</label>
+                                        <textarea wire:model="notes" rows="2" placeholder="Tuliskan alasan jika ada selisih saldo..." class="w-full p-2.5 border border-slate-200 rounded-xl bg-[#F3F6F4] text-xs font-medium text-[#2C3E35] leading-relaxed focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] transition resize-none"></textarea>
                                     </div>
                                 </div>
 
-                                <!-- Executive Summary Discrepancy Overview Box -->
-                                <div class="bg-white border border-slate-200 p-3.5 rounded-2xl space-y-2">
-                                    <div class="text-[11px] font-black text-[#2C3E35] uppercase tracking-wider border-b border-slate-100 pb-1 flex justify-between">
-                                        <span>Ringkasan Status 6 Akun Saldo</span>
-                                        <span class="font-mono text-[10px] text-[#718379]">Real-Time</span>
+                                <!-- Executive Summary Overview Grid -->
+                                <div class="bg-[#F3F6F4]/90 border border-slate-200 p-4 rounded-2xl space-y-2.5 shadow-xs">
+                                    <div class="text-xs font-black text-[#2C3E35] uppercase tracking-wider border-b border-slate-200 pb-1.5 flex justify-between items-center">
+                                        <span>Ringkasan Selisih 6 Akun Saldo</span>
+                                        <span class="font-mono text-[10px] text-[#718379] font-bold">HASIL AUDIT OWNER</span>
                                     </div>
-                                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs font-bold">
-                                        <div class="p-2 rounded-xl border flex items-center justify-between {{ $mDanaSelisih == 0 ? 'bg-emerald-50/50 border-emerald-200 text-emerald-800' : 'bg-rose-50 border-rose-200 text-rose-800' }}">
+                                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs font-extrabold">
+                                        <div class="p-2.5 rounded-xl border flex items-center justify-between shadow-2xs {{ $mDanaSelisih == 0 ? 'bg-emerald-50 border-emerald-200 text-emerald-900' : 'bg-rose-50 border-rose-200 text-rose-900' }}">
                                             <span>DANA:</span>
-                                            <span class="font-mono">{{ $mDanaSelisih == 0 ? 'MATCH' : ($mDanaSelisih > 0 ? '+' : '').number_format($mDanaSelisih,0,',','.') }}</span>
+                                            <span class="font-mono text-xs">{{ $mDanaSelisih == 0 ? 'MATCH' : ($mDanaSelisih > 0 ? '+' : '').'Rp '.number_format($mDanaSelisih,0,',','.') }}</span>
                                         </div>
-                                        <div class="p-2 rounded-xl border flex items-center justify-between {{ $mQrisSelisih == 0 ? 'bg-emerald-50/50 border-emerald-200 text-emerald-800' : 'bg-rose-50 border-rose-200 text-rose-800' }}">
+                                        <div class="p-2.5 rounded-xl border flex items-center justify-between shadow-2xs {{ $mQrisSelisih == 0 ? 'bg-emerald-50 border-emerald-200 text-emerald-900' : 'bg-rose-50 border-rose-200 text-rose-900' }}">
                                             <span>QRIS:</span>
-                                            <span class="font-mono">{{ $mQrisSelisih == 0 ? 'MATCH' : ($mQrisSelisih > 0 ? '+' : '').number_format($mQrisSelisih,0,',','.') }}</span>
+                                            <span class="font-mono text-xs">{{ $mQrisSelisih == 0 ? 'MATCH' : ($mQrisSelisih > 0 ? '+' : '').'Rp '.number_format($mQrisSelisih,0,',','.') }}</span>
                                         </div>
-                                        <div class="p-2 rounded-xl border flex items-center justify-between {{ $mBcaSelisih == 0 ? 'bg-emerald-50/50 border-emerald-200 text-emerald-800' : 'bg-rose-50 border-rose-200 text-rose-800' }}">
+                                        <div class="p-2.5 rounded-xl border flex items-center justify-between shadow-2xs {{ $mBcaSelisih == 0 ? 'bg-emerald-50 border-emerald-200 text-emerald-900' : 'bg-rose-50 border-rose-200 text-rose-900' }}">
                                             <span>BCA:</span>
-                                            <span class="font-mono">{{ $mBcaSelisih == 0 ? 'MATCH' : ($mBcaSelisih > 0 ? '+' : '').number_format($mBcaSelisih,0,',','.') }}</span>
+                                            <span class="font-mono text-xs">{{ $mBcaSelisih == 0 ? 'MATCH' : ($mBcaSelisih > 0 ? '+' : '').'Rp '.number_format($mBcaSelisih,0,',','.') }}</span>
                                         </div>
-                                        <div class="p-2 rounded-xl border flex items-center justify-between {{ $mBankmasSelisih == 0 ? 'bg-emerald-50/50 border-emerald-200 text-emerald-800' : 'bg-rose-50 border-rose-200 text-rose-800' }}">
+                                        <div class="p-2.5 rounded-xl border flex items-center justify-between shadow-2xs {{ $mBankmasSelisih == 0 ? 'bg-emerald-50 border-emerald-200 text-emerald-900' : 'bg-rose-50 border-rose-200 text-rose-900' }}">
                                             <span>MAS:</span>
-                                            <span class="font-mono">{{ $mBankmasSelisih == 0 ? 'MATCH' : ($mBankmasSelisih > 0 ? '+' : '').number_format($mBankmasSelisih,0,',','.') }}</span>
+                                            <span class="font-mono text-xs">{{ $mBankmasSelisih == 0 ? 'MATCH' : ($mBankmasSelisih > 0 ? '+' : '').'Rp '.number_format($mBankmasSelisih,0,',','.') }}</span>
                                         </div>
-                                        <div class="p-2 rounded-xl border flex items-center justify-between {{ $mMultiSelisih == 0 ? 'bg-emerald-50/50 border-emerald-200 text-emerald-800' : 'bg-rose-50 border-rose-200 text-rose-800' }}">
+                                        <div class="p-2.5 rounded-xl border flex items-center justify-between shadow-2xs {{ $mMultiSelisih == 0 ? 'bg-emerald-50 border-emerald-200 text-emerald-900' : 'bg-rose-50 border-rose-200 text-rose-900' }}">
                                             <span>MULTI:</span>
-                                            <span class="font-mono">{{ $mMultiSelisih == 0 ? 'MATCH' : ($mMultiSelisih > 0 ? '+' : '').number_format($mMultiSelisih,0,',','.') }}</span>
+                                            <span class="font-mono text-xs">{{ $mMultiSelisih == 0 ? 'MATCH' : ($mMultiSelisih > 0 ? '+' : '').'Rp '.number_format($mMultiSelisih,0,',','.') }}</span>
                                         </div>
-                                        <div class="p-2 rounded-xl border flex items-center justify-between {{ $mWahanaSelisih == 0 ? 'bg-emerald-50/50 border-emerald-200 text-emerald-800' : 'bg-rose-50 border-rose-200 text-rose-800' }}">
+                                        <div class="p-2.5 rounded-xl border flex items-center justify-between shadow-2xs {{ $mWahanaSelisih == 0 ? 'bg-emerald-50 border-emerald-200 text-emerald-900' : 'bg-rose-50 border-rose-200 text-rose-900' }}">
                                             <span>WAHANA:</span>
-                                            <span class="font-mono">{{ $mWahanaSelisih == 0 ? 'MATCH' : ($mWahanaSelisih > 0 ? '+' : '').number_format($mWahanaSelisih,0,',','.') }}</span>
+                                            <span class="font-mono text-xs">{{ $mWahanaSelisih == 0 ? 'MATCH' : ($mWahanaSelisih > 0 ? '+' : '').'Rp '.number_format($mWahanaSelisih,0,',','.') }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -1012,28 +1062,28 @@
 
                     </div>
 
-                    <!-- Modal Footer -->
+                    <!-- Modal Footer Controls -->
                     <div class="flex items-center justify-between pt-3.5 border-t border-slate-100 flex-wrap gap-2">
                         <!-- Left Action: Close -->
-                        <button type="button" wire:click="closeInputModal" class="px-3.5 py-2.5 bg-slate-100 hover:bg-slate-200 text-[#2C3E35] font-bold text-xs rounded-xl transition cursor-pointer">
+                        <button type="button" wire:click="closeInputModal" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-[#2C3E35] font-extrabold text-xs rounded-xl transition cursor-pointer">
                             Batal
                         </button>
 
                         <!-- Middle Step Pagination Controls -->
                         <div class="flex items-center gap-2">
                             @if($modalStep > 1)
-                                <button type="button" wire:click="prevModalStep" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-[#2C3E35] font-bold text-xs rounded-xl transition flex items-center gap-1 cursor-pointer">
+                                <button type="button" wire:click="prevModalStep" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-[#2C3E35] font-extrabold text-xs rounded-xl transition flex items-center gap-1 cursor-pointer">
                                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"></path></svg>
                                     <span>Kembali</span>
                                 </button>
                             @endif
 
-                            <span class="text-xs font-mono font-extrabold text-[#718379] px-1">
+                            <span class="text-xs font-mono font-extrabold text-[#718379] px-2">
                                 Hal {{ $modalStep }} / 4
                             </span>
 
                             @if($modalStep < 4)
-                                <button type="button" wire:click="nextModalStep" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs rounded-xl transition flex items-center gap-1 cursor-pointer">
+                                <button type="button" wire:click="nextModalStep" class="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white font-extrabold text-xs rounded-xl transition flex items-center gap-1.5 cursor-pointer shadow-xs">
                                     <span>Lanjut</span>
                                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
                                 </button>
