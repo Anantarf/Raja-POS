@@ -706,7 +706,7 @@
                             <table class="w-full text-xs text-left">
                                 <thead class="bg-[#F3F6F4] border-b border-slate-200/80 text-[#718379] uppercase text-[11px] font-extrabold tracking-wider">
                                     <tr>
-                                        <th class="py-2.5 px-3">Kanal Pembayaran</th>
+                                        <th class="py-2.5 px-3">Metode Pembayaran</th>
                                         <th class="py-2.5 px-3 text-right">Saldo Sistem</th>
                                         <th class="py-2.5 px-3 text-center w-44">Saldo Fisik / Real</th>
                                         <th class="py-2.5 px-3 text-right">Selisih</th>
