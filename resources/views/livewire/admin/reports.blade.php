@@ -769,21 +769,24 @@
 
                                         <div class="grid grid-cols-3 gap-2 bg-[#F3F6F4]/90 p-2.5 rounded-xl text-[11px] border border-slate-100">
                                             <div>
-                                                <span class="text-[#718379] font-bold block text-[10px] uppercase">Saldo Awal</span>
-                                                <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('danaSaldoAwal', val ? parseInt(val) : 0);" value="{{ $danaSaldoAwal ? number_format((float)$danaSaldoAwal, 0, ',', '.') : '' }}" placeholder="0" class="w-full mt-1 p-1.5 border border-slate-200 rounded-lg bg-white font-mono font-bold text-right text-xs focus:outline-none focus:ring-1 focus:ring-emerald-500" />
+                                                <span class="text-[#718379] font-bold block text-[10px] uppercase">Saldo Awal <span class="text-[9px] font-normal text-slate-400">(Auto)</span></span>
+                                                <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('danaSaldoAwal', val ? parseInt(val) : 0);" value="{{ $danaSaldoAwal ? number_format((float)$danaSaldoAwal, 0, ',', '.') : '' }}" placeholder="0" class="w-full mt-1 p-1.5 border border-slate-200 rounded-lg bg-slate-50 font-mono font-bold text-right text-xs text-slate-700 focus:outline-none focus:ring-1 focus:ring-emerald-500" title="Otomatis diisi dari Saldo Akhir kemarin" />
                                             </div>
                                             <div>
-                                                <span class="text-[#718379] font-bold block text-[10px] uppercase">Top Up</span>
+                                                <span class="text-[#718379] font-bold block text-[10px] uppercase">Top Up <span class="text-[9px] font-normal text-slate-400">(Opsional)</span></span>
                                                 <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('danaTopup', val ? parseInt(val) : 0);" value="{{ $danaTopup ? number_format((float)$danaTopup, 0, ',', '.') : '' }}" placeholder="0" class="w-full mt-1 p-1.5 border border-slate-200 rounded-lg bg-white font-mono font-bold text-right text-xs focus:outline-none focus:ring-1 focus:ring-emerald-500" />
                                             </div>
                                             <div>
-                                                <span class="text-[#718379] font-bold block text-[10px] uppercase">Trx Dipakai</span>
+                                                <span class="text-[#718379] font-bold block text-[10px] uppercase">Trx Dipakai <span class="text-[9px] font-normal text-slate-400">(Opsional)</span></span>
                                                 <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('danaTrx', val ? parseInt(val) : 0);" value="{{ $danaTrx ? number_format((float)$danaTrx, 0, ',', '.') : '' }}" placeholder="0" class="w-full mt-1 p-1.5 border border-slate-200 rounded-lg bg-white font-mono font-bold text-right text-xs focus:outline-none focus:ring-1 focus:ring-emerald-500" />
                                             </div>
                                         </div>
 
                                         <div class="p-3 bg-amber-50/90 border border-amber-300 rounded-xl space-y-1.5">
-                                            <label class="block font-black text-amber-950 text-xs">Saldo Aktual di HP (Android)</label>
+                                            <div class="flex items-center justify-between">
+                                                <label class="block font-black text-amber-950 text-xs">Saldo Aktual di HP (Android)</label>
+                                                <span class="text-[9px] font-extrabold text-amber-800 bg-amber-200/80 px-1.5 py-0.5 rounded uppercase">Utama</span>
+                                            </div>
                                             <div class="relative flex items-center">
                                                 <span class="absolute left-3 font-mono font-extrabold text-xs text-amber-800 pointer-events-none">Rp</span>
                                                 <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('danaSaldoAndroid', val ? parseInt(val) : 0);" value="{{ $danaSaldoAndroid ? number_format((float)$danaSaldoAndroid, 0, ',', '.') : '' }}" wire:keydown.enter.prevent="nextModalStep" class="w-full pl-9 pr-3 py-2 border border-amber-300 rounded-xl bg-white font-mono font-black text-right text-sm text-amber-950 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500" placeholder="0" />
@@ -808,19 +811,22 @@
 
                                         <div class="grid grid-cols-2 gap-2 bg-[#F3F6F4]/90 p-2.5 rounded-xl text-[11px] border border-slate-100">
                                             <div>
-                                                <span class="text-[#718379] font-bold block text-[10px] uppercase">POS Pembayaran</span>
+                                                <span class="text-[#718379] font-bold block text-[10px] uppercase">POS Pembayaran <span class="text-[9px] font-normal text-slate-400">(Auto)</span></span>
                                                 <div class="mt-1 p-1.5 bg-slate-100 rounded-lg font-mono font-bold text-right text-xs text-[#3F7A5D]">
                                                     Rp {{ number_format($dailySummaryData['qris_pembayaran'], 0, ',', '.') }}
                                                 </div>
                                             </div>
                                             <div>
-                                                <span class="text-[#718379] font-bold block text-[10px] uppercase">Tarik Tunai</span>
+                                                <span class="text-[#718379] font-bold block text-[10px] uppercase">Tarik Tunai <span class="text-[9px] font-normal text-slate-400">(Opsional)</span></span>
                                                 <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('qrisTarikTunai', val ? parseInt(val) : 0);" value="{{ $qrisTarikTunai ? number_format((float)$qrisTarikTunai, 0, ',', '.') : '' }}" placeholder="0" class="w-full mt-1 p-1.5 border border-slate-200 rounded-lg bg-white font-mono font-bold text-right text-xs focus:outline-none focus:ring-1 focus:ring-emerald-500" />
                                             </div>
                                         </div>
 
                                         <div class="p-3 bg-amber-50/90 border border-amber-300 rounded-xl space-y-1.5">
-                                            <label class="block font-black text-amber-950 text-xs">Saldo Aktual di HP / EDC</label>
+                                            <div class="flex items-center justify-between">
+                                                <label class="block font-black text-amber-950 text-xs">Saldo Aktual di HP / EDC</label>
+                                                <span class="text-[9px] font-extrabold text-amber-800 bg-amber-200/80 px-1.5 py-0.5 rounded uppercase">Utama</span>
+                                            </div>
                                             <div class="relative flex items-center">
                                                 <span class="absolute left-3 font-mono font-extrabold text-xs text-amber-800 pointer-events-none">Rp</span>
                                                 <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('qrisSaldoAndroid', val ? parseInt(val) : 0);" value="{{ $qrisSaldoAndroid ? number_format((float)$qrisSaldoAndroid, 0, ',', '.') : '' }}" wire:keydown.enter.prevent="nextModalStep" class="w-full pl-9 pr-3 py-2 border border-amber-300 rounded-xl bg-white font-mono font-black text-right text-sm text-amber-950 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500" placeholder="0" />
@@ -853,21 +859,24 @@
 
                                         <div class="grid grid-cols-3 gap-2 bg-[#F3F6F4]/90 p-2.5 rounded-xl text-[11px] border border-slate-100">
                                             <div>
-                                                <span class="text-[#718379] font-bold block text-[10px] uppercase">Saldo Awal</span>
-                                                <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('bcaSaldoAwal', val ? parseInt(val) : 0);" value="{{ $bcaSaldoAwal ? number_format((float)$bcaSaldoAwal, 0, ',', '.') : '' }}" placeholder="0" class="w-full mt-1 p-1.5 border border-slate-200 rounded-lg bg-white font-mono font-bold text-right text-xs focus:outline-none focus:ring-1 focus:ring-emerald-500" />
+                                                <span class="text-[#718379] font-bold block text-[10px] uppercase">Saldo Awal <span class="text-[9px] font-normal text-slate-400">(Auto)</span></span>
+                                                <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('bcaSaldoAwal', val ? parseInt(val) : 0);" value="{{ $bcaSaldoAwal ? number_format((float)$bcaSaldoAwal, 0, ',', '.') : '' }}" placeholder="0" class="w-full mt-1 p-1.5 border border-slate-200 rounded-lg bg-slate-50 font-mono font-bold text-right text-xs text-slate-700 focus:outline-none focus:ring-1 focus:ring-emerald-500" title="Otomatis diisi dari Saldo Akhir kemarin" />
                                             </div>
                                             <div>
-                                                <span class="text-[#718379] font-bold block text-[10px] uppercase">Top Up</span>
+                                                <span class="text-[#718379] font-bold block text-[10px] uppercase">Top Up <span class="text-[9px] font-normal text-slate-400">(Opsional)</span></span>
                                                 <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('bcaTopup', val ? parseInt(val) : 0);" value="{{ $bcaTopup ? number_format((float)$bcaTopup, 0, ',', '.') : '' }}" placeholder="0" class="w-full mt-1 p-1.5 border border-slate-200 rounded-lg bg-white font-mono font-bold text-right text-xs focus:outline-none focus:ring-1 focus:ring-emerald-500" />
                                             </div>
                                             <div>
-                                                <span class="text-[#718379] font-bold block text-[10px] uppercase">Trx Dipakai</span>
+                                                <span class="text-[#718379] font-bold block text-[10px] uppercase">Trx Dipakai <span class="text-[9px] font-normal text-slate-400">(Opsional)</span></span>
                                                 <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('bcaTrx', val ? parseInt(val) : 0);" value="{{ $bcaTrx ? number_format((float)$bcaTrx, 0, ',', '.') : '' }}" placeholder="0" class="w-full mt-1 p-1.5 border border-slate-200 rounded-lg bg-white font-mono font-bold text-right text-xs focus:outline-none focus:ring-1 focus:ring-emerald-500" />
                                             </div>
                                         </div>
 
                                         <div class="p-3 bg-amber-50/90 border border-amber-300 rounded-xl space-y-1.5">
-                                            <label class="block font-black text-amber-950 text-xs">Saldo Aktual M-Banking BCA</label>
+                                            <div class="flex items-center justify-between">
+                                                <label class="block font-black text-amber-950 text-xs">Saldo Aktual M-Banking BCA</label>
+                                                <span class="text-[9px] font-extrabold text-amber-800 bg-amber-200/80 px-1.5 py-0.5 rounded uppercase">Utama</span>
+                                            </div>
                                             <div class="relative flex items-center">
                                                 <span class="absolute left-3 font-mono font-extrabold text-xs text-amber-800 pointer-events-none">Rp</span>
                                                 <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('bcaSaldoAndroid', val ? parseInt(val) : 0);" value="{{ $bcaSaldoAndroid ? number_format((float)$bcaSaldoAndroid, 0, ',', '.') : '' }}" wire:keydown.enter.prevent="nextModalStep" class="w-full pl-9 pr-3 py-2 border border-amber-300 rounded-xl bg-white font-mono font-black text-right text-sm text-amber-950 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500" placeholder="0" />
@@ -891,21 +900,24 @@
 
                                         <div class="grid grid-cols-3 gap-2 bg-[#F3F6F4]/90 p-2.5 rounded-xl text-[11px] border border-slate-100">
                                             <div>
-                                                <span class="text-[#718379] font-bold block text-[10px] uppercase">Saldo Awal</span>
-                                                <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('bankmasSaldoAwal', val ? parseInt(val) : 0);" value="{{ $bankmasSaldoAwal ? number_format((float)$bankmasSaldoAwal, 0, ',', '.') : '' }}" placeholder="0" class="w-full mt-1 p-1.5 border border-slate-200 rounded-lg bg-white font-mono font-bold text-right text-xs focus:outline-none focus:ring-1 focus:ring-emerald-500" />
+                                                <span class="text-[#718379] font-bold block text-[10px] uppercase">Saldo Awal <span class="text-[9px] font-normal text-slate-400">(Auto)</span></span>
+                                                <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('bankmasSaldoAwal', val ? parseInt(val) : 0);" value="{{ $bankmasSaldoAwal ? number_format((float)$bankmasSaldoAwal, 0, ',', '.') : '' }}" placeholder="0" class="w-full mt-1 p-1.5 border border-slate-200 rounded-lg bg-slate-50 font-mono font-bold text-right text-xs text-slate-700 focus:outline-none focus:ring-1 focus:ring-emerald-500" title="Otomatis diisi dari Saldo Akhir kemarin" />
                                             </div>
                                             <div>
-                                                <span class="text-[#718379] font-bold block text-[10px] uppercase">Top Up</span>
+                                                <span class="text-[#718379] font-bold block text-[10px] uppercase">Top Up <span class="text-[9px] font-normal text-slate-400">(Opsional)</span></span>
                                                 <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('bankmasTopup', val ? parseInt(val) : 0);" value="{{ $bankmasTopup ? number_format((float)$bankmasTopup, 0, ',', '.') : '' }}" placeholder="0" class="w-full mt-1 p-1.5 border border-slate-200 rounded-lg bg-white font-mono font-bold text-right text-xs focus:outline-none focus:ring-1 focus:ring-emerald-500" />
                                             </div>
                                             <div>
-                                                <span class="text-[#718379] font-bold block text-[10px] uppercase">Trx Dipakai</span>
+                                                <span class="text-[#718379] font-bold block text-[10px] uppercase">Trx Dipakai <span class="text-[9px] font-normal text-slate-400">(Opsional)</span></span>
                                                 <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('bankmasTrx', val ? parseInt(val) : 0);" value="{{ $bankmasTrx ? number_format((float)$bankmasTrx, 0, ',', '.') : '' }}" placeholder="0" class="w-full mt-1 p-1.5 border border-slate-200 rounded-lg bg-white font-mono font-bold text-right text-xs focus:outline-none focus:ring-1 focus:ring-emerald-500" />
                                             </div>
                                         </div>
 
                                         <div class="p-3 bg-amber-50/90 border border-amber-300 rounded-xl space-y-1.5">
-                                            <label class="block font-black text-amber-950 text-xs">Saldo Aktual di HP Bank MAS</label>
+                                            <div class="flex items-center justify-between">
+                                                <label class="block font-black text-amber-950 text-xs">Saldo Aktual di HP Bank MAS</label>
+                                                <span class="text-[9px] font-extrabold text-amber-800 bg-amber-200/80 px-1.5 py-0.5 rounded uppercase">Utama</span>
+                                            </div>
                                             <div class="relative flex items-center">
                                                 <span class="absolute left-3 font-mono font-extrabold text-xs text-amber-800 pointer-events-none">Rp</span>
                                                 <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('bankmasSaldoAndroid', val ? parseInt(val) : 0);" value="{{ $bankmasSaldoAndroid ? number_format((float)$bankmasSaldoAndroid, 0, ',', '.') : '' }}" wire:keydown.enter.prevent="nextModalStep" class="w-full pl-9 pr-3 py-2 border border-amber-300 rounded-xl bg-white font-mono font-black text-right text-sm text-amber-950 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500" placeholder="0" />
@@ -938,21 +950,24 @@
 
                                         <div class="grid grid-cols-3 gap-2 bg-[#F3F6F4]/90 p-2.5 rounded-xl text-[11px] border border-slate-100">
                                             <div>
-                                                <span class="text-[#718379] font-bold block text-[10px] uppercase">Saldo Awal</span>
-                                                <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('multiSaldoAwal', val ? parseInt(val) : 0);" value="{{ $multiSaldoAwal ? number_format((float)$multiSaldoAwal, 0, ',', '.') : '' }}" placeholder="0" class="w-full mt-1 p-1.5 border border-slate-200 rounded-lg bg-white font-mono font-bold text-right text-xs focus:outline-none focus:ring-1 focus:ring-emerald-500" />
+                                                <span class="text-[#718379] font-bold block text-[10px] uppercase">Saldo Awal <span class="text-[9px] font-normal text-slate-400">(Auto)</span></span>
+                                                <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('multiSaldoAwal', val ? parseInt(val) : 0);" value="{{ $multiSaldoAwal ? number_format((float)$multiSaldoAwal, 0, ',', '.') : '' }}" placeholder="0" class="w-full mt-1 p-1.5 border border-slate-200 rounded-lg bg-slate-50 font-mono font-bold text-right text-xs text-slate-700 focus:outline-none focus:ring-1 focus:ring-emerald-500" title="Otomatis diisi dari Saldo Akhir kemarin" />
                                             </div>
                                             <div>
-                                                <span class="text-[#718379] font-bold block text-[10px] uppercase">Top Up</span>
+                                                <span class="text-[#718379] font-bold block text-[10px] uppercase">Top Up <span class="text-[9px] font-normal text-slate-400">(Opsional)</span></span>
                                                 <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('multiTopup', val ? parseInt(val) : 0);" value="{{ $multiTopup ? number_format((float)$multiTopup, 0, ',', '.') : '' }}" placeholder="0" class="w-full mt-1 p-1.5 border border-slate-200 rounded-lg bg-white font-mono font-bold text-right text-xs focus:outline-none focus:ring-1 focus:ring-emerald-500" />
                                             </div>
                                             <div>
-                                                <span class="text-[#718379] font-bold block text-[10px] uppercase">Trx Dipakai</span>
+                                                <span class="text-[#718379] font-bold block text-[10px] uppercase">Trx Dipakai <span class="text-[9px] font-normal text-slate-400">(Opsional)</span></span>
                                                 <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('multiTrx', val ? parseInt(val) : 0);" value="{{ $multiTrx ? number_format((float)$multiTrx, 0, ',', '.') : '' }}" placeholder="0" class="w-full mt-1 p-1.5 border border-slate-200 rounded-lg bg-white font-mono font-bold text-right text-xs focus:outline-none focus:ring-1 focus:ring-emerald-500" />
                                             </div>
                                         </div>
 
                                         <div class="p-3 bg-amber-50/90 border border-amber-300 rounded-xl space-y-1.5">
-                                            <label class="block font-black text-amber-950 text-xs">Saldo Aktual Aplikasi Multi</label>
+                                            <div class="flex items-center justify-between">
+                                                <label class="block font-black text-amber-950 text-xs">Saldo Aktual Aplikasi Multi</label>
+                                                <span class="text-[9px] font-extrabold text-amber-800 bg-amber-200/80 px-1.5 py-0.5 rounded uppercase">Utama</span>
+                                            </div>
                                             <div class="relative flex items-center">
                                                 <span class="absolute left-3 font-mono font-extrabold text-xs text-amber-800 pointer-events-none">Rp</span>
                                                 <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('multiSaldoAndroid', val ? parseInt(val) : 0);" value="{{ $multiSaldoAndroid ? number_format((float)$multiSaldoAndroid, 0, ',', '.') : '' }}" wire:keydown.enter.prevent="nextModalStep" class="w-full pl-9 pr-3 py-2 border border-amber-300 rounded-xl bg-white font-mono font-black text-right text-sm text-amber-950 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500" placeholder="0" />
@@ -976,21 +991,24 @@
 
                                         <div class="grid grid-cols-3 gap-2 bg-[#F3F6F4]/90 p-2.5 rounded-xl text-[11px] border border-slate-100">
                                             <div>
-                                                <span class="text-[#718379] font-bold block text-[10px] uppercase">Saldo Awal</span>
-                                                <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('wahanaSaldoAwal', val ? parseInt(val) : 0);" value="{{ $wahanaSaldoAwal ? number_format((float)$wahanaSaldoAwal, 0, ',', '.') : '' }}" placeholder="0" class="w-full mt-1 p-1.5 border border-slate-200 rounded-lg bg-white font-mono font-bold text-right text-xs focus:outline-none focus:ring-1 focus:ring-emerald-500" />
+                                                <span class="text-[#718379] font-bold block text-[10px] uppercase">Saldo Awal <span class="text-[9px] font-normal text-slate-400">(Auto)</span></span>
+                                                <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('wahanaSaldoAwal', val ? parseInt(val) : 0);" value="{{ $wahanaSaldoAwal ? number_format((float)$wahanaSaldoAwal, 0, ',', '.') : '' }}" placeholder="0" class="w-full mt-1 p-1.5 border border-slate-200 rounded-lg bg-slate-50 font-mono font-bold text-right text-xs text-slate-700 focus:outline-none focus:ring-1 focus:ring-emerald-500" title="Otomatis diisi dari Saldo Akhir kemarin" />
                                             </div>
                                             <div>
-                                                <span class="text-[#718379] font-bold block text-[10px] uppercase">Top Up</span>
+                                                <span class="text-[#718379] font-bold block text-[10px] uppercase">Top Up <span class="text-[9px] font-normal text-slate-400">(Opsional)</span></span>
                                                 <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('wahanaTopup', val ? parseInt(val) : 0);" value="{{ $wahanaTopup ? number_format((float)$wahanaTopup, 0, ',', '.') : '' }}" placeholder="0" class="w-full mt-1 p-1.5 border border-slate-200 rounded-lg bg-white font-mono font-bold text-right text-xs focus:outline-none focus:ring-1 focus:ring-emerald-500" />
                                             </div>
                                             <div>
-                                                <span class="text-[#718379] font-bold block text-[10px] uppercase">Trx Dipakai</span>
+                                                <span class="text-[#718379] font-bold block text-[10px] uppercase">Trx Dipakai <span class="text-[9px] font-normal text-slate-400">(Opsional)</span></span>
                                                 <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('wahanaTrx', val ? parseInt(val) : 0);" value="{{ $wahanaTrx ? number_format((float)$wahanaTrx, 0, ',', '.') : '' }}" placeholder="0" class="w-full mt-1 p-1.5 border border-slate-200 rounded-lg bg-white font-mono font-bold text-right text-xs focus:outline-none focus:ring-1 focus:ring-emerald-500" />
                                             </div>
                                         </div>
 
                                         <div class="p-3 bg-amber-50/90 border border-amber-300 rounded-xl space-y-1.5">
-                                            <label class="block font-black text-amber-950 text-xs">Saldo Aktual Agen Wahana</label>
+                                            <div class="flex items-center justify-between">
+                                                <label class="block font-black text-amber-950 text-xs">Saldo Aktual Agen Wahana</label>
+                                                <span class="text-[9px] font-extrabold text-amber-800 bg-amber-200/80 px-1.5 py-0.5 rounded uppercase">Utama</span>
+                                            </div>
                                             <div class="relative flex items-center">
                                                 <span class="absolute left-3 font-mono font-extrabold text-xs text-amber-800 pointer-events-none">Rp</span>
                                                 <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('wahanaSaldoAndroid', val ? parseInt(val) : 0);" value="{{ $wahanaSaldoAndroid ? number_format((float)$wahanaSaldoAndroid, 0, ',', '.') : '' }}" wire:keydown.enter.prevent="nextModalStep" class="w-full pl-9 pr-3 py-2 border border-amber-300 rounded-xl bg-white font-mono font-black text-right text-sm text-amber-950 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500" placeholder="0" />
