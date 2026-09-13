@@ -780,7 +780,7 @@
                                         </td>
                                         <td class="py-2 px-3 text-right">
                                             <div class="font-mono font-extrabold text-[#2C3E35] text-xs sm:text-sm">Rp {{ number_format($mQrisExpected, 0, ',', '.') }}</div>
-                                            <div class="text-[10px] text-[#718379]">POS: Rp {{ number_format($dailySummaryData['qris_pembayaran'], 0, ',', '.') }}</div>
+                                            <div class="text-[10px] text-[#718379]">Awal: Rp {{ number_format($dailySummaryData['qris_pembayaran'], 0, ',', '.') }}</div>
                                         </td>
                                         <td class="py-2 px-3">
                                             <div class="relative flex items-center h-8">
@@ -799,7 +799,7 @@
                                         </td>
                                         <td class="py-2 px-3 text-center">
                                             <button type="button" x-on:click="openAdj = (openAdj === 'qris' ? null : 'qris')" class="px-2 py-0.5 bg-[#F3F6F4] hover:bg-[#E3EEE8] text-[#2C3E35] hover:text-[#3F7A5D] font-bold rounded-md transition cursor-pointer text-[11px]">
-                                                Tarik Tunai
+                                                Penyesuaian
                                             </button>
                                         </td>
                                     </tr>
@@ -1012,19 +1012,24 @@
                         </div>
 
                         <!-- Penarikan Tunai Kasir & Catatan Rekap -->
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <div class="bg-[#F3F6F4] p-3 rounded-2xl border border-slate-200/80 space-y-1.5">
-                                <label class="block font-extrabold text-xs text-[#2C3E35]">Penarikan Tunai Kasir</label>
-                                <div class="relative flex items-center h-8.5">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-stretch">
+                            <div class="bg-[#F3F6F4] p-3.5 rounded-2xl border border-slate-200/80 flex flex-col justify-between space-y-1.5">
+                                <div>
+                                    <label class="block font-extrabold text-xs text-[#2C3E35]">Penarikan Tunai Kasir</label>
+                                    <span class="text-[11px] text-[#718379] font-medium block">Nominal uang tunai ditarik dari laci kasir.</span>
+                                </div>
+                                <div class="relative flex items-center h-8.5 mt-1">
                                     <span class="absolute left-2.5 font-mono text-xs text-slate-400 select-none pointer-events-none">Rp</span>
                                     <input type="text" x-data x-on:input="let val = $el.value.replace(/\D/g, ''); $el.value = val ? parseInt(val).toLocaleString('id-ID') : ''; $wire.set('tarikTunaiKasir', val ? parseInt(val) : 0);" value="{{ $tarikTunaiKasir ? number_format((float)$tarikTunaiKasir, 0, ',', '.') : '' }}" placeholder="0" class="w-full h-full pl-6 pr-2.5 border border-slate-200 rounded-xl bg-white font-mono font-extrabold text-right text-xs text-[#2C3E35] focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D]" />
                                 </div>
-                                <span class="text-[11px] text-[#718379] font-medium block">Nominal uang tunai ditarik dari laci kasir.</span>
                             </div>
 
-                            <div class="bg-[#F3F6F4] p-3 rounded-2xl border border-slate-200/80 space-y-1.5">
-                                <label class="block font-extrabold text-xs text-[#2C3E35]">Catatan Rekap</label>
-                                <textarea wire:model="notes" rows="2" placeholder="Catatan / keterangan selisih saldo..." class="w-full p-2 border border-slate-200 rounded-xl bg-white text-xs font-medium text-[#2C3E35] focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] transition resize-none"></textarea>
+                            <div class="bg-[#F3F6F4] p-3.5 rounded-2xl border border-slate-200/80 flex flex-col justify-between space-y-1.5">
+                                <div>
+                                    <label class="block font-extrabold text-xs text-[#2C3E35]">Catatan Rekap</label>
+                                    <span class="text-[11px] text-[#718379] font-medium block">Penjelasan jika terdapat selisih saldo.</span>
+                                </div>
+                                <textarea wire:model="notes" rows="2" placeholder="Catatan / keterangan selisih saldo..." class="w-full p-2 border border-slate-200 rounded-xl bg-white text-xs font-medium text-[#2C3E35] focus:outline-none focus:ring-2 focus:ring-[#3F7A5D]/20 focus:border-[#3F7A5D] transition resize-none mt-1"></textarea>
                             </div>
                         </div>
 
@@ -1037,7 +1042,7 @@
                         </button>
 
                         <div class="flex items-center gap-2">
-                            <button type="button" wire:click="saveInputModal" class="h-9 px-4 bg-amber-500 hover:bg-amber-600 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-xs transition cursor-pointer active:scale-95">
+                            <button type="button" wire:click="saveInputModal" class="h-9 px-4 bg-white border border-slate-300 hover:bg-slate-50 text-[#2C3E35] font-extrabold text-xs sm:text-sm rounded-xl shadow-xs transition cursor-pointer active:scale-95">
                                 Simpan Draf
                             </button>
 
