@@ -732,7 +732,7 @@
                             <div class="p-3 bg-amber-50 border border-amber-200 rounded-xl flex items-center justify-between text-xs text-amber-900 font-medium">
                                 <div class="flex items-center gap-2">
                                     <span class="w-2 h-2 rounded-full bg-amber-500"></span>
-                                    <span>Status Audit: <strong class="text-amber-800 font-semibold">Terdapat Selisih Saldo</strong> &mdash; Harap isi catatan pada Hal 4.</span>
+                                    <span>Status Audit: <strong class="text-amber-800 font-semibold">Terdapat Selisih Saldo</strong>. Harap isi catatan pada Hal 4.</span>
                                 </div>
                                 <span class="px-2 py-0.5 rounded bg-amber-100 text-amber-800 text-[11px] font-semibold">Butuh Catatan</span>
                             </div>
